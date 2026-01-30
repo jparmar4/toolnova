@@ -1,5 +1,8 @@
 import ZAI from 'z-ai-web-dev-sdk';
 
+export const MODEL_FREE = 'gpt-5-nano';
+export const MODEL_PREMIUM = 'gpt-5-mini';
+
 interface AIResponse {
   success: boolean;
   content?: string;
@@ -14,10 +17,15 @@ import { getCachedResponse, cacheResponse } from './cache';
 
 // ... imports ...
 
-export async function runAI(prompt: string, systemPrompt?: string): Promise<AIResponse> {
+export async function runAI(
+  prompt: string,
+  systemPrompt?: string,
+  model: string = MODEL_FREE
+): Promise<AIResponse> {
   try {
-    // 1. Check Cache
-    const cached = await getCachedResponse(prompt);
+    // 1. Check Cache (include model in cache key to separate tiers)
+    const cacheKey = `${model}:${prompt}`;
+    const cached = await getCachedResponse(cacheKey);
     if (cached) {
       return { success: true, content: cached };
     }
@@ -37,6 +45,7 @@ export async function runAI(prompt: string, systemPrompt?: string): Promise<AIRe
     ];
 
     const completion = await zai.chat.completions.create({
+      model,
       messages,
       thinking: { type: 'disabled' }
     });
@@ -51,7 +60,7 @@ export async function runAI(prompt: string, systemPrompt?: string): Promise<AIRe
     }
 
     // 4. Cache the result for future use
-    await cacheResponse(prompt, response);
+    await cacheResponse(cacheKey, response);
 
     return {
       success: true,

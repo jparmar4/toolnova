@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { runAI } from '@/lib/ai';
+import { runAI, MODEL_FREE, MODEL_PREMIUM } from '@/lib/ai';
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,7 +12,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const result = await runAI(prompt, systemPrompt);
+    // TODO: Connect this to real user subscription status
+    // For now, we default to Free Tier (GPT-5 Nano)
+    // To test Premium, we could check a mock header or cookie
+    const isPremium = false;
+    const model = isPremium ? MODEL_PREMIUM : MODEL_FREE;
+
+    const result = await runAI(prompt, systemPrompt, model);
 
     if (!result.success) {
       return NextResponse.json(
