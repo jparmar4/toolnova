@@ -29,6 +29,9 @@ import {
 } from '@/lib/storage';
 import { trackToolUse } from '@/lib/usage-tracker';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
+import { Lock, LogIn } from 'lucide-react';
 
 // Tool options interface
 export interface ToolOption {
@@ -79,6 +82,25 @@ export function ToolLayout({
   const [options, setOptions] = useState<Record<string, any>>({});
   const resultRef = useRef<HTMLDivElement>(null);
   const optionsInitialized = useRef(false);
+
+  // Auth state
+  const [user, setUser] = useState<any>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const router = useRouter();
+  const supabase = createClient();
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      setAuthLoading(false);
+    };
+    checkUser();
+  }, []);
+
+  const handleLoginRedirect = () => {
+    router.push('/login');
+  };
 
   // Initialize options with defaults - only once on mount
   useEffect(() => {
@@ -297,12 +319,37 @@ export function ToolLayout({
               </div>
             </div>
 
-            <Textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder={placeholder}
-              className="w-full min-h-[180px] resize-none p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 text-foreground text-base focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-normal placeholder:text-muted-foreground"
-            />
+            <div className="relative">
+              {!isNonAITool && !loading && !authLoading && !user && (
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-2xl border-2 border-slate-200 dark:border-slate-700">
+                  <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl max-w-md text-center border border-slate-100 dark:border-slate-700">
+                    <div className="h-16 w-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                      <Lock className="h-8 w-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-bold text-foreground mb-2">Login Required</h3>
+                    <p className="text-muted-foreground mb-6">
+                      This AI tool requires a free account to use. You get 10 free generations every day!
+                    </p>
+                    <Button
+                      onClick={handleLoginRedirect}
+                      size="lg"
+                      className="w-full font-bold bg-primary hover:bg-primary/90 text-white"
+                    >
+                      <LogIn className="h-5 w-5 mr-2" />
+                      Login / Sign Up Free
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              <Textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={placeholder}
+                disabled={!isNonAITool && !user}
+                className="w-full min-h-[180px] resize-none p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 text-foreground text-base focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-normal placeholder:text-muted-foreground disabled:opacity-50"
+              />
+            </div>
 
             {/* Mobile Word/Char Count */}
             <div className="flex sm:hidden items-center gap-3 mt-3 text-xs text-muted-foreground">
