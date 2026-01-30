@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-export default function CallbackPage() {
+function CallbackContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const supabase = createClient();
@@ -52,11 +52,19 @@ export default function CallbackPage() {
     }, [searchParams, router, supabase]);
 
     return (
+        <div className="flex flex-col items-center gap-4">
+            <Loader2 className="h-10 w-10 animate-spin text-primary" />
+            <p className="text-lg font-medium text-foreground">{status}</p>
+        </div>
+    );
+}
+
+export default function CallbackPage() {
+    return (
         <div className="flex h-screen w-full flex-col items-center justify-center bg-slate-50 dark:bg-slate-900">
-            <div className="flex flex-col items-center gap-4">
-                <Loader2 className="h-10 w-10 animate-spin text-primary" />
-                <p className="text-lg font-medium text-foreground">{status}</p>
-            </div>
+            <Suspense fallback={<Loader2 className="h-10 w-10 animate-spin text-primary" />}>
+                <CallbackContent />
+            </Suspense>
         </div>
     );
 }
