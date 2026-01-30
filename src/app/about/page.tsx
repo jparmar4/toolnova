@@ -57,38 +57,37 @@ export default function AboutPage() {
                     We wanted to build a single "Swiss Army Knife" for the digital age.
                 </p>
                 <p>
-                    <p>
-                        Founded in 2026, we've grown from a simple PDF merger utility into a comprehensive suite used by over 1 million users worldwide.
-                        Our team is passionate about cutting-edge web technology, user experience, and the transformative power of artificial intelligence.
-                    </p>
+                    Founded in 2026, we've grown from a simple PDF merger utility into a comprehensive suite used by over 1 million users worldwide.
+                    Our team is passionate about cutting-edge web technology, user experience, and the transformative power of artificial intelligence.
+                </p>
 
-                    <h2 className="mt-16 mb-8">Meet Our Experts</h2>
-                    <div className="grid md:grid-cols-3 gap-8 not-prose mb-16">
-                        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 text-center">
-                            <div className="w-20 h-20 bg-purple-100 rounded-full mx-auto flex items-center justify-center text-2xl font-bold text-purple-600 mb-4">SM</div>
-                            <h3 className="font-bold text-lg mb-1">Sarah Mitchell</h3>
-                            <p className="text-sm text-purple-600 font-medium mb-3">Education Technology Writer</p>
-                            <p className="text-sm text-muted-foreground">Specializes in AI tools for student productivity and learning enhancement.</p>
-                        </div>
-                        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 text-center">
-                            <div className="w-20 h-20 bg-blue-100 rounded-full mx-auto flex items-center justify-center text-2xl font-bold text-blue-600 mb-4">MC</div>
-                            <h3 className="font-bold text-lg mb-1">Marcus Chen</h3>
-                            <p className="text-sm text-blue-600 font-medium mb-3">Content Strategy Director</p>
-                            <p className="text-sm text-muted-foreground">Expert in scaling content production workflows using AI technologies.</p>
-                        </div>
-                        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 text-center">
-                            <div className="w-20 h-20 bg-emerald-100 rounded-full mx-auto flex items-center justify-center text-2xl font-bold text-emerald-600 mb-4">EP</div>
-                            <h3 className="font-bold text-lg mb-1">Dr. Emily Parker</h3>
-                            <p className="text-sm text-emerald-600 font-medium mb-3">Research Consultant</p>
-                            <p className="text-sm text-muted-foreground">PhD focus on information synthesis and automated research methodologies.</p>
-                        </div>
+                <h2 className="mt-16 mb-8">Meet Our Experts</h2>
+                <div className="grid md:grid-cols-3 gap-8 not-prose mb-16">
+                    <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 text-center">
+                        <div className="w-20 h-20 bg-purple-100 rounded-full mx-auto flex items-center justify-center text-2xl font-bold text-purple-600 mb-4">SM</div>
+                        <h3 className="font-bold text-lg mb-1">Sarah Mitchell</h3>
+                        <p className="text-sm text-purple-600 font-medium mb-3">Education Technology Writer</p>
+                        <p className="text-sm text-muted-foreground">Specializes in AI tools for student productivity and learning enhancement.</p>
                     </div>
+                    <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 text-center">
+                        <div className="w-20 h-20 bg-blue-100 rounded-full mx-auto flex items-center justify-center text-2xl font-bold text-blue-600 mb-4">MC</div>
+                        <h3 className="font-bold text-lg mb-1">Marcus Chen</h3>
+                        <p className="text-sm text-blue-600 font-medium mb-3">Content Strategy Director</p>
+                        <p className="text-sm text-muted-foreground">Expert in scaling content production workflows using AI technologies.</p>
+                    </div>
+                    <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 text-center">
+                        <div className="w-20 h-20 bg-emerald-100 rounded-full mx-auto flex items-center justify-center text-2xl font-bold text-emerald-600 mb-4">EP</div>
+                        <h3 className="font-bold text-lg mb-1">Dr. Emily Parker</h3>
+                        <p className="text-sm text-emerald-600 font-medium mb-3">Research Consultant</p>
+                        <p className="text-sm text-muted-foreground">PhD focus on information synthesis and automated research methodologies.</p>
+                    </div>
+                </div>
 
-                    <h2>Why Choose Us?</h2>
-                    <p>
-                        Unlike other platforms that are cluttered with ads and limit free features, ToolNova prioritizes the user experience.
-                        We offer a generous free tier because we believe productivity is a right, not a luxury.
-                    </p>
+                <h2>Why Choose Us?</h2>
+                <p>
+                    Unlike other platforms that are cluttered with ads and limit free features, ToolNova prioritizes the user experience.
+                    We offer a generous free tier because we believe productivity is a right, not a luxury.
+                </p>
             </div>
         </div>
     );
