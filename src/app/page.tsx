@@ -1,6 +1,9 @@
 'use client';
 
+import { useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import { supabase } from '@/lib/supabaseClient';
 
 // Dynamically import HomeDashboard to reduce initial bundle size
 const HomeDashboard = dynamic(() => import('@/components/HomeDashboard').then(mod => ({ default: mod.HomeDashboard })), {
@@ -31,6 +34,37 @@ const HomeDashboard = dynamic(() => import('@/components/HomeDashboard').then(mo
   ssr: true
 });
 
+// Component to handle auth code exchange
+function AuthCodeHandler() {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const code = searchParams.get("code");
+
+    if (code) {
+      console.log("Found auth code, exchanging for session...");
+      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+        if (error) {
+          console.error("Session exchange error:", error);
+        } else {
+          console.log("Session created successfully!");
+          // Reload without the code parameter for clean URL
+          window.location.href = "/";
+        }
+      });
+    }
+  }, [searchParams]);
+
+  return null;
+}
+
 export default function Home() {
-  return <HomeDashboard />;
+  return (
+    <>
+      <Suspense fallback={null}>
+        <AuthCodeHandler />
+      </Suspense>
+      <HomeDashboard />
+    </>
+  );
 }
