@@ -10,6 +10,7 @@ import { createClient } from "@/utils/supabase/client";
 const MobileMenu = lazy(() => import('./MobileMenu'));
 
 export function Header() {
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const supabase = createClient();
