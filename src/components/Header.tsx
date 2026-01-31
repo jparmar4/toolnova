@@ -3,13 +3,38 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Menu, X, School, Sparkles } from 'lucide-react';
-import { useState, lazy, Suspense } from 'react';
+import { useState, lazy, Suspense, useEffect } from 'react';
+import { createClient } from "@/utils/supabase/client";
 
 // Lazy load the mobile menu to defer Framer Motion bundle
 const MobileMenu = lazy(() => import('./MobileMenu'));
 
 export function Header() {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [user, setUser] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const supabase = createClient();
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+            setLoading(false);
+        };
+
+        checkUser();
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+            setLoading(false);
+        });
+
+        return () => subscription.unsubscribe();
+    }, []);
+
+    const handleSignOut = async () => {
+        await supabase.auth.signOut();
+        setUser(null);
+    };
 
     return (
         <header className="sticky top-0 z-50 w-full bg-white/80 dark:bg-[#1a1f2e]/80 backdrop-blur-xl border-b border-slate-100 dark:border-slate-800 transition-all duration-300">
@@ -40,19 +65,38 @@ export function Header() {
                             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary rounded-full group-hover:w-full transition-all duration-300"></span>
                         </Link>
 
-                        <Link href="/login" className="relative text-muted-foreground text-sm font-medium leading-normal transition-colors hover:text-primary group">
-                            Login
-                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary rounded-full group-hover:w-full transition-all duration-300"></span>
-                        </Link>
+                        {!loading && !user && (
+                            <Link href="/login" className="relative text-muted-foreground text-sm font-medium leading-normal transition-colors hover:text-primary group">
+                                Login
+                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary rounded-full group-hover:w-full transition-all duration-300"></span>
+                            </Link>
+                        )}
                     </nav>
 
                     <div className="hidden md:flex gap-3">
-                        <Link href="/signup">
-                            <button className="flex items-center justify-center gap-2 overflow-hidden rounded-xl h-10 px-6 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300 text-white text-sm font-bold leading-normal">
-                                <Sparkles className="h-4 w-4" />
-                                <span>Get Started</span>
-                            </button>
-                        </Link>
+                        {loading ? (
+                            <div className="h-10 w-24 bg-slate-100 dark:bg-slate-800 rounded-xl animate-pulse" />
+                        ) : user ? (
+                            <div className="flex items-center gap-4">
+                                <div className="text-sm font-medium text-foreground">
+                                    {user.email?.split('@')[0]}
+                                </div>
+                                <Button
+                                    onClick={handleSignOut}
+                                    variant="outline"
+                                    className="h-9 px-4 rounded-xl border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800 text-sm font-medium"
+                                >
+                                    Sign Out
+                                </Button>
+                            </div>
+                        ) : (
+                            <Link href="/signup">
+                                <button className="flex items-center justify-center gap-2 overflow-hidden rounded-xl h-10 px-6 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300 text-white text-sm font-bold leading-normal">
+                                    <Sparkles className="h-4 w-4" />
+                                    <span>Get Started</span>
+                                </button>
+                            </Link>
+                        )}
                     </div>
 
                     {/* Mobile Menu Toggle */}
