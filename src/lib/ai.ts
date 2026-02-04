@@ -47,7 +47,7 @@ export async function runAI(
     ];
 
     const completion = await zai.chat.completions.create({
-      model,
+      // model,
       messages,
       stream: false,
       thinking: { type: 'disabled' }
