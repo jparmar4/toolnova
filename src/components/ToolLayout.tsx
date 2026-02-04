@@ -143,12 +143,17 @@ export function ToolLayout({
         const prompt = typeof promptTemplate === 'function'
           ? promptTemplate(input, options)
           : promptTemplate.replace('{input}', input);
+
+        console.log('Frontend: Sending request to /api/ai', { promptLength: prompt.length });
+
         const res = await fetch('/api/ai', {
           method: 'POST',
           body: JSON.stringify({ prompt, systemPrompt }),
           headers: { 'Content-Type': 'application/json' }
         });
         const data = await res.json();
+        console.log('Frontend: Received API response', data);
+
         if (data.error) throw new Error(data.error);
         output = data.result;
       }

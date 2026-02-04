@@ -27,8 +27,10 @@ export async function runAI(
     const cacheKey = `${model}:${prompt}`;
     const cached = await getCachedResponse(cacheKey);
     if (cached) {
+      console.log('AI: Cache hit for key:', cacheKey);
       return { success: true, content: cached };
     }
+    console.log('AI: Cache miss, calling SDK');
 
     const zai = await ZAI.create();
 
@@ -52,8 +54,14 @@ export async function runAI(
     });
 
     const response = completion.choices[0]?.message?.content;
+    console.log('AI: SDK Response received', {
+      hasResponse: !!response,
+      responseLength: response?.length,
+      firstChars: response?.substring(0, 50)
+    });
 
     if (!response || response.trim().length === 0) {
+      console.error('AI: Empty response received from SDK', completion);
       return {
         success: false,
         error: 'Empty response from AI'

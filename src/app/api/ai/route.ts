@@ -9,27 +9,33 @@ export async function POST(req: NextRequest) {
     const { prompt, systemPrompt } = await req.json();
 
     if (!prompt || typeof prompt !== 'string') {
+      console.error('API: Invalid prompt received', { prompt });
       return NextResponse.json(
         { error: 'Prompt is required and must be a string' },
         { status: 400 }
       );
     }
 
+
     // 1. Check Authentication
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
+      console.error('API: Auth failed', { authError, user });
       return NextResponse.json(
         { error: 'Authentication required to use AI tools' },
         { status: 401 }
       );
     }
+    console.log('API: User authenticated', { userId: user.id });
 
     // 2. Check Subscription & Usage Limits
     // TODO: Connect to real subscription table. For now, everyone is Free.
     const isPremium = false;
     const model = isPremium ? MODEL_PREMIUM : MODEL_FREE;
+
+    console.log('API: Processing request', { promptLength: prompt.length, model });
 
     if (!isPremium) {
       const today = new Date().toISOString().split('T')[0];
@@ -66,7 +72,9 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    console.log('API: Calling runAI...');
     const result = await runAI(prompt, systemPrompt, model);
+    console.log('API: runAI result:', result);
 
     if (!result.success) {
       return NextResponse.json(
