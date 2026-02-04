@@ -34,7 +34,7 @@ export async function runAI(
 
     const messages = [
       {
-        role: 'assistant' as const,
+        role: 'system' as const,
         content: systemPrompt || 'You are a helpful AI tutor. Be clear and concise.'
       },
 
