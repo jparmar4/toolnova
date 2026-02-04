@@ -1,7 +1,7 @@
 import ZAI from 'z-ai-web-dev-sdk';
 
-export const MODEL_FREE = 'gpt-5-nano';
-export const MODEL_PREMIUM = 'gpt-5-mini';
+export const MODEL_FREE = 'gpt-4.1-nano';
+export const MODEL_PREMIUM = 'gpt-4.1-mini';
 
 interface AIResponse {
   success: boolean;
@@ -47,6 +47,7 @@ export async function runAI(
     const completion = await zai.chat.completions.create({
       model,
       messages,
+      stream: false,
       thinking: { type: 'disabled' }
     });
 
