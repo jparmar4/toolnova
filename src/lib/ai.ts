@@ -1,7 +1,8 @@
-import ZAI from 'z-ai-web-dev-sdk';
+import OpenAI from 'openai';
+import { getCachedResponse, cacheResponse } from './cache';
 
-export const MODEL_FREE = 'gpt-4.1-nano';
-export const MODEL_PREMIUM = 'gpt-4.1-mini';
+export const MODEL_FREE = 'gpt-5-nano';
+export const MODEL_PREMIUM = 'gpt-5-mini';
 
 interface AIResponse {
   success: boolean;
@@ -11,57 +12,51 @@ interface AIResponse {
 
 /**
  * Universal AI function for all tools
- * This function handles all AI-powered tools using z-ai-web-dev-sdk
+ * This function handles all AI-powered tools using OpenAI directly
  */
-import { getCachedResponse, cacheResponse } from './cache';
-
-// ... imports ...
-
 export async function runAI(
   prompt: string,
   systemPrompt?: string,
   model: string = MODEL_FREE
 ): Promise<AIResponse> {
   try {
-    // 1. Check Cache (include model in cache key to separate tiers)
+    // 1. Check Cache
     const cacheKey = `${model}:${prompt}`;
     const cached = await getCachedResponse(cacheKey);
     if (cached) {
       console.log('AI: Cache hit for key:', cacheKey);
       return { success: true, content: cached };
     }
-    console.log('AI: Cache miss, calling SDK');
+    console.log('AI: Cache miss, calling Provider');
 
-    const zai = await ZAI.create();
+    // 2. Determine Provider
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY is not defined');
+    }
 
-    const messages = [
-      {
-        role: 'system' as const,
-        content: systemPrompt || 'You are a helpful AI tutor. Be clear and concise.'
-      },
-
-      {
-        role: 'user' as const,
-        content: prompt
-      }
-    ];
-
-    const completion = await zai.chat.completions.create({
-      // model,
-      messages,
-      stream: false,
-      thinking: { type: 'disabled' }
+    console.log('AI: Using OpenAI Direct Provider');
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
     });
 
-    const response = completion.choices[0]?.message?.content;
-    console.log('AI: SDK Response received', {
-      hasResponse: !!response,
-      responseLength: response?.length,
-      firstChars: response?.substring(0, 50)
+    const completion = await openai.chat.completions.create({
+      model: model,
+      messages: [
+        { role: 'system', content: systemPrompt || 'You are a helpful AI tutor. Be clear and concise.' },
+        { role: 'user', content: prompt }
+      ],
     });
 
-    if (!response || response.trim().length === 0) {
-      console.error('AI: Empty response received from SDK', completion);
+    const responseContent = completion.choices[0]?.message?.content || null;
+
+    // 3. Handle Response
+    console.log('AI: Response received', {
+      hasResponse: !!responseContent,
+      responseLength: responseContent?.length,
+      firstChars: responseContent?.substring(0, 50)
+    });
+
+    if (!responseContent || responseContent.trim().length === 0) {
       return {
         success: false,
         error: 'Empty response from AI'
@@ -69,11 +64,11 @@ export async function runAI(
     }
 
     // 4. Cache the result for future use
-    await cacheResponse(cacheKey, response);
+    await cacheResponse(cacheKey, responseContent);
 
     return {
       success: true,
-      content: response
+      content: responseContent
     };
   } catch (error) {
     console.error('AI Error:', error);
