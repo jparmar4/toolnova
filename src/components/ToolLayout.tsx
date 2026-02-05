@@ -56,6 +56,7 @@ interface ToolLayoutProps {
   toolOptions?: ToolOption[];
   resultLabel?: string;
   generateButtonText?: string;
+  customResultRenderer?: (result: string) => React.ReactNode;
 }
 
 export function ToolLayout({
@@ -70,7 +71,8 @@ export function ToolLayout({
   toolSlug,
   toolOptions = [],
   resultLabel = 'Generated Result',
-  generateButtonText
+  generateButtonText,
+  customResultRenderer
 }: ToolLayoutProps) {
   const [input, setInput] = useState<string>('');
   const [result, setResult] = useState<string>('');
@@ -436,9 +438,13 @@ export function ToolLayout({
               </div>
 
               <div className="bg-slate-50 dark:bg-slate-900 rounded-2xl p-8 border border-slate-100 dark:border-slate-800">
-                <div className="prose prose-slate dark:prose-invert max-w-none">
-                  <p className="whitespace-pre-wrap leading-relaxed text-foreground text-base m-0">{result}</p>
-                </div>
+                {customResultRenderer ? (
+                  customResultRenderer(result)
+                ) : (
+                  <div className="prose prose-slate dark:prose-invert max-w-none">
+                    <p className="whitespace-pre-wrap leading-relaxed text-foreground text-base m-0">{result}</p>
+                  </div>
+                )}
               </div>
             </div>
           )}

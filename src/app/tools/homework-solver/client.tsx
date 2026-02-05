@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import ToolLayout, { ToolOption } from '@/components/ToolLayout';
 import { FAQSection } from '@/components/FAQSection';
+import { HomeworkResultFormatter } from '@/components/HomeworkResultFormatter';
 import Link from 'next/link';
 import {
     Calculator,
@@ -99,22 +100,56 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
     };
 
     const explanationStyles: Record<string, string> = {
-        detailed: 'Show the steps clearly and briefly. Number steps if needed.',
-        concise: 'Give the answer and only the essential working.',
-        eli5: 'Explain in very simple words, like to a child, using a simple everyday analogy if helpful.',
-        visual: 'Use a small table or simple text layout if it helps understanding.',
+        detailed: 'Explain each step in simple, clear language. Number each step (Step 1, Step 2, etc.).',
+        concise: 'Give the answer with brief, essential steps.',
+        eli5: 'Explain like teaching a beginner - use everyday analogies and very simple words.',
+        visual: 'Use simple diagrams or layouts when it helps understanding.',
     };
 
     return [
-        `Solve this ${subject} problem for a ${gradeLevelContext[gradeLevel]}.`,
-        explanationStyles[explanation],
-        showFormulas ? 'Include any relevant equations you use.' : 'Avoid unnecessary formulas.',
-        includeExamples
-            ? 'At the end, add 1 short similar practice question (no answer unless asked).'
-            : 'Do not add practice questions.',
+        `You are a friendly, patient tutor helping a ${gradeLevelContext[gradeLevel]} learn ${subject}.`,
         '',
-        `Problem: ${input}`
-    ].join('\n');
+        'YOUR TEACHING STYLE:',
+        '- Use warm, encouraging language - make the student feel confident!',
+        '- Break down complex ideas into simple, bite-sized pieces',
+        '- Explain WHY each step works, not just HOW to do it',
+        '- Use real-world examples when helpful',
+        '',
+        'FORMAT YOUR ANSWER LIKE THIS:',
+        '',
+        '🎯 ANSWER:',
+        '[State the final answer clearly and concisely]',
+        '',
+        '📝 STEP-BY-STEP SOLUTION:',
+        '',
+        'Step 1: [First step with clear explanation]',
+        'WHY: [Explain why we do this step]',
+        '',
+        'Step 2: [Second step]',
+        'WHY: [Explanation]',
+        '',
+        '[Continue with more steps as needed]',
+        '',
+        showFormulas ? '📐 FORMULAS USED:\n[List key formulas with brief explanations of what each variable means]' : '',
+        '',
+        '✅ VERIFICATION:',
+        '[Show how to check if the answer is correct]',
+        '',
+        '💡 KEY LEARNING POINT:',
+        '[One sentence highlighting the main concept or trick to remember]',
+        '',
+        includeExamples ? '🏋️ PRACTICE:\n[One similar problem for the student to try on their own]\n(Provide the answer at the end so they can check)' : '',
+        '',
+        `Style: ${explanationStyles[explanation]}`,
+        '',
+        'IMPORTANT RULES:',
+        '- Use clear section labels with emojis (🎯, 📝, ✅, 💡, etc.)',
+        '- Add blank lines between sections for easy reading',
+        '- Keep language simple and encouraging',
+        '- Explain concepts, don\'t just show calculations',
+        '',
+        `Problem to solve: ${input}`
+    ].filter(line => line !== undefined && line !== null).join('\n');
 };
 
 const faqs = [
@@ -211,6 +246,7 @@ Examples:
                         toolOptions={toolOptions}
                         resultLabel="📚 Solution"
                         generateButtonText="🚀 Solve My Homework"
+                        customResultRenderer={(result) => <HomeworkResultFormatter result={result} />}
                     />
                 </div>
             </div>

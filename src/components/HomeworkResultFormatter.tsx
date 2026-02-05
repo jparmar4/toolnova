@@ -1,0 +1,273 @@
+'use client';
+
+import { CheckCircle2, Lightbulb, Calculator, Target, Dumbbell, BookOpen } from 'lucide-react';
+
+interface Section {
+    type: 'answer' | 'steps' | 'formulas' | 'verification' | 'learning' | 'practice' | 'text';
+    content: string;
+    emoji?: string;
+}
+
+interface HomeworkResultFormatterProps {
+    result: string;
+}
+
+export function HomeworkResultFormatter({ result }: HomeworkResultFormatterProps) {
+    // Parse the result into sections
+    const sections = parseResult(result);
+
+    return (
+        <div className="space-y-6">
+            {sections.map((section, index) => (
+                <div key={index}>
+                    {section.type === 'answer' && (
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/20 border-2 border-green-200 dark:border-green-800/50 p-6 shadow-lg">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-green-400/10 rounded-full blur-3xl"></div>
+                            <div className="relative flex items-start gap-4">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
+                                    <Target className="w-6 h-6 text-white" />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="text-xl font-bold text-green-900 dark:text-green-100 mb-2 flex items-center gap-2">
+                                        {section.emoji} ANSWER
+                                    </h3>
+                                    <p className="text-lg font-semibold text-green-800 dark:text-green-200 whitespace-pre-wrap leading-relaxed">
+                                        {section.content}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {section.type === 'steps' && (
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/20 border-2 border-blue-200 dark:border-blue-800/50 p-6 shadow-lg">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400/10 rounded-full blur-3xl"></div>
+                            <div className="relative flex items-start gap-4">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                                    <BookOpen className="w-6 h-6 text-white" />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="text-xl font-bold text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-2">
+                                        {section.emoji} STEP-BY-STEP SOLUTION
+                                    </h3>
+                                    <div className="space-y-4 text-blue-900 dark:text-blue-100">
+                                        {parseSteps(section.content)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {section.type === 'formulas' && (
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/20 border-2 border-orange-200 dark:border-orange-800/50 p-6 shadow-lg">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-400/10 rounded-full blur-3xl"></div>
+                            <div className="relative flex items-start gap-4">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg">
+                                    <Calculator className="w-6 h-6 text-white" />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="text-xl font-bold text-orange-900 dark:text-orange-100 mb-3 flex items-center gap-2">
+                                        {section.emoji} FORMULAS USED
+                                    </h3>
+                                    <div className="bg-orange-100/50 dark:bg-orange-900/30 rounded-lg p-4 font-mono text-sm text-orange-900 dark:text-orange-100 whitespace-pre-wrap">
+                                        {section.content}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {section.type === 'verification' && (
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/20 border-2 border-teal-200 dark:border-teal-800/50 p-6 shadow-lg">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-teal-400/10 rounded-full blur-3xl"></div>
+                            <div className="relative flex items-start gap-4">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center shadow-lg">
+                                    <CheckCircle2 className="w-6 h-6 text-white" />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="text-xl font-bold text-teal-900 dark:text-teal-100 mb-2 flex items-center gap-2">
+                                        {section.emoji} VERIFICATION
+                                    </h3>
+                                    <p className="text-base text-teal-800 dark:text-teal-200 whitespace-pre-wrap leading-relaxed">
+                                        {section.content}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {section.type === 'learning' && (
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/20 border-2 border-purple-200 dark:border-purple-800/50 p-6 shadow-lg">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-400/10 rounded-full blur-3xl"></div>
+                            <div className="relative flex items-start gap-4">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg animate-pulse">
+                                    <Lightbulb className="w-6 h-6 text-white" />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="text-xl font-bold text-purple-900 dark:text-purple-100 mb-2 flex items-center gap-2">
+                                        {section.emoji} KEY LEARNING POINT
+                                    </h3>
+                                    <p className="text-base font-medium text-purple-800 dark:text-purple-200 whitespace-pre-wrap leading-relaxed italic">
+                                        {section.content}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {section.type === 'practice' && (
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/20 border-2 border-pink-200 dark:border-pink-800/50 p-6 shadow-lg">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-pink-400/10 rounded-full blur-3xl"></div>
+                            <div className="relative flex items-start gap-4">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center shadow-lg">
+                                    <Dumbbell className="w-6 h-6 text-white" />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="text-xl font-bold text-pink-900 dark:text-pink-100 mb-3 flex items-center gap-2">
+                                        {section.emoji} PRACTICE PROBLEM
+                                    </h3>
+                                    <div className="bg-pink-100/50 dark:bg-pink-900/30 rounded-lg p-4">
+                                        <p className="text-base text-pink-900 dark:text-pink-100 whitespace-pre-wrap leading-relaxed">
+                                            {section.content}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {section.type === 'text' && section.content.trim() && (
+                        <div className="text-foreground whitespace-pre-wrap leading-relaxed">
+                            {section.content}
+                        </div>
+                    )}
+                </div>
+            ))}
+        </div>
+    );
+}
+
+// Helper function to parse the result into sections
+function parseResult(result: string): Section[] {
+    const sections: Section[] = [];
+    const lines = result.split('\n');
+    let currentSection: Section | null = null;
+    let currentContent: string[] = [];
+
+    const sectionMarkers = {
+        '🎯 ANSWER': 'answer',
+        '📝 STEP-BY-STEP SOLUTION': 'steps',
+        '📐 FORMULAS USED': 'formulas',
+        '✅ VERIFICATION': 'verification',
+        '💡 KEY LEARNING POINT': 'learning',
+        '🏋️ PRACTICE': 'practice',
+    } as const;
+
+    for (const line of lines) {
+        let foundSection = false;
+
+        for (const [marker, type] of Object.entries(sectionMarkers)) {
+            if (line.trim().startsWith(marker) || line.trim().includes(marker)) {
+                // Save previous section
+                if (currentSection) {
+                    currentSection.content = currentContent.join('\n').trim();
+                    sections.push(currentSection);
+                }
+
+                // Start new section
+                const emoji = marker.split(' ')[0];
+                currentSection = { type: type as any, content: '', emoji };
+                currentContent = [];
+                foundSection = true;
+                break;
+            }
+        }
+
+        if (!foundSection && currentSection) {
+            currentContent.push(line);
+        } else if (!foundSection && line.trim()) {
+            // Text that doesn't belong to any section
+            sections.push({ type: 'text', content: line });
+        }
+    }
+
+    // Save last section
+    if (currentSection) {
+        currentSection.content = currentContent.join('\n').trim();
+        sections.push(currentSection);
+    }
+
+    return sections;
+}
+
+// Helper function to parse steps with WHY subsections
+function parseSteps(content: string): React.ReactNode {
+    const lines = content.split('\n');
+    const steps: React.ReactNode[] = [];
+    let currentStep: string[] = [];
+    let stepNumber = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        if (line.trim().match(/^Step \d+:/i)) {
+            // Save previous step
+            if (currentStep.length > 0) {
+                steps.push(renderStep(stepNumber, currentStep));
+            }
+
+            // Start new step
+            stepNumber++;
+            currentStep = [line];
+        } else if (currentStep.length > 0) {
+            currentStep.push(line);
+        }
+    }
+
+    // Save last step
+    if (currentStep.length > 0) {
+        steps.push(renderStep(stepNumber, currentStep));
+    }
+
+    return steps.length > 0 ? steps : <div className="whitespace-pre-wrap">{content}</div>;
+}
+
+function renderStep(stepNum: number, lines: string[]): React.ReactNode {
+    const stepContent: React.ReactNode[] = [];
+    let whyContent: string[] = [];
+    let inWhy = false;
+
+    for (const line of lines) {
+        if (line.trim().toUpperCase().startsWith('WHY:')) {
+            inWhy = true;
+            whyContent.push(line.replace(/^WHY:\s*/i, ''));
+        } else if (inWhy) {
+            whyContent.push(line);
+        } else {
+            stepContent.push(<div key={stepContent.length}>{line}</div>);
+        }
+    }
+
+    return (
+        <div key={stepNum} className="mb-4 last:mb-0">
+            <div className="flex gap-3">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                    {stepNum}
+                </div>
+                <div className="flex-1">
+                    <div className="font-medium text-blue-900 dark:text-blue-100">
+                        {stepContent}
+                    </div>
+                    {whyContent.length > 0 && (
+                        <div className="mt-2 pl-4 border-l-2 border-purple-300 dark:border-purple-700">
+                            <div className="text-sm text-purple-700 dark:text-purple-300">
+                                <span className="font-semibold">💭 Why: </span>
+                                {whyContent.join(' ')}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
