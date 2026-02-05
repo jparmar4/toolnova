@@ -17,40 +17,46 @@ export function HomeworkResultFormatter({ result }: HomeworkResultFormatterProps
     const sections = parseResult(result);
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
             {sections.map((section, index) => (
                 <div key={index}>
                     {section.type === 'answer' && (
-                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/20 border-2 border-green-200 dark:border-green-800/50 p-6 shadow-lg">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-green-400/10 rounded-full blur-3xl"></div>
-                            <div className="relative flex items-start gap-4">
-                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
-                                    <Target className="w-6 h-6 text-white" />
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/20 border-2 border-green-300 dark:border-green-700/50 p-8 shadow-xl hover:shadow-2xl hover:scale-[1.01] transition-all duration-300">
+                            <div className="absolute top-0 right-0 w-40 h-40 bg-green-400/20 rounded-full blur-3xl"></div>
+                            <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-400/15 rounded-full blur-3xl"></div>
+                            <div className="relative flex items-start gap-5">
+                                <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-xl animate-pulse">
+                                    <Target className="w-8 h-8 text-white" />
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="text-xl font-bold text-green-900 dark:text-green-100 mb-2 flex items-center gap-2">
-                                        {section.emoji} ANSWER
-                                    </h3>
-                                    <p className="text-lg font-semibold text-green-800 dark:text-green-200 whitespace-pre-wrap leading-relaxed">
-                                        {section.content}
-                                    </p>
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <h3 className="text-2xl font-black bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                                            🎯 ANSWER
+                                        </h3>
+                                        <CheckCircle2 className="w-6 h-6 text-green-500" />
+                                    </div>
+                                    <div className="bg-white/60 dark:bg-green-900/30 rounded-xl p-4 border border-green-200 dark:border-green-800">
+                                        <p className="text-2xl md:text-3xl font-black text-green-700 dark:text-green-200 whitespace-pre-wrap leading-relaxed">
+                                            {section.content}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     )}
 
                     {section.type === 'steps' && (
-                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/20 border-2 border-blue-200 dark:border-blue-800/50 p-6 shadow-lg">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400/10 rounded-full blur-3xl"></div>
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/20 border-2 border-blue-200 dark:border-blue-800/50 p-6 shadow-lg hover:shadow-xl hover:scale-[1.005] transition-all duration-300">
+                            <div className="absolute top-0 right-0 w-40 h-40 bg-blue-400/15 rounded-full blur-3xl"></div>
                             <div className="relative flex items-start gap-4">
-                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
-                                    <BookOpen className="w-6 h-6 text-white" />
+                                <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                                    <BookOpen className="w-7 h-7 text-white" />
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="text-xl font-bold text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-2">
-                                        {section.emoji} STEP-BY-STEP SOLUTION
+                                    <h3 className="text-xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-5">
+                                        📝 STEP-BY-STEP SOLUTION
                                     </h3>
-                                    <div className="space-y-4 text-blue-900 dark:text-blue-100">
+                                    <div className="space-y-5 text-blue-900 dark:text-blue-100">
                                         {parseSteps(section.content)}
                                     </div>
                                 </div>
@@ -59,17 +65,17 @@ export function HomeworkResultFormatter({ result }: HomeworkResultFormatterProps
                     )}
 
                     {section.type === 'formulas' && (
-                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/20 border-2 border-orange-200 dark:border-orange-800/50 p-6 shadow-lg">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-400/10 rounded-full blur-3xl"></div>
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/20 border-2 border-orange-200 dark:border-orange-800/50 p-6 shadow-lg hover:shadow-xl hover:scale-[1.005] transition-all duration-300">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-400/15 rounded-full blur-3xl"></div>
                             <div className="relative flex items-start gap-4">
-                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg">
-                                    <Calculator className="w-6 h-6 text-white" />
+                                <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg">
+                                    <Calculator className="w-7 h-7 text-white" />
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="text-xl font-bold text-orange-900 dark:text-orange-100 mb-3 flex items-center gap-2">
-                                        {section.emoji} FORMULAS USED
+                                    <h3 className="text-xl font-black bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-4">
+                                        📐 FORMULAS USED
                                     </h3>
-                                    <div className="bg-orange-100/50 dark:bg-orange-900/30 rounded-lg p-4 font-mono text-sm text-orange-900 dark:text-orange-100 whitespace-pre-wrap">
+                                    <div className="bg-white/70 dark:bg-orange-900/30 rounded-xl p-5 font-mono text-base text-orange-800 dark:text-orange-100 whitespace-pre-wrap border border-orange-200 dark:border-orange-800">
                                         {section.content}
                                     </div>
                                 </div>
@@ -77,56 +83,61 @@ export function HomeworkResultFormatter({ result }: HomeworkResultFormatterProps
                         </div>
                     )}
 
+
                     {section.type === 'verification' && (
-                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/20 border-2 border-teal-200 dark:border-teal-800/50 p-6 shadow-lg">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-teal-400/10 rounded-full blur-3xl"></div>
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/20 border-2 border-teal-200 dark:border-teal-800/50 p-6 shadow-lg hover:shadow-xl hover:scale-[1.005] transition-all duration-300">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-teal-400/15 rounded-full blur-3xl"></div>
                             <div className="relative flex items-start gap-4">
-                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center shadow-lg">
-                                    <CheckCircle2 className="w-6 h-6 text-white" />
+                                <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center shadow-lg">
+                                    <CheckCircle2 className="w-7 h-7 text-white" />
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="text-xl font-bold text-teal-900 dark:text-teal-100 mb-2 flex items-center gap-2">
-                                        {section.emoji} VERIFICATION
+                                    <h3 className="text-xl font-black bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-3">
+                                        ✅ VERIFICATION
                                     </h3>
-                                    <p className="text-base text-teal-800 dark:text-teal-200 whitespace-pre-wrap leading-relaxed">
-                                        {section.content}
-                                    </p>
+                                    <div className="bg-white/70 dark:bg-teal-900/30 rounded-xl p-4 border border-teal-200 dark:border-teal-800">
+                                        <p className="text-base text-teal-800 dark:text-teal-200 whitespace-pre-wrap leading-relaxed">
+                                            {section.content}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     )}
 
                     {section.type === 'learning' && (
-                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/20 border-2 border-purple-200 dark:border-purple-800/50 p-6 shadow-lg">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-400/10 rounded-full blur-3xl"></div>
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/20 border-2 border-purple-200 dark:border-purple-800/50 p-6 shadow-lg hover:shadow-xl hover:scale-[1.005] transition-all duration-300">
+                            <div className="absolute top-0 right-0 w-40 h-40 bg-purple-400/20 rounded-full blur-3xl"></div>
                             <div className="relative flex items-start gap-4">
-                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg animate-pulse">
-                                    <Lightbulb className="w-6 h-6 text-white" />
+                                <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg animate-pulse">
+                                    <Lightbulb className="w-7 h-7 text-white" />
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="text-xl font-bold text-purple-900 dark:text-purple-100 mb-2 flex items-center gap-2">
-                                        {section.emoji} KEY LEARNING POINT
+                                    <h3 className="text-xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">
+                                        💡 KEY LEARNING POINT
                                     </h3>
-                                    <p className="text-base font-medium text-purple-800 dark:text-purple-200 whitespace-pre-wrap leading-relaxed italic">
-                                        {section.content}
-                                    </p>
+                                    <div className="bg-white/70 dark:bg-purple-900/30 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
+                                        <p className="text-lg font-semibold text-purple-800 dark:text-purple-200 whitespace-pre-wrap leading-relaxed italic">
+                                            {section.content}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     )}
 
                     {section.type === 'practice' && (
-                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/20 border-2 border-pink-200 dark:border-pink-800/50 p-6 shadow-lg">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-pink-400/10 rounded-full blur-3xl"></div>
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/20 border-2 border-pink-200 dark:border-pink-800/50 p-6 shadow-lg hover:shadow-xl hover:scale-[1.005] transition-all duration-300">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-pink-400/15 rounded-full blur-3xl"></div>
                             <div className="relative flex items-start gap-4">
-                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center shadow-lg">
-                                    <Dumbbell className="w-6 h-6 text-white" />
+                                <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center shadow-lg">
+                                    <Dumbbell className="w-7 h-7 text-white" />
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="text-xl font-bold text-pink-900 dark:text-pink-100 mb-3 flex items-center gap-2">
-                                        {section.emoji} PRACTICE PROBLEM
+                                    <h3 className="text-xl font-black bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent mb-4">
+                                        🏋️ PRACTICE PROBLEM
                                     </h3>
-                                    <div className="bg-pink-100/50 dark:bg-pink-900/30 rounded-lg p-4">
+                                    <div className="bg-white/70 dark:bg-pink-900/30 rounded-xl p-5 border border-pink-200 dark:border-pink-800">
                                         <p className="text-base text-pink-900 dark:text-pink-100 whitespace-pre-wrap leading-relaxed">
                                             {section.content}
                                         </p>
