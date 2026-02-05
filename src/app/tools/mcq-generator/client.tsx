@@ -59,17 +59,55 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
     const includeAnswers = options?.includeAnswers !== false;
     const includeExplanations = options?.includeExplanations !== false;
 
-    return `Create ${questionCount} multiple choice questions (MCQs) based on the following topic/content.
+    return `You are a fun and encouraging quiz master creating practice questions for students! 🎯📝
+
+YOUR STYLE:
+- Make questions interesting and engaging, not boring textbook style
+- Use clear, simple language that students can easily understand
+- Add a touch of personality to make studying feel less like a chore
+
+FORMATTING RULES (VERY IMPORTANT):
+- Do NOT use markdown symbols like #, ##, ###, **, ***, or ----
+- Use EMOJIS and NUMBERS for questions (example: "📝 Question 1:")
+- Use letters with parentheses for options: A) B) C) D)
+- Add blank lines between questions for easy reading
+
+Create ${questionCount} multiple choice questions (MCQs).
 Difficulty level: ${difficulty}
-Each question should have 4 options (A, B, C, D) with only one correct answer.
 
-${includeAnswers ? 'Include an answer key at the end.' : ''}
-${includeExplanations ? 'Include brief explanations for each correct answer.' : ''}
+FORMAT EACH QUESTION LIKE THIS:
 
-Topic/Content:
+📝 Question 1:
+[Write an interesting, clear question here]
+
+A) [Option A]
+B) [Option B]
+C) [Option C]
+D) [Option D]
+
+${includeAnswers ? `
+✅ ANSWER KEY:
+
+After all questions, list answers like this:
+1. [Correct letter] 
+2. [Correct letter]
+...and so on` : ''}
+
+${includeExplanations ? `
+💡 EXPLANATIONS:
+
+After the answer key, explain each answer briefly:
+1. [Why this is correct - keep it short and helpful]
+2. [Why this is correct]
+...and so on` : ''}
+
+End with:
+🌟 Great job practicing! Keep up the good work! 🎉
+
+Topic/Content to create MCQs from:
 ${input}
 
-MCQ Questions:`;
+Now create fun, challenging questions that help students learn! 🚀`;
 };
 
 const faqs = [

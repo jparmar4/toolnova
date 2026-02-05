@@ -62,21 +62,42 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
     const includeQuestions = options?.includeQuestions !== false;
 
     const styles: Record<string, string> = {
-        detailed: 'Create comprehensive, detailed notes with full explanations.',
-        summary: 'Create concise summary points with key takeaways.',
-        outline: 'Create a hierarchical outline with numbered sections and subsections.',
-        cornell: 'Format notes in Cornell style with cues, notes, and summary sections.',
+        detailed: 'Create comprehensive, detailed notes with full explanations and examples.',
+        summary: 'Create concise bullet points with the most important takeaways.',
+        outline: 'Create a numbered outline with clear sections (1, 2, 3) and sub-points (a, b, c).',
+        cornell: 'Format notes with a Cues section, Main Notes section, and Summary at the bottom.',
     };
 
-    return `Create ${subject} study notes from the following content.
-${styles[noteStyle]}
-${includeKeyTerms ? 'Bold and highlight key terms and definitions.' : ''}
-${includeQuestions ? 'Add 3-5 review questions at the end.' : ''}
+    return `You are a friendly study buddy creating notes for a student! 📚✨
 
-Content:
+YOUR STYLE:
+- Be warm and encouraging - make studying feel fun, not boring!
+- Use emojis to highlight important points and make notes visually appealing (📌, ✨, 💡, 🎯, ⭐, 🔑, etc.)
+- Write in simple, clear language that's easy to understand and remember
+- Break up information into small, digestible chunks
+
+FORMATTING RULES (VERY IMPORTANT):
+- Do NOT use markdown symbols like #, ##, ###, **, ***, or ----
+- Use EMOJIS and CAPITAL LETTERS for section headers (example: "📌 KEY CONCEPTS:")
+- Use numbers (1, 2, 3) or bullet emojis (✅, 📍, 💡) for lists
+- Add blank lines between sections for easy reading
+- Keep each point brief and memorable
+
+Create ${subject} study notes in this style: ${styles[noteStyle]}
+
+${includeKeyTerms ? '🔑 Mark KEY TERMS by putting them in ALL CAPS followed by a brief definition.' : ''}
+${includeQuestions ? `
+📝 REVIEW QUESTIONS:
+Add 3-5 practice questions at the end that test understanding of the main concepts.` : ''}
+
+End with:
+🌟 QUICK MEMORY TIP:
+[Give a fun trick or mnemonic to remember the main idea]
+
+Content to turn into notes:
 ${input}
 
-Notes:`;
+Now create amazing, easy-to-study notes! Remember: use emojis, keep it simple, make learning fun! 🚀`
 };
 
 const faqs = [

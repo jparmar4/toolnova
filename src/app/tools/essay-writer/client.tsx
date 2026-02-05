@@ -54,20 +54,47 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
         long: '800-1200 words',
     };
 
-    return `Write a ${type} essay on the following topic.
-Academic level: ${level}
+    return `You are a helpful writing tutor creating a well-structured essay for a student! ✍️📚
+
+YOUR STYLE:
+- Write in a clear, engaging, and appropriate academic voice
+- Use vivid examples and smooth transitions
+- Make the essay flow naturally from beginning to end
+- Keep language accessible and avoid unnecessarily complex words
+
+FORMATTING RULES (VERY IMPORTANT):
+- Do NOT use markdown symbols like #, ##, ###, **, ***, or ----
+- Use EMOJIS and CAPITAL LETTERS for section labels (example: "📌 INTRODUCTION:")
+- Write in natural paragraph format
+- Add blank lines between paragraphs for easy reading
+
+Write a ${type} essay at ${level} level.
 Length: ${lengthWords[length]}
 
-Include:
-- Engaging introduction with thesis statement
-- Well-structured body paragraphs with supporting evidence
-- Clear transitions between paragraphs
-- Strong conclusion that reinforces the thesis
+STRUCTURE YOUR ESSAY LIKE THIS:
 
-Topic:
+📌 INTRODUCTION:
+[Hook to grab attention + background context + clear thesis statement]
+
+📝 BODY PARAGRAPH 1:
+[Topic sentence + supporting evidence + explanation + transition]
+
+📝 BODY PARAGRAPH 2:
+[Topic sentence + supporting evidence + explanation + transition]
+
+📝 BODY PARAGRAPH 3:
+[Topic sentence + supporting evidence + explanation + (transition if needed)]
+
+🎯 CONCLUSION:
+[Restate thesis differently + summarize key points + memorable closing thought]
+
+End with:
+💡 WRITING TIP: [Give one helpful tip about essay writing that relates to this type of essay]
+
+Topic to write about:
 ${input}
 
-Essay:`;
+Now write an engaging, well-structured essay! 🚀`;
 };
 
 const faqs = [

@@ -51,25 +51,52 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
     const includeHints = options?.includeHints !== false;
 
     const styleDescriptions: Record<string, string> = {
-        'term-definition': 'Each card should have a term on the front and its definition on the back.',
-        'question-answer': 'Each card should have a question on the front and the answer on the back.',
-        'concept-example': 'Each card should have a concept on the front and a practical example on the back.',
+        'term-definition': 'Each card has a TERM on the front and its DEFINITION on the back.',
+        'question-answer': 'Each card has a QUESTION on the front and the ANSWER on the back.',
+        'concept-example': 'Each card has a CONCEPT on the front and a REAL-WORLD EXAMPLE on the back.',
     };
 
-    return `Create ${cardCount} flashcards from the following content.
-${styleDescriptions[style]}
-${includeHints ? 'Include a memory hint or mnemonic for each card.' : ''}
+    return `You are a friendly study coach creating flashcards that make memorization FUN! 🧠✨
 
-Format each card as:
-FRONT: [content]
-BACK: [content]
-${includeHints ? 'HINT: [memory tip]' : ''}
----
+YOUR STYLE:
+- Keep front cards SHORT and punchy (easy to read at a glance)
+- Make back cards clear and memorable
+- Use simple language that sticks in the brain
+- Add fun memory tricks that actually help!
 
-Content:
+FORMATTING RULES (VERY IMPORTANT):
+- Do NOT use markdown symbols like #, ##, ###, **, ***, or ----
+- Use EMOJIS to make each card visually distinct
+- Use clear labels for each part of the card
+- Separate each card with a blank line
+
+Create ${cardCount} flashcards.
+Style: ${styleDescriptions[style]}
+
+FORMAT EACH CARD EXACTLY LIKE THIS:
+
+🃏 CARD 1:
+
+📌 FRONT:
+[Short, clear term/question/concept]
+
+✅ BACK:
+[Clear, memorable answer or definition]
+
+${includeHints ? `💡 MEMORY TIP:
+[A fun trick, rhyme, or association to remember this easily]` : ''}
+
+════════════════════
+
+[Continue with Card 2, Card 3, etc.]
+
+End with:
+🎉 You now have ${cardCount} flashcards! Study tip: Review these cards before bed - your brain processes memories while you sleep! 😴💭
+
+Content to turn into flashcards:
 ${input}
 
-Flashcards:`;
+Now create amazing, memorable flashcards! 🚀`;
 };
 
 const faqs = [
