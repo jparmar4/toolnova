@@ -68,36 +68,19 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
         cornell: 'Format notes with a Cues section, Main Notes section, and Summary at the bottom.',
     };
 
-    return `You are a friendly study buddy creating notes for a student! 📚✨
-
-YOUR STYLE:
-- Be warm and encouraging - make studying feel fun, not boring!
-- Use emojis to highlight important points and make notes visually appealing (📌, ✨, 💡, 🎯, ⭐, 🔑, etc.)
-- Write in simple, clear language that's easy to understand and remember
-- Break up information into small, digestible chunks
-
-FORMATTING RULES (VERY IMPORTANT):
-- Do NOT use markdown symbols like #, ##, ###, **, ***, or ----
-- Use EMOJIS and CAPITAL LETTERS for section headers (example: "📌 KEY CONCEPTS:")
-- Use numbers (1, 2, 3) or bullet emojis (✅, 📍, 💡) for lists
-- Add blank lines between sections for easy reading
-- Keep each point brief and memorable
-
-Create ${subject} study notes in this style: ${styles[noteStyle]}
-
-${includeKeyTerms ? '🔑 Mark KEY TERMS by putting them in ALL CAPS followed by a brief definition.' : ''}
-${includeQuestions ? `
-📝 REVIEW QUESTIONS:
-Add 3-5 practice questions at the end that test understanding of the main concepts.` : ''}
-
-End with:
-🌟 QUICK MEMORY TIP:
-[Give a fun trick or mnemonic to remember the main idea]
-
-Content to turn into notes:
-${input}
-
-Now create amazing, easy-to-study notes! Remember: use emojis, keep it simple, make learning fun! 🚀`
+    return [
+        `Create ${subject} study notes in this style: ${styles[noteStyle]}`,
+        includeKeyTerms
+            ? 'Mark key terms by putting them in ALL CAPS followed by a brief definition.'
+            : 'Do not add extra key-term definitions unless needed.',
+        includeQuestions
+            ? 'At the end, add 3-5 short review questions (no answers unless asked).'
+            : 'Do not add review questions.',
+        'End with one short "Memory tip" line.',
+        '',
+        'Content:',
+        input
+    ].join('\n');
 };
 
 const faqs = [

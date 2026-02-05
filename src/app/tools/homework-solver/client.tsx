@@ -99,52 +99,22 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
     };
 
     const explanationStyles: Record<string, string> = {
-        detailed: 'Provide a detailed, step-by-step explanation. Number each step clearly (1, 2, 3...).',
-        concise: 'Provide a clear, concise answer with brief explanation.',
-        eli5: 'Explain this in very simple terms using everyday analogies that a child could understand.',
-        visual: 'Include simple text diagrams, tables, or visual representations where helpful.',
+        detailed: 'Show the steps clearly and briefly. Number steps if needed.',
+        concise: 'Give the answer and only the essential working.',
+        eli5: 'Explain in very simple words, like to a child, using a simple everyday analogy if helpful.',
+        visual: 'Use a small table or simple text layout if it helps understanding.',
     };
 
-    return `You are a friendly, encouraging tutor who makes learning FUN! 🎓 You are helping a ${gradeLevelContext[gradeLevel]} with their ${subject} homework.
-
-YOUR PERSONALITY:
-- Be warm, supportive, and enthusiastic! Use encouraging words like "Great question!", "You've got this!", "Let's figure this out together!"
-- Use emojis to make the response visually appealing and engaging (🎯, ✨, 💡, ✅, 📝, 🔢, 🧠, ⭐, 🎉, etc.)
-- Write in simple, easy-to-understand language - avoid complex jargon
-- Be like a fun older sibling or cool teacher who makes learning enjoyable
-
-FORMATTING RULES (VERY IMPORTANT):
-- Do NOT use markdown symbols like #, ##, ###, **, ***, or ----
-- Use EMOJIS and CAPITAL LETTERS for section titles instead (example: "🎯 FINAL ANSWER:")
-- Use numbers (1, 2, 3) or emojis (✅, 📝, 💡) for lists
-- Add blank lines between sections for easy reading
-- Keep paragraphs short (2-3 sentences max)
-
-${explanationStyles[explanation]}
-${showFormulas ? 'Include any relevant formulas or equations used, explaining what each part means.' : ''}
-
-STRUCTURE YOUR RESPONSE LIKE THIS:
-
-🎯 FINAL ANSWER:
-[Give the clear, direct answer first so students see it immediately]
-
-💡 WHAT THIS MEANS:
-[Explain the core concept in 2-3 simple sentences using a real-world example or analogy]
-
-📝 STEP-BY-STEP SOLUTION:
-[Walk through each step with numbers, explaining WHY you do each step, not just HOW]
-
-${includeExamples ? `
-🏋️ PRACTICE TIME:
-[Give 1-2 similar practice problems for the student to try on their own, with answers at the end]` : ''}
-
-🌟 YOU DID IT!
-[End with an encouraging message and a quick tip to remember this concept]
-
-Problem to solve:
-${input}
-
-Now help this student learn and feel confident! Remember: be friendly, use emojis, and make it easy to understand! 🚀`;
+    return [
+        `Solve this ${subject} problem for a ${gradeLevelContext[gradeLevel]}.`,
+        explanationStyles[explanation],
+        showFormulas ? 'Include any relevant equations you use.' : 'Avoid unnecessary formulas.',
+        includeExamples
+            ? 'At the end, add 1 short similar practice question (no answer unless asked).'
+            : 'Do not add practice questions.',
+        '',
+        `Problem: ${input}`
+    ].join('\n');
 };
 
 const faqs = [
@@ -181,17 +151,8 @@ export default function HomeworkSolverClient() {
 
             {/* Hero Section */}
             <div className="relative overflow-hidden">
-                <div className="max-w-[1100px] mx-auto px-4 pt-8 pb-6">
-                    {/* Breadcrumbs */}
-                    <div className="flex flex-wrap gap-2 mb-6 justify-center">
-                        <Link href="/" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Home</Link>
-                        <span className="text-muted-foreground/50 text-sm">/</span>
-                        <Link href="/tools" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Tools</Link>
-                        <span className="text-muted-foreground/50 text-sm">/</span>
-                        <Link href="/tools/study-tools" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Study Tools</Link>
-                        <span className="text-muted-foreground/50 text-sm">/</span>
-                        <span className="text-primary text-sm font-semibold">Homework Solver</span>
-                    </div>
+                <div className="max-w-7xl mx-auto px-4 pt-8 pb-6">
+                    {/* Hero Content omitted breadcrumbs as they are in ToolLayout */}
 
                     {/* Hero Content */}
                     <div className="text-center mb-8">
@@ -207,12 +168,12 @@ export default function HomeworkSolverClient() {
                         </div>
 
                         {/* Title */}
-                        <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4">
+                        <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-6">
                             <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                                 AI Homework Solver
                             </span>
                         </h1>
-                        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
+                        <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-8">
                             Get instant, step-by-step solutions to any homework problem.
                             <span className="text-foreground font-semibold"> Understand concepts, ace your classes!</span>
                         </p>
@@ -233,35 +194,29 @@ export default function HomeworkSolverClient() {
 
             {/* Main Tool Section */}
             <div id="tool-input" className="relative">
-                <div className="max-w-[1000px] mx-auto px-4">
-                    {/* Glassmorphism container */}
-                    <div className="relative">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur opacity-20"></div>
-                        <div className="relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-slate-700/50 shadow-2xl overflow-hidden">
-                            <ToolLayout
-                                title=""
-                                description=""
-                                placeholder="✍️ Enter your homework question here...
+                <div className="max-w-7xl mx-auto px-4">
+                    <ToolLayout
+                        title=""
+                        description=""
+                        placeholder="✍️ Enter your homework question here...
 
 Examples:
 • Solve: 2x² + 5x - 3 = 0
 • Explain the process of photosynthesis
 • What caused the French Revolution?
 • Write a Python function to check if a number is prime"
-                                promptTemplate={generatePrompt}
-                                inputRows={5}
-                                toolSlug="homework-solver"
-                                toolOptions={toolOptions}
-                                resultLabel="📚 Solution"
-                                generateButtonText="🚀 Solve My Homework"
-                            />
-                        </div>
-                    </div>
+                        promptTemplate={generatePrompt}
+                        inputRows={5}
+                        toolSlug="homework-solver"
+                        toolOptions={toolOptions}
+                        resultLabel="📚 Solution"
+                        generateButtonText="🚀 Solve My Homework"
+                    />
                 </div>
             </div>
 
             {/* Subject Cards - Floating Design */}
-            <div className="max-w-[1000px] mx-auto px-4 py-16">
+            <div className="max-w-7xl mx-auto px-4 py-20">
                 <div className="text-center mb-10">
                     <h2 className="text-3xl font-bold text-foreground mb-2">
                         Works with <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Every Subject</span>
@@ -289,7 +244,7 @@ Examples:
             </div>
 
             {/* Features Grid - Premium Cards */}
-            <div className="max-w-[1000px] mx-auto px-4 py-12">
+            <div className="max-w-7xl mx-auto px-4 py-16">
                 <div className="text-center mb-10">
                     <h2 className="text-3xl font-bold text-foreground mb-2">
                         Why Students <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Love Us</span>
@@ -336,7 +291,7 @@ Examples:
             </div>
 
             {/* How It Works - Timeline */}
-            <div className="max-w-[900px] mx-auto px-4 py-16">
+            <div className="max-w-5xl mx-auto px-4 py-20">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold text-foreground mb-2">
                         <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">3 Simple Steps</span> to Success
@@ -369,7 +324,7 @@ Examples:
             </div>
 
             {/* Testimonial - Gradient Card */}
-            <div className="max-w-[900px] mx-auto px-4 py-12">
+            <div className="max-w-5xl mx-auto px-4 py-16">
                 <div className="relative">
                     <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur opacity-30"></div>
                     <div className="relative p-10 rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 text-white overflow-hidden">
@@ -401,7 +356,7 @@ Examples:
             </div>
 
             {/* Related Tools */}
-            <div className="max-w-[900px] mx-auto px-4 py-12">
+            <div className="max-w-5xl mx-auto px-4 py-16">
                 <div className="text-center mb-8">
                     <h2 className="text-2xl font-bold text-foreground">More Study Tools</h2>
                 </div>
@@ -425,7 +380,7 @@ Examples:
             </div>
 
             {/* CTA Section */}
-            <div className="max-w-[900px] mx-auto px-4 py-12">
+            <div className="max-w-5xl mx-auto px-4 py-16">
                 <div className="p-8 rounded-3xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white text-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySC0yNHYtMmgxMnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-50"></div>
                     <div className="relative">

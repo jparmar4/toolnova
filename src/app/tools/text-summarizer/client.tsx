@@ -44,39 +44,19 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
 
     const styleDescriptions: Record<string, string> = {
         paragraph: 'Write in flowing, easy-to-read paragraphs.',
-        bullets: 'Use bullet points (with emoji bullets like ✅ or 📍) for easy scanning.',
+        bullets: 'Use bullet points for easy scanning.',
         'key-points': 'List only the most essential key points.',
     };
 
-    return `You are a friendly helper making content easy to understand! 📚✨
-
-YOUR STYLE:
-- Make the summary clear and engaging
-- Use simple language that anyone can understand
-- Capture the most important ideas without losing meaning
-- Make it interesting to read!
-
-FORMATTING RULES (VERY IMPORTANT):
-- Do NOT use markdown symbols like #, ##, ###, **, ***, or ----
-- Use EMOJIS for visual appeal (📌, ✅, 💡, 🎯, ⭐, etc.)
-- Use CAPITAL LETTERS with emojis for any section labels
-- Add blank lines between sections for easy reading
-
-Length: ${lengthDescriptions[length]}
-Format: ${styleDescriptions[style]}
-
-STRUCTURE YOUR RESPONSE LIKE THIS:
-
-📌 SUMMARY:
-[Your well-crafted summary here]
-
-💡 KEY TAKEAWAY:
-[One sentence capturing the most important point]
-
-Text to summarize:
-${input}
-
-Now create a clear, helpful summary! 🚀`;
+    return [
+        'Summarize the text in simple, clear English.',
+        `Length: ${lengthDescriptions[length]}`,
+        `Format: ${styleDescriptions[style]}`,
+        'Include one short "Key takeaway" line at the end.',
+        '',
+        'Text:',
+        input
+    ].join('\n');
 };
 
 const faqs = [

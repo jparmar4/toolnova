@@ -94,30 +94,8 @@ export function PremiumToolWrapper({
 
             {/* Hero Section */}
             <div className="relative overflow-hidden">
-                <div className="max-w-[1100px] mx-auto px-4 pt-8 pb-6">
-                    {/* Back Button */}
-                    <button
-                        onClick={() => router.back()}
-                        className="group flex items-center gap-2 mb-4 px-4 py-2 rounded-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200 dark:border-slate-700 hover:border-primary/50 hover:bg-white dark:hover:bg-slate-800 transition-all duration-300 shadow-sm hover:shadow-md"
-                    >
-                        <ArrowLeft className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                        <span className="text-sm font-medium text-muted-foreground group-hover:text-primary transition-colors">Back</span>
-                    </button>
-
-                    {/* Breadcrumbs */}
-                    <div className="flex flex-wrap gap-2 mb-6 justify-center">
-                        <Link href="/" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Home</Link>
-                        <span className="text-muted-foreground/50 text-sm">/</span>
-                        <Link href="/tools" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Tools</Link>
-                        {categorySlug && (
-                            <>
-                                <span className="text-muted-foreground/50 text-sm">/</span>
-                                <Link href={`/tools/${categorySlug}`} className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">{category}</Link>
-                            </>
-                        )}
-                        <span className="text-muted-foreground/50 text-sm">/</span>
-                        <span className="text-primary text-sm font-semibold">{toolName}</span>
-                    </div>
+                <div className="max-w-7xl mx-auto px-4 pt-8 pb-6">
+                    {/* Back Button and Breadcrumbs omitted as they are handled in tool or hero */}
 
                     {/* Hero Content */}
                     <div className="text-center mb-8">
@@ -133,12 +111,12 @@ export function PremiumToolWrapper({
                         </div>
 
                         {/* Title */}
-                        <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4">
+                        <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-6">
                             <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                                 {toolName}
                             </span>
                         </h1>
-                        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-2">
+                        <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-2">
                             {tagline}
                         </p>
                         <p className="text-base text-muted-foreground/80 max-w-xl mx-auto mb-6">
@@ -161,22 +139,17 @@ export function PremiumToolWrapper({
                 </div>
             </div>
 
-            {/* Main Tool Section */}
+            {/* Main Tool Section - Open Space */}
             <div id="tool-input" className="relative">
-                <div className="max-w-[1000px] mx-auto px-4">
-                    <div className="relative">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur opacity-20"></div>
-                        <div className="relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-slate-700/50 shadow-2xl overflow-hidden">
-                            {children}
-                        </div>
-                    </div>
+                <div className="max-w-7xl mx-auto px-4">
+                    {children}
                 </div>
             </div>
 
             {/* Subject/Topic Cards */}
             {subjectCards && subjectCards.length > 0 && (
-                <div className="max-w-[1000px] mx-auto px-4 py-16">
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div className="max-w-7xl mx-auto px-4 py-20">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
                         {subjectCards.map((card, i) => (
                             <div key={card.name} className="group relative" style={{ animationDelay: `${i * 100}ms` }}>
                                 <div className={`absolute inset-0 ${card.bgGlow} rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
@@ -194,13 +167,13 @@ export function PremiumToolWrapper({
 
             {/* Features */}
             {features && features.length > 0 && (
-                <div className="max-w-[1000px] mx-auto px-4 py-12">
-                    <div className="text-center mb-10">
-                        <h2 className="text-3xl font-bold text-foreground">
+                <div className="max-w-7xl mx-auto px-4 py-20">
+                    <div className="text-center mb-12">
+                        <h2 className="text-4xl font-bold text-foreground">
                             Why Users <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Love This</span>
                         </h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {features.map((feature, i) => (
                             <div key={i} className="group relative overflow-hidden">
                                 <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}></div>
@@ -219,7 +192,7 @@ export function PremiumToolWrapper({
 
             {/* How It Works */}
             {howItWorks && howItWorks.length > 0 && (
-                <div className="max-w-[900px] mx-auto px-4 py-16">
+                <div className="max-w-5xl mx-auto px-4 py-20">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold text-foreground">
                             <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">How It Works</span>
@@ -247,7 +220,7 @@ export function PremiumToolWrapper({
 
             {/* Testimonial */}
             {testimonial && (
-                <div className="max-w-[900px] mx-auto px-4 py-12">
+                <div className="max-w-5xl mx-auto px-4 py-20">
                     <div className="relative">
                         <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur opacity-30"></div>
                         <div className="relative p-10 rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 text-white overflow-hidden">
@@ -276,11 +249,11 @@ export function PremiumToolWrapper({
 
             {/* Related Tools */}
             {relatedTools && relatedTools.length > 0 && (
-                <div className="max-w-[900px] mx-auto px-4 py-12">
-                    <div className="text-center mb-8">
-                        <h2 className="text-2xl font-bold text-foreground">More Tools You'll Love</h2>
+                <div className="max-w-5xl mx-auto px-4 py-20">
+                    <div className="text-center mb-10">
+                        <h2 className="text-3xl font-bold text-foreground">More Tools You'll Love</h2>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         {relatedTools.map((tool) => (
                             <Link
                                 key={tool.slug}
@@ -297,7 +270,7 @@ export function PremiumToolWrapper({
 
             {/* CTA Section */}
             {ctaTitle && (
-                <div className="max-w-[900px] mx-auto px-4 py-12">
+                <div className="max-w-5xl mx-auto px-4 py-20">
                     <div className="p-8 rounded-3xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white text-center relative overflow-hidden">
                         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySC0yNHYtMmgxMnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-50"></div>
                         <div className="relative">

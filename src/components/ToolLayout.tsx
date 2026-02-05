@@ -18,7 +18,8 @@ import {
   History,
   Trash2,
   ArrowRight,
-  Settings2
+  Settings2,
+  ArrowLeft
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -223,15 +224,27 @@ export function ToolLayout({
 
   return (
     <div className="flex-1 w-full min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-[#0f1419] dark:via-background dark:to-[#0f1419]">
-      <div className="max-w-[1000px] mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
-        {/* Breadcrumbs */}
-        <div className="flex flex-wrap gap-2 mb-6 justify-center">
-          <Link href="/" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Home</Link>
-          <span className="text-muted-foreground/50 text-sm">/</span>
-          <Link href="/tools" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Tools</Link>
-          <span className="text-muted-foreground/50 text-sm">/</span>
-          <span className="text-primary text-sm font-semibold">{title}</span>
+        {/* Top Actions */}
+        <div className="flex items-center justify-between mb-8">
+          <Button
+            variant="ghost"
+            onClick={() => router.back()}
+            className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-semibold"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Tools
+          </Button>
+
+          {/* Breadcrumbs */}
+          <div className="hidden sm:flex items-center gap-2">
+            <Link href="/" className="text-muted-foreground text-xs font-medium hover:text-primary transition-colors">Home</Link>
+            <span className="text-muted-foreground/30 text-xs">/</span>
+            <Link href="/tools" className="text-muted-foreground text-xs font-medium hover:text-primary transition-colors">Tools</Link>
+            <span className="text-muted-foreground/30 text-xs">/</span>
+            <span className="text-primary text-xs font-bold">{title}</span>
+          </div>
         </div>
 
         {/* Heading */}
@@ -240,16 +253,16 @@ export function ToolLayout({
             {isNonAITool ? <Zap className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />}
             {isNonAITool ? 'Instant Tool' : 'AI-Powered Tool'}
           </div>
-          <h1 className="text-foreground text-4xl md:text-5xl font-black tracking-tight mb-4">{title}</h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">{description}</p>
+          <h1 className="text-foreground text-4xl md:text-6xl font-black tracking-tight mb-4">{title}</h1>
+          <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">{description}</p>
         </div>
 
-        {/* Main Tool Card */}
-        <div className="bg-white dark:bg-[#1a1f2e] rounded-3xl shadow-2xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 overflow-hidden">
+        {/* Main Tool Content - Open Space Design */}
+        <div className="space-y-8 mt-12">
 
-          {/* Options Panel */}
+          {/* Options Section */}
           {toolOptions.length > 0 && (
-            <div className="border-b border-slate-100 dark:border-slate-800">
+            <div className="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden mb-6">
               <button
                 onClick={() => setShowOptions(!showOptions)}
                 className="w-full px-6 py-4 flex items-center justify-between text-sm font-semibold text-foreground hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
@@ -297,8 +310,8 @@ export function ToolLayout({
             </div>
           )}
 
-          {/* Input Section */}
-          <div className="p-6 md:p-8">
+          {/* Input Area */}
+          <div className="bg-white dark:bg-[#1a1f2e] rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm p-6 md:p-10">
             <div className="flex items-center justify-between mb-4">
               <label className="text-sm font-bold text-foreground flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-gradient-to-r from-primary to-blue-500 animate-pulse"></span>
@@ -388,10 +401,13 @@ export function ToolLayout({
             </div>
           </div>
 
-          {/* Result Section */}
+          {/* Result Area */}
           {result && (
-            <div ref={resultRef} className="p-6 md:p-8 bg-gradient-to-b from-green-50/50 to-white dark:from-green-900/10 dark:to-slate-900/30 border-t border-slate-100 dark:border-slate-800 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-5">
+            <div ref={resultRef} className="mt-12 p-8 md:p-12 rounded-3xl bg-white dark:bg-[#1a1f2e] border-2 border-primary/20 shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl -ml-16 -mb-16"></div>
+
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
                 <div className="flex items-center gap-3">
                   <label className="text-sm font-bold text-foreground flex items-center gap-2">
                     <span className="h-2.5 w-2.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-500"></span>
@@ -419,7 +435,7 @@ export function ToolLayout({
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-[#1a1f2e] rounded-2xl border-2 border-slate-200 dark:border-slate-700 p-6 shadow-lg">
+              <div className="bg-slate-50 dark:bg-slate-900 rounded-2xl p-8 border border-slate-100 dark:border-slate-800">
                 <div className="prose prose-slate dark:prose-invert max-w-none">
                   <p className="whitespace-pre-wrap leading-relaxed text-foreground text-base m-0">{result}</p>
                 </div>
@@ -428,9 +444,9 @@ export function ToolLayout({
           )}
         </div>
 
-        {/* History Section */}
+        {/* Bottom History Link */}
         {history.length > 0 && (
-          <div className="mt-8">
+          <div className="mt-12 flex justify-center">
             <button onClick={() => setShowHistory(!showHistory)} className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors mx-auto">
               <History className="h-4 w-4" />
               View History ({history.length})

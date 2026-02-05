@@ -42,7 +42,24 @@ export async function runAI(
     const completion = await openai.chat.completions.create({
       model: model,
       messages: [
-        { role: 'system', content: systemPrompt || 'You are a helpful AI tutor. Be clear and concise.' },
+        {
+          role: 'system',
+          content:
+            systemPrompt ||
+            [
+              'You are a helpful assistant for a global English audience.',
+              'Write in simple, clear language. Be direct and on-topic.',
+              'Keep the answer short: usually 4-10 lines, unless the user clearly asks for more.',
+              'Avoid long introductions, repetition, and filler.',
+              'Use plain text (no Markdown).',
+              'Prefer this structure when it fits:',
+              'FINAL ANSWER: <one line>',
+              'WORKING: <3-6 short numbered steps or bullets if needed>',
+              'QUICK CHECK: <one line, if applicable>',
+              'LEARNING TIP: <one short reusable idea>',
+              'Do not add practice questions, long motivational endings, or extra sections unless the user asks or the tool explicitly requires it.'
+            ].join('\n')
+        },
         { role: 'user', content: prompt }
       ],
     });
@@ -83,9 +100,9 @@ export async function runAI(
  * Prompt templates for different tools
  */
 export const promptTemplates = {
-  homeworkSolver: "Explain this question step by step in simple student language: {input}",
-  notesGenerator: "Create short, clear exam-ready notes on: {input}",
-  mcqGenerator: `Create 10 MCQs with answers and explanations on: {input}. Format as:
+  homeworkSolver: "Solve this problem in simple language with short steps: {input}",
+  notesGenerator: "Create short, clear study notes on: {input}",
+  mcqGenerator: `Create 10 MCQs on: {input}. Use this format:
 Q1. Question text
 a) Option A
 b) Option B
@@ -95,22 +112,19 @@ d) Option D
 Answer: A
 
 Explanation: Brief explanation`,
-  essayWriter: `Write a well-structured school-level essay on: {input}. Include:
-- Introduction with thesis statement
-- 3-4 body paragraphs with clear main ideas
-- Conclusion that summarizes key points`,
-  summarizer: "Summarize this text in simple bullet points: {input}",
-  paraphraser: "Rewrite the following text in different words while keeping the same meaning: {input}",
-  grammarFix: "Correct the grammar and improve the clarity of this text: {input}",
-  speechWriter: "Write an engaging speech on: {input}. Include a strong opening, main points with examples, and a memorable conclusion.",
-  emailWriter: "Write a professional email about: {input}. Include a clear subject line, greeting, body, and closing.",
-  captionGenerator: "Create 5 engaging Instagram captions for: {input}. Include emojis and relevant hashtags.",
-  flashcards: `Create Q&A flashcards from: {input}. Format as:
+  essayWriter: `Write a well-structured essay on: {input}. Use: Introduction, 3 body paragraphs, Conclusion. End with one short writing tip.`,
+  summarizer: "Summarize this text in clear, simple points: {input}",
+  paraphraser: "Paraphrase the text while keeping the meaning the same: {input}",
+  grammarFix: "Fix grammar and improve clarity. Keep the original meaning: {input}",
+  speechWriter: "Write a clear speech on: {input}. Use: Opening, 2-4 main points, Closing. End with one delivery tip.",
+  emailWriter: "Write a professional email about: {input}. Include: Subject, Greeting, Body, Closing.",
+  captionGenerator: "Create 5 short captions for: {input}. Keep them engaging and platform-friendly. Add hashtags only if requested.",
+  flashcards: `Create at least 10 flashcards from: {input}. Format as:
 Q: [Question]
 A: [Answer]
 
-Provide at least 10 flashcards.`,
-  quizGenerator: "Create a practice quiz from: {input}. Include different question types (multiple choice, true/false, short answer) with answers.",
-  storyGenerator: "Write a short, engaging story about: {input}. Include interesting characters and a clear plot.",
-  resumeBullet: "Create professional resume bullet points for: {input}. Use action verbs and quantify achievements where possible."
+Keep answers short and clear.`,
+  quizGenerator: "Create a practice quiz from: {input}. Include a mix of question types and an answer key at the end.",
+  storyGenerator: "Write a short story about: {input}. Keep it clear and engaging.",
+  resumeBullet: "Write resume bullet points for: {input}. Use action verbs and add numbers/impact when possible."
 };

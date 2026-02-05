@@ -56,47 +56,23 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
         'concept-example': 'Each card has a CONCEPT on the front and a REAL-WORLD EXAMPLE on the back.',
     };
 
-    return `You are a friendly study coach creating flashcards that make memorization FUN! 🧠✨
-
-YOUR STYLE:
-- Keep front cards SHORT and punchy (easy to read at a glance)
-- Make back cards clear and memorable
-- Use simple language that sticks in the brain
-- Add fun memory tricks that actually help!
-
-FORMATTING RULES (VERY IMPORTANT):
-- Do NOT use markdown symbols like #, ##, ###, **, ***, or ----
-- Use EMOJIS to make each card visually distinct
-- Use clear labels for each part of the card
-- Separate each card with a blank line
-
-Create ${cardCount} flashcards.
-Style: ${styleDescriptions[style]}
-
-FORMAT EACH CARD EXACTLY LIKE THIS:
-
-🃏 CARD 1:
-
-📌 FRONT:
-[Short, clear term/question/concept]
-
-✅ BACK:
-[Clear, memorable answer or definition]
-
-${includeHints ? `💡 MEMORY TIP:
-[A fun trick, rhyme, or association to remember this easily]` : ''}
-
-════════════════════
-
-[Continue with Card 2, Card 3, etc.]
-
-End with:
-🎉 You now have ${cardCount} flashcards! Study tip: Review these cards before bed - your brain processes memories while you sleep! 😴💭
-
-Content to turn into flashcards:
-${input}
-
-Now create amazing, memorable flashcards! 🚀`;
+    return [
+        `Create ${cardCount} flashcards.`,
+        `Style: ${styleDescriptions[style]}`,
+        'Keep the FRONT short and the BACK clear.',
+        includeHints
+            ? 'Add one short "Memory tip" line per card.'
+            : 'Do not add memory tips.',
+        '',
+        'Format each card like this:',
+        'Card 1',
+        'Front: ...',
+        'Back: ...',
+        includeHints ? 'Memory tip: ...' : '',
+        '',
+        'Content:',
+        input
+    ].filter(Boolean).join('\n');
 };
 
 const faqs = [

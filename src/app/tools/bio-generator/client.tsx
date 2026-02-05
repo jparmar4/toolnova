@@ -53,7 +53,7 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
     };
 
     return `Create a ${platform} bio with a ${tone} tone.
-${includeEmojis ? 'Include relevant emojis.' : 'No emojis.'}
+${includeEmojis ? 'You may use 0-2 relevant emojis total (keep it minimal).' : 'Do not use emojis.'}
 Character limit: ${platformLimits[platform]}
 
 Generate 3 different bio options.
