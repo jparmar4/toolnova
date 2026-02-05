@@ -49,12 +49,22 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
     };
 
     return [
-        'Summarize the text in simple, clear English.',
-        `Length: ${lengthDescriptions[length]}`,
-        `Format: ${styleDescriptions[style]}`,
-        'Include one short "Key takeaway" line at the end.',
+        'Summarize the text clearly and concisely.',
         '',
-        'Text:',
+        'FORMAT:',
+        'SUMMARY:',
+        '[Your summary here]',
+        '',
+        'KEY TERMS:',
+        '[Important terms from the text]',
+        '',
+        'TIP:',
+        '[One helpful tip or key takeaway]',
+        '',
+        `Length: ${lengthDescriptions[length]}`,
+        `Style: ${styleDescriptions[style]}`,
+        '',
+        'Text to summarize:',
         input
     ].join('\n');
 };

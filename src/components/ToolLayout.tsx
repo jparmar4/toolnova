@@ -33,6 +33,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import { Lock, LogIn } from 'lucide-react';
+import { AIResultFormatter } from '@/components/AIResultFormatter';
 
 // Tool options interface
 export interface ToolOption {
@@ -440,10 +441,12 @@ export function ToolLayout({
               <div className="bg-slate-50 dark:bg-slate-900 rounded-2xl p-8 border border-slate-100 dark:border-slate-800">
                 {customResultRenderer ? (
                   customResultRenderer(result)
-                ) : (
+                ) : isNonAITool ? (
                   <div className="prose prose-slate dark:prose-invert max-w-none">
                     <p className="whitespace-pre-wrap leading-relaxed text-foreground text-base m-0">{result}</p>
                   </div>
+                ) : (
+                  <AIResultFormatter result={result} />
                 )}
               </div>
             </div>

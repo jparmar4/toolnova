@@ -72,11 +72,14 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
         'D) ...',
         '',
         includeAnswers
-            ? 'After all questions, add an Answer Key like: 1. A, 2. C, ...'
+            ? 'ANSWER KEY:\n[List all correct answers like: 1. A, 2. C, ...]'
             : 'Do not include an answer key.',
+        '',
         includeExplanations
-            ? 'After the answer key, add short explanations per question (1-2 lines each).'
+            ? 'EXPLANATIONS:\n[Short explanation for each answer (1-2 lines each)]'
             : 'Do not include explanations.',
+        '',
+        'TIP:\n[One study tip related to this topic]',
         '',
         'Topic/Content:',
         input

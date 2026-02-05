@@ -69,18 +69,25 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
     };
 
     return [
-        `Create ${subject} study notes in this style: ${styles[noteStyle]}`,
-        includeKeyTerms
-            ? 'Mark key terms by putting them in ALL CAPS followed by a brief definition.'
-            : 'Do not add extra key-term definitions unless needed.',
-        includeQuestions
-            ? 'At the end, add 3-5 short review questions (no answers unless asked).'
-            : 'Do not add review questions.',
-        'End with one short "Memory tip" line.',
+        `You are a helpful study assistant creating ${subject} notes.`,
         '',
-        'Content:',
+        'FORMAT YOUR NOTES LIKE THIS:',
+        '',
+        '📝 MAIN NOTES:',
+        '[Your detailed notes here]',
+        '',
+        includeKeyTerms ? 'KEY TERMS:\n[Important terms with definitions]' : '',
+        '',
+        includeQuestions ? 'REVIEW QUESTIONS:\n[3-5 questions to test understanding]' : '',
+        '',
+        'MEMORY TIP:',
+        '[One helpful tip to remember the key concepts]',
+        '',
+        `Style: ${styles[noteStyle]}`,
+        '',
+        'Content to create notes from:',
         input
-    ].join('\n');
+    ].filter(line => line !== '').join('\n');
 };
 
 const faqs = [
