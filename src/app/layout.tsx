@@ -123,10 +123,12 @@ export const metadata: Metadata = {
     },
   },
   verification: {
+    other: {
+      "msvalidate.01": "0FEE172B08E59C4D96EC21C37F806047",
+    },
     // Add these after setting up
     // google: 'your-google-site-verification',
     // yandex: 'your-yandex-verification',
-    // bing: 'your-bing-verification',
   },
   alternates: {
     canonical: "https://www.toolnovahub.com",
