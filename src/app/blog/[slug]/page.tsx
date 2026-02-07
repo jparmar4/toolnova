@@ -3,13 +3,13 @@ import Link from "next/link";
 import NextImage from "next/image";
 import { notFound } from "next/navigation";
 import { getAllBlogPosts, getBlogPostBySlug, getRelatedPosts } from "@/data/blog";
+import { getAuthor } from "@/data/authors";
 import { processContent, extractYoutubeVideoIds } from "@/lib/content-processor";
 import BlogSidebar from "@/components/blog/BlogSidebar";
+import { ArticleHeader } from "@/components/blog/ArticleHeader";
 import { siteConfig } from "@/config/site";
 import {
     FaArrowLeft,
-    FaCalendar,
-    FaClock,
     FaChevronRight,
     FaRocket,
 } from "react-icons/fa";
@@ -84,7 +84,10 @@ export default async function BlogPostPage({
     const relatedPosts = getRelatedPosts(slug, 2);
     const youtubeIds = extractYoutubeVideoIds(post.content);
 
-    // Generate Schema.org structured data
+    // Get author data for GEO
+    const author = post.authorSlug ? getAuthor(post.authorSlug) : null;
+
+    // Generate enhanced Schema.org structured data (GEO Optimized)
     const articleSchema = {
         "@context": "https://schema.org",
         "@type": "Article",
@@ -94,7 +97,8 @@ export default async function BlogPostPage({
         author: {
             "@type": "Person",
             name: post.author,
-            jobTitle: post.authorRole,
+            jobTitle: author?.role || post.authorRole,
+            url: author?.profileUrl,
         },
         publisher: {
             "@type": "Organization",
@@ -105,11 +109,12 @@ export default async function BlogPostPage({
             },
         },
         datePublished: post.date,
-        dateModified: post.date,
+        dateModified: post.dateModified || post.date,
         mainEntityOfPage: {
             "@type": "WebPage",
             "@id": `${siteConfig.url}/blog/${post.slug}`,
         },
+        wordCount: post.wordCount,
         keywords: post.keywords.join(", "),
     };
 
@@ -200,66 +205,42 @@ export default async function BlogPostPage({
             )}
 
             <div className="min-h-screen bg-slate-50">
-                {/* Header */}
-                <header className="py-12 lg:py-20 relative overflow-hidden">
-                    {/* Background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-purple-50/30 to-slate-50 pointer-events-none" />
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-purple-300/20 rounded-full blur-3xl pointer-events-none" />
-
-                    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                        {/* Back Link */}
+                {/* Header with Back Link */}
+                <div className="py-6 bg-white border-b border-slate-200">
+                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                         <Link
                             href="/blog"
-                            className="inline-flex items-center gap-2 text-slate-500 hover:text-purple-600 text-sm font-medium mb-8 transition-colors"
+                            className="inline-flex items-center gap-2 text-slate-500 hover:text-purple-600 text-sm font-medium transition-colors"
                         >
                             <FaArrowLeft className="text-xs" />
                             Back to Blog
                         </Link>
-
-                        {/* Category Badge */}
-                        <div className="flex justify-center mb-6">
-                            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-100 text-purple-700 text-sm font-bold tracking-wide">
-                                {post.category}
-                            </span>
-                        </div>
-
-                        {/* Title */}
-                        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight tracking-tight">
-                            {post.title}
-                        </h1>
-
-                        {/* Excerpt */}
-                        <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-8 leading-relaxed">
-                            {post.excerpt}
-                        </p>
-
-                        {/* Author & Meta */}
-                        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-slate-500">
-                            <div className="flex items-center gap-2">
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-bold">
-                                    {post.author.charAt(0)}
-                                </div>
-                                <div className="text-left">
-                                    <div className="font-semibold text-slate-900">
-                                        {post.author}
-                                    </div>
-                                    <div className="text-xs text-slate-500">
-                                        {post.authorRole}
-                                    </div>
-                                </div>
-                            </div>
-                            <span className="hidden sm:inline text-slate-300">|</span>
-                            <span className="flex items-center gap-1.5">
-                                <FaCalendar className="text-purple-500" />
-                                {post.date}
-                            </span>
-                            <span className="flex items-center gap-1.5">
-                                <FaClock className="text-purple-500" />
-                                {post.readTime}
-                            </span>
-                        </div>
                     </div>
-                </header>
+                </div>
+
+                {/* GEO-Optimized Article Header */}
+                <div className="py-12 bg-white">
+                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                        {author ? (
+                            <ArticleHeader
+                                title={post.title}
+                                description={post.excerpt}
+                                author={author}
+                                publishedDate={post.date}
+                                modifiedDate={post.dateModified}
+                                readingTime={parseInt(post.readTime)}
+                                category={post.category}
+                            />
+                        ) : (
+                            <div>
+                                <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+                                    {post.title}
+                                </h1>
+                                <p className="text-xl text-muted-foreground mb-6">{post.excerpt}</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
 
                 {/* Main Content */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

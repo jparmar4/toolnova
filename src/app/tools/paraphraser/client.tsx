@@ -4,6 +4,10 @@ import ToolLayout, { ToolOption } from '@/components/ToolLayout';
 import { PremiumToolWrapper, defaultFeatures } from '@/components/PremiumToolWrapper';
 import { FAQSection } from '@/components/FAQSection';
 import { RefreshCw, Pencil, FileText, Lightbulb, MessageSquare, Sparkles } from 'lucide-react';
+import { QuickAnswerBox } from '@/components/aeo/QuickAnswerBox';
+import { HowItWorksSection } from '@/components/aeo/HowItWorksSection';
+import { FAQAccordion } from '@/components/aeo/FAQAccordion';
+import { getToolAEOContent } from '@/lib/tool-aeo-content';
 
 const toolOptions: ToolOption[] = [
     {
@@ -78,6 +82,9 @@ const howItWorks = [
 ];
 
 export default function ParaphraserClient() {
+    // Get AEO content for this tool
+    const aeoContent = getToolAEOContent('paraphraser');
+
     return (
         <PremiumToolWrapper
             toolName="AI Paraphraser"
@@ -99,6 +106,15 @@ export default function ParaphraserClient() {
             ctaTitle="Paraphrase Your Text"
             ctaDescription="Same meaning, fresh words."
         >
+            {/* AEO: Quick Answer Box */}
+            <div className="px-6 pt-6">
+                <QuickAnswerBox
+                    question={aeoContent.quickAnswer.question}
+                    answer={aeoContent.quickAnswer.answer}
+                />
+            </div>
+
+            {/* Main Tool Interface */}
             <ToolLayout
                 title=""
                 description=""
@@ -112,8 +128,18 @@ Paste any sentence, paragraph, or article and get it rewritten with fresh wordin
                 resultLabel="✨ Paraphrased Text"
                 generateButtonText="🔄 Paraphrase"
             />
+
+            {/* AEO: How It Works Section */}
             <div className="px-6 pb-6">
-                <FAQSection faqs={faqs} />
+                <HowItWorksSection steps={aeoContent.howItWorks} />
+            </div>
+
+            {/* AEO: FAQ Accordion */}
+            <div className="px-6 pb-6">
+                <FAQAccordion
+                    faqs={aeoContent.faqs}
+                    title="Frequently Asked Questions"
+                />
             </div>
         </PremiumToolWrapper>
     );

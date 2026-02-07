@@ -1,13 +1,17 @@
 import { Metadata } from 'next';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
+import { getOptimizedToolMetadata } from '@/lib/tool-metadata';
+import { RelatedTools } from '@/components/RelatedTools';
 import GrammarFixClient from './client';
 
+const toolMeta = getOptimizedToolMetadata('grammar-fix');
+
 export const metadata: Metadata = {
-  title: 'AI Grammar Fix – Fix Grammar Errors Free | AI Study Tools',
-  description: 'Fix grammar, spelling, and punctuation errors instantly with our free AI grammar checker. Perfect for essays, emails, and documents.',
-  keywords: ['AI grammar fix', 'grammar checker', 'spelling correction', 'punctuation fix'],
-  alternates: { canonical: 'https://aimultitools.com/tools/grammar-fix' },
+  title: toolMeta?.title || 'AI Grammar Fix – Fix Grammar Errors Free | AI Study Tools',
+  description: toolMeta?.description || 'Fix grammar, spelling, and punctuation errors instantly with our free AI grammar checker. Perfect for essays, emails, and documents.',
+  keywords: toolMeta?.keywords || ['AI grammar fix', 'grammar checker', 'spelling correction', 'punctuation fix'],
+  alternates: { canonical: 'https://www.toolnovahub.com/tools/grammar-fix' },
 };
 
 export default function GrammarFixPage() {
@@ -35,6 +39,7 @@ export default function GrammarFixPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(faqSchema) }} />
       <GrammarFixClient />
+      <RelatedTools currentTool="grammar-fix" category="Writing" />
     </>
   );
 }

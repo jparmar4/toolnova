@@ -11,8 +11,10 @@ import {
     Shield,
     ArrowRight,
     ArrowLeft,
+    CheckCircle2,
     LucideIcon
 } from 'lucide-react';
+import { getBreadcrumbSchema, schemaToJsonLd } from '@/lib/schema';
 
 interface RelatedTool {
     name: string;
@@ -60,6 +62,8 @@ interface PremiumToolWrapperProps {
     ctaTitle?: string;
     ctaDescription?: string;
     ctaIcon?: LucideIcon;
+    expertName?: string;
+    expertRole?: string;
 }
 
 export function PremiumToolWrapper({
@@ -80,11 +84,25 @@ export function PremiumToolWrapper({
     ctaTitle,
     ctaDescription,
     ctaIcon: CtaIcon = Sparkles,
+    expertName = "Sarah Mitchell",
+    expertRole = "Senior AI Researcher",
 }: PremiumToolWrapperProps) {
     const router = useRouter();
 
+    const breadcrumbs = [
+        { name: 'Home', url: 'https://www.toolnovahub.com' },
+        { name: 'Tools', url: 'https://www.toolnovahub.com/tools' },
+        { name: toolName, url: `https://www.toolnovahub.com/tools/${toolSlug}` }
+    ];
+
+    const breadcrumbSchema = getBreadcrumbSchema(breadcrumbs);
+
     return (
         <div className="min-h-screen">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: schemaToJsonLd(breadcrumbSchema) }}
+            />
             {/* Animated Background */}
             <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -107,6 +125,11 @@ export function PremiumToolWrapper({
                             </span>
                             <div className="flex gap-0.5">
                                 {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />)}
+                            </div>
+                            <span className="h-3 w-px bg-slate-200 dark:bg-slate-700 mx-1"></span>
+                            <div className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold text-green-600 dark:text-green-400">
+                                <CheckCircle2 className="h-3 w-3 md:h-3.5 md:w-3.5" />
+                                <span>Expert Verified</span>
                             </div>
                         </div>
 

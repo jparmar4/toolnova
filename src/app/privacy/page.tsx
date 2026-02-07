@@ -60,8 +60,11 @@ export default function PrivacyPage() {
                     <h2 className="text-2xl font-semibold mb-4">5. Google DoubleClick DART Cookie</h2>
                     <p>
                         Google is one of a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors
-                        based upon their visit to www.website.com and other sites on the internet. However, visitors may choose to decline the use of
+                        based upon their visit to www.toolnovahub.com and other sites on the internet. However, visitors may choose to decline the use of
                         DART cookies by visiting the Google ad and content network Privacy Policy at the following URL – <a href="https://policies.google.com/technologies/ads" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">https://policies.google.com/technologies/ads</a>
+                    </p>
+                    <p className="mt-4">
+                        We use Google AdSense Advertising on our website. Google, as a third-party vendor, uses cookies to serve ads on our site. Google's use of the DART cookie enables it to serve ads to our users based on previous visits to our site and other sites on the Internet. Users may opt-out of the use of the DART cookie by visiting the Google Ad and Content Network privacy policy.
                     </p>
                 </section>
 
@@ -78,6 +81,22 @@ export default function PrivacyPage() {
                     </p>
                     <p className="mt-2">
                         Note that ToolNova has no access to or control over these cookies that are used by third-party advertisers.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 className="text-2xl font-semibold mb-4">About Our Cookies</h2>
+                    <p>
+                        Our cookies are used to improve your site experience and for advertising purposes. We do not sell your personal data.
+                        You can manage your cookie preferences through your browser settings.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 className="text-2xl font-semibold mb-4">About Our Cookies</h2>
+                    <p>
+                        Our cookies are used to improve your site experience and for advertising purposes. We do not sell your personal data.
+                        You can manage your cookie preferences through your browser settings.
                     </p>
                 </section>
 

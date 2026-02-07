@@ -83,6 +83,21 @@ export default function AboutPage() {
                     </div>
                 </div>
 
+                <h2 className="mt-16 mb-8 text-2xl font-bold text-center">Contact Information</h2>
+                <div className="bg-slate-50 dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 text-center mb-16 not-prose">
+                    <p className="text-muted-foreground mb-4">Have questions or feedback? We'd love to hear from you.</p>
+                    <div className="flex flex-col md:flex-row justify-center gap-6 text-sm font-semibold">
+                        <div className="flex items-center justify-center gap-2">
+                            <span className="text-primary">Email:</span>
+                            <a href="mailto:support@toolnovahub.com" className="hover:text-primary transition-colors">support@toolnovahub.com</a>
+                        </div>
+                        <div className="flex items-center justify-center gap-2">
+                            <span className="text-primary">Global HQ:</span>
+                            <span>Singapore</span>
+                        </div>
+                    </div>
+                </div>
+
                 <h2>Why Choose Us?</h2>
                 <p>
                     Unlike other platforms that are cluttered with ads and limit free features, ToolNova prioritizes the user experience.

@@ -89,6 +89,47 @@ export interface BreadcrumbListSchema {
     }>;
 }
 
+export interface ArticleSchema {
+    '@context': 'https://schema.org';
+    '@type': 'Article';
+    headline: string;
+    description: string;
+    image?: string;
+    datePublished: string;
+    dateModified: string;
+    author: {
+        '@type': 'Person';
+        name: string;
+        url?: string;
+        jobTitle?: string;
+    };
+    publisher: {
+        '@type': 'Organization';
+        name: string;
+        logo: {
+            '@type': 'ImageObject';
+            url: string;
+        };
+    };
+    mainEntityOfPage: {
+        '@type': 'WebPage';
+        '@id': string;
+    };
+    wordCount?: number;
+    articleBody?: string;
+}
+
+export interface PersonSchema {
+    '@context': 'https://schema.org';
+    '@type': 'Person';
+    name: string;
+    jobTitle: string;
+    description: string;
+    url?: string;
+    sameAs?: string[];
+    knowsAbout?: string[];
+}
+
 /**
  * Generate Organization schema for the website
  */
@@ -96,18 +137,18 @@ export function getOrganizationSchema(): OrganizationSchema {
     return {
         '@context': 'https://schema.org',
         '@type': 'Organization',
-        name: 'AI Study Tools',
-        url: 'https://aimultitools.com',
-        logo: 'https://aimultitools.com/logo.svg',
-        description: '30+ free AI-powered tools for students. Get instant homework help, generate essays, create study notes, and ace your exams.',
+        name: 'ToolNova',
+        url: 'https://www.toolnovahub.com',
+        logo: 'https://www.toolnovahub.com/logo.png',
+        description: 'The ultimate hub for premium AI tools. Edit PDFs, optimize images, and boost productivity with ToolNova\'s advanced suite.',
         sameAs: [
-            'https://twitter.com/aistudytools',
-            'https://github.com/aistudytools',
-            'https://linkedin.com/company/aistudytools',
+            'https://twitter.com/toolnovahub',
+            'https://github.com/toolnovahub',
+            'https://linkedin.com/company/toolnovahub',
         ],
         contactPoint: {
             '@type': 'ContactPoint',
-            email: 'hello@aimultitools.com',
+            email: 'support@toolnovahub.com',
             contactType: 'Customer Service',
         },
     };
@@ -120,14 +161,14 @@ export function getWebSiteSchema(): WebSiteSchema {
     return {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
-        name: 'AI Study Tools',
-        url: 'https://aimultitools.com',
-        description: '30+ free AI-powered tools for students',
+        name: 'ToolNova',
+        url: 'https://www.toolnovahub.com',
+        description: 'The ultimate hub for premium AI tools.',
         potentialAction: {
             '@type': 'SearchAction',
             target: {
                 '@type': 'EntryPoint',
-                urlTemplate: 'https://aimultitools.com/search?q={search_term_string}',
+                urlTemplate: 'https://www.toolnovahub.com/search?q={search_term_string}',
             },
             'query-input': 'required name=search_term_string',
         },
@@ -223,8 +264,215 @@ export function getBreadcrumbSchema(
 }
 
 /**
+ * Generate Article schema for blog posts (GEO Optimization)
+ */
+export function getArticleSchema(
+    title: string,
+    description: string,
+    url: string,
+    datePublished: string,
+    dateModified: string,
+    authorName: string,
+    authorUrl?: string,
+    authorJobTitle?: string,
+    imageUrl?: string,
+    wordCount?: number
+): ArticleSchema {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: title,
+        description,
+        image: imageUrl,
+        datePublished,
+        dateModified,
+        author: {
+            '@type': 'Person',
+            name: authorName,
+            url: authorUrl,
+            jobTitle: authorJobTitle,
+        },
+        publisher: {
+            '@type': 'Organization',
+            name: 'ToolNova',
+            logo: {
+                '@type': 'ImageObject',
+                url: 'https://www.toolnovahub.com/logo.png',
+            },
+        },
+        mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': url,
+        },
+        wordCount,
+    };
+}
+
+/**
+ * Generate Person schema for author profiles (GEO Optimization)
+ */
+export function getPersonSchema(
+    name: string,
+    jobTitle: string,
+    description: string,
+    url?: string,
+    socials?: string[],
+    expertise?: string[]
+): PersonSchema {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name,
+        jobTitle,
+        description,
+        url,
+        sameAs: socials,
+        knowsAbout: expertise,
+    };
+}
+
+/**
  * Convert schema object to JSON-LD script tag string
  */
 export function schemaToJsonLd(schema: any): string {
     return JSON.stringify(schema);
+}
+
+// ============================================
+// AEO (Answer Engine Optimization) Schemas
+// ============================================
+
+/**
+ * Speakable Schema for Voice Search Optimization
+ */
+export interface SpeakableSchema {
+    '@context': 'https://schema.org';
+    '@type': 'WebPage';
+    name: string;
+    speakable: {
+        '@type': 'SpeakableSpecification';
+        cssSelector: string[];
+    };
+}
+
+/**
+ * ItemList Schema for Tool Categories
+ */
+export interface ItemListSchema {
+    '@context': 'https://schema.org';
+    '@type': 'ItemList';
+    itemListElement: Array<{
+        '@type': 'ListItem';
+        position: number;
+        url: string;
+        name: string;
+        description?: string;
+    }>;
+}
+
+/**
+ * Enhanced SoftwareApplication with Features for AEO
+ */
+export interface EnhancedSoftwareApplicationSchema extends SoftwareApplicationSchema {
+    featureList?: string[];
+    screenshot?: string[];
+    operatingSystem?: string;
+    requirements?: string;
+    softwareVersion?: string;
+    author?: {
+        '@type': 'Organization';
+        name: string;
+    };
+}
+
+/**
+ * Generate Speakable schema for voice search optimization
+ */
+export function getSpeakableSchema(
+    pageName: string,
+    cssSelectors: string[]
+): SpeakableSchema {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: pageName,
+        speakable: {
+            '@type': 'SpeakableSpecification',
+            cssSelector: cssSelectors,
+        },
+    };
+}
+
+/**
+ * Generate ItemList schema for tool categories
+ */
+export function getItemListSchema(
+    items: Array<{ name: string; url: string; description?: string }>
+): ItemListSchema {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        itemListElement: items.map((item, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            url: item.url,
+            name: item.name,
+            description: item.description,
+        })),
+    };
+}
+
+/**
+ * Generate comprehensive tool schema (combines SoftwareApplication + HowTo + FAQ)
+ * AEO Optimized for answer engines and voice search
+ */
+export function getComprehensiveToolSchema(
+    toolName: string,
+    description: string,
+    url: string,
+    features: string[],
+    howToSteps: Array<{ name: string; text: string }>,
+    faqs: Array<{ question: string; answer: string }>,
+    rating?: { value: string; count: string }
+): {
+    software: EnhancedSoftwareApplicationSchema;
+    howTo: HowToSchema;
+    faq: FAQPageSchema;
+} {
+    const softwareSchema: EnhancedSoftwareApplicationSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: toolName,
+        description: description,
+        url: url,
+        applicationCategory: 'UtilityApplication',
+        offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD',
+        },
+        featureList: features,
+        operatingSystem: 'Web Browser',
+        author: {
+            '@type': 'Organization',
+            name: 'ToolNova',
+        },
+    };
+
+    if (rating) {
+        softwareSchema.aggregateRating = {
+            '@type': 'AggregateRating',
+            ratingValue: rating.value,
+            ratingCount: rating.count,
+        };
+    }
+
+    const howToSchema = getHowToSchema(toolName, description, howToSteps);
+    const faqSchema = getFAQSchema(faqs);
+
+    return {
+        software: softwareSchema,
+        howTo: howToSchema,
+        faq: faqSchema,
+    };
 }

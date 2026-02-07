@@ -18,6 +18,7 @@ const inter = Inter({
   weight: ["400", "500", "600", "700", "800", "900"],
   preload: true,
   adjustFontFallback: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 const geistMono = Geist_Mono({
@@ -31,10 +32,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.toolnovahub.com'),
   title: {
-    default: "ToolNova - Premium AI Tools for Productivity",
+    default: "Free AI Tools for Students 2026 - 50+ Tools | ToolNova",
     template: "%s | ToolNova"
   },
-  description: "The ultimate hub for premium AI tools. Edit PDFs, optimize images, and boost productivity with ToolNova's advanced suite.",
+  description: "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
   keywords: [
     // Primary Keywords (High CPC)
     "AI business tools",
@@ -91,8 +92,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://www.toolnovahub.com",
     siteName: "ToolNova",
-    title: "ToolNova - Premium AI Tools for Productivity",
-    description: "The ultimate hub for premium AI tools. Edit PDFs, optimize images, and boost productivity with ToolNova's advanced suite.",
+    title: "Free AI Tools for Students 2026 - 50+ Tools | ToolNova",
+    description: "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
     images: [
       {
         url: "/og-image.png",
@@ -104,8 +105,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ToolNova - Premium AI Tools for Productivity",
-    description: "The ultimate hub for premium AI tools. Edit PDFs, optimize images, and boost productivity with ToolNova's advanced suite.",
+    title: "Free AI Tools for Students 2026 - 50+ Tools | ToolNova",
+    description: "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required!",
     images: ["/og-image.png"],
     creator: "@toolnovahub",
   },
@@ -141,9 +142,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* DNS Prefetch for faster domain resolution */}
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+
         {/* Preconnect to Google Fonts for faster loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
         {/* Material Symbols Outlined - loaded asynchronously to prevent render blocking */}
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
@@ -218,7 +224,7 @@ export default function RootLayout({
           <FeedbackWidget />
         </ThemeProvider>
         <CookieConsent />
-        {/* Google Tag (gtag.js) */}
+        {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-58TZZZDYJ7"
           strategy="afterInteractive"
@@ -232,6 +238,14 @@ export default function RootLayout({
             gtag('config', 'G-58TZZZDYJ7');
           `}
         </Script>
+
+        {/* Google AdSense - Placeholder for user's publisher ID */}
+        {/* <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1328083083403070"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        /> */}
       </body>
     </html>
   );

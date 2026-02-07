@@ -15,8 +15,13 @@ import {
   Users
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { QuickAnswerBox } from '@/components/aeo/QuickAnswerBox';
+import { FAQAccordion } from '@/components/aeo/FAQAccordion';
+import { getHomepageAEO } from '@/lib/global-aeo-content';
 
 export function HomeDashboard() {
+  const aeoContent = getHomepageAEO();
+
   return (
     <div className="w-full font-display">
       {/* Hero Section - Gradient Style */}
@@ -83,6 +88,16 @@ export function HomeDashboard() {
           <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
             <path d="M0 50L48 45.8C96 41.7 192 33.3 288 29.2C384 25 480 25 576 33.3C672 41.7 768 58.3 864 62.5C960 66.7 1056 58.3 1152 50C1248 41.7 1344 33.3 1392 29.2L1440 25V100H1392C1344 100 1248 100 1152 100C1056 100 960 100 864 100C768 100 672 100 576 100C480 100 384 100 288 100C192 100 96 100 48 100H0V50Z" className="fill-[#f8f9fb] dark:fill-[#0f1419]" />
           </svg>
+        </div>
+      </section>
+
+      {/* AEO: Quick Answer Section */}
+      <section className="py-12 bg-[#f8f9fb] dark:bg-[#0f1419]">
+        <div className="container mx-auto px-6 max-w-[1200px]">
+          <QuickAnswerBox
+            question={aeoContent.quickAnswer.question}
+            answer={aeoContent.quickAnswer.answer}
+          />
         </div>
       </section>
 
@@ -212,6 +227,16 @@ export function HomeDashboard() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* AEO: FAQ Section */}
+      <section className="py-16 bg-[#f8f9fb] dark:bg-[#0f1419]">
+        <div className="container mx-auto px-6 max-w-[1200px]">
+          <FAQAccordion
+            faqs={aeoContent.faqs}
+            title="Frequently Asked Questions"
+          />
         </div>
       </section>
 

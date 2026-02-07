@@ -4,6 +4,10 @@ import ToolLayout, { ToolOption } from '@/components/ToolLayout';
 import { PremiumToolWrapper, defaultFeatures } from '@/components/PremiumToolWrapper';
 import { FAQSection } from '@/components/FAQSection';
 import { FileText, Lightbulb, BookOpen, Target, List, ClipboardList } from 'lucide-react';
+import { QuickAnswerBox } from '@/components/aeo/QuickAnswerBox';
+import { HowItWorksSection } from '@/components/aeo/HowItWorksSection';
+import { FAQAccordion } from '@/components/aeo/FAQAccordion';
+import { getToolAEOContent } from '@/lib/tool-aeo-content';
 
 const toolOptions: ToolOption[] = [
     {
@@ -88,6 +92,9 @@ const howItWorks = [
 ];
 
 export default function TextSummarizerClient() {
+    // Get AEO content for this tool
+    const aeoContent = getToolAEOContent('text-summarizer');
+
     return (
         <PremiumToolWrapper
             toolName="Text Summarizer"
@@ -109,6 +116,15 @@ export default function TextSummarizerClient() {
             ctaTitle="Summarize Now"
             ctaDescription="Too long; get it summarized."
         >
+            {/* AEO: Quick Answer Box */}
+            <div className="px-6 pt-6">
+                <QuickAnswerBox
+                    question={aeoContent.quickAnswer.question}
+                    answer={aeoContent.quickAnswer.answer}
+                />
+            </div>
+
+            {/* Main Tool Interface */}
             <ToolLayout
                 title=""
                 description=""
@@ -126,8 +142,18 @@ Works great with:
                 resultLabel="✨ Summary"
                 generateButtonText="📝 Summarize"
             />
+
+            {/* AEO: How It Works Section */}
             <div className="px-6 pb-6">
-                <FAQSection faqs={faqs} />
+                <HowItWorksSection steps={aeoContent.howItWorks} />
+            </div>
+
+            {/* AEO: FAQ Accordion */}
+            <div className="px-6 pb-6">
+                <FAQAccordion
+                    faqs={aeoContent.faqs}
+                    title="Frequently Asked Questions"
+                />
             </div>
         </PremiumToolWrapper>
     );

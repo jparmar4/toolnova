@@ -1,21 +1,16 @@
 import { Metadata } from 'next';
 import { getToolSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { getOptimizedToolMetadata } from '@/lib/tool-metadata';
+import { RelatedTools } from '@/components/RelatedTools';
 import EssayWriterClient from './client';
 
+const toolMeta = getOptimizedToolMetadata('essay-writer');
+
 export const metadata: Metadata = {
-  title: 'Free AI Essay Writer – Generate Essays Instantly | AI Study Tools',
-  description: 'Write perfect essays instantly with our free AI essay writer. Get well-structured essays with intro, body, and conclusion. For students of all levels. 100% free.',
-  keywords: [
-    'AI essay writer free',
-    'essay generator',
-    'write my essay AI',
-    'automatic essay writer',
-    'free essay writing tool',
-    'AI writing assistant',
-  ],
-  alternates: {
-    canonical: 'https://aimultitools.com/tools/essay-writer',
-  },
+  title: toolMeta?.title || 'Free AI Essay Writer – Generate Essays Instantly | AI Study Tools',
+  description: toolMeta?.description || 'Write perfect essays instantly with our free AI essay writer. Get well-structured essays with intro, body, and conclusion. For students of all levels. 100% free.',
+  keywords: toolMeta?.keywords || ['AI essay writer free', 'essay generator', 'write my essay AI', 'automatic essay writer', 'free essay writing tool', 'AI writing assistant'],
+  alternates: { canonical: 'https://www.toolnovahub.com/tools/essay-writer' },
 };
 
 const toolSchema = getToolSchema(
@@ -41,6 +36,7 @@ export default function EssayWriterPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(faqSchema) }} />
       <EssayWriterClient />
+      <RelatedTools currentTool="essay-writer" category="Writing" />
     </>
   );
 }

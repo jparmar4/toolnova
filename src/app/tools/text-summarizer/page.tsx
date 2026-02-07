@@ -1,13 +1,17 @@
 import { Metadata } from 'next';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
+import { getOptimizedToolMetadata } from '@/lib/tool-metadata';
+import { RelatedTools } from '@/components/RelatedTools';
 import TextSummarizerClient from './client';
 
+const toolMeta = getOptimizedToolMetadata('text-summarizer');
+
 export const metadata: Metadata = {
-  title: 'AI Text Summarizer – Summarize Any Text Free | AI Study Tools',
-  description: 'Summarize long texts instantly with our free AI text summarizer. Get concise summaries of articles, essays, and documents.',
-  keywords: ['AI text summarizer', 'summarize text', 'article summarizer', 'summary generator'],
-  alternates: { canonical: 'https://aimultitools.com/tools/text-summarizer' },
+  title: toolMeta?.title || 'AI Text Summarizer – Summarize Any Text Free | AI Study Tools',
+  description: toolMeta?.description || 'Summarize long texts instantly with our free AI text summarizer. Get concise summaries of articles, essays, and documents.',
+  keywords: toolMeta?.keywords || ['AI text summarizer', 'summarize text', 'article summarizer', 'summary generator'],
+  alternates: { canonical: 'https://www.toolnovahub.com/tools/text-summarizer' },
 };
 
 export default function TextSummarizerPage() {
@@ -35,6 +39,7 @@ export default function TextSummarizerPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(faqSchema) }} />
       <TextSummarizerClient />
+      <RelatedTools currentTool="text-summarizer" category="Writing" />
     </>
   );
 }
