@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter, Geist_Mono } from "next/font/google";
 import { CookieConsent } from "@/components/CookieConsent";
 import "./globals.css";
@@ -217,6 +218,20 @@ export default function RootLayout({
           <FeedbackWidget />
         </ThemeProvider>
         <CookieConsent />
+        {/* Google Tag (gtag.js) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-58TZZZDYJ7"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-58TZZZDYJ7');
+          `}
+        </Script>
       </body>
     </html>
   );
