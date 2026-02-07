@@ -19,8 +19,18 @@ import {
   Trash2,
   ArrowRight,
   Settings2,
-  ArrowLeft
+  ArrowLeft,
+  Upload,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { FaWhatsapp, FaTwitter, FaFacebook, FaTelegram, FaLinkedin } from 'react-icons/fa';
 import { toast } from 'sonner';
 import {
   GenerationHistoryItem,
@@ -84,7 +94,10 @@ export function ToolLayout({
   const [history, setHistory] = useState<GenerationHistoryItem[]>([]);
   const [processingTime, setProcessingTime] = useState<number>(0);
   const [options, setOptions] = useState<Record<string, any>>({});
+  const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
+  const [showShareMenu, setShowShareMenu] = useState<boolean>(false);
   const resultRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const optionsInitialized = useRef(false);
 
   // Auth state
@@ -124,6 +137,15 @@ export function ToolLayout({
       setHistory(getToolHistory(toolSlug));
     }
   }, [toolSlug]);
+
+  // Cleanup speech synthesis on unmount or result change
+  useEffect(() => {
+    return () => {
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [result]);
 
   // Character and word counts
   const charCount = input.length;
@@ -207,6 +229,82 @@ export function ToolLayout({
     } else {
       handleCopy();
     }
+  };
+
+  // File upload handler
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const isTextFile = file.type === 'text/plain' || file.name.endsWith('.txt');
+    const isImageFile = file.type.startsWith('image/');
+
+    if (isTextFile) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target?.result as string;
+        setInput(content);
+        toast.success(`Loaded content from ${file.name}`);
+      };
+      reader.readAsText(file);
+    } else if (isImageFile) {
+      // For images, add the filename as a description placeholder
+      setInput(`[Image uploaded: ${file.name}]\n\nDescribe what you see in this image or diagram...`);
+      toast.success(`Image "${file.name}" selected. Please describe the image content.`);
+    } else {
+      toast.error('Please upload a .txt file or an image file');
+    }
+
+    // Reset file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  // Text-to-speech handler
+  const handleSpeak = () => {
+    if (!result) return;
+
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(result);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+      toast.error('Text-to-speech failed');
+    };
+
+    window.speechSynthesis.speak(utterance);
+    setIsSpeaking(true);
+  };
+
+  // Social share handlers
+  const getShareText = () => {
+    const truncated = result.length > 250 ? result.substring(0, 250) + '...' : result;
+    return `${truncated}\n\n✨ Generated with ToolNova - https://toolnova.ai`;
+  };
+
+  const handleSocialShare = (platform: string) => {
+    const text = encodeURIComponent(getShareText());
+    const url = encodeURIComponent('https://toolnova.ai');
+
+    const shareUrls: Record<string, string> = {
+      whatsapp: `https://wa.me/?text=${text}`,
+      twitter: `https://twitter.com/intent/tweet?text=${text}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?quote=${text}`,
+      telegram: `https://t.me/share/url?url=${url}&text=${text}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+    };
+
+    const shareUrl = shareUrls[platform];
+    if (shareUrl) {
+      window.open(shareUrl, '_blank', 'width=600,height=400');
+    }
+    setShowShareMenu(false);
   };
 
   const handleClearHistory = () => {
@@ -332,11 +430,27 @@ export function ToolLayout({
                   variant="ghost"
                   size="sm"
                   className="h-8 text-xs text-muted-foreground hover:text-primary"
+                  onClick={() => fileInputRef.current?.click()}
+                  title="Upload file"
+                >
+                  <Upload className="h-3.5 w-3.5 mr-1" /> Upload
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 text-xs text-muted-foreground hover:text-primary"
                   onClick={() => setInput('')}
                   disabled={!input}
                 >
                   <RotateCcw className="h-3.5 w-3.5 mr-1" /> Clear
                 </Button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".txt,.jpg,.jpeg,.png,.webp"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
               </div>
             </div>
 
@@ -423,7 +537,7 @@ export function ToolLayout({
                   )}
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                   <Button variant="outline" size="sm" className="h-9 gap-2 rounded-xl border-2 hover:bg-primary hover:text-white hover:border-primary transition-all" onClick={handleCopy}>
                     {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                     <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy'}</span>
@@ -432,9 +546,51 @@ export function ToolLayout({
                     <Download className="h-4 w-4" />
                     <span className="hidden sm:inline">Download</span>
                   </Button>
-                  <Button variant="outline" size="sm" className="h-9 gap-2 rounded-xl border-2 hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all" onClick={handleShare}>
-                    <Share2 className="h-4 w-4" />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className={`h-9 gap-2 rounded-xl border-2 transition-all ${isSpeaking ? 'bg-orange-500 text-white border-orange-500' : 'hover:bg-orange-500 hover:text-white hover:border-orange-500'}`}
+                    onClick={handleSpeak}
+                    title={isSpeaking ? 'Stop speaking' : 'Read aloud'}
+                  >
+                    {isSpeaking ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                    <span className="hidden sm:inline">{isSpeaking ? 'Stop' : 'Listen'}</span>
                   </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm" className="h-9 gap-2 rounded-xl border-2 hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all">
+                        <Share2 className="h-4 w-4" />
+                        <span className="hidden sm:inline">Share</span>
+                        <ChevronDown className="h-3 w-3" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem onClick={() => handleSocialShare('whatsapp')} className="cursor-pointer">
+                        <FaWhatsapp className="h-4 w-4 mr-2 text-green-500" />
+                        WhatsApp
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleSocialShare('twitter')} className="cursor-pointer">
+                        <FaTwitter className="h-4 w-4 mr-2 text-blue-400" />
+                        Twitter / X
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleSocialShare('facebook')} className="cursor-pointer">
+                        <FaFacebook className="h-4 w-4 mr-2 text-blue-600" />
+                        Facebook
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleSocialShare('telegram')} className="cursor-pointer">
+                        <FaTelegram className="h-4 w-4 mr-2 text-blue-500" />
+                        Telegram
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleSocialShare('linkedin')} className="cursor-pointer">
+                        <FaLinkedin className="h-4 w-4 mr-2 text-blue-700" />
+                        LinkedIn
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleCopy} className="cursor-pointer">
+                        <Copy className="h-4 w-4 mr-2" />
+                        Copy Text
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
 
