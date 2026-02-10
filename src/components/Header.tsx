@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { UsageCounter } from '@/components/UsageCounter';
 import { Menu, X, School, Sparkles } from 'lucide-react';
 import { useState, lazy, Suspense, useEffect } from 'react';
 import { createClient } from "@/utils/supabase/client";
@@ -79,6 +80,7 @@ export function Header() {
                             <div className="h-10 w-24 bg-slate-100 dark:bg-slate-800 rounded-xl animate-pulse" />
                         ) : user ? (
                             <div className="flex items-center gap-4">
+                                <UsageCounter />
                                 <div className="text-sm font-medium text-foreground">
                                     {user.email?.split('@')[0]}
                                 </div>

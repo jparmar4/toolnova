@@ -187,6 +187,11 @@ export function ToolLayout({
       setProcessingTime(Date.now() - startTime);
       setResult(output);
 
+      // Notify the header UsageCounter to refresh
+      if (!isNonAITool) {
+        window.dispatchEvent(new Event('ai-usage-updated'));
+      }
+
       if (toolSlug) {
         saveToHistory(toolSlug, input, output);
         setHistory(getToolHistory(toolSlug));
@@ -463,7 +468,7 @@ export function ToolLayout({
                     </div>
                     <h3 className="text-xl font-bold text-foreground mb-2">Login Required</h3>
                     <p className="text-muted-foreground mb-6">
-                      This AI tool requires a free account to use. You get 10 free generations every day!
+                      This AI tool requires a free account to use. You get 5 free generations every day!
                     </p>
                     <Button
                       onClick={handleLoginRedirect}
