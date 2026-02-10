@@ -38,6 +38,11 @@ export async function generateMetadata({
         };
     }
 
+    const canonicalUrl = `${siteConfig.url}/blog/${post.slug}`;
+    const ogImage = post.coverImage
+        ? `${siteConfig.url}${post.coverImage}`
+        : `${siteConfig.url}/og-image.png`;
+
     return {
         title: `${post.title} | ToolNova Blog`,
         description: post.metaDescription,
@@ -48,11 +53,15 @@ export async function generateMetadata({
             description: post.metaDescription,
             type: "article",
             publishedTime: post.date,
+            modifiedTime: post.dateModified || post.date,
             authors: [post.author],
-            url: `${siteConfig.url}/blog/${post.slug}`,
+            url: canonicalUrl,
+            locale: "en_US",
             images: [
                 {
-                    url: post.coverImage || `${siteConfig.url}/og-image.png`,
+                    url: ogImage,
+                    width: 1200,
+                    height: 630,
                     alt: post.imageAlt || post.title,
                 },
             ],
@@ -61,10 +70,17 @@ export async function generateMetadata({
             card: "summary_large_image",
             title: post.title,
             description: post.metaDescription,
-            images: [post.coverImage || `${siteConfig.url}/og-image.png`],
+            images: [ogImage],
         },
         alternates: {
-            canonical: `/blog/${post.slug}`,
+            canonical: canonicalUrl,
+            languages: {
+                "en-US": canonicalUrl,
+                "en-GB": canonicalUrl,
+                "en-CA": canonicalUrl,
+                "en-AU": canonicalUrl,
+                "x-default": canonicalUrl,
+            },
         },
     };
 }
@@ -87,18 +103,25 @@ export default async function BlogPostPage({
     // Get author data for GEO
     const author = post.authorSlug ? getAuthor(post.authorSlug) : null;
 
-    // Generate enhanced Schema.org structured data (GEO Optimized)
+    // Generate enhanced Schema.org structured data (SEO + AEO + GEO Optimized)
+    const articleUrl = `${siteConfig.url}/blog/${post.slug}`;
+    const articleImage = post.coverImage
+        ? `${siteConfig.url}${post.coverImage}`
+        : `${siteConfig.url}/og-image.png`;
+
     const articleSchema = {
         "@context": "https://schema.org",
         "@type": "Article",
         headline: post.title,
         description: post.metaDescription,
-        image: post.coverImage || `${siteConfig.url}/og-image.png`,
+        image: articleImage,
         author: {
             "@type": "Person",
             name: post.author,
             jobTitle: author?.role || post.authorRole,
-            url: author?.profileUrl,
+            url: author?.profileUrl
+                ? `${siteConfig.url}${author.profileUrl}`
+                : undefined,
         },
         publisher: {
             "@type": "Organization",
@@ -112,10 +135,38 @@ export default async function BlogPostPage({
         dateModified: post.dateModified || post.date,
         mainEntityOfPage: {
             "@type": "WebPage",
-            "@id": `${siteConfig.url}/blog/${post.slug}`,
+            "@id": articleUrl,
         },
         wordCount: post.wordCount,
         keywords: post.keywords.join(", "),
+        inLanguage: "en-US",
+        articleSection: post.category,
+        about: {
+            "@type": "Thing",
+            name: post.keywords[0],
+        },
+        speakable: {
+            "@type": "SpeakableSpecification",
+            cssSelector: [".prose h1", ".prose h2", ".prose > p:first-of-type"],
+        },
+    };
+
+    // AEO: Speakable schema for voice assistants and answer engines
+    const speakableSchema = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: post.title,
+        url: articleUrl,
+        speakable: {
+            "@type": "SpeakableSpecification",
+            cssSelector: [
+                "article h1",
+                "article h2",
+                "article > .prose > p:first-of-type",
+                ".faq-question",
+                ".faq-answer",
+            ],
+        },
     };
 
     const breadcrumbSchema = {
@@ -203,6 +254,13 @@ export default async function BlogPostPage({
                     }}
                 />
             )}
+            {/* AEO: Speakable Schema for Voice Search */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(speakableSchema),
+                }}
+            />
 
             <div className="min-h-screen bg-slate-50">
                 {/* Header with Back Link */}

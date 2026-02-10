@@ -7,7 +7,7 @@ import HomeworkSolverClient from './client';
 const toolMeta = getOptimizedToolMetadata('homework-solver');
 
 export const metadata: Metadata = {
-  title: toolMeta?.title || 'AI Homework Solver – Get Instant Homework Help Free | AI Multi Tools',
+  title: toolMeta?.title || 'AI Homework Solver – Get Instant Homework Help Free | ToolNova',
   description: toolMeta?.description || 'Get step-by-step solutions to any homework problem with our free AI homework solver. Supports Math, Science, History, English, Programming and more. Perfect for students of all grades.',
   keywords: toolMeta?.keywords || ['AI homework solver', 'homework help', 'math solver', 'study help', 'homework answers', 'step by step solutions', 'math homework help', 'science homework help', 'free homework solver', 'AI tutor'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/homework-solver' },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 const toolSchema = getToolSchema(
   'AI Homework Solver',
   'Get step-by-step solutions to homework problems in Math, Science, History, English, Programming and more',
-  'https://aimultitools.com/tools/homework-solver'
+  'https://www.toolnovahub.com/tools/homework-solver'
 );
 
 export default function HomeworkSolverPage() {

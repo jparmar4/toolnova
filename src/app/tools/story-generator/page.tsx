@@ -3,13 +3,13 @@ import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
 import StoryGeneratorClient from './client';
 
 export const metadata: Metadata = {
-  title: 'AI Story Generator – Create Stories Free | AI Study Tools',
+  title: 'AI Story Generator – Create Stories Free | ToolNova',
   description: 'Generate captivating stories in any genre with our free AI story generator. Fantasy, sci-fi, mystery, romance and more.',
   keywords: ['AI story generator', 'story writer', 'creative writing AI', 'fiction generator'],
-  alternates: { canonical: 'https://aimultitools.com/tools/story-generator' },
+  alternates: { canonical: 'https://www.toolnovahub.com/tools/story-generator' },
 };
 
-const toolSchema = getToolSchema('AI Story Generator', 'Generate creative stories in any genre', 'https://aimultitools.com/tools/story-generator');
+const toolSchema = getToolSchema('AI Story Generator', 'Generate creative stories in any genre', 'https://www.toolnovahub.com/tools/story-generator');
 
 export default function StoryGeneratorPage() {
   return (

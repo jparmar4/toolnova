@@ -7,7 +7,7 @@ import EssayWriterClient from './client';
 const toolMeta = getOptimizedToolMetadata('essay-writer');
 
 export const metadata: Metadata = {
-  title: toolMeta?.title || 'Free AI Essay Writer – Generate Essays Instantly | AI Study Tools',
+  title: toolMeta?.title || 'Free AI Essay Writer – Generate Essays Instantly | ToolNova',
   description: toolMeta?.description || 'Write perfect essays instantly with our free AI essay writer. Get well-structured essays with intro, body, and conclusion. For students of all levels. 100% free.',
   keywords: toolMeta?.keywords || ['AI essay writer free', 'essay generator', 'write my essay AI', 'automatic essay writer', 'free essay writing tool', 'AI writing assistant'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/essay-writer' },
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const toolSchema = getToolSchema(
   'AI Essay Writer',
   'Generate well-structured essays with introduction, body paragraphs, and conclusion',
-  'https://aimultitools.com/tools/essay-writer'
+  'https://www.toolnovahub.com/tools/essay-writer'
 );
 
 const faqSchema = getFAQSchema([

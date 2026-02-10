@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-    title: 'Image & PDF Tools - Merge, Split, Compress & Convert | AI Multi Tools',
+    title: 'Image & PDF Tools - Merge, Split, Compress & Convert | ToolNova',
     description: 'Free image and PDF tools: merge PDF, split PDF, image to PDF, image compressor, JPG to PNG, PNG to JPG.',
 };
 

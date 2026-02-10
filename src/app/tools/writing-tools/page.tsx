@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-    title: 'AI Writing Tools - Essay Writer, Email Generator & More | AI Multi Tools',
+    title: 'AI Writing Tools - Essay Writer, Email Generator & More | ToolNova',
     description: 'Free AI writing tools: essay writer, story generator, email writer, grammar checker, paraphraser, and more.',
 };
 

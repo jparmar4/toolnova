@@ -75,7 +75,7 @@ export default function LoginPage() {
                     <h1 className="text-4xl lg:text-5xl font-black leading-tight mb-6">
                         Unlock the Power of
                         <span className="block mt-2 bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
-                            AI Study Tools
+                            ToolNova
                         </span>
                     </h1>
 

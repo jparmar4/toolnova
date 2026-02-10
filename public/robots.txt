@@ -4,6 +4,9 @@ Allow: /
 # Sitemap
 Sitemap: https://www.toolnovahub.com/sitemap.xml
 
+# RSS Feed
+# https://www.toolnovahub.com/feed.xml
+
 # Crawl-delay
 Crawl-delay: 1
 
@@ -53,3 +56,5 @@ Disallow: /api/
 Disallow: /admin/
 Disallow: /_next/
 Disallow: /private/
+Disallow: /login
+Disallow: /auth/

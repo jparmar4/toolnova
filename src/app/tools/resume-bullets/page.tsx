@@ -3,13 +3,13 @@ import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
 import ResumeBulletsClient from './client';
 
 export const metadata: Metadata = {
-  title: 'AI Resume Bullets – Create Resume Points Free | AI Study Tools',
+  title: 'AI Resume Bullets – Create Resume Points Free | ToolNova',
   description: 'Generate powerful resume bullet points instantly with our free AI resume writer. ATS-friendly and impactful.',
   keywords: ['AI resume bullets', 'resume writer', 'resume generator', 'job application'],
-  alternates: { canonical: 'https://aimultitools.com/tools/resume-bullets' },
+  alternates: { canonical: 'https://www.toolnovahub.com/tools/resume-bullets' },
 };
 
-const toolSchema = getToolSchema('AI Resume Bullets', 'Generate powerful resume bullet points', 'https://aimultitools.com/tools/resume-bullets');
+const toolSchema = getToolSchema('AI Resume Bullets', 'Generate powerful resume bullet points', 'https://www.toolnovahub.com/tools/resume-bullets');
 
 export default function ResumeBulletsPage() {
   return (

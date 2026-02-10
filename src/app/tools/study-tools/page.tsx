@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-    title: 'AI Study Tools - Homework Solver, Notes Generator & More | AI Multi Tools',
+    title: 'AI Study Tools - Homework Solver, Notes Generator & More | ToolNova',
     description: 'Free AI-powered study tools: homework solver, notes generator, flashcard maker, quiz generator, formula generator, and more.',
 };
 

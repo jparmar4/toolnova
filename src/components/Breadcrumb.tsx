@@ -56,7 +56,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
 /**
  * Generate breadcrumb schema for SEO
  */
-export function generateBreadcrumbSchema(items: BreadcrumbItem[], baseUrl: string = 'https://aimultitools.com') {
+export function generateBreadcrumbSchema(items: BreadcrumbItem[], baseUrl: string = 'https://toolnovahub.com') {
     return {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',

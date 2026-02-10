@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-    title: 'Utility Tools - Word Counter, Case Converter & More | AI Multi Tools',
+    title: 'Utility Tools - Word Counter, Case Converter & More | ToolNova',
     description: 'Free utility tools: word counter, character counter, case converter, text summarizer, text simplifier, age calculator.',
 };
 

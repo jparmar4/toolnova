@@ -8,7 +8,7 @@ import ParaphraserClient from './client';
 const toolMeta = getOptimizedToolMetadata('paraphraser');
 
 export const metadata: Metadata = {
-  title: toolMeta?.title || 'AI Paraphraser – Rewrite Text Instantly Free | AI Study Tools',
+  title: toolMeta?.title || 'AI Paraphraser – Rewrite Text Instantly Free | ToolNova',
   description: toolMeta?.description || 'Paraphrase any text instantly with our free AI paraphraser. Rewrite sentences, paragraphs, and essays while keeping the same meaning. Perfect for students.',
   keywords: toolMeta?.keywords || ['AI paraphraser free', 'paraphrasing tool', 'rewrite text', 'rephrase sentences', 'article rewriter'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/paraphraser' },
@@ -19,7 +19,7 @@ export default function ParaphraserPage() {
 
   if (!toolData) return <ParaphraserClient />;
 
-  const toolSchema = getToolSchema(toolData.name, toolData.description, 'https://aimultitools.com/tools/paraphraser');
+  const toolSchema = getToolSchema(toolData.name, toolData.description, 'https://www.toolnovahub.com/tools/paraphraser');
 
   const howToSchema = getHowToSchema(
     `How to use ${toolData.name}`,
@@ -27,7 +27,7 @@ export default function ParaphraserPage() {
     toolData.howItWorks.map(step => ({
       name: step.title,
       text: step.desc,
-      url: `https://aimultitools.com/tools/paraphraser#step-${step.step}`
+      url: `https://www.toolnovahub.com/tools/paraphraser#step-${step.step}`
     }))
   );
 

@@ -3,13 +3,13 @@ import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
 import TimetableGeneratorClient from './client';
 
 export const metadata: Metadata = {
-    title: 'Timetable Generator – Create Study Schedule Free | AI Productivity Tools',
+    title: 'Timetable Generator – Create Study Schedule Free | ToolNova',
     description: 'Generate a structured weekly timetable for study or work. Free AI-powered schedule maker.',
     keywords: ['timetable generator', 'study schedule', 'weekly planner', 'schedule maker', 'time management'],
-    alternates: { canonical: 'https://aimultitools.com/tools/timetable-generator' },
+    alternates: { canonical: 'https://www.toolnovahub.com/tools/timetable-generator' },
 };
 
-const toolSchema = getToolSchema('Timetable Generator', 'Create structured weekly schedules', 'https://aimultitools.com/tools/timetable-generator');
+const toolSchema = getToolSchema('Timetable Generator', 'Create structured weekly schedules', 'https://www.toolnovahub.com/tools/timetable-generator');
 
 export default function TimetableGeneratorPage() {
     return (

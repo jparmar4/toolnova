@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-    title: 'Exam Prep Tools - Vocabulary, Synonyms & More | AI Multi Tools',
+    title: 'Exam Prep Tools - Vocabulary, Synonyms & More | ToolNova',
     description: 'Free exam prep tools: vocabulary builder, synonym finder, antonym finder, idioms & phrases, one word substitution.',
 };
 

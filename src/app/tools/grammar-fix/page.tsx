@@ -8,7 +8,7 @@ import GrammarFixClient from './client';
 const toolMeta = getOptimizedToolMetadata('grammar-fix');
 
 export const metadata: Metadata = {
-  title: toolMeta?.title || 'AI Grammar Fix – Fix Grammar Errors Free | AI Study Tools',
+  title: toolMeta?.title || 'AI Grammar Fix – Fix Grammar Errors Free | ToolNova',
   description: toolMeta?.description || 'Fix grammar, spelling, and punctuation errors instantly with our free AI grammar checker. Perfect for essays, emails, and documents.',
   keywords: toolMeta?.keywords || ['AI grammar fix', 'grammar checker', 'spelling correction', 'punctuation fix'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/grammar-fix' },
@@ -19,7 +19,7 @@ export default function GrammarFixPage() {
 
   if (!toolData) return <GrammarFixClient />;
 
-  const toolSchema = getToolSchema(toolData.name, toolData.description, 'https://aimultitools.com/tools/grammar-fix');
+  const toolSchema = getToolSchema(toolData.name, toolData.description, 'https://www.toolnovahub.com/tools/grammar-fix');
 
   const howToSchema = getHowToSchema(
     `How to use ${toolData.name}`,
@@ -27,7 +27,7 @@ export default function GrammarFixPage() {
     toolData.howItWorks.map(step => ({
       name: step.title,
       text: step.desc,
-      url: `https://aimultitools.com/tools/grammar-fix#step-${step.step}`
+      url: `https://www.toolnovahub.com/tools/grammar-fix#step-${step.step}`
     }))
   );
 

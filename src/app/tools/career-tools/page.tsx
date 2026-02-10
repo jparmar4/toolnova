@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-    title: 'Career Tools - Cover Letter, Interview Prep & More | AI Multi Tools',
+    title: 'Career Tools - Cover Letter, Interview Prep & More | ToolNova',
     description: 'Free career tools: cover letter writer, interview question generator, goal planner, timetable generator, to-do list generator.',
 };
 

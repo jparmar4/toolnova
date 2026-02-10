@@ -97,7 +97,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
                         color: '#64748b'
                     }}
                 >
-                    aimultitools.com
+                    toolnovahub.com
                 </div>
             </div>
         ),

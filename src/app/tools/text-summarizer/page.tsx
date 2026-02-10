@@ -8,7 +8,7 @@ import TextSummarizerClient from './client';
 const toolMeta = getOptimizedToolMetadata('text-summarizer');
 
 export const metadata: Metadata = {
-  title: toolMeta?.title || 'AI Text Summarizer – Summarize Any Text Free | AI Study Tools',
+  title: toolMeta?.title || 'AI Text Summarizer – Summarize Any Text Free | ToolNova',
   description: toolMeta?.description || 'Summarize long texts instantly with our free AI text summarizer. Get concise summaries of articles, essays, and documents.',
   keywords: toolMeta?.keywords || ['AI text summarizer', 'summarize text', 'article summarizer', 'summary generator'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/text-summarizer' },
@@ -19,7 +19,7 @@ export default function TextSummarizerPage() {
 
   if (!toolData) return <TextSummarizerClient />;
 
-  const toolSchema = getToolSchema(toolData.name, toolData.description, 'https://aimultitools.com/tools/text-summarizer');
+  const toolSchema = getToolSchema(toolData.name, toolData.description, 'https://www.toolnovahub.com/tools/text-summarizer');
 
   const howToSchema = getHowToSchema(
     `How to use ${toolData.name}`,
@@ -27,7 +27,7 @@ export default function TextSummarizerPage() {
     toolData.howItWorks.map(step => ({
       name: step.title,
       text: step.desc,
-      url: `https://aimultitools.com/tools/text-summarizer#step-${step.step}`
+      url: `https://www.toolnovahub.com/tools/text-summarizer#step-${step.step}`
     }))
   );
 

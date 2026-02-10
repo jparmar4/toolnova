@@ -18,7 +18,7 @@ const inter = Inter({
   weight: ["400", "500", "600", "700", "800", "900"],
   preload: true,
   adjustFontFallback: true,
-  fallback: ['system-ui', 'arial'],
+  fallback: ["system-ui", "arial"],
 });
 
 const geistMono = Geist_Mono({
@@ -30,12 +30,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.toolnovahub.com'),
+  metadataBase: new URL("https://www.toolnovahub.com"),
   title: {
     default: "Free AI Tools for Students 2026 - 50+ Tools | ToolNova",
-    template: "%s | ToolNova"
+    template: "%s | ToolNova",
   },
-  description: "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
+  description:
+    "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
   keywords: [
     // Primary Keywords (High CPC)
     "AI business tools",
@@ -66,7 +67,7 @@ export const metadata: Metadata = {
     "business tools USA",
     "AI productivity UK",
     "free tools hub Canada",
-    "AI solutions Australia"
+    "AI solutions Australia",
   ],
   authors: [{ name: "ToolNova Team", url: "https://www.toolnovahub.com" }],
   creator: "ToolNova",
@@ -93,7 +94,8 @@ export const metadata: Metadata = {
     url: "https://www.toolnovahub.com",
     siteName: "ToolNova",
     title: "Free AI Tools for Students 2026 - 50+ Tools | ToolNova",
-    description: "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
+    description:
+      "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
     images: [
       {
         url: "/og-image.png",
@@ -106,7 +108,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Free AI Tools for Students 2026 - 50+ Tools | ToolNova",
-    description: "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required!",
+    description:
+      "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required!",
     images: ["/og-image.png"],
     creator: "@toolnovahub",
   },
@@ -117,9 +120,9 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   verification: {
@@ -144,13 +147,25 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* RSS Feed autodiscovery for feed readers and search engines */}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="ToolNova Blog RSS Feed"
+          href="https://www.toolnovahub.com/feed.xml"
+        />
+
         {/* DNS Prefetch for faster domain resolution */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
         {/* Preconnect to Google Fonts for faster loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
 
         {/* Material Symbols Outlined - loaded asynchronously to prevent render blocking */}
         <link
@@ -161,23 +176,27 @@ export default function RootLayout({
           onLoad="this.media='all'"
         />
         <noscript>
-          <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+            rel="stylesheet"
+          />
         </noscript>
         {/* Organization Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Organization',
-              name: 'ToolNova',
-              url: 'https://www.toolnovahub.com',
-              logo: 'https://www.toolnovahub.com/logo.png',
-              description: 'The ultimate hub for premium AI tools. Edit PDFs, optimize images, and boost productivity with ToolNova\'s advanced suite.',
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "ToolNova",
+              url: "https://www.toolnovahub.com",
+              logo: "https://www.toolnovahub.com/logo.png",
+              description:
+                "The ultimate hub for premium AI tools. Edit PDFs, optimize images, and boost productivity with ToolNova's advanced suite.",
               sameAs: [
-                'https://twitter.com/toolnovahub',
-                'https://github.com/toolnovahub',
-                'https://linkedin.com/company/toolnovahub',
+                "https://twitter.com/toolnovahub",
+                "https://github.com/toolnovahub",
+                "https://linkedin.com/company/toolnovahub",
               ],
             }),
           }}
@@ -187,18 +206,20 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'WebSite',
-              name: 'ToolNova',
-              url: 'https://www.toolnovahub.com',
-              description: 'The ultimate hub for premium AI tools. Edit PDFs, optimize images, and boost productivity with ToolNova\'s advanced suite.',
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "ToolNova",
+              url: "https://www.toolnovahub.com",
+              description:
+                "The ultimate hub for premium AI tools. Edit PDFs, optimize images, and boost productivity with ToolNova's advanced suite.",
               potentialAction: {
-                '@type': 'SearchAction',
+                "@type": "SearchAction",
                 target: {
-                  '@type': 'EntryPoint',
-                  urlTemplate: 'https://www.toolnovahub.com/search?q={search_term_string}',
+                  "@type": "EntryPoint",
+                  urlTemplate:
+                    "https://www.toolnovahub.com/search?q={search_term_string}",
                 },
-                'query-input': 'required name=search_term_string',
+                "query-input": "required name=search_term_string",
               },
             }),
           }}
@@ -217,9 +238,7 @@ export default function RootLayout({
           <SkipLinks />
           <div className="flex min-h-screen flex-col">
             <Header />
-            <main className="flex-1">
-              {children}
-            </main>
+            <main className="flex-1">{children}</main>
             <Footer />
           </div>
           <Toaster />
