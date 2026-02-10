@@ -1,5 +1,12 @@
 "use client";
 
+declare global {
+    interface Window {
+        Razorpay: any;
+    }
+}
+
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Check, Star, Zap } from "lucide-react";
@@ -8,6 +15,74 @@ import { cn } from "@/lib/utils";
 
 export default function PricingPage() {
     const [isYearly, setIsYearly] = useState(false);
+
+    const loadScript = () => {
+        return new Promise((resolve) => {
+            const script = document.createElement("script");
+            script.src = "https://checkout.razorpay.com/v1/checkout.js";
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
+        });
+    };
+
+    const startSubscription = async (planId: string) => {
+        const resScript = await loadScript();
+
+        if (!resScript) {
+            alert("Razorpay SDK failed to load. Are you online?");
+            return;
+        }
+
+        try {
+            const res = await fetch("/api/create-subscription", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ planId }),
+            });
+
+            const sub = await res.json();
+
+            if (!sub.id) {
+                alert("Could not create subscription. Please try again.");
+                return;
+            }
+
+            const options = {
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                subscription_id: sub.id,
+                name: "Tool Nova Hub",
+                description: "Pro Access Subscription",
+                handler: async function (response: any) {
+                    // Note: Razorpay Subscriptions don't strictly require manual verify-payment 
+                    // for the initial charge like orders do, but it's good practice to log/check.
+                    // The webhook will handle the heavy lifting (subscription.activated).
+                    const verifyRes = await fetch("/api/verify-payment", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(response),
+                    });
+                    const verifyData = await verifyRes.json();
+                    if (verifyData.success || verifyRes.ok) {
+                        alert("Subscription Started 🎉");
+                    } else {
+                        alert("Subscription verification pending. It will be active shortly.");
+                    }
+                },
+                theme: { color: "#6366f1" },
+            };
+
+            const rzp = new window.Razorpay(options);
+            rzp.open();
+        } catch (error) {
+            console.error("Subscription Error:", error);
+            alert("Something went wrong. Please try again.");
+        }
+    };
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-24 pb-20 relative overflow-hidden">
@@ -149,10 +224,14 @@ export default function PricingPage() {
                                 {isYearly && "You check out effortlessly!"}
                             </div>
 
-                            <Button className="w-full h-12 rounded-xl text-lg font-bold mb-8 bg-gradient-to-r from-primary to-blue-600 hover:scale-[1.02] transition-transform shadow-lg shadow-primary/25 text-white">
+                            <Button
+                                onClick={() => startSubscription(isYearly ? "plan_SEPrpn71jkiE0u" : "plan_SEPqtQNsEaZpDB")}
+                                className="w-full h-12 rounded-xl text-lg font-bold mb-8 bg-gradient-to-r from-primary to-blue-600 hover:scale-[1.02] transition-transform shadow-lg shadow-primary/25 text-white"
+                            >
                                 <Zap className="mr-2 h-5 w-5 fill-white" />
                                 Upgrade Now
                             </Button>
+
                             <ul className="space-y-4">
                                 {[
                                     "Unlimited AI Generations",
