@@ -138,6 +138,22 @@ export function Footer() {
                   Contact Us
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/refund"
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                >
+                  Refund Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/shipping"
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                >
+                  Shipping Policy
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
