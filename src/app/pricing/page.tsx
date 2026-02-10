@@ -223,7 +223,7 @@ export default function PricingPage() {
                             >
                                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold">
                                     <Sparkles className="h-3 w-3" />
-                                    Save ₹489/year — that&apos;s 2 months free!
+                                    Save $5.89/year — that&apos;s 2 months free!
                                 </span>
                             </motion.div>
                         )}
@@ -247,7 +247,7 @@ export default function PricingPage() {
                             <p className="text-muted-foreground text-sm">Perfect for getting started</p>
                         </div>
                         <div className="flex items-baseline mb-8">
-                            <span className="text-5xl font-black tracking-tight">₹0</span>
+                            <span className="text-5xl font-black tracking-tight">$0</span>
                             <span className="text-muted-foreground ml-2 text-sm">/forever</span>
                         </div>
                         <Button
@@ -318,7 +318,7 @@ export default function PricingPage() {
                                             className="flex items-baseline"
                                         >
                                             <span className="text-5xl font-black text-white tracking-tight">
-                                                ₹{isYearly ? "2,499" : "249"}
+                                                ${isYearly ? "29.99" : "2.99"}
                                             </span>
                                             <span className="text-slate-400 ml-2 text-sm">/{isYearly ? "year" : "month"}</span>
                                         </motion.div>
@@ -334,11 +334,13 @@ export default function PricingPage() {
                                                 exit={{ opacity: 0 }}
                                                 className="text-sm text-green-400 font-medium"
                                             >
-                                                ✨ Just ₹208/month — Save ₹489!
+                                                ✨ Just $2.50/month — Save $5.89!
                                             </motion.p>
                                         )}
                                     </AnimatePresence>
                                 </div>
+
+                                <p className="text-xs text-slate-500 mb-3">Billed in INR (₹) via Razorpay at checkout</p>
 
                                 <Button
                                     onClick={() => startSubscription(isYearly ? "plan_SEPrpn71jkiE0u" : "plan_SEPqtQNsEaZpDB")}
