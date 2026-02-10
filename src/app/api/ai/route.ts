@@ -31,8 +31,14 @@ export async function POST(req: NextRequest) {
     console.log('API: User authenticated', { userId: user.id });
 
     // 2. Check Subscription & Usage Limits
-    // TODO: Connect to real subscription table. For now, everyone is Free.
-    const isPremium = false;
+    const { data: subscription } = await supabase
+      .from('Subscription')
+      .select('status')
+      .eq('userId', user.id)
+      .eq('status', 'active')
+      .maybeSingle();
+
+    const isPremium = !!subscription;
     const model = isPremium ? MODEL_PREMIUM : MODEL_FREE;
 
     console.log('API: Processing request', { promptLength: prompt.length, model });
