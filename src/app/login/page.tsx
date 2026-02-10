@@ -42,7 +42,7 @@ export default function LoginPage() {
     };
 
     const benefits = [
-        { icon: Zap, text: "10 Free AI generations daily" },
+        { icon: Zap, text: "5 Free AI generations daily" },
         { icon: Shield, text: "Your data stays private" },
         { icon: Sparkles, text: "Access 30+ AI-powered tools" },
     ];

@@ -1,4 +1,4 @@
-export const DAILY_FREE_LIMIT = 10;
+export const DAILY_FREE_LIMIT = 5;
 
 export interface UsageLimit {
     count: number;

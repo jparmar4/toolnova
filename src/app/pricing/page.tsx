@@ -46,7 +46,7 @@ const testimonials = [
 const comparisonFeatures = [
     { feature: "AI Tools Access", free: "Basic with limited access", pro: "Premium unlimited" },
     { feature: "AI Model", free: "GPT 5", pro: "GPT 5.2, Claude Opus 4.6, Gemini 3 Pro" },
-    { feature: "Daily Generations", free: "10/day", pro: "Unlimited" },
+    { feature: "Daily Generations", free: "5/day", pro: "Unlimited" },
     { feature: "Processing Speed", free: "Standard", pro: "Priority (10x faster)" },
     { feature: "Image Generation", free: "Basic", pro: "4K HD" },
     { feature: "Ads", free: "Yes", pro: "Ad-free" },
