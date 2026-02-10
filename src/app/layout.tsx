@@ -224,6 +224,12 @@ export default function RootLayout({
             }),
           }}
         />
+        {/* Google AdSense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1328083083403070"
+          crossOrigin="anonymous"
+        ></script>
       </head>
       <body
         className={`${inter.variable} ${geistMono.variable} font-display antialiased bg-background text-foreground`}
@@ -260,13 +266,7 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Google AdSense - Placeholder for user's publisher ID */}
-        {/* <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1328083083403070"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        /> */}
+
       </body>
     </html>
   );
