@@ -8,13 +8,17 @@ declare global {
 
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Check, Star, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { createClient } from "@/utils/supabase/client";
 
 export default function PricingPage() {
     const [isYearly, setIsYearly] = useState(false);
+    const router = useRouter();
+    const supabase = createClient();
 
     const loadScript = () => {
         return new Promise((resolve) => {
@@ -27,6 +31,13 @@ export default function PricingPage() {
     };
 
     const startSubscription = async (planId: string) => {
+        // Check if user is logged in
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+            router.push("/login");
+            return;
+        }
+
         const resScript = await loadScript();
 
         if (!resScript) {
