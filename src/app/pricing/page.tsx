@@ -353,7 +353,7 @@ export default function PricingPage() {
                                 <div className="space-y-4">
                                     {[
                                         { text: "Unlimited AI Generations", highlight: true },
-                                        { text: "GPT-4o Premium Models", highlight: true },
+                                        { text: "GPT 5.2, Claude Opus 4.6, Gemini 3 Pro", highlight: true },
                                         { text: "Priority Processing (10x faster)", highlight: false },
                                         { text: "Ad-free Experience", highlight: false },
                                         { text: "4K Image Generation", highlight: false },
