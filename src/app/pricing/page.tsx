@@ -44,8 +44,8 @@ const testimonials = [
 ];
 
 const comparisonFeatures = [
-    { feature: "AI Tools Access", free: "20+ Basic", pro: "50+ Premium" },
-    { feature: "AI Model", free: "Standard", pro: "GPT-4o" },
+    { feature: "AI Tools Access", free: "Basic with limited access", pro: "Premium unlimited" },
+    { feature: "AI Model", free: "GPT 5", pro: "GPT 5.2, Claude Opus 4.6, Gemini 3 Pro" },
     { feature: "Daily Generations", free: "10/day", pro: "Unlimited" },
     { feature: "Processing Speed", free: "Standard", pro: "Priority (10x faster)" },
     { feature: "Image Generation", free: "Basic", pro: "4K HD" },
@@ -340,7 +340,7 @@ export default function PricingPage() {
                                     </AnimatePresence>
                                 </div>
 
-                                <p className="text-xs text-slate-500 mb-3">Billed in INR (₹) via Razorpay at checkout</p>
+
 
                                 <Button
                                     onClick={() => startSubscription(isYearly ? "plan_SEPrpn71jkiE0u" : "plan_SEPqtQNsEaZpDB")}
