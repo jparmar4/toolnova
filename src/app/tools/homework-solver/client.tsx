@@ -1,436 +1,345 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import ToolLayout, { ToolOption } from '@/components/ToolLayout';
-import { FAQSection } from '@/components/FAQSection';
-import { HomeworkResultFormatter } from '@/components/HomeworkResultFormatter';
-import Link from 'next/link';
+import EnhancedToolLayout from "@/components/EnhancedToolLayout";
+import { PremiumToolWrapper } from "@/components/PremiumToolWrapper";
+import { FAQSection } from "@/components/FAQSection";
+import { HomeworkResultFormatter } from "@/components/HomeworkResultFormatter";
 import {
-    Calculator,
-    FlaskConical,
-    BookOpen,
-    Code2,
-    Globe,
-    Sparkles,
-    CheckCircle2,
-    Zap,
-    Shield,
-    Star,
-    GraduationCap,
-    Brain,
-    Lightbulb,
-    Rocket,
-    Target,
-    Award,
-    Clock,
-    Users,
-    TrendingUp,
-    ArrowRight
-} from 'lucide-react';
+  BookOpen,
+  Brain,
+  Calculator,
+  Clock,
+  GraduationCap,
+  Sparkles,
+  Star,
+  Target,
+  Users,
+  Zap,
+  Lightbulb,
+  Award,
+} from "lucide-react";
 
-const toolOptions: ToolOption[] = [
-    {
-        id: 'subject',
-        label: 'Subject Area',
-        type: 'select',
-        options: [
-            { value: 'math', label: '🔢 Mathematics' },
-            { value: 'physics', label: '⚛️ Physics' },
-            { value: 'chemistry', label: '🧪 Chemistry' },
-            { value: 'biology', label: '🧬 Biology' },
-            { value: 'history', label: '📜 History' },
-            { value: 'english', label: '📖 English/Literature' },
-            { value: 'programming', label: '💻 Programming' },
-            { value: 'economics', label: '📊 Economics' },
-            { value: 'geography', label: '🌍 Geography' },
-            { value: 'general', label: '📚 General' },
-        ],
-        defaultValue: 'general',
-    },
-    {
-        id: 'gradeLevel',
-        label: 'Grade Level',
-        type: 'select',
-        options: [
-            { value: 'elementary', label: '🎒 Elementary School' },
-            { value: 'middle', label: '📓 Middle School' },
-            { value: 'high', label: '🎓 High School' },
-            { value: 'college', label: '🏛️ College/University' },
-        ],
-        defaultValue: 'high',
-    },
-    {
-        id: 'explanation',
-        label: 'Explanation Style',
-        type: 'select',
-        options: [
-            { value: 'detailed', label: '📝 Detailed Step-by-Step' },
-            { value: 'concise', label: '⚡ Concise Answer' },
-            { value: 'eli5', label: '🧒 Explain Like I\'m 5' },
-            { value: 'visual', label: '📊 With Visual Explanations' },
-        ],
-        defaultValue: 'detailed',
-    },
-    {
-        id: 'includeExamples',
-        label: 'Include Practice Problems',
-        type: 'toggle',
-        defaultValue: true,
-    },
-    {
-        id: 'showFormulas',
-        label: 'Show Relevant Formulas',
-        type: 'toggle',
-        defaultValue: true,
-    },
+const systemPrompt = `You are a patient, encouraging tutor helping students learn step-by-step.
+
+OUTPUT RULES:
+- Use the exact structure requested in the user prompt (with emoji section labels: 🎯, 📝, ✅, 💡, etc.)
+- Do NOT use a generic FINAL ANSWER/WORKING/QUICK CHECK format
+- Output can be as long as needed to properly explain the solution (ignore any line limits)
+- Use clear formatting with blank lines between sections
+- Number each step clearly (Step 1, Step 2, etc.)
+- Explain WHY each step works, not just HOW
+
+TEACHING APPROACH:
+- Use warm, encouraging language
+- Break down complex problems into simple steps
+- Include verification and practice problems when requested
+- Keep explanations clear and accessible for the specified grade level`;
+
+const toolOptions = [
+  {
+    id: "subject",
+    label: "Subject Area",
+    type: "select" as const,
+    options: [
+      { value: "math", label: "🔢 Mathematics" },
+      { value: "physics", label: "⚛️ Physics" },
+      { value: "chemistry", label: "🧪 Chemistry" },
+      { value: "biology", label: "🧬 Biology" },
+      { value: "history", label: "📜 History" },
+      { value: "english", label: "📖 English/Literature" },
+      { value: "programming", label: "💻 Programming" },
+      { value: "economics", label: "📊 Economics" },
+      { value: "geography", label: "🌍 Geography" },
+      { value: "general", label: "📚 General" },
+    ],
+    defaultValue: "general",
+  },
+  {
+    id: "gradeLevel",
+    label: "Grade Level",
+    type: "select" as const,
+    options: [
+      { value: "elementary", label: "🎒 Elementary School" },
+      { value: "middle", label: "📓 Middle School" },
+      { value: "high", label: "🎓 High School" },
+      { value: "college", label: "🏛️ College/University" },
+    ],
+    defaultValue: "high",
+  },
+  {
+    id: "explanation",
+    label: "Explanation Style",
+    type: "select" as const,
+    options: [
+      { value: "detailed", label: "📝 Detailed Step-by-Step" },
+      { value: "concise", label: "⚡ Concise Answer" },
+      { value: "eli5", label: "🧒 Explain Like I'm 5" },
+      { value: "visual", label: "📊 With Visual Explanations" },
+    ],
+    defaultValue: "detailed",
+  },
+  {
+    id: "includeExamples",
+    label: "Include Practice Problems",
+    type: "toggle" as const,
+    defaultValue: true,
+  },
+  {
+    id: "showFormulas",
+    label: "Show Relevant Formulas",
+    type: "toggle" as const,
+    defaultValue: true,
+  },
 ];
 
 const generatePrompt = (input: string, options?: Record<string, any>) => {
-    const subject = options?.subject || 'general';
-    const gradeLevel = options?.gradeLevel || 'high';
-    const explanation = options?.explanation || 'detailed';
-    const includeExamples = options?.includeExamples !== false;
-    const showFormulas = options?.showFormulas !== false;
+  const subject = options?.subject || "general";
+  const gradeLevel = options?.gradeLevel || "high";
+  const explanation = options?.explanation || "detailed";
+  const includeExamples = options?.includeExamples ?? true;
+  const showFormulas = options?.showFormulas ?? true;
 
-    const gradeLevelContext: Record<string, string> = {
-        elementary: 'elementary school student (grades 1-5)',
-        middle: 'middle school student (grades 6-8)',
-        high: 'high school student (grades 9-12)',
-        college: 'college/university student',
-    };
+  const gradeLevelContext: Record<string, string> = {
+    elementary:
+      "Use simple language appropriate for elementary school students (ages 6-11). Focus on basic concepts with relatable examples.",
+    middle:
+      "Use clear language for middle school students (ages 11-14). Introduce intermediate concepts with practical examples.",
+    high: "Use sophisticated language for high school students (ages 14-18). Cover advanced topics with detailed explanations.",
+    college:
+      "Use academic language for college/university level. Provide in-depth analysis and complex problem-solving.",
+  };
 
-    const explanationStyles: Record<string, string> = {
-        detailed: 'Explain each step in simple, clear language. Number each step (Step 1, Step 2, etc.).',
-        concise: 'Give the answer with brief, essential steps.',
-        eli5: 'Explain like teaching a beginner - use everyday analogies and very simple words.',
-        visual: 'Use simple diagrams or layouts when it helps understanding.',
-    };
+  const explanationStyles: Record<string, string> = {
+    detailed:
+      "Provide comprehensive step-by-step explanations with detailed reasoning for each step.",
+    concise: "Give a clear, direct solution with essential steps only.",
+    eli5: "Explain in the simplest terms possible, as if teaching a 5-year-old. Use analogies and simple examples.",
+    visual:
+      "Include descriptions of diagrams, charts, or visual representations to illustrate concepts.",
+  };
 
-    return [
-        `You are a friendly, patient tutor helping a ${gradeLevelContext[gradeLevel]} learn ${subject}.`,
-        '',
-        'YOUR TEACHING STYLE:',
-        '- Use warm, encouraging language - make the student feel confident!',
-        '- Break down complex ideas into simple, bite-sized pieces',
-        '- Explain WHY each step works, not just HOW to do it',
-        '- Use real-world examples when helpful',
-        '',
-        'FORMAT YOUR ANSWER LIKE THIS:',
-        '',
-        '🎯 ANSWER:',
-        '[State the final answer clearly and concisely]',
-        '',
-        '📝 STEP-BY-STEP SOLUTION:',
-        '',
-        'Step 1: [First step with clear explanation]',
-        'WHY: [Explain why we do this step]',
-        '',
-        'Step 2: [Second step]',
-        'WHY: [Explanation]',
-        '',
-        '[Continue with more steps as needed]',
-        '',
-        showFormulas ? '📐 FORMULAS USED:\n[List key formulas with brief explanations of what each variable means]' : '',
-        '',
-        '✅ VERIFICATION:',
-        '[Show how to check if the answer is correct]',
-        '',
-        '💡 KEY LEARNING POINT:',
-        '[One sentence highlighting the main concept or trick to remember]',
-        '',
-        includeExamples ? '🏋️ PRACTICE:\n[One similar problem for the student to try on their own]\n(Provide the answer at the end so they can check)' : '',
-        '',
-        `Style: ${explanationStyles[explanation]}`,
-        '',
-        'IMPORTANT RULES:',
-        '- Use clear section labels with emojis (🎯, 📝, ✅, 💡, etc.)',
-        '- Add blank lines between sections for easy reading',
-        '- Keep language simple and encouraging',
-        '- Explain concepts, don\'t just show calculations',
-        '',
-        `Problem to solve: ${input}`
-    ].filter(line => line !== undefined && line !== null).join('\n');
+  let prompt = `You are helping a ${gradeLevel} student with their homework.
+
+📚 Subject: ${subject}
+📝 Grade Level: ${gradeLevelContext[gradeLevel]}
+🎯 Explanation Style: ${explanationStyles[explanation]}
+
+Problem: ${input}
+
+Please provide a solution using this EXACT structure (use these emoji labels):
+
+🎯 **ANSWER:**
+[Provide the final answer here clearly]
+
+📝 **STEP-BY-STEP SOLUTION:**
+Step 1: [First step with explanation]
+Step 2: [Second step with explanation]
+Step 3: [Continue as needed...]
+[Explain WHY each step works, not just HOW]
+
+✅ **VERIFICATION:**
+[Show how to check if the answer is correct]
+`;
+
+  if (showFormulas && ["math", "physics", "chemistry"].includes(subject)) {
+    prompt += `
+📐 **KEY FORMULAS/CONCEPTS:**
+[List relevant formulas or key concepts used]
+`;
+  }
+
+  if (includeExamples) {
+    prompt += `
+💡 **PRACTICE PROBLEMS:**
+[Provide 1-2 similar practice problems for the student to try]
+`;
+  }
+
+  prompt += `
+🌟 **PRO TIP:**
+[One helpful tip for mastering this type of problem]
+
+Remember: Be encouraging, patient, and focus on teaching understanding, not just providing answers.`;
+
+  return prompt;
 };
 
-const faqs = [
-    { question: "How accurate is the AI Homework Solver?", answer: "Our AI is highly accurate for most subjects and grade levels. However, we recommend verifying complex solutions with your teacher or textbook.", category: "accuracy" },
-    { question: "What subjects are supported?", answer: "Math, Physics, Chemistry, Biology, History, English, Programming, Economics, Geography, and more!", category: "subjects" },
-    { question: "Is my homework data private?", answer: "Yes! We don't store your homework problems. Each session is private and secure.", category: "privacy" },
-    { question: "Can I use this for exams?", answer: "This tool is for learning and understanding concepts. Use it to study and practice!", category: "usage" },
-];
-
-const subjectCards = [
-    { name: 'Mathematics', icon: Calculator, color: 'from-blue-500 to-cyan-500', bgGlow: 'bg-blue-500/20' },
-    { name: 'Science', icon: FlaskConical, color: 'from-green-500 to-emerald-500', bgGlow: 'bg-green-500/20' },
-    { name: 'Literature', icon: BookOpen, color: 'from-purple-500 to-pink-500', bgGlow: 'bg-purple-500/20' },
-    { name: 'Coding', icon: Code2, color: 'from-orange-500 to-red-500', bgGlow: 'bg-orange-500/20' },
-    { name: 'History', icon: Globe, color: 'from-amber-500 to-yellow-500', bgGlow: 'bg-amber-500/20' },
-];
-
 const stats = [
-    { value: '1M+', label: 'Problems Solved', icon: Target },
-    { value: '50K+', label: 'Happy Students', icon: Users },
-    { value: '99%', label: 'Accuracy Rate', icon: TrendingUp },
-    { value: '24/7', label: 'Available', icon: Clock },
+  { value: "100K+", label: "Problems Solved", icon: Calculator },
+  { value: "4.9/5", label: "Student Rating", icon: Star },
+  { value: "<2 min", label: "Avg Response", icon: Clock },
+];
+
+const features = [
+  {
+    icon: Brain,
+    title: "Step-by-Step Solutions",
+    description:
+      "Get detailed explanations that help you understand the problem, not just the answer",
+    gradient: "from-blue-500 to-indigo-600",
+    bgLight: "bg-blue-50",
+  },
+  {
+    icon: Target,
+    title: "Multiple Subjects",
+    description:
+      "Support for Math, Science, History, English, Programming, and more subjects across all grade levels",
+    gradient: "from-purple-500 to-pink-600",
+    bgLight: "bg-purple-50",
+  },
+  {
+    icon: Lightbulb,
+    title: "Practice Problems",
+    description:
+      "Receive similar practice problems to reinforce your learning and build confidence",
+    gradient: "from-green-500 to-emerald-600",
+    bgLight: "bg-green-50",
+  },
+];
+
+const howItWorks = [
+  {
+    step: 1,
+    title: "Enter Your Problem",
+    desc: "Type or paste your homework question",
+    icon: BookOpen,
+    color: "from-blue-500 to-indigo-600",
+  },
+  {
+    step: 2,
+    title: "Set Preferences",
+    desc: "Choose subject, grade level, and explanation style",
+    icon: Target,
+    color: "from-purple-500 to-pink-600",
+  },
+  {
+    step: 3,
+    title: "Get Solution",
+    desc: "Receive structured, verified step-by-step answer",
+    icon: Award,
+    color: "from-green-500 to-emerald-600",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Notes Generator",
+    slug: "notes-generator",
+    icon: BookOpen,
+    color: "text-blue-600",
+  },
+  {
+    name: "MCQ Generator",
+    slug: "mcq-generator",
+    icon: Target,
+    color: "text-purple-600",
+  },
+  {
+    name: "Formula Generator",
+    slug: "formula-generator",
+    icon: Calculator,
+    color: "text-green-600",
+  },
+  {
+    name: "Concept Explainer",
+    slug: "concept-explainer",
+    icon: Lightbulb,
+    color: "text-orange-600",
+  },
+];
+
+const faqs = [
+  {
+    question: "How does the homework solver work?",
+    answer:
+      "Our AI analyzes your problem, breaks it down into steps, and provides detailed explanations. It focuses on teaching you the concept, not just giving you the answer.",
+    category: "Usage",
+  },
+  {
+    question: "What subjects are supported?",
+    answer:
+      "We support Math, Physics, Chemistry, Biology, History, English/Literature, Programming, Economics, Geography, and general topics across all grade levels from elementary to college.",
+    category: "Features",
+  },
+  {
+    question: "Can I use this for exam preparation?",
+    answer:
+      "Yes! Enable 'Include Practice Problems' to get similar questions for practice. This helps you understand the concept and prepare for tests.",
+    category: "Usage",
+  },
+  {
+    question: "Is the solution always correct?",
+    answer:
+      "Our AI provides highly accurate solutions, but we recommend verifying important answers. Use the verification section to check your work and learn the problem-solving process.",
+    category: "Accuracy",
+  },
+  {
+    question: "Can I adjust the explanation level?",
+    answer:
+      "Absolutely! Choose from Detailed (comprehensive), Concise (quick), ELI5 (very simple), or Visual (with diagrams). Pick what works best for your learning style.",
+    category: "Features",
+  },
+  {
+    question: "Will this help me learn or just give answers?",
+    answer:
+      "It's designed to teach! Each solution includes step-by-step explanations, verification methods, practice problems, and pro tips to help you truly understand the concept.",
+    category: "Learning",
+  },
 ];
 
 export default function HomeworkSolverClient() {
-    return (
-        <div className="min-h-screen">
-            {/* Animated Background */}
-            <div className="fixed inset-0 -z-10 overflow-hidden">
-                <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-                <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-green-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-            </div>
-
-            {/* Hero Section */}
-            <div className="relative overflow-hidden">
-                <div className="max-w-7xl mx-auto px-4 pt-8 pb-6">
-                    {/* Hero Content omitted breadcrumbs as they are in ToolLayout */}
-
-                    {/* Hero Content */}
-                    <div className="text-center mb-8">
-                        {/* Badge */}
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-500/20 mb-6 animate-fade-in">
-                            <Sparkles className="h-4 w-4 text-blue-500 animate-pulse" />
-                            <span className="text-sm font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                #1 AI-Powered Study Assistant
-                            </span>
-                            <div className="flex gap-0.5">
-                                {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />)}
-                            </div>
-                        </div>
-
-                        {/* Title */}
-                        <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-6">
-                            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                                AI Homework Solver
-                            </span>
-                        </h1>
-                        <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-8">
-                            Get instant, step-by-step solutions to any homework problem.
-                            <span className="text-foreground font-semibold"> Understand concepts, ace your classes!</span>
-                        </p>
-
-                        {/* Quick Stats */}
-                        <div className="flex flex-wrap justify-center gap-6 mb-8">
-                            {stats.map((stat, i) => (
-                                <div key={i} className="flex items-center gap-2 text-sm">
-                                    <stat.icon className="h-4 w-4 text-primary" />
-                                    <span className="font-bold text-foreground">{stat.value}</span>
-                                    <span className="text-muted-foreground">{stat.label}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Main Tool Section */}
-            <div id="tool-input" className="relative">
-                <div className="max-w-7xl mx-auto px-4">
-                    <ToolLayout
-                        title=""
-                        description=""
-                        placeholder="✍️ Enter your homework question here...
+  return (
+    <PremiumToolWrapper
+      toolName="AI Homework Solver"
+      toolSlug="homework-solver"
+      tagline="Get instant, step-by-step solutions to any homework problem"
+      description="AI-powered homework helper that provides detailed explanations, practice problems, and verification methods. Perfect for students of all grades who want to understand, not just answer."
+      badge="AI-Powered"
+      category="Study Tools"
+      categorySlug="study-tools"
+      stats={stats}
+      features={features}
+      howItWorks={howItWorks}
+      testimonial={{
+        quote:
+          "This tool changed how I study! The step-by-step explanations help me actually understand the material instead of just memorizing answers.",
+        author: "Sarah Johnson",
+        role: "11th Grade Student",
+        initial: "S",
+      }}
+      relatedTools={relatedTools}
+      ctaTitle="Ready to Solve Smarter?"
+      ctaDescription="Get detailed homework help in seconds with AI-powered explanations"
+      ctaIcon={Brain}
+    >
+      <EnhancedToolLayout
+        toolSlug="homework-solver"
+        toolName="AI Homework Solver"
+        placeholder={`✍️ Enter your homework question here...
 
 Examples:
 • Solve: 2x² + 5x - 3 = 0
-• Explain the process of photosynthesis
-• What caused the French Revolution?
-• Write a Python function to check if a number is prime"
-                        promptTemplate={generatePrompt}
-                        inputRows={5}
-                        toolSlug="homework-solver"
-                        toolOptions={toolOptions}
-                        resultLabel="📚 Solution"
-                        generateButtonText="🚀 Solve My Homework"
-                        customResultRenderer={(result) => <HomeworkResultFormatter result={result} />}
-                    />
-                </div>
-            </div>
+• Explain the process of photosynthesis in plant cells
+• What were the main causes of the French Revolution?
+• Write a Python function to check if a number is prime
+• Calculate the force needed to accelerate a 10kg object at 5m/s²
 
-            {/* Subject Cards - Floating Design */}
-            <div className="max-w-7xl mx-auto px-4 py-20">
-                <div className="text-center mb-10">
-                    <h2 className="text-3xl font-bold text-foreground mb-2">
-                        Works with <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Every Subject</span>
-                    </h2>
-                    <p className="text-muted-foreground">From algebra to zoology, we've got you covered</p>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                    {subjectCards.map((subject, i) => (
-                        <div
-                            key={subject.name}
-                            className="group relative"
-                            style={{ animationDelay: `${i * 100}ms` }}
-                        >
-                            <div className={`absolute inset-0 ${subject.bgGlow} rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
-                            <div className="relative p-5 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 hover:border-transparent hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 text-center cursor-pointer">
-                                <div className={`w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br ${subject.color} flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg`}>
-                                    <subject.icon className="h-7 w-7 text-white" />
-                                </div>
-                                <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">{subject.name}</h3>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* Features Grid - Premium Cards */}
-            <div className="max-w-7xl mx-auto px-4 py-16">
-                <div className="text-center mb-10">
-                    <h2 className="text-3xl font-bold text-foreground mb-2">
-                        Why Students <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Love Us</span>
-                    </h2>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Card 1 */}
-                    <div className="group relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                        <div className="relative p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/20 border border-blue-100 dark:border-blue-800/30 group-hover:bg-transparent group-hover:border-transparent transition-all duration-500">
-                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-5 shadow-lg group-hover:bg-white/20 transition-all">
-                                <Brain className="h-8 w-8 text-white" />
-                            </div>
-                            <h3 className="text-xl font-bold text-foreground group-hover:text-white mb-3 transition-colors">Step-by-Step Learning</h3>
-                            <p className="text-muted-foreground group-hover:text-white/80 transition-colors">Understand the 'how' and 'why' behind every answer with crystal-clear explanations.</p>
-                        </div>
-                    </div>
-
-                    {/* Card 2 */}
-                    <div className="group relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                        <div className="relative p-8 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/20 border border-purple-100 dark:border-purple-800/30 group-hover:bg-transparent group-hover:border-transparent transition-all duration-500">
-                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-5 shadow-lg group-hover:bg-white/20 transition-all">
-                                <Zap className="h-8 w-8 text-white" />
-                            </div>
-                            <h3 className="text-xl font-bold text-foreground group-hover:text-white mb-3 transition-colors">Lightning Fast</h3>
-                            <p className="text-muted-foreground group-hover:text-white/80 transition-colors">Get solutions in seconds, not hours. Perfect for last-minute study sessions!</p>
-                        </div>
-                    </div>
-
-                    {/* Card 3 */}
-                    <div className="group relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                        <div className="relative p-8 rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/20 border border-green-100 dark:border-green-800/30 group-hover:bg-transparent group-hover:border-transparent transition-all duration-500">
-                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-5 shadow-lg group-hover:bg-white/20 transition-all">
-                                <Shield className="h-8 w-8 text-white" />
-                            </div>
-                            <h3 className="text-xl font-bold text-foreground group-hover:text-white mb-3 transition-colors">100% Free & Private</h3>
-                            <p className="text-muted-foreground group-hover:text-white/80 transition-colors">No sign-up, no fees. Your homework stays completely private and secure.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* How It Works - Timeline */}
-            <div className="max-w-5xl mx-auto px-4 py-20">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold text-foreground mb-2">
-                        <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">3 Simple Steps</span> to Success
-                    </h2>
-                </div>
-
-                <div className="relative">
-                    {/* Connection Line */}
-                    <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 -translate-y-1/2 rounded-full"></div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-                        {[
-                            { step: 1, title: 'Enter Question', desc: 'Type or paste your homework problem', icon: Lightbulb, color: 'from-blue-500 to-indigo-600' },
-                            { step: 2, title: 'Choose Settings', desc: 'Select subject and explanation style', icon: Target, color: 'from-purple-500 to-pink-600' },
-                            { step: 3, title: 'Get Solution', desc: 'Receive detailed step-by-step answer', icon: Award, color: 'from-green-500 to-emerald-600' },
-                        ].map((item, i) => (
-                            <div key={i} className="relative text-center">
-                                <div className={`w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow-2xl mb-5 relative z-10`}>
-                                    <item.icon className="h-10 w-10 text-white" />
-                                    <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-white dark:bg-slate-900 border-4 border-primary flex items-center justify-center text-sm font-black text-primary">
-                                        {item.step}
-                                    </div>
-                                </div>
-                                <h3 className="text-lg font-bold text-foreground mb-2">{item.title}</h3>
-                                <p className="text-sm text-muted-foreground">{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Testimonial - Gradient Card */}
-            <div className="max-w-5xl mx-auto px-4 py-16">
-                <div className="relative">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur opacity-30"></div>
-                    <div className="relative p-10 rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 text-white overflow-hidden">
-                        {/* Decorative elements */}
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"></div>
-                        <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-pink-500/20 to-orange-500/20 rounded-full blur-3xl"></div>
-
-                        <div className="relative text-center">
-                            <div className="flex justify-center gap-1 mb-5">
-                                {[1, 2, 3, 4, 5].map((i) => (
-                                    <Star key={i} className="h-6 w-6 fill-yellow-400 text-yellow-400" />
-                                ))}
-                            </div>
-                            <p className="text-2xl font-medium italic mb-6 leading-relaxed">
-                                "This tool literally saved my grades! The step-by-step explanations helped me understand calculus concepts I've struggled with for months."
-                            </p>
-                            <div className="flex items-center justify-center gap-3">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-lg font-bold">
-                                    S
-                                </div>
-                                <div className="text-left">
-                                    <p className="font-semibold">Sarah Johnson</p>
-                                    <p className="text-sm text-slate-400">11th Grade Student</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Related Tools */}
-            <div className="max-w-5xl mx-auto px-4 py-16">
-                <div className="text-center mb-8">
-                    <h2 className="text-2xl font-bold text-foreground">More Study Tools</h2>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {[
-                        { name: 'Notes Generator', slug: 'notes-generator', icon: BookOpen, color: 'text-blue-600' },
-                        { name: 'Flashcard Maker', slug: 'flashcard-maker', icon: Brain, color: 'text-purple-600' },
-                        { name: 'Quiz Generator', slug: 'quiz-generator', icon: Lightbulb, color: 'text-green-600' },
-                        { name: 'Formula Generator', slug: 'formula-generator', icon: Calculator, color: 'text-orange-600' },
-                    ].map((tool) => (
-                        <Link
-                            key={tool.slug}
-                            href={`/tools/${tool.slug}`}
-                            className="group p-5 rounded-2xl bg-white dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 hover:border-primary/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center"
-                        >
-                            <tool.icon className={`h-8 w-8 mx-auto mb-3 ${tool.color} group-hover:scale-110 transition-transform`} />
-                            <p className="font-semibold text-foreground group-hover:text-primary transition-colors">{tool.name}</p>
-                        </Link>
-                    ))}
-                </div>
-            </div>
-
-            {/* CTA Section */}
-            <div className="max-w-5xl mx-auto px-4 py-16">
-                <div className="p-8 rounded-3xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white text-center relative overflow-hidden">
-                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySC0yNHYtMmgxMnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-50"></div>
-                    <div className="relative">
-                        <Rocket className="h-12 w-12 mx-auto mb-4" />
-                        <h3 className="text-2xl font-bold mb-3">Ready to Ace Your Homework?</h3>
-                        <p className="text-white/80 mb-6 max-w-md mx-auto">Join thousands of students getting better grades with AI-powered homework help.</p>
-                        <a href="#tool-input" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary font-bold rounded-xl hover:bg-white/90 transition-colors shadow-xl">
-                            Start Solving Now <ArrowRight className="h-5 w-5" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <FAQSection faqs={faqs} />
-        </div>
-    );
+Be as specific as possible for best results!`}
+        promptTemplate={generatePrompt}
+        inputRows={10}
+        toolOptions={toolOptions}
+        resultLabel="📚 Your Solution"
+        generateButtonText="🚀 Solve My Homework"
+        inputLabel="📝 Your Homework Question"
+        showAdvancedOptions={true}
+        maxHistoryItems={10}
+        customResultRenderer={(result) => (
+          <HomeworkResultFormatter result={result} />
+        )}
+      />
+      <div className="px-6 pb-6">
+        <FAQSection faqs={faqs} />
+      </div>
+    </PremiumToolWrapper>
+  );
 }

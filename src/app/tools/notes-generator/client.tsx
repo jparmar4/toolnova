@@ -1,152 +1,357 @@
-'use client';
+"use client";
 
-import ToolLayout, { ToolOption } from '@/components/ToolLayout';
-import { PremiumToolWrapper, defaultFeatures } from '@/components/PremiumToolWrapper';
-import { FAQSection } from '@/components/FAQSection';
+import EnhancedToolLayout from "@/components/EnhancedToolLayout";
+import { PremiumToolWrapper } from "@/components/PremiumToolWrapper";
+import { FAQSection } from "@/components/FAQSection";
 import {
-    BookOpen,
-    ClipboardList,
-    Brain,
-    Lightbulb,
-    Target,
-    Award,
-    FileText,
-    Calculator,
-    Pencil
-} from 'lucide-react';
+  BookOpen,
+  ClipboardList,
+  Brain,
+  Lightbulb,
+  Target,
+  Zap,
+  Users,
+  Star,
+  Clock,
+  Sparkles,
+  FileText,
+  GraduationCap,
+} from "lucide-react";
 
-const toolOptions: ToolOption[] = [
-    {
-        id: 'noteStyle',
-        label: 'Note Style',
-        type: 'select',
-        options: [
-            { value: 'detailed', label: '📝 Detailed Notes' },
-            { value: 'summary', label: '📋 Summary Points' },
-            { value: 'outline', label: '🔢 Outline Format' },
-            { value: 'cornell', label: '📚 Cornell Style' },
-        ],
-        defaultValue: 'detailed',
-    },
-    {
-        id: 'subject',
-        label: 'Subject',
-        type: 'select',
-        options: [
-            { value: 'general', label: '📚 General' },
-            { value: 'science', label: '🔬 Science' },
-            { value: 'history', label: '📜 History' },
-            { value: 'literature', label: '📖 Literature' },
-            { value: 'business', label: '💼 Business' },
-        ],
-        defaultValue: 'general',
-    },
-    {
-        id: 'includeKeyTerms',
-        label: 'Highlight Key Terms',
-        type: 'toggle',
-        defaultValue: true,
-    },
-    {
-        id: 'includeQuestions',
-        label: 'Add Review Questions',
-        type: 'toggle',
-        defaultValue: true,
-    },
+const systemPrompt = `You are an expert note-taking assistant helping students create comprehensive study notes.
+
+OUTPUT RULES:
+- Create well-organized, clear notes that capture all key information
+- Use proper formatting with headers, bullet points, and sections
+- Highlight important concepts and definitions
+- Include examples where helpful
+- Make notes easy to review and understand
+
+QUALITY STANDARDS:
+- Comprehensive coverage of the topic
+- Clear organization and structure
+- Easy-to-scan format
+- Academic rigor appropriate for the subject
+- Helpful for studying and review`;
+
+const toolOptions = [
+  {
+    id: "noteStyle",
+    label: "Note Style",
+    type: "select" as const,
+    options: [
+      { value: "detailed", label: "📝 Detailed Notes" },
+      { value: "summary", label: "📋 Summary Points" },
+      { value: "outline", label: "🔢 Outline Format" },
+      { value: "cornell", label: "📚 Cornell Style" },
+      { value: "mindmap", label: "🧠 Mind Map Structure" },
+    ],
+    defaultValue: "detailed",
+  },
+  {
+    id: "subject",
+    label: "Subject Area",
+    type: "select" as const,
+    options: [
+      { value: "general", label: "📚 General" },
+      { value: "science", label: "🔬 Science" },
+      { value: "math", label: "🔢 Mathematics" },
+      { value: "history", label: "📜 History" },
+      { value: "literature", label: "📖 Literature" },
+      { value: "business", label: "💼 Business" },
+      { value: "technology", label: "💻 Technology" },
+    ],
+    defaultValue: "general",
+  },
+  {
+    id: "length",
+    label: "Note Length",
+    type: "select" as const,
+    options: [
+      { value: "brief", label: "⚡ Brief (Key points only)" },
+      { value: "standard", label: "📄 Standard" },
+      { value: "comprehensive", label: "📚 Comprehensive" },
+    ],
+    defaultValue: "standard",
+  },
+  {
+    id: "includeKeyTerms",
+    label: "Highlight Key Terms",
+    type: "toggle" as const,
+    defaultValue: true,
+  },
+  {
+    id: "includeQuestions",
+    label: "Add Review Questions",
+    type: "toggle" as const,
+    defaultValue: true,
+  },
+  {
+    id: "includeExamples",
+    label: "Include Examples",
+    type: "toggle" as const,
+    defaultValue: true,
+  },
 ];
 
 const generatePrompt = (input: string, options?: Record<string, any>) => {
-    const noteStyle = options?.noteStyle || 'detailed';
-    const subject = options?.subject || 'general';
-    const includeKeyTerms = options?.includeKeyTerms !== false;
-    const includeQuestions = options?.includeQuestions !== false;
+  const noteStyle = options?.noteStyle || "detailed";
+  const subject = options?.subject || "general";
+  const length = options?.length || "standard";
+  const includeKeyTerms = options?.includeKeyTerms ?? true;
+  const includeQuestions = options?.includeQuestions ?? true;
+  const includeExamples = options?.includeExamples ?? true;
 
-    const styles: Record<string, string> = {
-        detailed: 'Create comprehensive, detailed notes with full explanations and examples.',
-        summary: 'Create concise bullet points with the most important takeaways.',
-        outline: 'Create a numbered outline with clear sections (1, 2, 3) and sub-points (a, b, c).',
-        cornell: 'Format notes with a Cues section, Main Notes section, and Summary at the bottom.',
-    };
+  const styleInstructions: Record<string, string> = {
+    detailed:
+      "Create comprehensive, detailed notes with full explanations of each concept. Use paragraphs and clear explanations.",
+    summary:
+      "Create concise summary notes using bullet points. Focus on the most important information only.",
+    outline:
+      "Create notes in outline format with numbered sections (1, 1.1, 1.1.1) and hierarchical structure.",
+    cornell:
+      "Use Cornell note-taking format with: Main Notes (detailed content), Cues (keywords/questions on left), and Summary (bottom section).",
+    mindmap:
+      "Structure notes like a mind map with main topic at center, major branches for main concepts, and sub-branches for details.",
+  };
 
-    return [
-        `You are a helpful study assistant creating ${subject} notes.`,
-        '',
-        'FORMAT YOUR NOTES LIKE THIS:',
-        '',
-        '📝 MAIN NOTES:',
-        '[Your detailed notes here]',
-        '',
-        includeKeyTerms ? 'KEY TERMS:\n[Important terms with definitions]' : '',
-        '',
-        includeQuestions ? 'REVIEW QUESTIONS:\n[3-5 questions to test understanding]' : '',
-        '',
-        'MEMORY TIP:',
-        '[One helpful tip to remember the key concepts]',
-        '',
-        `Style: ${styles[noteStyle]}`,
-        '',
-        'Content to create notes from:',
-        input
-    ].filter(line => line !== '').join('\n');
+  const lengthInstructions: Record<string, string> = {
+    brief: "Keep it concise - only essential information and key points.",
+    standard:
+      "Provide balanced coverage with main concepts and important details.",
+    comprehensive:
+      "Create extensive notes covering all aspects in depth with thorough explanations.",
+  };
+
+  let prompt = `Create study notes about: ${input}
+
+📚 Subject: ${subject}
+📝 Style: ${styleInstructions[noteStyle]}
+📏 Length: ${lengthInstructions[length]}
+
+Structure your notes with:
+
+📌 TOPIC OVERVIEW:
+[Brief introduction to the topic]
+
+📖 MAIN CONTENT:
+${noteStyle === "cornell" ? "[Divide into: Cues column | Main Notes column]" : "[Organized sections covering all key aspects]"}
+
+`;
+
+  if (includeKeyTerms) {
+    prompt += `
+🔑 KEY TERMS & DEFINITIONS:
+[Important terminology with clear definitions]
+`;
+  }
+
+  if (includeExamples) {
+    prompt += `
+💡 EXAMPLES:
+[Practical examples illustrating concepts]
+`;
+  }
+
+  if (includeQuestions) {
+    prompt += `
+❓ REVIEW QUESTIONS:
+[3-5 questions to test understanding of the material]
+`;
+  }
+
+  if (noteStyle === "cornell") {
+    prompt += `
+📝 SUMMARY:
+[Brief summary section at the bottom]
+`;
+  }
+
+  prompt += `
+Remember to:
+- Use clear headings and formatting
+- Organize information logically
+- Make it easy to review and study
+- Highlight important concepts
+- Keep explanations clear and accessible`;
+
+  return prompt;
 };
 
-const faqs = [
-    { question: "What note styles are available?", answer: "We offer Detailed Notes, Summary Points, Outline Format, and Cornell Style notes to match your study preferences." },
-    { question: "Can I use this for any subject?", answer: "Yes! Our AI adapts to any subject including science, history, literature, business, and more." },
-    { question: "How long should my input be?", answer: "You can paste anything from a few paragraphs to entire chapters. The AI will organize it effectively." },
+const stats = [
+  { value: "150K+", label: "Notes Created", icon: ClipboardList },
+  { value: "4.9/5", label: "Student Rating", icon: Star },
+  { value: "<1 min", label: "Generation Time", icon: Clock },
 ];
 
-const relatedTools = [
-    { name: 'Flashcard Maker', slug: 'flashcard-maker', icon: Brain, color: 'text-purple-600' },
-    { name: 'Quiz Generator', slug: 'quiz-generator', icon: Lightbulb, color: 'text-green-600' },
-    { name: 'Chapter Summary', slug: 'chapter-summary', icon: ClipboardList, color: 'text-blue-600' },
-    { name: 'Homework Solver', slug: 'homework-solver', icon: Calculator, color: 'text-orange-600' },
+const features = [
+  {
+    icon: Brain,
+    title: "Multiple Note Styles",
+    description:
+      "Choose from detailed notes, summaries, outlines, Cornell method, or mind map structures",
+    gradient: "from-blue-500 to-indigo-600",
+    bgLight: "bg-blue-50",
+  },
+  {
+    icon: Target,
+    title: "Subject-Optimized",
+    description:
+      "Notes adapted to different subjects including science, math, history, literature, and more",
+    gradient: "from-purple-500 to-pink-600",
+    bgLight: "bg-purple-50",
+  },
+  {
+    icon: Sparkles,
+    title: "Study-Ready Format",
+    description:
+      "Includes key terms, examples, and review questions to help you ace your exams",
+    gradient: "from-green-500 to-emerald-600",
+    bgLight: "bg-green-50",
+  },
 ];
 
 const howItWorks = [
-    { step: 1, title: 'Paste Content', desc: 'Add your textbook or lecture content', icon: FileText, color: 'from-blue-500 to-indigo-600' },
-    { step: 2, title: 'Choose Style', desc: 'Select your preferred note format', icon: Pencil, color: 'from-purple-500 to-pink-600' },
-    { step: 3, title: 'Get Notes', desc: 'Receive organized study notes', icon: BookOpen, color: 'from-green-500 to-emerald-600' },
+  {
+    step: 1,
+    title: "Enter Topic",
+    desc: "Type the subject or chapter you need notes for",
+    icon: BookOpen,
+    color: "from-blue-500 to-indigo-600",
+  },
+  {
+    step: 2,
+    title: "Choose Format",
+    desc: "Select note style and preferences",
+    icon: Target,
+    color: "from-purple-500 to-pink-600",
+  },
+  {
+    step: 3,
+    title: "Get Notes",
+    desc: "Receive comprehensive, study-ready notes",
+    icon: ClipboardList,
+    color: "from-green-500 to-emerald-600",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Flashcard Maker",
+    slug: "flashcard-maker",
+    icon: Brain,
+    color: "text-blue-600",
+  },
+  {
+    name: "MCQ Generator",
+    slug: "mcq-generator",
+    icon: Target,
+    color: "text-purple-600",
+  },
+  {
+    name: "Chapter Summary",
+    slug: "chapter-summary",
+    icon: BookOpen,
+    color: "text-green-600",
+  },
+  {
+    name: "Concept Explainer",
+    slug: "concept-explainer",
+    icon: Lightbulb,
+    color: "text-orange-600",
+  },
+];
+
+const faqs = [
+  {
+    question: "What note-taking styles are available?",
+    answer:
+      "We offer 5 styles: Detailed (comprehensive paragraphs), Summary (bullet points), Outline (numbered hierarchy), Cornell (divided format with cues and summary), and Mind Map (branching structure). Each is designed for different learning preferences.",
+    category: "Features",
+  },
+  {
+    question: "Can I generate notes for any subject?",
+    answer:
+      "Yes! The tool works for all subjects including science, math, history, literature, business, technology, and general topics. The AI adapts its approach based on the subject you select.",
+    category: "Usage",
+  },
+  {
+    question: "Are review questions included?",
+    answer:
+      "Yes, when enabled, we include 3-5 review questions to help you test your understanding of the material. These are great for self-assessment and exam preparation.",
+    category: "Features",
+  },
+  {
+    question: "What's the Cornell note-taking method?",
+    answer:
+      "Cornell notes divide the page into three sections: a narrow left column for cues/keywords, a wider right column for main notes, and a bottom section for summary. It's proven effective for studying and review.",
+    category: "Methods",
+  },
+  {
+    question: "How detailed should my input be?",
+    answer:
+      "You can be brief (e.g., 'Photosynthesis') or detailed (e.g., 'The light-dependent reactions of photosynthesis in plant cells'). More specific input typically generates more focused notes.",
+    category: "Usage",
+  },
+  {
+    question: "Can I use these notes for exam preparation?",
+    answer:
+      "Absolutely! The notes are specifically designed for studying and exam prep. They include key terms, examples, and review questions to help you master the material.",
+    category: "Academic",
+  },
 ];
 
 export default function NotesGeneratorClient() {
-    return (
-        <PremiumToolWrapper
-            toolName="AI Notes Generator"
-            toolSlug="notes-generator"
-            tagline="Transform any content into perfect study notes"
-            description="Paste your textbook content, lectures, or articles and get beautifully organized notes in seconds."
-            badge="#1 Note-Taking Tool"
-            category="Study Tools"
-            categorySlug="study-tools"
-            features={defaultFeatures}
-            howItWorks={howItWorks}
-            testimonial={{
-                quote: "This saved me hours of note-taking! The Cornell format notes are perfect for my study sessions.",
-                author: "Alex Chen",
-                role: "Pre-Med Student",
-                initial: "A"
-            }}
-            relatedTools={relatedTools}
-            ctaTitle="Start Creating Better Notes"
-            ctaDescription="Join thousands of students who study smarter, not harder."
-        >
-            <ToolLayout
-                title=""
-                description=""
-                placeholder="📚 Paste your textbook content, lecture notes, or article here...
+  return (
+    <PremiumToolWrapper
+      toolName="AI Notes Generator"
+      toolSlug="notes-generator"
+      tagline="Generate comprehensive study notes from any topic"
+      description="Create well-organized, study-ready notes in multiple formats. Perfect for students who want to learn efficiently and ace their exams with properly structured study materials."
+      badge="AI-Powered"
+      category="Study Tools"
+      categorySlug="study-tools"
+      stats={stats}
+      features={features}
+      howItWorks={howItWorks}
+      testimonial={{
+        quote:
+          "These notes saved me so much time! The Cornell format is perfect for my study style, and the review questions really help me prepare for tests.",
+        author: "Alex Thompson",
+        role: "High School Student",
+        initial: "A",
+      }}
+      relatedTools={relatedTools}
+      ctaTitle="Ready to Study Smarter?"
+      ctaDescription="Generate comprehensive study notes in seconds"
+      ctaIcon={ClipboardList}
+    >
+      <EnhancedToolLayout
+        toolSlug="notes-generator"
+        toolName="AI Notes Generator"
+        placeholder={`📚 Enter the topic you need notes for...
 
-Example: Copy and paste a chapter from your textbook or notes from a lecture."
-                promptTemplate={generatePrompt}
-                inputRows={6}
-                toolSlug="notes-generator"
-                toolOptions={toolOptions}
-                resultLabel="📝 Your Notes"
-                generateButtonText="✨ Generate Notes"
-            />
-            <div className="px-6 pb-6">
-                <FAQSection faqs={faqs} />
-            </div>
-        </PremiumToolWrapper>
-    );
+Examples:
+• The water cycle and its stages
+• World War II causes and major events
+• Cellular respiration process
+• Shakespeare's Romeo and Juliet themes
+• Marketing fundamentals and the 4 Ps
+• Python programming basics - functions and loops
+
+The more specific you are, the better your notes will be!`}
+        promptTemplate={generatePrompt}
+        inputRows={10}
+        toolOptions={toolOptions}
+        resultLabel="📝 Your Study Notes"
+        generateButtonText="📚 Generate Notes"
+        inputLabel="📖 Topic/Chapter"
+        showAdvancedOptions={true}
+        maxHistoryItems={10}
+      />
+      <div className="px-6 pb-6">
+        <FAQSection faqs={faqs} />
+      </div>
+    </PremiumToolWrapper>
+  );
 }

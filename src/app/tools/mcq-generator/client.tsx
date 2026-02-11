@@ -1,151 +1,350 @@
-'use client';
+"use client";
 
-import ToolLayout, { ToolOption } from '@/components/ToolLayout';
-import { PremiumToolWrapper, defaultFeatures } from '@/components/PremiumToolWrapper';
-import { FAQSection } from '@/components/FAQSection';
+import EnhancedToolLayout from "@/components/EnhancedToolLayout";
+import { PremiumToolWrapper } from "@/components/PremiumToolWrapper";
+import { FAQSection } from "@/components/FAQSection";
 import {
-    BookOpen,
-    Brain,
-    Lightbulb,
-    FileText,
-    Calculator,
-    Target,
-    CheckSquare,
-    ClipboardList
-} from 'lucide-react';
+  Target,
+  Brain,
+  Lightbulb,
+  CheckCircle2,
+  Zap,
+  Users,
+  Star,
+  Clock,
+  BookOpen,
+  GraduationCap,
+  Sparkles,
+} from "lucide-react";
 
-const toolOptions: ToolOption[] = [
-    {
-        id: 'questionCount',
-        label: 'Number of Questions',
-        type: 'select',
-        options: [
-            { value: '5', label: '5 Questions' },
-            { value: '10', label: '10 Questions' },
-            { value: '15', label: '15 Questions' },
-            { value: '20', label: '20 Questions' },
-        ],
-        defaultValue: '10',
-    },
-    {
-        id: 'difficulty',
-        label: 'Difficulty Level',
-        type: 'select',
-        options: [
-            { value: 'easy', label: '🟢 Easy' },
-            { value: 'medium', label: '🟡 Medium' },
-            { value: 'hard', label: '🔴 Hard' },
-            { value: 'mixed', label: '🎯 Mixed' },
-        ],
-        defaultValue: 'medium',
-    },
-    {
-        id: 'includeAnswers',
-        label: 'Include Answer Key',
-        type: 'toggle',
-        defaultValue: true,
-    },
-    {
-        id: 'includeExplanations',
-        label: 'Include Explanations',
-        type: 'toggle',
-        defaultValue: true,
-    },
+const systemPrompt = `You are an expert MCQ (Multiple Choice Question) generator for exam preparation.
+
+OUTPUT RULES:
+- Generate the EXACT number of questions requested
+- Use the EXACT format: Question 1: [question text] A) ... B) ... C) ... D) ...
+- Do NOT use FINAL ANSWER/WORKING format
+- Output can be long (5-20 questions) - ignore any line limits
+- Include all questions with proper numbering
+- Add answer key at the end when requested
+
+QUESTION QUALITY:
+- Make distractors plausible but clearly incorrect
+- Ensure ONE clear correct answer per question
+- Match the requested difficulty level
+- Keep questions clear and unambiguous
+- Test understanding, not just memorization
+- Cover different aspects of the topic`;
+
+const toolOptions = [
+  {
+    id: "questionCount",
+    label: "Number of Questions",
+    type: "select" as const,
+    options: [
+      { value: "5", label: "5 Questions" },
+      { value: "10", label: "10 Questions" },
+      { value: "15", label: "15 Questions" },
+      { value: "20", label: "20 Questions" },
+    ],
+    defaultValue: "10",
+  },
+  {
+    id: "difficulty",
+    label: "Difficulty Level",
+    type: "select" as const,
+    options: [
+      { value: "easy", label: "🟢 Easy" },
+      { value: "medium", label: "🟡 Medium" },
+      { value: "hard", label: "🔴 Hard" },
+      { value: "mixed", label: "🎯 Mixed" },
+    ],
+    defaultValue: "medium",
+  },
+  {
+    id: "questionType",
+    label: "Question Focus",
+    type: "select" as const,
+    options: [
+      { value: "conceptual", label: "💡 Conceptual Understanding" },
+      { value: "factual", label: "📚 Factual Knowledge" },
+      { value: "application", label: "🔧 Application-based" },
+      { value: "mixed", label: "🎯 Mixed Types" },
+    ],
+    defaultValue: "mixed",
+  },
+  {
+    id: "includeAnswers",
+    label: "Include Answer Key",
+    type: "toggle" as const,
+    defaultValue: true,
+  },
+  {
+    id: "includeExplanations",
+    label: "Include Explanations",
+    type: "toggle" as const,
+    defaultValue: false,
+  },
 ];
 
 const generatePrompt = (input: string, options?: Record<string, any>) => {
-    const questionCount = options?.questionCount || '10';
-    const difficulty = options?.difficulty || 'medium';
-    const includeAnswers = options?.includeAnswers !== false;
-    const includeExplanations = options?.includeExplanations !== false;
+  const questionCount = options?.questionCount || "10";
+  const difficulty = options?.difficulty || "medium";
+  const questionType = options?.questionType || "mixed";
+  const includeAnswers = options?.includeAnswers ?? true;
+  const includeExplanations = options?.includeExplanations ?? false;
 
-    return [
-        `Create ${questionCount} multiple choice questions (MCQs).`,
-        `Difficulty: ${difficulty}`,
-        'Use simple, clear English.',
-        '',
-        'Format each question like this:',
-        'Question 1: ...',
-        'A) ...',
-        'B) ...',
-        'C) ...',
-        'D) ...',
-        '',
-        includeAnswers
-            ? 'ANSWER KEY:\n[List all correct answers like: 1. A, 2. C, ...]'
-            : 'Do not include an answer key.',
-        '',
-        includeExplanations
-            ? 'EXPLANATIONS:\n[Short explanation for each answer (1-2 lines each)]'
-            : 'Do not include explanations.',
-        '',
-        'TIP:\n[One study tip related to this topic]',
-        '',
-        'Topic/Content:',
-        input
-    ].join('\n');
+  const difficultyInstructions: Record<string, string> = {
+    easy: "Easy level - Basic concepts and straightforward questions. Suitable for beginners.",
+    medium:
+      "Medium level - Moderate complexity requiring good understanding. Standard exam level.",
+    hard: "Hard level - Advanced concepts requiring deep understanding and critical thinking.",
+    mixed:
+      "Mixed difficulty - Combination of easy, medium, and hard questions for comprehensive assessment.",
+  };
+
+  const typeInstructions: Record<string, string> = {
+    conceptual:
+      "Focus on testing conceptual understanding and comprehension of key ideas.",
+    factual:
+      "Focus on testing factual knowledge, definitions, dates, names, and specific information.",
+    application:
+      "Focus on testing ability to apply knowledge to solve problems or real-world scenarios.",
+    mixed:
+      "Include a variety of question types covering concepts, facts, and applications.",
+  };
+
+  let prompt = `Generate ${questionCount} multiple-choice questions (MCQs) about: ${input}
+
+📝 Requirements:
+- Topic: ${input}
+- Number of Questions: ${questionCount}
+- Difficulty: ${difficultyInstructions[difficulty]}
+- Question Type: ${typeInstructions[questionType]}
+
+🎯 Format (IMPORTANT - Use this EXACT structure):
+
+Question 1: [Write the question here]
+A) [First option]
+B) [Second option]
+C) [Third option]
+D) [Fourth option]
+
+Question 2: [Write the question here]
+A) [First option]
+B) [Second option]
+C) [Third option]
+D) [Fourth option]
+
+[Continue for all ${questionCount} questions]
+
+`;
+
+  if (includeAnswers) {
+    prompt += `
+📋 ANSWER KEY:
+[After all questions, provide answers in this format:]
+1. A
+2. C
+3. B
+[etc.]
+`;
+  }
+
+  if (includeExplanations) {
+    prompt += `
+💡 EXPLANATIONS:
+[Briefly explain why each correct answer is right]
+`;
+  }
+
+  prompt += `
+Important Guidelines:
+- Create exactly ${questionCount} questions
+- Make all options plausible but only ONE correct
+- Ensure questions are clear and unambiguous
+- Avoid trick questions or confusing wording
+- Cover different aspects of the topic
+- Make distractors reasonable but clearly incorrect`;
+
+  return prompt;
 };
 
-const faqs = [
-    { question: "How many questions can I generate?", answer: "You can generate 5, 10, 15, or 20 questions at once based on your study needs." },
-    { question: "What difficulty levels are available?", answer: "Choose from Easy, Medium, Hard, or Mixed difficulty to match your preparation level." },
-    { question: "Are explanations included?", answer: "Yes! Toggle the option to include detailed explanations for each correct answer." },
+const stats = [
+  { value: "200K+", label: "Questions Generated", icon: Target },
+  { value: "4.9/5", label: "Student Rating", icon: Star },
+  { value: "<1 min", label: "Generation Time", icon: Clock },
 ];
 
-const relatedTools = [
-    { name: 'Quiz Generator', slug: 'quiz-generator', icon: Lightbulb, color: 'text-green-600' },
-    { name: 'Flashcard Maker', slug: 'flashcard-maker', icon: Brain, color: 'text-purple-600' },
-    { name: 'Notes Generator', slug: 'notes-generator', icon: ClipboardList, color: 'text-blue-600' },
-    { name: 'Homework Solver', slug: 'homework-solver', icon: Calculator, color: 'text-orange-600' },
+const features = [
+  {
+    icon: Zap,
+    title: "Customizable Difficulty",
+    description:
+      "Choose from easy, medium, hard, or mixed difficulty levels to match your preparation needs",
+    gradient: "from-blue-500 to-indigo-600",
+    bgLight: "bg-blue-50",
+  },
+  {
+    icon: Brain,
+    title: "Multiple Question Types",
+    description:
+      "Generate conceptual, factual, or application-based questions for comprehensive learning",
+    gradient: "from-purple-500 to-pink-600",
+    bgLight: "bg-purple-50",
+  },
+  {
+    icon: CheckCircle2,
+    title: "Answer Keys & Explanations",
+    description:
+      "Get instant answer keys and detailed explanations to understand why each answer is correct",
+    gradient: "from-green-500 to-emerald-600",
+    bgLight: "bg-green-50",
+  },
 ];
 
 const howItWorks = [
-    { step: 1, title: 'Enter Topic', desc: 'Type your study topic or paste content', icon: FileText, color: 'from-blue-500 to-indigo-600' },
-    { step: 2, title: 'Set Options', desc: 'Choose count as difficulty', icon: Target, color: 'from-purple-500 to-pink-600' },
-    { step: 3, title: 'Get MCQs', desc: 'Practice with generated questions', icon: CheckSquare, color: 'from-green-500 to-emerald-600' },
+  {
+    step: 1,
+    title: "Enter Topic",
+    desc: "Type the subject or chapter you want to practice",
+    icon: BookOpen,
+    color: "from-blue-500 to-indigo-600",
+  },
+  {
+    step: 2,
+    title: "Set Preferences",
+    desc: "Choose number of questions, difficulty, and type",
+    icon: Target,
+    color: "from-purple-500 to-pink-600",
+  },
+  {
+    step: 3,
+    title: "Practice & Learn",
+    desc: "Get MCQs with answers and explanations",
+    icon: CheckCircle2,
+    color: "from-green-500 to-emerald-600",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Quiz Generator",
+    slug: "quiz-generator",
+    icon: Lightbulb,
+    color: "text-blue-600",
+  },
+  {
+    name: "Flashcard Maker",
+    slug: "flashcard-maker",
+    icon: Brain,
+    color: "text-purple-600",
+  },
+  {
+    name: "Notes Generator",
+    slug: "notes-generator",
+    icon: BookOpen,
+    color: "text-green-600",
+  },
+  {
+    name: "Homework Solver",
+    slug: "homework-solver",
+    icon: GraduationCap,
+    color: "text-orange-600",
+  },
+];
+
+const faqs = [
+  {
+    question: "How many questions can I generate at once?",
+    answer:
+      "You can generate 5, 10, 15, or 20 questions at once. For comprehensive practice, we recommend starting with 10 questions and adjusting based on your needs.",
+    category: "Usage",
+  },
+  {
+    question: "What's the difference between difficulty levels?",
+    answer:
+      "Easy questions test basic concepts, Medium requires solid understanding, Hard tests advanced knowledge and critical thinking, and Mixed includes all levels for comprehensive assessment.",
+    category: "Features",
+  },
+  {
+    question: "Can I get answer explanations?",
+    answer:
+      "Yes! Enable 'Include Explanations' to get detailed explanations for each correct answer, helping you understand the reasoning behind the solutions.",
+    category: "Features",
+  },
+  {
+    question: "What are the different question types?",
+    answer:
+      "Conceptual questions test understanding of ideas, Factual questions test specific knowledge, Application questions test problem-solving ability, and Mixed includes all types.",
+    category: "Features",
+  },
+  {
+    question: "Are these suitable for exam preparation?",
+    answer:
+      "Absolutely! These MCQs are designed specifically for exam prep. They follow standard exam formats and test various aspects of the topic to ensure thorough preparation.",
+    category: "Academic",
+  },
+  {
+    question: "Can I practice multiple times on the same topic?",
+    answer:
+      "Yes! Each generation creates new questions, so you can practice the same topic multiple times with different questions to reinforce your learning.",
+    category: "Usage",
+  },
 ];
 
 export default function MCQGeneratorClient() {
-    return (
-        <PremiumToolWrapper
-            toolName="AI MCQ Generator"
-            toolSlug="mcq-generator"
-            tagline="Generate practice MCQs instantly for any topic"
-            description="Create multiple choice questions with answer keys and explanations to test your knowledge."
-            badge="Exam Prep Essential"
-            category="Study Tools"
-            categorySlug="study-tools"
-            features={defaultFeatures}
-            howItWorks={howItWorks}
-            testimonial={{
-                quote: "I used this to prepare for my board exams. The mixed difficulty questions really helped me identify my weak areas!",
-                author: "Priya Sharma",
-                role: "12th Grade Student",
-                initial: "P"
-            }}
-            relatedTools={relatedTools}
-            ctaTitle="Start Practicing Now"
-            ctaDescription="Generate unlimited MCQs to ace your exams."
-        >
-            <ToolLayout
-                title=""
-                description=""
-                placeholder="📝 Enter your topic or paste content for MCQ generation...
+  return (
+    <PremiumToolWrapper
+      toolName="MCQ Generator"
+      toolSlug="mcq-generator"
+      tagline="Generate practice multiple-choice questions instantly"
+      description="Create custom MCQ tests for any subject with adjustable difficulty levels, answer keys, and explanations. Perfect for exam preparation and self-assessment."
+      badge="AI-Powered"
+      category="Study Tools"
+      categorySlug="study-tools"
+      stats={stats}
+      features={features}
+      howItWorks={howItWorks}
+      testimonial={{
+        quote:
+          "The MCQs are exactly what I needed for exam prep! The mixed difficulty option helped me identify my weak areas. The explanations are super helpful too!",
+        author: "Priya Sharma",
+        role: "Medical Student",
+        initial: "P",
+      }}
+      relatedTools={relatedTools}
+      ctaTitle="Ready to Test Your Knowledge?"
+      ctaDescription="Generate practice MCQs and ace your exams"
+      ctaIcon={Target}
+    >
+      <EnhancedToolLayout
+        toolSlug="mcq-generator"
+        toolName="MCQ Generator"
+        placeholder={`📚 Enter the topic you need MCQs for...
 
 Examples:
-• Photosynthesis and cellular respiration
-• World War II causes and effects
-• Quadratic equations and their applications"
-                promptTemplate={generatePrompt}
-                inputRows={5}
-                toolSlug="mcq-generator"
-                toolOptions={toolOptions}
-                resultLabel="📋 Your MCQs"
-                generateButtonText="🎯 Generate MCQs"
-            />
-            <div className="px-6 pb-6">
-                <FAQSection faqs={faqs} />
-            </div>
-        </PremiumToolWrapper>
-    );
+• Cell biology and mitosis
+• World War II major events
+• Chemical bonding and molecular structures
+• Newton's laws of motion
+• Shakespeare's Macbeth themes
+• Java programming - OOP concepts
+• Marketing mix and 4 Ps
+• Photosynthesis process in plants
+
+The more specific you are, the better the questions will be!`}
+        promptTemplate={generatePrompt}
+        inputRows={8}
+        toolOptions={toolOptions}
+        resultLabel="📝 Your MCQ Questions"
+        generateButtonText="🎯 Generate MCQs"
+        inputLabel="📖 Topic"
+        showAdvancedOptions={true}
+        maxHistoryItems={10}
+      />
+      <div className="px-6 pb-6">
+        <FAQSection faqs={faqs} />
+      </div>
+    </PremiumToolWrapper>
+  );
 }

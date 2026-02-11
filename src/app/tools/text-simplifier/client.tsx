@@ -1,84 +1,285 @@
-'use client';
+"use client";
 
-import ToolLayout from '@/components/ToolLayout';
-import { PremiumToolWrapper, defaultFeatures } from '@/components/PremiumToolWrapper';
-import { FAQSection } from '@/components/FAQSection';
-import { FileText, Lightbulb, Sparkles, BookOpen, Eye, CheckCircle } from 'lucide-react';
+import EnhancedToolLayout from "@/components/EnhancedToolLayout";
+import { PremiumToolWrapper } from "@/components/PremiumToolWrapper";
+import { FAQSection } from "@/components/FAQSection";
+import { ToolOption } from "@/components/ToolLayout";
+import {
+  FileText,
+  Lightbulb,
+  Sparkles,
+  BookOpen,
+  Eye,
+  CheckCircle,
+  Users,
+  Star,
+  Zap,
+  Target,
+  Type,
+  MessageSquare,
+} from "lucide-react";
 
-const generatePrompt = (input: string) => {
-    return `Simplify the following text so it's easy to understand for anyone.
+const toolOptions = [
+  {
+    id: "level",
+    label: "Reading Level",
+    type: "select" as const,
+    options: [
+      { value: "elementary", label: "📚 Elementary (Grade 3-5)" },
+      { value: "middle", label: "📖 Middle School (Grade 6-8)" },
+      { value: "simple", label: "📝 Simple Adult" },
+      { value: "conversational", label: "💬 Conversational" },
+    ] as const,
+    defaultValue: "simple",
+  },
+  {
+    id: "style",
+    label: "Simplification Style",
+    type: "select" as const,
+    options: [
+      { value: "standard", label: "📄 Standard Simplification" },
+      { value: "explain", label: "💡 Explain Technical Terms" },
+      { value: "bullets", label: "• Break Into Bullet Points" },
+    ] as const,
+    defaultValue: "standard",
+  },
+  {
+    id: "preserveTerms",
+    label: "Preserve Key Terms",
+    type: "toggle" as const,
+    defaultValue: true,
+  },
+] as const;
 
-- Use simple, everyday words
-- Break down complex sentences
-- Explain technical terms
-- Keep the main meaning intact
-- Make it readable at a 6th-grade level
+const generatePrompt = (input: string, options?: Record<string, any>) => {
+  const level = options?.level || "simple";
+  const style = options?.style || "standard";
+  const preserveTerms = options?.preserveTerms !== false;
+
+  const levelDescriptions: Record<string, string> = {
+    elementary:
+      "Simplify to elementary school reading level (grades 3-5). Use very simple words, short sentences (10-15 words max), and basic concepts. Avoid complex vocabulary entirely.",
+    middle:
+      "Simplify to middle school reading level (grades 6-8). Use common words, moderate sentence length (15-20 words), and explain any necessary technical concepts simply.",
+    simple:
+      "Simplify for adult readers seeking clarity. Use everyday language, clear sentence structure (15-25 words), and minimal jargon. Maintain professionalism.",
+    conversational:
+      "Rewrite in a friendly, conversational tone. Use natural language as if explaining to a friend, with contractions and casual phrasing while remaining clear.",
+  };
+
+  const styleDescriptions: Record<string, string> = {
+    standard:
+      "Rewrite the text in simpler language while maintaining the same structure and flow.",
+    explain:
+      "When you encounter technical terms or complex concepts, briefly explain them in parentheses or simple language.",
+    bullets:
+      "Break the information into clear bullet points or numbered lists for easier scanning and comprehension.",
+  };
+
+  return `Simplify the following text to make it easy to understand for a broader audience.
+
+Target reading level: ${levelDescriptions[level]}
+Simplification approach: ${styleDescriptions[style]}
+${preserveTerms ? "IMPORTANT: When technical terms are essential to meaning, keep them but provide a brief, simple explanation in parentheses. Example: 'photosynthesis (the process plants use to make food from sunlight)'" : "Replace all technical terms with simpler alternatives."}
+
+Guidelines for simplification:
+1. **Vocabulary**: Replace complex words with common alternatives
+   - Instead of: utilize, commence, endeavor
+   - Use: use, start, try
+
+2. **Sentence Structure**: Break long, complex sentences into shorter ones
+   - Avoid multiple clauses and nested ideas
+   - One main idea per sentence
+
+3. **Active Voice**: Use active voice instead of passive
+   - Instead of: "The report was completed by the team"
+   - Use: "The team completed the report"
+
+4. **Clarity**: Remove unnecessary jargon and wordiness
+   - Get straight to the point
+   - Eliminate redundant phrases
+
+5. **Meaning**: Keep the core message intact
+   - Don't remove important information
+   - Maintain accuracy of facts
 
 Text to simplify:
 ${input}
 
-Simplified version:`;
+Provide the simplified version:`;
 };
 
-const faqs = [
-    { question: "What reading level does it target?", answer: "Approximately 6th-grade level - clear enough for anyone to understand." },
-    { question: "Will the meaning change?", answer: "No! The core message stays the same, just in simpler words." },
+const stats = [
+  { icon: Users, label: "520K+", sublabel: "Texts Simplified" },
+  { icon: Star, label: "4.9/5", sublabel: "User Rating" },
+  { icon: Zap, label: "Instant", sublabel: "Clarity Boost" },
 ];
 
-const relatedTools = [
-    { name: 'Grammar Fix', slug: 'grammar-fix', icon: CheckCircle, color: 'text-blue-600' },
-    { name: 'Paraphraser', slug: 'paraphraser', icon: Sparkles, color: 'text-purple-600' },
-    { name: 'Concept Explainer', slug: 'concept-explainer', icon: Lightbulb, color: 'text-green-600' },
-    { name: 'Essay Writer', slug: 'essay-writer', icon: FileText, color: 'text-orange-600' },
+const features = [
+  {
+    icon: Target,
+    title: "Multiple Reading Levels",
+    description:
+      "Choose from elementary to conversational styles to match your audience's comprehension needs.",
+  },
+  {
+    icon: Type,
+    title: "Flexible Formatting",
+    description:
+      "Get standard simplified text, explanations of technical terms, or organized bullet points.",
+  },
+  {
+    icon: CheckCircle,
+    title: "Meaning Preserved",
+    description:
+      "Core message stays intact while making content accessible to everyone, regardless of reading level.",
+  },
 ];
 
 const howItWorks = [
-    { step: 1, title: 'Paste Text', desc: 'Add complex content', icon: FileText, color: 'from-blue-500 to-indigo-600' },
-    { step: 2, title: 'Simplify', desc: 'AI rewrites clearly', icon: Eye, color: 'from-purple-500 to-pink-600' },
-    { step: 3, title: 'Use It', desc: 'Easy to understand!', icon: Sparkles, color: 'from-green-500 to-emerald-600' },
+  {
+    step: 1,
+    title: "Paste Text",
+    desc: "Add complex or technical content",
+    icon: FileText,
+    color: "from-blue-500 to-indigo-600",
+  },
+  {
+    step: 2,
+    title: "Choose Level",
+    desc: "Select target reading level",
+    icon: Eye,
+    color: "from-purple-500 to-pink-600",
+  },
+  {
+    step: 3,
+    title: "Get Clarity",
+    desc: "Receive simplified, clear version",
+    icon: Sparkles,
+    color: "from-green-500 to-emerald-600",
+  },
+];
+
+const faqs = [
+  {
+    question: "What is the Text Simplifier?",
+    answer:
+      "The Text Simplifier is an AI-powered tool that transforms complex, technical, or jargon-heavy text into clear, easy-to-understand language. It rewrites content at various reading levels while preserving the original meaning, making information accessible to broader audiences. Perfect for simplifying legal documents, medical information, academic papers, or any difficult text.",
+  },
+  {
+    question: "What reading levels are available?",
+    answer:
+      "Choose from four levels: Elementary (grades 3-5, very simple words and short sentences), Middle School (grades 6-8, common words with moderate complexity), Simple Adult (everyday language for general readers), or Conversational (friendly, natural tone as if explaining to a friend). Select based on your target audience's reading ability.",
+  },
+  {
+    question: "Will the meaning change?",
+    answer:
+      "No! The core message and factual information stay exactly the same. Only the language complexity changes. The tool replaces difficult words with simpler alternatives, breaks long sentences into shorter ones, and removes unnecessary jargon - but all the important information remains intact and accurate.",
+  },
+  {
+    question: "What simplification styles can I choose?",
+    answer:
+      "Three styles are available: Standard Simplification (rewrites in simpler language maintaining structure), Explain Technical Terms (keeps necessary technical terms but adds simple explanations), or Break Into Bullet Points (organizes information as easy-to-scan lists). Choose based on how your audience prefers to consume information.",
+  },
+  {
+    question: "What types of text work best?",
+    answer:
+      "The tool excels with: legal documents (contracts, terms of service), medical information (diagnoses, treatment plans), academic papers (research, textbooks), technical documentation (manuals, specifications), business jargon (corporate communications), and government documents (policies, regulations). Any complex text benefits from simplification.",
+  },
+  {
+    question: "Is the Text Simplifier free?",
+    answer:
+      "Yes! The Text Simplifier is completely free to use. Simplify unlimited text from any source without any cost. Perfect for educators making materials accessible, businesses improving customer communication, students understanding difficult readings, or anyone needing to make complex information clear.",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Grammar Fix",
+    slug: "grammar-fix",
+    icon: CheckCircle,
+    color: "text-blue-600",
+  },
+  {
+    name: "Paraphraser",
+    slug: "paraphraser",
+    icon: Sparkles,
+    color: "text-purple-600",
+  },
+  {
+    name: "Concept Explainer",
+    slug: "concept-explainer",
+    icon: Lightbulb,
+    color: "text-green-600",
+  },
+  {
+    name: "Essay Writer",
+    slug: "essay-writer",
+    icon: FileText,
+    color: "text-orange-600",
+  },
 ];
 
 export default function TextSimplifierClient() {
-    return (
-        <PremiumToolWrapper
-            toolName="Text Simplifier"
-            toolSlug="text-simplifier"
-            tagline="Make any text easy to understand"
-            description="Transform complex text into simple, clear language that anyone can comprehend."
-            badge="Clarity Tool"
-            category="Utility Tools"
-            categorySlug="utility-tools"
-            features={defaultFeatures}
-            howItWorks={howItWorks}
-            testimonial={{
-                quote: "Perfect for simplifying our legal documents for customers. Clarity improved dramatically!",
-                author: "Karen White",
-                role: "UX Writer",
-                initial: "K"
-            }}
-            relatedTools={relatedTools}
-            ctaTitle="Simplify Your Text"
-            ctaDescription="Clarity is the ultimate form of intelligence."
-        >
-            <ToolLayout
-                title=""
-                description=""
-                placeholder="📄 Paste complex text to simplify...
+  return (
+    <PremiumToolWrapper
+      toolName="Text Simplifier"
+      toolSlug="text-simplifier"
+      tagline="Make any text easy to understand"
+      description="Transform complex text into simple, clear language that anyone can comprehend. Choose your reading level and simplification style for perfect clarity."
+      badge="Clarity Tool"
+      category="Writing Tools"
+      categorySlug="writing-tools"
+      stats={stats}
+      features={features}
+      howItWorks={howItWorks}
+      testimonial={{
+        quote:
+          "Perfect for simplifying our legal documents for customers. Clarity improved dramatically and customer satisfaction went up! Essential tool for our team.",
+        author: "Karen White",
+        role: "UX Writer",
+        initial: "K",
+      }}
+      relatedTools={relatedTools}
+      ctaTitle="Simplify Your Text"
+      ctaDescription="Clarity is the ultimate form of intelligence. Make your content accessible!"
+      ctaButtonText="Simplify Now"
+      ctaIcon={Sparkles}
+    >
+      <EnhancedToolLayout
+        toolSlug="text-simplifier"
+        toolName="Text Simplifier"
+        placeholder={`📄 Paste complex text to simplify...
 
 Works great with:
-• Legal documents
-• Technical documentation
-• Academic papers
-• Medical information"
-                promptTemplate={generatePrompt}
-                inputRows={5}
-                toolSlug="text-simplifier"
-                resultLabel="✨ Simplified Text"
-                generateButtonText="🔄 Simplify"
-            />
-            <div className="px-6 pb-6">
-                <FAQSection faqs={faqs} />
-            </div>
-        </PremiumToolWrapper>
-    );
+
+• Legal documents: "The party of the first part hereby agrees to indemnify..."
+• Technical documentation: "Initialize the asynchronous protocol handler..."
+• Medical information: "The patient exhibits bilateral pulmonary infiltrates..."
+• Academic papers: "The phenomenological approach utilizes hermeneutic methodology..."
+• Business jargon: "We need to leverage our core competencies to synergize..."
+• Government policies: "Pursuant to subsection 4(a), the aforementioned provision..."
+
+Examples of complex text:
+"Notwithstanding the provisions of the preceding paragraph, the party of the first part shall be obligated to remit payment within thirty (30) days of invoice date."
+
+"The implementation of blockchain technology facilitates the decentralization of trust through cryptographic verification mechanisms."
+
+💡 Tip: The longer and more complex your text, the more beneficial the simplification will be!`}
+        inputRows={12}
+        maxHistoryItems={10}
+        options={toolOptions}
+        generatePrompt={generatePrompt}
+        resultLabel="✨ Simplified Text"
+        generateButtonText="🔄 Simplify Text"
+        showCopyButton={true}
+        showDownloadButton={true}
+        showWordCount={true}
+        showFeedbackButtons={true}
+      />
+      <div className="px-6 pb-6">
+        <FAQSection faqs={faqs} />
+      </div>
+    </PremiumToolWrapper>
+  );
 }

@@ -1,146 +1,297 @@
-'use client';
+"use client";
 
-import ToolLayout, { ToolOption } from '@/components/ToolLayout';
-import { PremiumToolWrapper, defaultFeatures } from '@/components/PremiumToolWrapper';
-import { FAQSection } from '@/components/FAQSection';
-import { RefreshCw, Pencil, FileText, Lightbulb, MessageSquare, Sparkles } from 'lucide-react';
-import { QuickAnswerBox } from '@/components/aeo/QuickAnswerBox';
-import { HowItWorksSection } from '@/components/aeo/HowItWorksSection';
-import { FAQAccordion } from '@/components/aeo/FAQAccordion';
-import { getToolAEOContent } from '@/lib/tool-aeo-content';
+import EnhancedToolLayout from "@/components/EnhancedToolLayout";
+import { PremiumToolWrapper } from "@/components/PremiumToolWrapper";
+import { FAQSection } from "@/components/FAQSection";
+import {
+  RefreshCw,
+  Pencil,
+  FileText,
+  Sparkles,
+  Target,
+  Zap,
+  Users,
+  Star,
+  Clock,
+  Lightbulb,
+  MessageSquare,
+  BookOpen,
+} from "lucide-react";
 
-const toolOptions: ToolOption[] = [
-    {
-        id: 'mode',
-        label: 'Paraphrase Mode',
-        type: 'select',
-        options: [
-            { value: 'standard', label: '📝 Standard' },
-            { value: 'formal', label: '👔 More Formal' },
-            { value: 'casual', label: '😊 More Casual' },
-            { value: 'shorter', label: '⚡ Shorter' },
-            { value: 'creative', label: '✨ Creative' },
-        ],
-        defaultValue: 'standard',
-    },
-    {
-        id: 'fluency',
-        label: 'Fluency Level',
-        type: 'select',
-        options: [
-            { value: 'basic', label: '📋 Basic Changes' },
-            { value: 'moderate', label: '📝 Moderate Rewrite' },
-            { value: 'extensive', label: '📚 Extensive Rewrite' },
-        ],
-        defaultValue: 'moderate',
-    },
+const systemPrompt = `You are an expert paraphrasing assistant.
+
+OUTPUT RULES:
+- Rewrite the text completely while preserving the original meaning
+- Use different vocabulary and sentence structures
+- Maintain the tone and intent of the original
+- Ensure the paraphrased version is unique and natural
+- Do NOT just replace words with synonyms - restructure sentences
+
+QUALITY STANDARDS:
+- Natural, fluent language
+- Clear and coherent
+- Grammatically correct
+- Appropriate for the chosen mode
+- Original meaning fully preserved`;
+
+const toolOptions = [
+  {
+    id: "mode",
+    label: "Paraphrase Mode",
+    type: "select" as const,
+    options: [
+      { value: "standard", label: "📝 Standard" },
+      { value: "formal", label: "👔 More Formal" },
+      { value: "casual", label: "😊 More Casual" },
+      { value: "shorter", label: "⚡ Shorter/Concise" },
+      { value: "longer", label: "📚 Longer/Detailed" },
+      { value: "creative", label: "✨ Creative" },
+      { value: "academic", label: "🎓 Academic" },
+    ],
+    defaultValue: "standard",
+  },
+  {
+    id: "strength",
+    label: "Paraphrase Strength",
+    type: "select" as const,
+    options: [
+      { value: "light", label: "📋 Light (Similar structure)" },
+      { value: "medium", label: "📝 Medium (Balanced)" },
+      { value: "heavy", label: "🔄 Heavy (Complete rewrite)" },
+    ],
+    defaultValue: "medium",
+  },
+  {
+    id: "preserveKeywords",
+    label: "Preserve Key Terms",
+    type: "toggle" as const,
+    defaultValue: false,
+  },
 ];
 
 const generatePrompt = (input: string, options?: Record<string, any>) => {
-    const mode = options?.mode || 'standard';
-    const fluency = options?.fluency || 'moderate';
+  const mode = options?.mode || "standard";
+  const strength = options?.strength || "medium";
+  const preserveKeywords = options?.preserveKeywords ?? false;
 
-    const modeDescriptions: Record<string, string> = {
-        standard: 'Paraphrase while keeping the same meaning.',
-        formal: 'Paraphrase to make it more formal and professional.',
-        casual: 'Paraphrase to make it more casual and conversational.',
-        shorter: 'Paraphrase to make it more concise while keeping key points.',
-        creative: 'Paraphrase with a creative, engaging twist.',
-    };
+  const modeInstructions: Record<string, string> = {
+    standard:
+      "Paraphrase in a neutral, balanced style suitable for general use.",
+    formal:
+      "Paraphrase using formal, professional language. Use sophisticated vocabulary and formal sentence structures.",
+    casual:
+      "Paraphrase in a casual, conversational style. Use everyday language and a friendly tone.",
+    shorter:
+      "Paraphrase to make it more concise. Remove unnecessary words while keeping all key information.",
+    longer:
+      "Paraphrase to make it more detailed. Add explanations and elaborations while maintaining the core message.",
+    creative:
+      "Paraphrase with creative flair. Use vivid language, interesting metaphors, and engaging expressions.",
+    academic:
+      "Paraphrase in an academic style. Use formal language, precise terminology, and scholarly tone suitable for research papers.",
+  };
 
-    const fluencyDescriptions: Record<string, string> = {
-        basic: 'Make minimal vocabulary changes while keeping structure similar.',
-        moderate: 'Change both vocabulary and sentence structure.',
-        extensive: 'Significantly rewrite while preserving the core meaning.',
-    };
+  const strengthInstructions: Record<string, string> = {
+    light:
+      "Make light changes - replace some words with synonyms but keep similar sentence structures.",
+    medium:
+      "Make moderate changes - use different vocabulary and vary sentence structures while clearly conveying the same meaning.",
+    heavy:
+      "Make extensive changes - completely restructure sentences, use entirely different wording, but preserve all original meaning.",
+  };
 
-    return `${modeDescriptions[mode]}
-${fluencyDescriptions[fluency]}
+  let prompt = `Paraphrase the following text:
 
 Original text:
 ${input}
 
-Paraphrased text:`;
+Instructions:
+- Mode: ${modeInstructions[mode]}
+- Strength: ${strengthInstructions[strength]}
+${preserveKeywords ? "- Keep technical terms, names, and specific keywords unchanged" : "- You can change all words as needed"}
+
+Important:
+- Preserve the original meaning completely
+- Make it sound natural and fluent
+- Ensure it's grammatically correct
+- Don't just replace words - restructure sentences appropriately
+
+Provide ONLY the paraphrased text without any explanations or labels.`;
+
+  return prompt;
 };
 
-const faqs = [
-    { question: "Will the meaning be preserved?", answer: "Yes! The core meaning stays intact while the wording changes." },
-    { question: "Is this unique content?", answer: "Yes, each paraphrase is uniquely generated with fresh wording." },
+const stats = [
+  { value: "500K+", label: "Texts Paraphrased", icon: RefreshCw },
+  { value: "4.8/5", label: "User Rating", icon: Star },
+  { value: "<15 sec", label: "Avg Time", icon: Clock },
 ];
 
-const relatedTools = [
-    { name: 'Grammar Fix', slug: 'grammar-fix', icon: Pencil, color: 'text-blue-600' },
-    { name: 'Essay Writer', slug: 'essay-writer', icon: FileText, color: 'text-purple-600' },
-    { name: 'Text Simplifier', slug: 'text-simplifier', icon: Lightbulb, color: 'text-green-600' },
-    { name: 'Caption Generator', slug: 'caption-generator', icon: Sparkles, color: 'text-orange-600' },
+const features = [
+  {
+    icon: Zap,
+    title: "Multiple Modes",
+    description:
+      "Choose from 7 paraphrase modes including formal, casual, academic, creative, and more to fit any writing style",
+    gradient: "from-blue-500 to-indigo-600",
+    bgLight: "bg-blue-50",
+  },
+  {
+    icon: Target,
+    title: "Adjustable Strength",
+    description:
+      "Control how much the text changes - from light synonym replacements to complete rewrites",
+    gradient: "from-purple-500 to-pink-600",
+    bgLight: "bg-purple-50",
+  },
+  {
+    icon: Sparkles,
+    title: "Plagiarism-Free",
+    description:
+      "Generate unique, original text that preserves meaning while ensuring your content is completely unique",
+    gradient: "from-green-500 to-emerald-600",
+    bgLight: "bg-green-50",
+  },
 ];
 
 const howItWorks = [
-    { step: 1, title: 'Paste Text', desc: 'Add your original text', icon: FileText, color: 'from-blue-500 to-indigo-600' },
-    { step: 2, title: 'Choose Mode', desc: 'Select paraphrase style', icon: Lightbulb, color: 'from-purple-500 to-pink-600' },
-    { step: 3, title: 'Get Result', desc: 'Receive fresh wording', icon: RefreshCw, color: 'from-green-500 to-emerald-600' },
+  {
+    step: 1,
+    title: "Paste Your Text",
+    desc: "Add the text you want to paraphrase",
+    icon: FileText,
+    color: "from-blue-500 to-indigo-600",
+  },
+  {
+    step: 2,
+    title: "Choose Settings",
+    desc: "Select mode and paraphrase strength",
+    icon: Target,
+    color: "from-purple-500 to-pink-600",
+  },
+  {
+    step: 3,
+    title: "Get New Version",
+    desc: "Receive unique, rewritten text instantly",
+    icon: RefreshCw,
+    color: "from-green-500 to-emerald-600",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Grammar Fix",
+    slug: "grammar-fix",
+    icon: Pencil,
+    color: "text-blue-600",
+  },
+  {
+    name: "Text Simplifier",
+    slug: "text-simplifier",
+    icon: Lightbulb,
+    color: "text-purple-600",
+  },
+  {
+    name: "Text Summarizer",
+    slug: "text-summarizer",
+    icon: BookOpen,
+    color: "text-green-600",
+  },
+  {
+    name: "Essay Writer",
+    slug: "essay-writer",
+    icon: FileText,
+    color: "text-orange-600",
+  },
+];
+
+const faqs = [
+  {
+    question: "Will the paraphrased text have the same meaning?",
+    answer:
+      "Yes! Our AI is specifically trained to preserve the original meaning while completely changing the wording and structure. The core message and intent remain intact.",
+    category: "Accuracy",
+  },
+  {
+    question: "Is the paraphrased content plagiarism-free?",
+    answer:
+      "Yes, the output is designed to be unique and original. However, for academic work, we recommend running it through a plagiarism checker and citing sources appropriately.",
+    category: "Usage",
+  },
+  {
+    question: "What's the difference between paraphrase strengths?",
+    answer:
+      "Light makes minimal changes (similar structure, different words). Medium balances new vocabulary with restructured sentences. Heavy completely rewrites with extensive changes while keeping meaning.",
+    category: "Features",
+  },
+  {
+    question: "Can I paraphrase technical or academic content?",
+    answer:
+      "Absolutely! Use the 'Academic' mode and enable 'Preserve Key Terms' to keep technical terminology, names, and specific keywords unchanged while paraphrasing the rest.",
+    category: "Usage",
+  },
+  {
+    question: "How is this different from just using synonyms?",
+    answer:
+      "Unlike simple synonym replacement, our tool restructures entire sentences, changes word order, combines or splits ideas, and ensures natural flow - not just word swapping.",
+    category: "Features",
+  },
+  {
+    question: "Can I use this for my essays or articles?",
+    answer:
+      "Yes, but use it responsibly. It's great for rephrasing your own work, avoiding self-plagiarism, or getting inspiration. Always ensure the final content represents your own understanding.",
+    category: "Ethics",
+  },
 ];
 
 export default function ParaphraserClient() {
-    // Get AEO content for this tool
-    const aeoContent = getToolAEOContent('paraphraser');
+  return (
+    <PremiumToolWrapper
+      toolName="AI Paraphraser"
+      toolSlug="paraphraser"
+      tagline="Rewrite text in your own unique voice"
+      description="Transform any text into fresh, original content while preserving the meaning. Perfect for avoiding plagiarism, improving clarity, or adapting tone for different audiences."
+      badge="AI-Powered"
+      category="Writing Tools"
+      categorySlug="writing-tools"
+      stats={stats}
+      features={features}
+      howItWorks={howItWorks}
+      testimonial={{
+        quote:
+          "The best paraphrasing tool I've used! It doesn't just swap words - it actually restructures sentences naturally. Saved me hours on my research paper!",
+        author: "Michael Chen",
+        role: "Graduate Student",
+        initial: "M",
+      }}
+      relatedTools={relatedTools}
+      ctaTitle="Ready to Rewrite Your Content?"
+      ctaDescription="Get unique, plagiarism-free text in seconds"
+      ctaIcon={RefreshCw}
+    >
+      <EnhancedToolLayout
+        toolSlug="paraphraser"
+        toolName="AI Paraphraser"
+        placeholder={`📝 Paste or type your text here...
 
-    return (
-        <PremiumToolWrapper
-            toolName="AI Paraphraser"
-            toolSlug="paraphraser"
-            tagline="Rewrite text while keeping the meaning"
-            description="Transform any text into fresh, unique wording with our intelligent paraphrasing tool."
-            badge="Content Rewriter"
-            category="Writing Tools"
-            categorySlug="writing-tools"
-            features={defaultFeatures}
-            howItWorks={howItWorks}
-            testimonial={{
-                quote: "Perfect for avoiding repetition in my essays. The formal mode helps make my writing more academic.",
-                author: "Amanda Foster",
-                role: "Graduate Student",
-                initial: "A"
-            }}
-            relatedTools={relatedTools}
-            ctaTitle="Paraphrase Your Text"
-            ctaDescription="Same meaning, fresh words."
-        >
-            {/* AEO: Quick Answer Box */}
-            <div className="px-6 pt-6">
-                <QuickAnswerBox
-                    question={aeoContent.quickAnswer.question}
-                    answer={aeoContent.quickAnswer.answer}
-                />
-            </div>
+Examples:
+• "Artificial intelligence has transformed modern technology, making machines capable of learning and adapting."
+• "The research demonstrates that regular exercise significantly improves cardiovascular health."
+• "Our company's mission is to deliver innovative solutions that empower businesses."
 
-            {/* Main Tool Interface */}
-            <ToolLayout
-                title=""
-                description=""
-                placeholder="📝 Paste the text you want to rephrase...
-
-Paste any sentence, paragraph, or article and get it rewritten with fresh wording."
-                promptTemplate={generatePrompt}
-                inputRows={5}
-                toolSlug="paraphraser"
-                toolOptions={toolOptions}
-                resultLabel="✨ Paraphrased Text"
-                generateButtonText="🔄 Paraphrase"
-            />
-
-            {/* AEO: How It Works Section */}
-            <div className="px-6 pb-6">
-                <HowItWorksSection steps={aeoContent.howItWorks} />
-            </div>
-
-            {/* AEO: FAQ Accordion */}
-            <div className="px-6 pb-6">
-                <FAQAccordion
-                    faqs={aeoContent.faqs}
-                    title="Frequently Asked Questions"
-                />
-            </div>
-        </PremiumToolWrapper>
-    );
+The tool will rewrite it in a fresh, unique way while keeping the same meaning!`}
+        promptTemplate={generatePrompt}
+        inputRows={10}
+        toolOptions={toolOptions}
+        resultLabel="🔄 Paraphrased Text"
+        generateButtonText="🔄 Paraphrase Now"
+        inputLabel="📝 Original Text"
+        showAdvancedOptions={true}
+        maxHistoryItems={10}
+      />
+      <div className="px-6 pb-6">
+        <FAQSection faqs={faqs} />
+      </div>
+    </PremiumToolWrapper>
+  );
 }

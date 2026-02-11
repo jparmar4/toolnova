@@ -139,6 +139,8 @@ export const metadata: Metadata = {
   category: "Productivity",
 };
 
+import { MaterialSymbols } from "@/components/MaterialSymbols";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -167,20 +169,8 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Material Symbols Outlined - loaded asynchronously to prevent render blocking */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-          rel="stylesheet"
-          media="print"
-          // @ts-ignore - onLoad changes media to 'all' after load
-          onLoad="this.media='all'"
-        />
-        <noscript>
-          <link
-            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-            rel="stylesheet"
-          />
-        </noscript>
+        {/* Material Symbols Outlined - loaded via Client Component to prevent Server Component errors */}
+        <MaterialSymbols />
         {/* Organization Schema */}
         <script
           type="application/ld+json"
