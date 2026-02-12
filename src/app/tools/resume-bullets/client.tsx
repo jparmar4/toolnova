@@ -30,7 +30,7 @@ const toolOptions = [
       { value: "healthcare", label: "🏥 Healthcare" },
       { value: "education", label: "🎓 Education" },
       { value: "general", label: "📋 General" },
-    ] as const,
+    ],
     defaultValue: "general",
   },
   {
@@ -41,7 +41,7 @@ const toolOptions = [
       { value: "action", label: "⚡ Action-Oriented" },
       { value: "impact", label: "📊 Impact-Focused" },
       { value: "skills", label: "🛠️ Skills-Based" },
-    ] as const,
+    ],
     defaultValue: "impact",
   },
   {
@@ -52,10 +52,10 @@ const toolOptions = [
       { value: "3", label: "3 Bullets" },
       { value: "5", label: "5 Bullets" },
       { value: "7", label: "7 Bullets" },
-    ] as const,
+    ],
     defaultValue: "5",
   },
-] as const;
+];
 
 const generatePrompt = (input: string, options?: Record<string, any>) => {
   const industry = options?.industry || "general";
@@ -209,14 +209,14 @@ Do NOT include:
 - Meta-text about the bullets
 
 Just ${bulletCount} polished, ATS-optimized resume bullets ready to copy directly into a resume.`;
-</text>
+
 
 };
 
 const stats = [
-  { icon: Users, label: "180K+", sublabel: "Resumes Improved" },
-  { icon: Star, label: "4.9/5", sublabel: "User Rating" },
-  { icon: TrendingUp, label: "3x More", sublabel: "Interviews" },
+  { icon: Users, value: "180K+", label: "Resumes Improved" },
+  { icon: Star, value: "4.9/5", label: "User Rating" },
+  { icon: TrendingUp, value: "3x More", label: "Interviews" },
 ];
 
 const features = [
@@ -224,19 +224,25 @@ const features = [
     icon: Target,
     title: "ATS-Optimized",
     description:
-      "Bullets formatted to pass Applicant Tracking Systems with industry-relevant keywords and proper structure.",
+      "Bullets formatted to pass Applicant Tracking Systems with industry-relevant keywords.",
+    gradient: "from-blue-500 to-indigo-600",
+    bgLight: "bg-blue-50",
   },
   {
     icon: CheckCircle,
     title: "Quantifiable Results",
     description:
-      "Focus on metrics and measurable achievements that demonstrate your impact and value to employers.",
+      "Focus on metrics and measurable achievements that demonstrate your impact.",
+    gradient: "from-purple-500 to-pink-600",
+    bgLight: "bg-purple-50",
   },
   {
     icon: Award,
     title: "Industry-Specific",
     description:
-      "Tailored for Tech, Marketing, Finance, Healthcare, Education, or General industries with appropriate terminology.",
+      "Tailored for Tech, Marketing, Finance, Healthcare, Education, or General industries.",
+    gradient: "from-green-500 to-emerald-600",
+    bgLight: "bg-green-50",
   },
 ];
 
@@ -347,7 +353,7 @@ export default function ResumeBulletsClient() {
       relatedTools={relatedTools}
       ctaTitle="Upgrade Your Resume"
       ctaDescription="Stand out from the competition with powerful resume bullets!"
-      ctaButtonText="Generate Bullets"
+
       ctaIcon={Target}
     >
       <EnhancedToolLayout
@@ -373,14 +379,11 @@ OR
 💡 Tip: Include numbers, metrics, team sizes, percentages, and specific achievements for better results!`}
         inputRows={10}
         maxHistoryItems={10}
-        options={toolOptions}
-        generatePrompt={generatePrompt}
+        toolOptions={toolOptions}
+        promptTemplate={generatePrompt}
         resultLabel="🎯 Your Resume Bullets"
         generateButtonText="✨ Generate Bullets"
-        showCopyButton={true}
-        showDownloadButton={true}
-        showWordCount={false}
-        showFeedbackButtons={true}
+
       />
       <div className="px-6 pb-6">
         <FAQSection faqs={faqs} />

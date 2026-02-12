@@ -189,7 +189,7 @@ Now proceed to correct the text according to these specifications.`;
 
   return prompt;
 };
-</text>
+
 
 
 const stats = [
