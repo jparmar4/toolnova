@@ -23,9 +23,11 @@ export default function MobileMenu({ onClose }: MobileMenuProps) {
 
                 <Link href="/login" onClick={onClose} className="text-muted-foreground font-medium py-3 px-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Login</Link>
                 <div className="pt-4 mt-2 border-t border-slate-100 dark:border-slate-800">
-                    <button className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-blue-600 text-white font-bold h-12 rounded-xl shadow-lg shadow-primary/25 transition-all">
-                        <Sparkles className="h-4 w-4" /> Get Started Free
-                    </button>
+                    <Link href="/signup" onClick={onClose} className="w-full">
+                        <button className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-blue-600 text-white font-bold h-12 rounded-xl shadow-lg shadow-primary/25 transition-all">
+                            <Sparkles className="h-4 w-4" /> Get Started Free
+                        </button>
+                    </Link>
                 </div>
             </div>
         </motion.div>

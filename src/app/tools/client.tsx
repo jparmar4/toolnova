@@ -673,55 +673,63 @@ export function ToolsClient() {
           </div>
 
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-10">
-            <div className="relative flex items-center bg-card rounded-2xl border border-border shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300">
-              <Search className="text-muted-foreground h-5 w-5 ml-5 mr-3 shrink-0" />
-              <input
-                ref={searchRef}
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search tools..."
-                className="flex-1 py-3.5 bg-transparent border-none text-foreground placeholder:text-muted-foreground/60 focus:outline-none text-base font-medium"
-              />
-              {searchQuery ? (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="mr-3 p-1.5 rounded-lg hover:bg-muted transition-colors"
-                >
-                  <X className="h-4 w-4 text-muted-foreground" />
-                </button>
-              ) : (
-                <div className="hidden md:flex items-center mr-4 px-2 py-1 rounded-md bg-muted/60 text-muted-foreground/70 text-[11px] font-mono border border-border/50">
-                  ⌘K
-                </div>
-              )}
+          <div className="max-w-3xl mx-auto mb-12">
+            <div className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl opacity-20 group-hover:opacity-40 transition duration-500 blur-lg"></div>
+              <div className="relative flex items-center bg-background/80 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl transition-all duration-300">
+                <Search className="text-muted-foreground h-6 w-6 ml-6 mr-4 shrink-0 transition-colors group-hover:text-primary" />
+                <input
+                  ref={searchRef}
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search tools... (e.g. 'essay', 'pdf', 'resume')"
+                  className="flex-1 py-5 bg-transparent border-none text-foreground placeholder:text-muted-foreground/50 focus:outline-none text-lg font-medium tracking-wide"
+                />
+                {searchQuery ? (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="mr-2 p-2 rounded-xl hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-all duration-200"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                ) : (
+                  <div className="hidden md:flex items-center mr-6 px-3 py-1.5 rounded-lg bg-muted/40 text-muted-foreground/60 text-xs font-mono border border-border/30">
+                    Ctrl + K
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
           {/* Category Filter Pills */}
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
+          <div className="flex flex-wrap justify-center gap-3 mb-16">
             <button
               onClick={() => setActiveCategory("All")}
-              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${activeCategory === "All"
-                ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
-                : "bg-card text-muted-foreground border border-border hover:text-foreground hover:border-primary/40 hover:bg-primary/5"
+              className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeCategory === "All"
+                  ? "bg-foreground text-background shadow-xl scale-105"
+                  : "bg-background/50 backdrop-blur-sm text-muted-foreground border border-border/50 hover:text-foreground hover:border-foreground/20 hover:bg-background/80"
                 }`}
             >
-              All ({ALL_TOOLS.length})
+              All Tools ({ALL_TOOLS.length})
             </button>
             {categories.map((cat) => (
               <button
                 key={cat.name}
                 onClick={() => setActiveCategory(cat.name)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${activeCategory === cat.name
-                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
-                  : "bg-card text-muted-foreground border border-border hover:text-foreground hover:border-primary/40 hover:bg-primary/5"
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeCategory === cat.name
+                    ? `bg-gradient-to-r ${cat.gradient} text-white shadow-lg shadow-purple-500/20 scale-105 ring-2 ring-offset-2 ring-offset-background ring-transparent`
+                    : "bg-background/50 backdrop-blur-sm text-muted-foreground border border-border/50 hover:text-foreground hover:border-foreground/20 hover:bg-background/80"
                   }`}
               >
-                <cat.icon className="h-3.5 w-3.5" />
+                <cat.icon className={`h-4 w-4 ${activeCategory === cat.name ? "text-white" : ""}`} />
                 <span>{cat.name.replace(" Tools", "")}</span>
-                <span className="text-[11px] opacity-60 ml-0.5">
+                <span
+                  className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ml-1 ${activeCategory === cat.name
+                      ? "bg-white/20 text-white"
+                      : "bg-muted text-muted-foreground"
+                    }`}
+                >
                   {toolCountByCategory[cat.name] || 0}
                 </span>
               </button>

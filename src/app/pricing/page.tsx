@@ -6,11 +6,11 @@ declare global {
     }
 }
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Check, Star, Zap, Shield, Crown, Sparkles, X, ChevronDown, CreditCard, Users, Clock, Rocket, Heart } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/client";
 
@@ -41,6 +41,9 @@ const testimonials = [
     { name: "Aarav S.", role: "Engineering Student", text: "ToolNova Pro saved me hours on assignments. The AI quality is incredible!", avatar: "A" },
     { name: "Priya M.", role: "Content Creator", text: "Worth every rupee. The premium models produce content that's indistinguishable from human writing.", avatar: "P" },
     { name: "Rahul K.", role: "MBA Student", text: "The ad-free experience alone is worth it. Plus the speed is 10x faster on Pro!", avatar: "R" },
+    { name: "Sneha G.", role: "Digital Marketer", text: "I use the copy generation tools daily. It paid for itself in the first week.", avatar: "S" },
+    { name: "Vikram R.", role: "Freelance Write", text: "The formatting options in Pro are a lifesaver. Highly recommended.", avatar: "V" },
+    { name: "Ananya P.", role: "Researcher", text: "Access to Claude Opus through this interface is much cheaper than a direct sub.", avatar: "A" },
 ];
 
 const comparisonFeatures = [
@@ -54,11 +57,51 @@ const comparisonFeatures = [
     { feature: "Support", free: "Community", pro: "Priority 24/7" },
 ];
 
+function TiltCard({ children, className }: { children: React.ReactNode; className?: string }) {
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+    const rotateX = useTransform(y, [-100, 100], [5, -5]);
+    const rotateY = useTransform(x, [-100, 100], [-5, 5]);
+
+    return (
+        <motion.div
+            style={{ rotateX, rotateY, perspective: 1000 }}
+            className={cn("relative transition-all duration-200 ease-linear", className)}
+            onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                x.set(e.clientX - centerX);
+                y.set(e.clientY - centerY);
+            }}
+            onMouseLeave={() => {
+                x.set(0);
+                y.set(0);
+            }}
+        >
+            {children}
+        </motion.div>
+    );
+}
+
 export default function PricingPage() {
     const [isYearly, setIsYearly] = useState(false);
     const [openFaq, setOpenFaq] = useState<number | null>(null);
     const router = useRouter();
     const supabase = createClient();
+
+    // Mouse follower logic
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            mouseX.set(e.clientX);
+            mouseY.set(e.clientY);
+        };
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+    }, [mouseX, mouseY]);
 
     const loadScript = () => {
         return new Promise((resolve) => {
@@ -126,71 +169,73 @@ export default function PricingPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#080a12] pt-24 pb-20 relative overflow-hidden">
-            {/* Animated Background */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-[-20%] right-[-10%] w-[700px] h-[700px] rounded-full bg-gradient-to-br from-primary/10 via-blue-500/5 to-transparent blur-[120px] animate-pulse" />
-                <div className="absolute bottom-[-15%] left-[-15%] w-[800px] h-[800px] rounded-full bg-gradient-to-tr from-violet-600/8 via-indigo-500/5 to-transparent blur-[140px] animate-pulse" style={{ animationDelay: "1s" }} />
-                <div className="absolute top-[40%] left-[50%] w-[400px] h-[400px] rounded-full bg-gradient-to-b from-cyan-500/5 to-transparent blur-[100px] animate-pulse" style={{ animationDelay: "2s" }} />
-                {/* Floating particles */}
-                {[...Array(6)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        className="absolute w-1 h-1 rounded-full bg-primary/30"
-                        style={{ top: `${15 + i * 15}%`, left: `${10 + i * 15}%` }}
-                        animate={{ y: [0, -30, 0], opacity: [0.3, 0.8, 0.3] }}
-                        transition={{ duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                ))}
+        <div className="min-h-screen bg-slate-50 dark:bg-[#050505] pt-24 pb-20 relative overflow-hidden selection:bg-primary/20">
+            {/* Dynamic Mouse Background */}
+            <motion.div
+                className="pointer-events-none fixed inset-0 z-0 opacity-40 dark:opacity-20"
+                style={{
+                    background: useMotionTemplate`
+                        radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(99, 102, 241, 0.15), transparent 80%)
+                    `,
+                }}
+            />
+
+            {/* Ambient Background */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-transparent blur-[120px] animate-pulse" />
+                <div className="absolute bottom-[-15%] left-[-15%] w-[800px] h-[800px] rounded-full bg-gradient-to-tr from-blue-600/10 via-cyan-500/5 to-transparent blur-[140px] animate-pulse" style={{ animationDelay: "2s" }} />
             </div>
 
             <div className="container mx-auto px-6 relative z-10">
                 {/* Hero Section */}
-                <div className="text-center max-w-3xl mx-auto mb-14">
+                <div className="text-center max-w-4xl mx-auto mb-20 transform perspective-1000">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/15 via-blue-500/10 to-violet-500/15 text-primary text-sm font-semibold mb-6 border border-primary/20"
+                        initial={{ opacity: 0, scale: 0.9, rotateX: 20 }}
+                        animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+                        transition={{ duration: 0.8, type: "spring" }}
+                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/50 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-xl shadow-black/5 mb-8"
                     >
-                        <Crown className="h-4 w-4 fill-primary" />
-                        <span>Upgrade to Pro</span>
-                        <Sparkles className="h-3.5 w-3.5" />
+                        <Crown className="h-4 w-4 text-amber-500 fill-amber-500" />
+                        <span className="text-sm font-bold bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">Unlock Premium Power</span>
+                        <Sparkles className="h-4 w-4 text-amber-500" />
                     </motion.div>
+
                     <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="text-4xl md:text-6xl font-black mb-6 tracking-tight"
+                        transition={{ delay: 0.1, duration: 0.8 }}
+                        className="text-6xl md:text-8xl font-black mb-8 tracking-tighter leading-[0.9]"
                     >
-                        <span className="text-foreground">Supercharge Your </span>
-                        <span className="bg-gradient-to-r from-primary via-blue-500 to-violet-500 bg-clip-text text-transparent">
-                            AI Experience
+                        <span className="text-foreground drop-shadow-sm">Limitless</span>
+                        <br />
+                        <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent pb-4 inline-block drop-shadow-2xl">
+                            Possibilities
                         </span>
                     </motion.h1>
+
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto"
+                        transition={{ delay: 0.2, duration: 0.8 }}
+                        className="text-xl md:text-2xl text-muted-foreground/80 leading-relaxed max-w-2xl mx-auto mb-12 font-medium"
                     >
-                        Join <span className="text-foreground font-semibold">10,000+ students</span> who upgraded to Pro.
-                        No hidden fees. Cancel anytime.
+                        Join the elite community of <span className="text-foreground font-bold underline decoration-indigo-500/30">10,000+ creators</span> leveraging our most advanced AI models.
                     </motion.p>
                 </div>
 
-                {/* Toggle with savings badge */}
+                {/* Toggle */}
                 <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.3 }}
-                    className="flex flex-col items-center mb-14"
+                    className="flex flex-col items-center mb-24"
                 >
-                    <div className="bg-slate-200/80 dark:bg-slate-800/80 backdrop-blur-sm p-1.5 rounded-full inline-flex relative border border-slate-300/50 dark:border-slate-700/50">
+                    <div className="relative p-1.5 bg-muted/40 backdrop-blur-xl rounded-full border border-white/10 shadow-2xl">
                         <button
                             onClick={() => setIsYearly(false)}
                             className={cn(
-                                "px-7 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 relative z-10",
-                                !isYearly ? "text-white" : "text-slate-600 dark:text-slate-400 hover:text-foreground"
+                                "px-10 py-3.5 rounded-full text-base font-bold transition-all duration-300 relative z-10",
+                                !isYearly ? "text-white" : "text-muted-foreground hover:text-foreground"
                             )}
                         >
                             Monthly
@@ -198,300 +243,177 @@ export default function PricingPage() {
                         <button
                             onClick={() => setIsYearly(true)}
                             className={cn(
-                                "px-7 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 relative z-10",
-                                isYearly ? "text-white" : "text-slate-600 dark:text-slate-400 hover:text-foreground"
+                                "px-10 py-3.5 rounded-full text-base font-bold transition-all duration-300 relative z-10",
+                                isYearly ? "text-white" : "text-muted-foreground hover:text-foreground"
                             )}
                         >
                             Yearly
                         </button>
                         <motion.div
                             layout
-                            className={cn(
-                                "absolute top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-gradient-to-r from-primary to-blue-600 rounded-full shadow-lg shadow-primary/25"
-                            )}
+                            className="absolute top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full shadow-lg shadow-indigo-500/30"
                             style={{ left: isYearly ? "calc(50% + 3px)" : "6px" }}
-                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
                         />
                     </div>
-                    <AnimatePresence>
-                        {isYearly && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -5, height: 0 }}
-                                animate={{ opacity: 1, y: 0, height: "auto" }}
-                                exit={{ opacity: 0, y: -5, height: 0 }}
-                                className="mt-3"
-                            >
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold">
-                                    <Sparkles className="h-3 w-3" />
-                                    Save $5.89/year — that&apos;s 2 months free!
-                                </span>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
                 </motion.div>
 
-                {/* Cards */}
-                <div className="grid md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto mb-24">
+                {/* Pricing Cards with 3D Tilt */}
+                <div className="grid md:grid-cols-2 gap-8 lg:gap-16 max-w-6xl mx-auto mb-32 px-4">
                     {/* Free Plan */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.35 }}
-                        className="bg-white dark:bg-slate-900/80 backdrop-blur-sm rounded-3xl p-8 lg:p-10 border border-slate-200 dark:border-slate-800 shadow-xl relative group hover:border-primary/30 hover:shadow-2xl transition-all duration-500"
-                    >
-                        <div className="mb-8">
-                            <div className="h-12 w-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-5">
-                                <Users className="h-6 w-6 text-slate-600 dark:text-slate-400" />
-                            </div>
-                            <h3 className="text-2xl font-bold mb-1.5">Free</h3>
-                            <p className="text-muted-foreground text-sm">Perfect for getting started</p>
-                        </div>
-                        <div className="flex items-baseline mb-8">
-                            <span className="text-5xl font-black tracking-tight">$0</span>
-                            <span className="text-muted-foreground ml-2 text-sm">/forever</span>
-                        </div>
-                        <Button
-                            variant="outline"
-                            className="w-full h-13 rounded-2xl text-base font-semibold mb-8 border-2 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition-all"
-                            onClick={() => router.push("/tools")}
-                        >
-                            Start Free
-                        </Button>
-                        <div className="space-y-4">
-                            {[
-                                "Access to 20+ AI tools",
-                                "10 generations per day",
-                                "Standard processing",
-                                "Export to PDF & PNG",
-                                "Community support"
-                            ].map((feature, i) => (
-                                <div key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
-                                    <div className="h-5 w-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
-                                        <Check className="h-3 w-3 text-slate-500 dark:text-slate-400" />
-                                    </div>
-                                    {feature}
+                    <TiltCard className="group">
+                        <div className="h-full bg-white/60 dark:bg-gray-900/60 backdrop-blur-2xl rounded-[2.5rem] p-10 border border-white/20 dark:border-white/5 shadow-xl transition-all duration-500 group-hover:shadow-2xl group-hover:border-indigo-500/20">
+                            <div className="flex justify-between items-start mb-10">
+                                <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-2xl group-hover:scale-110 transition-transform duration-500">
+                                    <Users className="h-8 w-8 text-gray-600 dark:text-gray-300" />
                                 </div>
-                            ))}
+                                <div className="px-4 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
+                                    <span className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Starter</span>
+                                </div>
+                            </div>
+
+                            <h3 className="text-4xl font-bold mb-2">Free</h3>
+                            <p className="text-muted-foreground mb-8">Essential tools for casual users</p>
+
+                            <div className="flex items-baseline mb-10">
+                                <span className="text-6xl font-black text-foreground tracking-tighter">$0</span>
+                                <span className="text-xl text-muted-foreground font-medium ml-2">/mo</span>
+                            </div>
+
+                            <Button
+                                variant="outline"
+                                className="w-full h-16 rounded-2xl text-lg font-bold border-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all mb-10"
+                                onClick={() => router.push("/tools")}
+                            >
+                                Get Started
+                            </Button>
+
+                            <div className="space-y-4">
+                                {comparisonFeatures.slice(0, 5).map((f, i) => (
+                                    <div key={i} className="flex items-center gap-4 group/item">
+                                        <div className="h-6 w-6 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+                                            <Check className="h-3.5 w-3.5 text-gray-500" />
+                                        </div>
+                                        <span className="text-muted-foreground font-medium group-hover/item:text-foreground transition-colors">{f.free}</span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </motion.div>
+                    </TiltCard>
 
                     {/* Pro Plan */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.4 }}
-                        className="relative rounded-3xl group"
-                    >
-                        {/* Animated border gradient */}
-                        <div className="absolute -inset-[1px] bg-gradient-to-br from-primary via-blue-500 to-violet-500 rounded-3xl opacity-70 group-hover:opacity-100 transition-opacity duration-500 blur-[1px]" />
+                    <TiltCard className="group relative">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-[2.6rem] opacity-70 blur-lg group-hover:opacity-100 group-hover:blur-xl transition-all duration-500 animate-pulse" />
+                        <div className="relative h-full bg-[#0a0a0c] rounded-[2.5rem] p-10 border border-white/10 overflow-hidden">
+                            {/* Glass Glare */}
+                            <div className="absolute -top-[200px] -right-[200px] w-[500px] h-[500px] bg-indigo-600/20 blur-[150px] rounded-full pointer-events-none" />
+                            <div className="absolute -bottom-[200px] -left-[200px] w-[500px] h-[500px] bg-purple-600/20 blur-[150px] rounded-full pointer-events-none" />
 
-                        <div className="relative bg-[#0c0f1a] rounded-3xl p-8 lg:p-10 overflow-hidden">
-                            {/* Glow Effects */}
-                            <div className="absolute top-0 right-0 w-[350px] h-[350px] bg-primary/15 blur-[100px] rounded-full pointer-events-none group-hover:bg-primary/25 transition-all duration-700" />
-                            <div className="absolute bottom-0 left-0 w-[250px] h-[250px] bg-violet-600/10 blur-[80px] rounded-full pointer-events-none" />
-
-                            <div className="relative z-10">
-                                <div className="flex justify-between items-start mb-8">
-                                    <div>
-                                        <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-primary/20 to-blue-600/20 border border-primary/20 flex items-center justify-center mb-5">
-                                            <Crown className="h-6 w-6 text-primary" />
-                                        </div>
-                                        <h3 className="text-2xl font-bold text-white mb-1.5">Pro Access</h3>
-                                        <p className="text-slate-400 text-sm">Unlock every AI capability</p>
+                            <div className="relative z-10 flex flex-col h-full">
+                                <div className="flex justify-between items-start mb-10">
+                                    <div className="p-4 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl shadow-lg shadow-indigo-500/30 group-hover:scale-110 transition-transform duration-500">
+                                        <Crown className="h-8 w-8 text-white" />
                                     </div>
-                                    <motion.span
-                                        animate={{ scale: [1, 1.05, 1] }}
-                                        transition={{ duration: 2, repeat: Infinity }}
-                                        className="bg-gradient-to-r from-primary to-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-primary/30"
-                                    >
-                                        ⚡ MOST POPULAR
-                                    </motion.span>
+                                    <div className="px-5 py-2 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 shadow-inner shadow-indigo-500/10">
+                                        <span className="text-xs font-black text-indigo-400 uppercase tracking-widest">MOST POPULAR</span>
+                                    </div>
                                 </div>
+
+                                <h3 className="text-4xl font-bold text-white mb-2">Pro Access</h3>
+                                <p className="text-gray-400 mb-8">Ultimate power for power users</p>
 
                                 <div className="flex items-baseline mb-2">
-                                    <AnimatePresence mode="wait">
-                                        <motion.div
-                                            key={isYearly ? "year" : "month"}
-                                            initial={{ opacity: 0, y: 15 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -15 }}
-                                            className="flex items-baseline"
-                                        >
-                                            <span className="text-5xl font-black text-white tracking-tight">
-                                                ${isYearly ? "29.99" : "2.99"}
-                                            </span>
-                                            <span className="text-slate-400 ml-2 text-sm">/{isYearly ? "year" : "month"}</span>
-                                        </motion.div>
-                                    </AnimatePresence>
+                                    <span className="text-6xl font-black text-white tracking-tighter">
+                                        ${isYearly ? "29.99" : "2.99"}
+                                    </span>
+                                    <span className="text-xl text-gray-500 font-medium ml-2">
+                                        /{isYearly ? "year" : "month"}
+                                    </span>
                                 </div>
-
-                                <div className="mb-6 h-6">
-                                    <AnimatePresence>
-                                        {isYearly && (
-                                            <motion.p
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={{ opacity: 0 }}
-                                                className="text-sm text-green-400 font-medium"
-                                            >
-                                                ✨ Just $2.50/month — Save $5.89!
-                                            </motion.p>
-                                        )}
-                                    </AnimatePresence>
-                                </div>
-
-
+                                {isYearly && (
+                                    <p className="text-emerald-400 text-sm font-bold mb-8 animate-pulse">
+                                        Save 20% with annual billing
+                                    </p>
+                                )}
+                                {!isYearly && <div className="mb-8 h-5" />}
 
                                 <Button
+                                    className="w-full h-16 rounded-2xl text-lg font-bold bg-white text-black hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-white/5 mb-10"
                                     onClick={() => startSubscription(isYearly ? "plan_SEPrpn71jkiE0u" : "plan_SEPqtQNsEaZpDB")}
-                                    className="w-full h-14 rounded-2xl text-base font-bold mb-8 bg-gradient-to-r from-primary via-blue-600 to-violet-600 hover:shadow-2xl hover:shadow-primary/30 hover:scale-[1.02] transition-all duration-300 text-white border-0"
                                 >
-                                    <Zap className="mr-2 h-5 w-5 fill-white" />
-                                    Upgrade to Pro
+                                    Upgrade Now
                                 </Button>
 
                                 <div className="space-y-4">
-                                    {[
-                                        { text: "Unlimited AI Generations", highlight: true },
-                                        { text: "GPT 5.2, Claude Opus 4.6, Gemini 3 Pro", highlight: true },
-                                        { text: "Priority Processing (10x faster)", highlight: false },
-                                        { text: "Ad-free Experience", highlight: false },
-                                        { text: "4K Image Generation", highlight: false },
-                                        { text: "Advanced Privacy Mode", highlight: false },
-                                        { text: "Priority 24/7 Support", highlight: false },
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex items-center gap-3 text-sm">
-                                            <div className={cn(
-                                                "h-5 w-5 rounded-full flex items-center justify-center flex-shrink-0",
-                                                item.highlight ? "bg-gradient-to-br from-primary to-blue-500" : "bg-primary/20"
-                                            )}>
-                                                <Check className={cn("h-3 w-3", item.highlight ? "text-white" : "text-primary")} />
+                                    {comparisonFeatures.map((f, i) => (
+                                        <div key={i} className="flex items-center gap-4 group/item">
+                                            <div className="h-6 w-6 rounded-full bg-indigo-500/20 flex items-center justify-center shrink-0">
+                                                <Check className="h-3.5 w-3.5 text-indigo-400" strokeWidth={3} />
                                             </div>
-                                            <span className={cn(item.highlight ? "text-white font-medium" : "text-slate-300")}>
-                                                {item.text}
+                                            <span className="text-gray-300 font-medium group-hover/item:text-white transition-colors">
+                                                {f.pro}
                                             </span>
                                         </div>
                                     ))}
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
+                    </TiltCard>
                 </div>
 
-                {/* Trust Badges */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="flex flex-wrap justify-center gap-6 md:gap-10 mb-24"
-                >
-                    {[
-                        { icon: Shield, label: "SSL Encrypted" },
-                        { icon: CreditCard, label: "Secure Payments" },
-                        { icon: Clock, label: "Cancel Anytime" },
-                        { icon: Heart, label: "7-Day Guarantee" },
-                    ].map((badge, i) => (
-                        <div key={i} className="flex items-center gap-2.5 text-muted-foreground">
-                            <badge.icon className="h-4.5 w-4.5 text-primary/70" />
-                            <span className="text-sm font-medium">{badge.label}</span>
-                        </div>
-                    ))}
-                </motion.div>
+                {/* Infinite Marquee Testimonials */}
+                <div className="mb-32 overflow-hidden py-10 relative">
+                    <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-slate-50 dark:from-[#050505] to-transparent z-10" />
+                    <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-slate-50 dark:from-[#050505] to-transparent z-10" />
 
-                {/* Feature Comparison Table */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="max-w-3xl mx-auto mb-24"
-                >
-                    <h2 className="text-3xl font-bold text-center mb-3 text-foreground">Compare Plans</h2>
-                    <p className="text-muted-foreground text-center mb-10">See exactly what you get with each plan</p>
-                    <div className="bg-white dark:bg-slate-900/60 backdrop-blur-sm rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-lg">
-                        <div className="grid grid-cols-3 gap-4 p-5 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
-                            <div className="text-sm font-bold text-foreground">Feature</div>
-                            <div className="text-sm font-bold text-center text-foreground">Free</div>
-                            <div className="text-sm font-bold text-center text-primary">Pro ⚡</div>
-                        </div>
-                        {comparisonFeatures.map((row, i) => (
-                            <div key={i} className={cn(
-                                "grid grid-cols-3 gap-4 p-5 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/30",
-                                i !== comparisonFeatures.length - 1 && "border-b border-slate-100 dark:border-slate-800"
-                            )}>
-                                <div className="text-sm text-foreground font-medium">{row.feature}</div>
-                                <div className="text-sm text-center text-muted-foreground">{row.free}</div>
-                                <div className="text-sm text-center text-primary font-semibold">{row.pro}</div>
-                            </div>
-                        ))}
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl font-bold mb-4">Loved by 10,000+ Creators</h2>
+                        <p className="text-muted-foreground">Don't just take our word for it</p>
                     </div>
-                </motion.div>
 
-                {/* Testimonials */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="max-w-5xl mx-auto mb-24"
-                >
-                    <h2 className="text-3xl font-bold text-center mb-3 text-foreground">Loved by Students</h2>
-                    <p className="text-muted-foreground text-center mb-10">See what our Pro users are saying</p>
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {testimonials.map((t, i) => (
-                            <motion.div
+                    <div className="flex gap-8 w-max animate-marquee hover:[animation-play-state:paused]">
+                        {[...testimonials, ...testimonials, ...testimonials].map((t, i) => (
+                            <div
                                 key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.1 }}
-                                className="bg-white dark:bg-slate-900/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200 dark:border-slate-800 hover:border-primary/30 hover:shadow-xl transition-all duration-300"
+                                className="w-[350px] p-8 rounded-3xl bg-white dark:bg-white/5 border border-black/5 dark:border-white/5 shadow-lg backdrop-blur-sm"
                             >
-                                <div className="flex items-center gap-1.5 mb-4">
-                                    {[...Array(5)].map((_, j) => (
-                                        <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
-                                    ))}
-                                </div>
-                                <p className="text-foreground text-sm leading-relaxed mb-5">&ldquo;{t.text}&rdquo;</p>
-                                <div className="flex items-center gap-3">
-                                    <div className="h-9 w-9 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white font-bold text-sm">
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
                                         {t.avatar}
                                     </div>
                                     <div>
-                                        <p className="text-sm font-semibold text-foreground">{t.name}</p>
+                                        <p className="font-bold text-foreground">{t.name}</p>
                                         <p className="text-xs text-muted-foreground">{t.role}</p>
                                     </div>
                                 </div>
-                            </motion.div>
+                                <div className="flex gap-1 mb-3">
+                                    {[1, 2, 3, 4, 5].map(s => <Star key={s} className="h-4 w-4 fill-amber-400 text-amber-400" />)}
+                                </div>
+                                <p className="text-muted-foreground/90 italic leading-relaxed">"{t.text}"</p>
+                            </div>
                         ))}
                     </div>
-                </motion.div>
+                </div>
 
                 {/* FAQ Section */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="max-w-2xl mx-auto mb-24"
-                >
-                    <h2 className="text-3xl font-bold text-center mb-3 text-foreground">Frequently Asked Questions</h2>
-                    <p className="text-muted-foreground text-center mb-10">Everything you need to know about Pro</p>
-                    <div className="space-y-3">
+                <div className="max-w-3xl mx-auto mb-32">
+                    <h2 className="text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+                    <div className="grid gap-4">
                         {faqs.map((faq, i) => (
-                            <div
+                            <motion.div
                                 key={i}
+                                initial={false}
                                 className={cn(
-                                    "bg-white dark:bg-slate-900/60 backdrop-blur-sm rounded-2xl border transition-all duration-300 overflow-hidden",
-                                    openFaq === i ? "border-primary/30 shadow-lg" : "border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
+                                    "border rounded-2xl overflow-hidden transition-all duration-300",
+                                    openFaq === i ? "bg-white/50 dark:bg-white/5 border-indigo-500/50 shadow-lg" : "bg-transparent border-black/5 dark:border-white/5 hover:bg-white/30 dark:hover:bg-white/5"
                                 )}
                             >
                                 <button
-                                    className="w-full text-left p-5 flex items-center justify-between gap-4"
                                     onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                                    className="flex items-center justify-between w-full p-6 text-left"
                                 >
-                                    <span className="text-sm font-semibold text-foreground">{faq.q}</span>
-                                    <ChevronDown className={cn(
-                                        "h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300",
-                                        openFaq === i && "rotate-180 text-primary"
-                                    )} />
+                                    <span className="text-lg font-bold">{faq.q}</span>
+                                    <ChevronDown className={cn("h-5 w-5 transition-transform duration-300", openFaq === i && "rotate-180 text-indigo-500")} />
                                 </button>
                                 <AnimatePresence>
                                     {openFaq === i && (
@@ -499,46 +421,43 @@ export default function PricingPage() {
                                             initial={{ height: 0, opacity: 0 }}
                                             animate={{ height: "auto", opacity: 1 }}
                                             exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.25 }}
+                                            transition={{ duration: 0.3 }}
                                         >
-                                            <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
+                                            <div className="px-6 pb-6 text-muted-foreground leading-relaxed">
                                                 {faq.a}
                                             </div>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
-                </motion.div>
+                </div>
 
                 {/* Final CTA */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="max-w-2xl mx-auto text-center"
-                >
-                    <div className="bg-gradient-to-br from-[#0c0f1a] to-[#141831] rounded-3xl p-10 md:p-14 border border-primary/20 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
-                        <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-violet-600/10 blur-[80px] rounded-full pointer-events-none" />
-                        <div className="relative z-10">
-                            <Rocket className="h-10 w-10 text-primary mx-auto mb-5" />
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Ready to level up?</h3>
-                            <p className="text-slate-400 mb-8 max-w-md mx-auto text-sm">
-                                Join thousands of students who are already using ToolNova Pro to study smarter, write better, and achieve more.
-                            </p>
+                <div className="relative rounded-[3rem] overflow-hidden p-12 md:p-24 text-center bg-[#0a0a0c]">
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-indigo-500/20 to-transparent pointer-events-none" />
+
+                    <div className="relative z-10 max-w-3xl mx-auto">
+                        <Rocket className="h-16 w-16 text-white mx-auto mb-8 animate-bounce" />
+                        <h2 className="text-5xl md:text-7xl font-black text-white mb-8 tracking-tight">Ready to launch?</h2>
+                        <p className="text-xl text-gray-400 mb-12 leading-relaxed">
+                            Join the growing community of creators who are scaling their productivity with ToolNova Pro.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-6 justify-center">
                             <Button
                                 onClick={() => startSubscription(isYearly ? "plan_SEPrpn71jkiE0u" : "plan_SEPqtQNsEaZpDB")}
-                                className="h-13 px-10 rounded-2xl text-base font-bold bg-gradient-to-r from-primary via-blue-600 to-violet-600 hover:shadow-2xl hover:shadow-primary/30 hover:scale-[1.02] transition-all duration-300 text-white"
+                                className="h-16 px-12 rounded-2xl text-xl font-bold bg-white text-black hover:bg-gray-100 hover:scale-[1.05] transition-all shadow-2xl"
                             >
-                                <Zap className="mr-2 h-5 w-5 fill-white" />
-                                Get Pro Access Now
+                                Get Instant Access
                             </Button>
-                            <p className="mt-5 text-xs text-slate-500">7-day money-back guarantee • Cancel anytime</p>
                         </div>
+                        <p className="mt-8 text-sm text-gray-500">
+                            7-day money-back guarantee • Cancel details in 1-click
+                        </p>
                     </div>
-                </motion.div>
+                </div>
 
                 {/* Support Link */}
                 <div className="mt-12 text-center">

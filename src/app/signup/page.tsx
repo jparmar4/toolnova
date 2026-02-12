@@ -7,26 +7,13 @@ import { toast } from "sonner";
 import { Sparkles, Shield, Zap, ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default function SignupPage() {
     const [loading, setLoading] = useState(false);
     const supabase = createClient();
-
-    const getURL = () => {
-        let url =
-            process.env.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
-            process.env.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
-            "http://localhost:3000/";
-        // Make sure to include `https://` when not localhost.
-        url = url.includes("http") ? url : `https://${url}`;
-        // Make sure to include trailing `/`.
-        url = url.charAt(url.length - 1) === "/" ? url : `${url}/`;
-        return url;
-    };
 
     const handleGoogleLogin = async () => {
         setLoading(true);
         const redirectTo = `${window.location.origin}/auth/callback`;
-        console.log("Redirecting to:", redirectTo);
 
         const { error } = await supabase.auth.signInWithOAuth({
             provider: "google",
@@ -73,14 +60,14 @@ export default function LoginPage() {
                     </Link>
 
                     <h1 className="text-4xl lg:text-5xl font-black leading-tight mb-6">
-                        Unlock the Power of
+                        Join the Future of
                         <span className="block mt-2 bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
-                            ToolNova
+                            Productivity
                         </span>
                     </h1>
 
                     <p className="text-lg text-white/80 leading-relaxed mb-10 max-w-md">
-                        Join thousands of students using AI to write better essays, solve problems, and study smarter.
+                        Create your free account today and start using our premium AI tools to work smarter, not harder.
                     </p>
 
                     {/* Benefits */}
@@ -107,14 +94,14 @@ export default function LoginPage() {
                             </div>
                             <div>
                                 <p className="font-semibold text-white">10,000+ Students</p>
-                                <p className="text-sm text-white/60">Already using ToolNova</p>
+                                <p className="text-sm text-white/60">Start for free today</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Right Panel - Login Form */}
+            {/* Right Panel - Signup Form */}
             <div className="flex-1 flex items-center justify-center p-6 sm:p-10 bg-gradient-to-b from-slate-50 to-white dark:from-[#0f1419] dark:to-background">
                 <div className="w-full max-w-md">
                     {/* Mobile Logo */}
@@ -131,10 +118,10 @@ export default function LoginPage() {
                     <div className="bg-white dark:bg-[#1a1f2e] rounded-3xl shadow-2xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 p-8 sm:p-10">
                         <div className="text-center mb-8">
                             <h2 className="text-2xl sm:text-3xl font-black text-foreground mb-2">
-                                Welcome to ToolNova
+                                Create Account
                             </h2>
                             <p className="text-muted-foreground">
-                                Sign in to access your AI tools
+                                Get started with your free account
                             </p>
                         </div>
 
@@ -167,7 +154,7 @@ export default function LoginPage() {
                                             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                                         />
                                     </svg>
-                                    <span>Continue with Google</span>
+                                    <span>Sign up with Google</span>
                                     <ArrowRight className="h-4 w-4 opacity-0 -ml-2 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                                 </>
                             )}
@@ -188,9 +175,9 @@ export default function LoginPage() {
                         {/* Benefits List */}
                         <div className="space-y-3">
                             {[
-                                "One-click sign in with Google",
-                                "No password to remember",
-                                "Your data is never stored"
+                                "No credit card required",
+                                "Instant access to free tools",
+                                "Safe & Secure"
                             ].map((text, index) => (
                                 <div key={index} className="flex items-center gap-3 text-sm text-muted-foreground">
                                     <div className="h-5 w-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
@@ -202,23 +189,23 @@ export default function LoginPage() {
                         </div>
                     </div>
 
-                    {/* Footer */}
+                    {/* Login Link */}
                     <div className="mt-8 text-center">
-                        <p className="text-sm text-muted-foreground mb-4">
-                            Don't have an account?{" "}
-                            <Link href="/signup" className="text-primary hover:underline font-bold">
-                                Sign up
+                        <p className="text-sm text-muted-foreground">
+                            Already have an account?{" "}
+                            <Link href="/login" className="text-primary hover:underline font-bold">
+                                Login here
                             </Link>
                         </p>
-                        <p className="text-sm text-muted-foreground">
-                            By signing in, you agree to our{" "}
-                            <Link href="/terms" className="text-primary hover:underline font-medium">
-                                Terms of Service
-                            </Link>{" "}
-                            and{" "}
-                            <Link href="/privacy" className="text-primary hover:underline font-medium">
-                                Privacy Policy
-                            </Link>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="mt-6 text-center">
+                        <p className="text-xs text-muted-foreground/60">
+                            By joining, you agree to our{" "}
+                            <Link href="/terms" className="hover:underline">Terms</Link>
+                            {" "}and{" "}
+                            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
                         </p>
                     </div>
                 </div>
