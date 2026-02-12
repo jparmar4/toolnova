@@ -673,42 +673,39 @@ export function ToolsClient() {
           </div>
 
           {/* Search Bar */}
-          <div className="max-w-3xl mx-auto mb-10">
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-[2rem] blur-xl opacity-20 group-hover:opacity-40 transition duration-500"></div>
-              <div className="relative flex items-center bg-card backdrop-blur-3xl rounded-[1.8rem] border border-border p-2 shadow-2xl">
-                <Search className="text-muted-foreground h-6 w-6 ml-6 mr-3 shrink-0" />
-                <input
-                  ref={searchRef}
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search tools... (e.g. 'essay', 'pdf', 'resume')"
-                  className="flex-1 py-4 bg-transparent border-none text-foreground placeholder:text-muted-foreground focus:outline-none text-lg font-medium"
-                />
-                {searchQuery ? (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="mr-4 p-2 rounded-full hover:bg-muted transition-colors"
-                  >
-                    <X className="h-5 w-5 text-muted-foreground" />
-                  </button>
-                ) : (
-                  <div className="hidden md:flex items-center gap-1 mr-5 px-2.5 py-1 rounded-lg bg-muted text-muted-foreground text-xs font-mono">
-                    Ctrl+K
-                  </div>
-                )}
-              </div>
+          <div className="max-w-2xl mx-auto mb-10">
+            <div className="relative flex items-center bg-card rounded-2xl border border-border shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300">
+              <Search className="text-muted-foreground h-5 w-5 ml-5 mr-3 shrink-0" />
+              <input
+                ref={searchRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search tools..."
+                className="flex-1 py-3.5 bg-transparent border-none text-foreground placeholder:text-muted-foreground/60 focus:outline-none text-base font-medium"
+              />
+              {searchQuery ? (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="mr-3 p-1.5 rounded-lg hover:bg-muted transition-colors"
+                >
+                  <X className="h-4 w-4 text-muted-foreground" />
+                </button>
+              ) : (
+                <div className="hidden md:flex items-center mr-4 px-2 py-1 rounded-md bg-muted/60 text-muted-foreground/70 text-[11px] font-mono border border-border/50">
+                  ⌘K
+                </div>
+              )}
             </div>
           </div>
 
           {/* Category Filter Pills */}
-          <div className="flex flex-wrap justify-center gap-2.5 mb-8">
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
             <button
               onClick={() => setActiveCategory("All")}
-              className={`px-6 py-2.5 rounded-2xl font-bold text-sm tracking-wide transition-all ${activeCategory === "All"
-                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
-                  : "glass-card !p-0 px-6 py-2.5 !rounded-2xl text-muted-foreground hover:text-foreground hover:border-primary/40"
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${activeCategory === "All"
+                ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
+                : "bg-card text-muted-foreground border border-border hover:text-foreground hover:border-primary/40 hover:bg-primary/5"
                 }`}
             >
               All ({ALL_TOOLS.length})
@@ -717,14 +714,14 @@ export function ToolsClient() {
               <button
                 key={cat.name}
                 onClick={() => setActiveCategory(cat.name)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl font-bold text-sm tracking-wide transition-all ${activeCategory === cat.name
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
-                    : "glass-card !p-0 px-5 py-2.5 !rounded-2xl text-muted-foreground hover:text-foreground hover:border-primary/40"
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${activeCategory === cat.name
+                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
+                  : "bg-card text-muted-foreground border border-border hover:text-foreground hover:border-primary/40 hover:bg-primary/5"
                   }`}
               >
-                <cat.icon className="h-4 w-4" />
+                <cat.icon className="h-3.5 w-3.5" />
                 <span>{cat.name.replace(" Tools", "")}</span>
-                <span className="text-xs opacity-70">
+                <span className="text-[11px] opacity-60 ml-0.5">
                   {toolCountByCategory[cat.name] || 0}
                 </span>
               </button>
