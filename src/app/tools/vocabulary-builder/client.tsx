@@ -77,38 +77,133 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
   const category = options?.category || "general";
   const includeExtras = options?.includeExtras || "all";
 
-  let extraInstructions = "";
-  if (includeExtras === "all") {
-    extraInstructions =
-      "Include definitions, example sentences, synonyms, antonyms, and memory tips.";
-  } else if (includeExtras === "examples") {
-    extraInstructions = "Include definitions and example sentences.";
-  } else if (includeExtras === "mnemonics") {
-    extraInstructions =
-      "Include definitions and creative memory tips/mnemonics.";
-  } else {
-    extraInstructions = "Include clear, concise definitions.";
-  }
+  const levelGuidance: Record<string, string> = {
+    beginner:
+      "BEGINNER (CEFR A1-A2 / GRE 140-150): Common everyday vocabulary. Words most educated adults know but students may not. Focus on high-frequency utility words. Definitions should use simple language. Examples should reflect everyday situations.",
+    intermediate:
+      "INTERMEDIATE (CEFR B1-B2 / GRE 150-155): Academic and professional vocabulary. Words commonly found in textbooks, news articles, and formal writing. Include some SAT/GRE-level words. Definitions may use moderate complexity.",
+    advanced:
+      "ADVANCED (CEFR C1-C2 / GRE 155-165): Sophisticated vocabulary for essays, tests, and scholarly writing. GRE/GMAT/IELTS-level words. Include nuanced meanings, formal register words, and academic terminology. Definitions should be precise.",
+    expert:
+      "EXPERT (GRE 165-170 / PhD-level): Rare, erudite vocabulary for competitive exams and scholarly discourse. Obscure but useful words found in advanced academic texts, literary criticism, and professional journals. Include etymological depth.",
+  };
 
-  return `Generate ${wordCount} ${level}-level vocabulary words for ${category} learning.
+  const categoryGuidance: Record<string, string> = {
+    general:
+      "GENERAL: Diverse vocabulary across topics—no domain restriction. Include a mix of abstract concepts, descriptive words, action verbs, and modifiers. Prioritize words with high utility across contexts.",
+    academic:
+      "ACADEMIC: Words commonly used in scholarly writing, research papers, and textbook discussions. Focus on analytical terms (e.g., 'elucidate', 'paradigm', 'empirical'), transition vocabulary, and abstract reasoning words.",
+    competitive:
+      "COMPETITIVE EXAMS: Words frequently tested in GRE, GMAT, SAT, CAT, UPSC, SSC, and Banking exams. Prioritize words with high exam frequency. Include words commonly used in reading comprehension passages and verbal reasoning.",
+    professional:
+      "PROFESSIONAL: Business, corporate, and industry vocabulary. Words used in emails, reports, presentations, and meetings. Focus on leadership, strategy, innovation, and communication terminology.",
+    literary:
+      "LITERARY: Words found in classic and contemporary literature, creative writing, and literary criticism. Include figurative language, mood words, character descriptors, and narrative terminology.",
+  };
 
-For each word, provide:
-1. The word (in bold or CAPS)
-2. Part of speech (noun, verb, adjective, etc.)
-3. Clear definition
-4. Example sentence showing proper usage
-5. Synonyms (2-3 related words)
-6. Memory tip or mnemonic device
-7. Usage context or notes
+  const extrasConfig: Record<string, string> = {
+    all:
+      "FULL ANALYSIS: Include definition, part of speech, pronunciation guide, example sentence, 2-3 synonyms, 1-2 antonyms, etymology/word roots, and memory tip/mnemonic for every word.",
+    examples:
+      "DEFINITIONS + EXAMPLES: Include clear definition, part of speech, and 2 example sentences (one formal, one conversational) for each word. Skip etymology and mnemonics.",
+    mnemonics:
+      "DEFINITIONS + MEMORY AIDS: Include definition, part of speech, and a creative mnemonic device, visual association, or memory trick for each word. Prioritize retention techniques.",
+    basic:
+      "DEFINITIONS ONLY: Include concise, clear definition and part of speech. Keep output clean and scannable for quick reference.",
+  };
 
-${extraInstructions}
+  return `You are an expert lexicologist, vocabulary acquisition specialist, and language educator who designs evidence-based word lists using spaced repetition principles, etymological analysis, and contextual learning theory. You specialize in preparing students for competitive exams (GRE, SAT, GMAT, IELTS, UPSC) and academic excellence.
 
-Topic or focus area:
+## YOUR TASK
+Generate ${wordCount} carefully curated ${level}-level vocabulary words for ${category} learning, with comprehensive analysis designed to maximize retention and practical usage.
+
+## SPECIFICATIONS
+**Word Count**: ${wordCount} words
+**Level**: ${level.toUpperCase()} - ${levelGuidance[level]}
+**Category**: ${category.toUpperCase()} - ${categoryGuidance[category]}
+**Detail**: ${includeExtras.toUpperCase()} - ${extrasConfig[includeExtras]}
+
+## VOCABULARY GENERATION FRAMEWORK
+
+### WORD SELECTION CRITERIA
+- **Utility**: Choose words the learner will actually encounter and use
+- **Difficulty calibration**: Match ${level} level precisely — not too easy, not too hard
+- **Diversity**: Mix nouns, verbs, adjectives, and adverbs; avoid clustering one part of speech
+- **Exam relevance**: ${category === "competitive" ? "Prioritize frequently tested words from past exam papers" : "Include words commonly seen in academic and professional contexts"}
+- **Progressive complexity**: Order words from slightly easier to harder within the set
+- **No repeats**: Each word must be unique and distinct from others in the list
+
+### WORD ANALYSIS STRUCTURE
+
+For EACH word, present:
+
+${includeExtras === "all" ? `**[Number]. [WORD]** /pronunciation/  *(part of speech)*
+- **Definition**: Clear, precise meaning (primary definition first, secondary if common)
+- **Example 1**: "[Formal/academic sentence demonstrating correct usage]"
+- **Example 2**: "[Conversational/practical sentence showing natural usage]"
+- **Synonyms**: [2-3 words with subtle difference notes]
+- **Antonyms**: [1-2 opposite words]
+- **Word Roots**: [Etymology — Latin/Greek roots, prefixes, suffixes explained]
+- **Memory Tip**: 💡 [Creative mnemonic, visual association, story, or wordplay that makes this word stick]
+- **Usage Note**: [Register (formal/informal), common collocations, or frequent exam context]` : ""}
+
+${includeExtras === "examples" ? `**[Number]. [WORD]**  *(part of speech)*
+- **Definition**: Clear, precise meaning
+- **Example 1**: "[Formal sentence]"
+- **Example 2**: "[Conversational sentence]"` : ""}
+
+${includeExtras === "mnemonics" ? `**[Number]. [WORD]**  *(part of speech)*
+- **Definition**: Clear, precise meaning
+- **Memory Tip**: 💡 [Creative mnemonic device — use visual imagery, rhymes, wordplay, stories, or connections to familiar words. Make it genuinely memorable, not generic.]` : ""}
+
+${includeExtras === "basic" ? `**[Number]. [WORD]**  *(part of speech)* — [concise definition]` : ""}
+
+### MNEMONIC TECHNIQUES TO USE
+${includeExtras === "all" || includeExtras === "mnemonics" ? `- **Visual association**: Link the word to a vivid mental image
+- **Sound-alike**: Connect to a familiar word that sounds similar
+- **Story method**: Create a brief, memorable scenario using the word
+- **Root breakdown**: Show how prefixes/suffixes reveal meaning
+- **Acronym/phrase**: Create a memorable phrase from the word's letters
+- **Cultural reference**: Link to a famous person, movie, or event
+
+**GOOD mnemonic**: "EPHEMERAL = E-PH-EMERAL → think 'a FEMORAL artery pulse is ephemeral (brief/fleeting)'"
+**BAD mnemonic**: "Remember this word by its definition" (unhelpful!)` : ""}
+
+### QUALITY STANDARDS FOR EXAMPLES
+- Examples must demonstrate the word's meaning clearly — a reader should understand the word from context alone
+- Include diverse subjects (science, history, daily life, business)
+- Avoid circular definitions in examples (don't use the word to define itself)
+- Show the word in its most common grammatical form
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ Exactly ${wordCount} words are provided
+2. ✓ All words match ${level} difficulty level — none too easy or too hard
+3. ✓ Words are relevant to ${category} learning context
+4. ✓ No duplicate or near-duplicate words
+5. ✓ Parts of speech are diverse (mix of nouns, verbs, adjectives)
+6. ✓ ${includeExtras === "all" || includeExtras === "examples" ? "Example sentences clearly demonstrate word meaning in context" : "Definitions are clear and precise"}
+7. ✓ ${includeExtras === "all" || includeExtras === "mnemonics" ? "Memory tips are genuinely creative and memorable (not generic)" : "Information is concise and scannable"}
+8. ✓ Words are ordered from slightly easier to harder
+9. ✓ Definitions are accurate and not misleading
+10. ✓ Formatting is consistent across all entries
+
+## TOPIC/FOCUS AREA
 ${input}
 
-Format each word clearly with numbering. Make definitions easy to understand and examples practical.
+## OUTPUT FORMAT
 
-Vocabulary list:`;
+Present as a numbered list with consistent formatting per the detail level selected. Use markdown for bold words and clear section breaks.
+
+Do NOT include:
+- Words significantly above or below the ${level} level
+- Obscure words with no practical use (unless expert level)
+- Generic memory tips ("just memorize it")
+- Duplicate information across word entries
+- Your commentary about the list creation process
+
+Generate an expertly curated vocabulary list:`;
 };
 
 const stats = [

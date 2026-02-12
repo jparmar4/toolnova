@@ -64,52 +64,141 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
   const audience = options?.audience || "teens";
 
   const lengthWords: Record<string, string> = {
-    flash: "100-300 words",
-    short: "500-800 words",
-    detailed: "1000+ words",
+    flash: "100-300 words (ultra-concise, single scene or moment)",
+    short: "500-800 words (complete narrative arc with depth)",
+    detailed: "1000-1500 words (fully developed plot with rich details)",
   };
 
   const audienceGuidance: Record<string, string> = {
     children:
-      "Use simple language, positive themes, and age-appropriate content suitable for ages 6-10.",
+      "Simple vocabulary (grades 3-5 level), short sentences, clear moral lessons, positive themes, no violence or scary content, happy/hopeful endings.",
     teens:
-      "Include relatable themes, moderate complexity, and engaging dialogue suitable for ages 13-18.",
+      "Relatable teen issues, moderate vocabulary complexity, contemporary dialogue, coming-of-age themes, appropriate emotional depth, engaging pacing.",
     adults:
-      "Use sophisticated language, complex themes, and mature storytelling suitable for ages 18+.",
+      "Sophisticated vocabulary, complex character psychology, mature themes, nuanced conflicts, literary techniques (symbolism, metaphor), open or ambiguous endings acceptable.",
   };
 
   const genreElements: Record<string, string> = {
     fantasy:
-      "Include magical elements, mythical creatures, or supernatural powers. Build a rich fantasy world.",
+      "Magic system with clear rules, mythical creatures or supernatural beings, world-building (describe the setting), fantastical conflicts, sense of wonder and enchantment.",
     scifi:
-      "Incorporate futuristic technology, space exploration, or scientific concepts. Create a believable sci-fi setting.",
+      "Futuristic technology or scientific concepts, space/future setting details, exploration of 'what if' scenarios, believable science-based elements, innovation and discovery themes.",
     romance:
-      "Focus on emotional connection, relationship development, and heartfelt moments. Create compelling chemistry.",
+      "Emotional connection and chemistry between characters, relationship development arc (meeting → conflict → resolution), heartfelt dialogue, romantic tension, emotional vulnerability.",
     mystery:
-      "Include clues, red herrings, and a puzzle to solve. Build suspense and reveal the truth gradually.",
+      "Central puzzle or crime to solve, clues scattered throughout, red herrings to mislead, investigative process, suspenseful reveals, satisfying solution at the climax.",
     adventure:
-      "Feature exciting journeys, challenges to overcome, and discoveries. Create a sense of exploration.",
+      "Physical journey or quest, obstacles and challenges to overcome, discoveries and exploration, action sequences, character growth through trials, exciting pacing.",
     horror:
-      "Build tension, create an eerie atmosphere, and include unsettling elements. Focus on fear and suspense.",
+      "Eerie, unsettling atmosphere, building tension and dread, fear-inducing elements, psychological or supernatural threats, sensory descriptions (sounds, shadows), shocking or disturbing moments.",
   };
 
-  return `Write a captivating ${genre} story for a ${audience} audience.
-Target length: ${lengthWords[length]}
+  return `You are an expert creative fiction writer and storytelling specialist. Your task is to craft an engaging, well-structured ${genre} story that captivates readers from start to finish.
 
-Genre-specific guidance: ${genreElements[genre]}
-Audience guidance: ${audienceGuidance[audience]}
+## YOUR TASK
+Write a complete ${genre} story for a ${audience} audience based on the provided premise.
 
-Story structure requirements:
-- Start with a compelling hook that grabs attention immediately
-- Introduce interesting, well-developed characters
-- Build rising action with increasing tension or stakes
-- Include a satisfying climax that resolves the main conflict
-- End with a memorable conclusion that leaves an impact
+## SPECIFICATIONS
+**Genre**: ${genre.toUpperCase()} - ${genreElements[genre]}
+**Target Length**: ${lengthWords[length]}
+**Target Audience**: ${audience} - ${audienceGuidance[audience]}
 
-Story premise/idea:
+## NARRATIVE STRUCTURE (Follow This Framework)
+
+### 1. OPENING HOOK (First 1-2 paragraphs)
+- Start with action, dialogue, or intriguing situation
+- Immediately grab reader attention
+- Establish tone and atmosphere
+- Introduce protagonist in an engaging way
+- Create questions in reader's mind
+
+### 2. CHARACTER INTRODUCTION & SETTING
+- Develop protagonist with clear personality traits
+- Show character through actions and dialogue, not just description
+- Establish the story world (time, place, atmosphere)
+- ${audience === "children" ? "Make characters relatable and likeable" : audience === "teens" ? "Create authentic, complex teen characters" : "Develop psychologically realistic, flawed characters"}
+- Set up character's goal or desire
+
+### 3. RISING ACTION & CONFLICT
+- Introduce the central problem or conflict
+- Build tension progressively with obstacles
+- Include 2-3 escalating complications
+- ${length === "flash" ? "Keep it tight - single conflict/resolution" : "Develop subplots or character relationships"}
+- Use vivid sensory details to immerse readers
+- Show character reactions and internal struggles
+
+### 4. CLIMAX (Story Peak)
+- Build to the most intense moment
+- Protagonist faces the biggest challenge
+- High stakes and emotional intensity
+- Action, revelation, or critical decision point
+- ${genre === "mystery" ? "Reveal the solution to the puzzle" : genre === "romance" ? "Emotional confession or breakthrough" : "Confrontation with the main obstacle"}
+
+### 5. RESOLUTION & ENDING
+- Resolve the main conflict satisfactorily
+- Show how characters have changed/grown
+- Tie up loose ends (unless intentional cliffhanger)
+- ${audience === "children" ? "Provide clear, positive conclusion with lesson" : audience === "teens" ? "Hopeful or meaningful ending" : "Can be ambiguous, bittersweet, or thought-provoking"}
+- Leave lasting impression with final image or line
+
+## WRITING QUALITY STANDARDS
+
+### Genre Authenticity
+- Include ALL essential ${genre} elements listed above
+- Meet reader expectations for ${genre} conventions
+- Add unique twists to avoid clichés
+
+### Show, Don't Tell
+- Use action and dialogue to reveal character
+- Describe sensory details (what characters see, hear, feel)
+- Avoid stating emotions directly; show through behavior
+
+### Engaging Prose
+- Vary sentence length (mix short punchy sentences with flowing longer ones)
+- Use strong, specific verbs (sprinted, whispered, shattered vs. went, said, broke)
+- Include vivid imagery and metaphors
+- ${audience === "children" ? "Simple but descriptive language" : audience === "teens" ? "Contemporary, energetic style" : "Literary, sophisticated prose"}
+
+### Dialogue (if included)
+- Make it natural and character-specific
+- Use dialogue to advance plot or reveal character
+- Balance with action and description
+- ${audience === "adults" ? "Can be subtle, layered with subtext" : "Clear and purposeful"}
+
+### Pacing
+- ${length === "flash" ? "Move quickly, every word counts" : length === "short" ? "Balanced pacing with key scene emphasis" : "Allow for slower character moments between action"}
+- Cut unnecessary exposition
+- End scenes with momentum
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ Word count: ${lengthWords[length]} (count carefully)
+2. ✓ All 5 narrative structure elements present
+3. ✓ Genre: Clear ${genre} elements throughout
+4. ✓ Audience: Appropriate for ${audience} (language, themes, content)
+5. ✓ Opening: Immediately engaging hook
+6. ✓ Characters: Well-developed with clear motivations
+7. ✓ Conflict: Central problem clearly established and resolved
+8. ✓ Climax: Emotionally satisfying peak moment
+9. ✓ Ending: Provides closure and impact
+10. ✓ Prose: Vivid, varied, showing rather than telling
+11. ✓ Dialogue: Natural and purposeful (if included)
+12. ✓ Consistency: No plot holes or contradictions
+13. ✓ Engagement: Would hold reader attention throughout
+
+## STORY PREMISE
 ${input}
 
-Write the complete story now:`;
+## OUTPUT FORMAT
+Write ONLY the complete story. Do not include:
+- Title (unless specifically requested in premise)
+- Author notes or explanations
+- Genre labels or tags
+- "Once upon a time" unless it fits naturally
+- Meta-commentary about the story
+
+Start directly with the narrative. Make every word count. Create something memorable.`;
 };
 
 const stats = [

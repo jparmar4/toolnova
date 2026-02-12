@@ -57,37 +57,175 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
 
   const formatStyles: Record<string, string> = {
     detailed:
-      "Create a detailed schedule showing exact times, duration, and descriptions for each activity.",
+      "Precise schedule with exact start/end times, duration, and brief description for every activity. Include specific time slots (e.g., 6:00 AM - 7:00 AM).",
     simple:
-      "Create a simple overview listing main activities and their approximate times without excessive detail.",
+      "Clean overview listing main activities with approximate time ranges. Focus on what happens in each part of the day without minute-by-minute detail.",
     blocks:
-      "Create a time block schedule organizing activities into morning, afternoon, and evening blocks with clear boundaries.",
+      "Time block format organizing activities into Morning (6 AM-12 PM), Afternoon (12 PM-5 PM), and Evening (5 PM-10 PM) blocks. List activities within each block with approximate durations.",
   };
 
-  return `Create a ${format} weekly timetable for ${days} days based on the following activities and preferences.
+  const daysLabel: Record<string, string> = {
+    "5": "Monday through Friday (weekdays only, weekends free)",
+    "6": "Monday through Saturday (Sunday rest day)",
+    "7": "Monday through Sunday (full week coverage)",
+  };
 
-Format style: ${formatStyles[format]}
-${includeBreaks ? "IMPORTANT: Include strategic short breaks (10-15 min) between activities to prevent fatigue and maintain productivity. Also schedule buffer time for transitions." : "Schedule activities continuously without break periods."}
+  const breakStrategy = includeBreaks
+    ? "BREAK INTEGRATION: Include 10-15 minute transition breaks between major activity changes. Add a 30-60 minute recharge break midday. Include buffer time (15-30 min) between scheduled blocks for unexpected delays. Mark breaks clearly in the schedule."
+    : "Schedule activities in continuous flow. Use activity transitions as natural breaks.";
 
-Your timetable should:
-1. **Balance**: Distribute activities evenly across the week
-2. **Realism**: Consider energy levels throughout the day (harder tasks when fresh)
-3. **Flexibility**: Leave some buffer time for unexpected events
-4. **Consistency**: Keep similar activities at consistent times when possible
-5. **Wellness**: Include time for meals, rest, and personal activities
-6. **Productivity**: Group similar activities to minimize context switching
+  return `You are an expert productivity coach, time management specialist, and behavioral psychologist who designs realistic, balanced weekly schedules. You understand energy management, ultradian rhythms, task batching, and the importance of work-life balance in creating sustainable routines.
 
-Consider:
-- Morning hours (6 AM - 12 PM): Best for focused work and study
-- Afternoon (12 PM - 5 PM): Good for meetings, lighter tasks, physical activities
-- Evening (5 PM - 10 PM): Review, personal time, lighter activities
-- Avoid overloading any single day
-- Maintain work-life balance
+## YOUR TASK
+Create a ${format} weekly timetable covering ${days} days that organizes all listed activities into a realistic, balanced, and sustainable schedule.
 
-Activities and preferences:
+## SPECIFICATIONS
+**Days**: ${daysLabel[days]}
+**Format**: ${format.toUpperCase()} - ${formatStyles[format]}
+**Breaks**: ${breakStrategy}
+**Philosophy**: Balance productivity with wellness; sustainable schedules beat intense ones
+
+## TIMETABLE DESIGN FRAMEWORK
+
+### 1. ENERGY MAPPING PRINCIPLES
+Design the schedule around natural human energy patterns:
+
+**Peak Energy (Morning 6-11 AM)**:
+- Schedule the most cognitively demanding tasks
+- Deep work, studying, creative tasks, problem-solving
+- Avoid routine or administrative tasks during this window
+
+**Sustained Energy (Late Morning - Afternoon 11 AM-3 PM)**:
+- Collaborative work, meetings, classes, discussions
+- Tasks requiring moderate focus
+- Schedule lunch and a recharge break in this window
+
+**Declining Energy (Afternoon 3-5 PM)**:
+- Lighter tasks, admin work, email, organizing
+- Physical activities (gym, sports, walks) to re-energize
+- Review sessions or lighter study material
+
+**Recovery Period (Evening 5-10 PM)**:
+- Personal time, hobbies, socializing, family
+- Light review or reading (not intensive study)
+- Meal preparation, relaxation, wind-down routine
+- Screen-free time before sleep recommended
+
+### 2. SCHEDULING PRINCIPLES
+
+**Task Batching**:
+- Group similar activities together to minimize context switching
+- Schedule all classes/meetings in continuous blocks when possible
+- Batch errands on a single day or time slot
+
+**Consistency**:
+- Keep recurring activities at the same time each day
+- Maintain consistent wake-up and sleep times
+- Anchor habits to fixed daily rituals
+
+**Buffer Time**:
+- Add 15-30 min buffers between major activities
+- Don't schedule back-to-back intensive tasks
+- Leave ${days === "7" ? "2-3 hours" : "1-2 hours"} per day unscheduled for flexibility
+
+**Balance Check**:
+- No day should exceed 12 hours of scheduled activities
+- Each day must include: meals (3), personal time (1+ hr), adequate sleep (7-8 hrs)
+- Distribute workload evenly—don't front-load the week
+- Include at least 1 recreational/enjoyable activity per day
+
+### 3. FORMAT-SPECIFIC OUTPUT RULES
+
+${format === "detailed" ? `**Detailed Schedule Format**:
+Present each day as a table or time-stamped list:
+
+**📅 [Day Name]**
+| Time | Activity | Duration | Notes |
+| --- | --- | --- | --- |
+| 6:00-6:30 AM | Morning Routine | 30 min | Wake up, hygiene, breakfast |
+| 6:30-8:00 AM | [Activity] | 90 min | [Brief context] |
+[Continue for all waking hours]
+
+- Include exact start and end times
+- Specify duration for each activity
+- Add brief notes for context or priority
+- Use consistent time formatting (AM/PM)` : ""}
+
+${format === "simple" ? `**Simple Schedule Format**:
+Present each day as a clean list:
+
+**📅 [Day Name]**
+🌅 Morning: [Main activities with approximate times]
+☀️ Afternoon: [Main activities with approximate times]
+🌙 Evening: [Main activities with approximate times]
+
+- Keep it scannable and uncluttered
+- Focus on what, not exact when
+- Group activities by time period
+- Include approximate durations in parentheses` : ""}
+
+${format === "blocks" ? `**Time Block Format**:
+Present each day in three blocks:
+
+**📅 [Day Name]**
+
+🌅 **MORNING BLOCK (6 AM - 12 PM)**
+- [Activity 1] (~duration)
+- [Activity 2] (~duration)
+${includeBreaks ? "- ☕ Break (15 min)" : ""}
+
+☀️ **AFTERNOON BLOCK (12 PM - 5 PM)**
+- 🍽️ Lunch (1 hr)
+- [Activity 3] (~duration)
+- [Activity 4] (~duration)
+
+🌙 **EVENING BLOCK (5 PM - 10 PM)**
+- [Activity 5] (~duration)
+- [Personal/Leisure time]
+- 😴 Wind-down routine
+
+- Group activities within each block
+- Show block boundaries clearly
+- Include transition time between blocks` : ""}
+
+### 4. WEEKLY OVERVIEW
+
+After the daily schedules, include:
+- **Weekly summary**: Total hours per activity category
+- **Balance assessment**: Work/study vs personal time ratio
+- **Flexibility notes**: Which slots can be swapped if needed
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ All listed activities are scheduled with realistic time allocations
+2. ✓ No day exceeds a sustainable number of active hours
+3. ✓ Energy levels are considered (hard tasks in morning, light in evening)
+4. ✓ Meals, sleep, and personal time are included every day
+5. ✓ ${includeBreaks ? "Breaks and buffers are included between activities" : "Activity transitions are logical"}
+6. ✓ Similar activities are batched together where possible
+7. ✓ Recurring activities are at consistent times across days
+8. ✓ Work-life balance is maintained (not all work, not all play)
+9. ✓ Format matches ${format} style requirements
+10. ✓ Schedule is realistic and followable by a real person
+11. ✓ ${days === "7" ? "Weekend activities differ from weekdays" : days === "6" ? "Saturday has a different pace from weekdays" : "Weekdays only, no weekend scheduling"}
+12. ✓ No time conflicts or overlapping activities
+
+## ACTIVITIES & PREFERENCES TO SCHEDULE
 ${input}
 
-Create a well-organized, realistic timetable:`;
+## OUTPUT FORMAT
+
+Present the complete timetable starting with a brief overview, then day-by-day schedules. ${format === "detailed" ? "Use tables for each day." : ""} End with the weekly summary.
+
+Do NOT include:
+- Generic productivity advice or motivational text
+- Activities not mentioned or implied by the user
+- Unrealistic scheduling (studying 10 hours straight)
+- Your commentary about the schedule design
+- Overly rigid timing that doesn't allow flexibility
+
+Create a well-organized, realistic, and balanced weekly timetable:`;
 };
 
 const stats = [

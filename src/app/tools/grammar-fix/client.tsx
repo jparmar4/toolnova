@@ -82,41 +82,115 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
 
   const levelInstructions: Record<string, string> = {
     basic:
-      "Fix grammar mistakes and spelling errors only. Keep everything else as is.",
+      "Fix only critical errors: spelling mistakes, basic grammar errors, and obvious typos. Preserve original style and structure.",
     standard:
-      "Fix grammar, spelling, and punctuation errors. Maintain the original style.",
+      "Fix grammar, spelling, and punctuation errors. Maintain the original writing style and voice.",
     advanced:
-      "Fix grammar, spelling, punctuation, and improve style and clarity. Make sentences more natural.",
+      "Comprehensive corrections including grammar, spelling, punctuation, sentence structure, and readability improvements.",
     professional:
-      "Provide comprehensive corrections including grammar, spelling, punctuation, style, clarity, and professional polish. Ensure perfect readability.",
+      "Complete professional polish with grammar fixes, style enhancements, clarity improvements, and optimal word choice for maximum impact.",
   };
 
   const toneInstructions: Record<string, string> = {
-    maintain: "Keep the original tone and style of writing.",
+    maintain: "Preserve the original tone, style, and personality of the writing",
     formal:
-      "Adjust the tone to be more formal and professional while maintaining meaning.",
-    casual: "Make the tone more casual and conversational while staying clear.",
+      "Elevate to formal, professional tone suitable for business or academic contexts",
+    casual: "Adjust to casual, conversational tone while maintaining clarity",
     professional:
-      "Use professional business language appropriate for workplace communication.",
+      "Use polished business language appropriate for corporate and professional settings",
     friendly:
-      "Make the tone warm, friendly, and approachable while remaining clear.",
+      "Create warm, approachable tone that's both friendly and clear",
   };
 
-  let prompt = `Fix and improve this text:
+  const errorCategories: Record<string, string[]> = {
+    basic: ["Spelling errors", "Basic grammar mistakes", "Obvious typos"],
+    standard: [
+      "Spelling errors",
+      "Grammar mistakes",
+      "Punctuation errors",
+      "Subject-verb agreement",
+      "Tense consistency",
+    ],
+    advanced: [
+      "All grammar and spelling",
+      "Sentence structure",
+      "Word choice",
+      "Clarity issues",
+      "Redundancy",
+      "Flow and transitions",
+    ],
+    professional: [
+      "All grammar and spelling",
+      "Sentence structure optimization",
+      "Professional word choice",
+      "Clarity and concision",
+      "Impact and persuasiveness",
+      "Readability enhancement",
+    ],
+  };
 
-Original text:
+  let prompt = `# Role & Task
+You are an expert grammar checker, editor, and writing coach. Your task is to fix and improve the provided text according to the specified correction level.
+
+# Original Text
 ${input}
 
-Instructions:
-- Correction Level: ${levelInstructions[level]}
-- Tone: ${toneInstructions[tone]}
-${improveClarity ? "- Improve clarity and sentence flow" : ""}
-${showExplanations ? "\n- After the corrected text, add a brief 'IMPROVEMENTS MADE:' section explaining major changes" : ""}
+# Correction Requirements
+**Correction Level**: ${level} (${levelInstructions[level]})
+**Tone Adjustment**: ${tone} - ${toneInstructions[tone]}
+**Clarity Enhancement**: ${improveClarity ? "Yes - improve sentence clarity and flow" : "No - maintain current clarity level"}
 
-Provide the corrected text in a clean, professional format.`;
+# What to Fix (${level} level)
+${errorCategories[level].map((category) => `- ${category}`).join("\n")}
+
+# Correction Guidelines
+1. **Preserve Meaning**: Never change the intended meaning or core message
+2. **Natural Language**: Ensure corrections sound natural and fluent
+3. **Consistency**: Maintain consistent tense, voice, and style throughout
+4. **Context-Aware**: Consider context when making corrections
+5. **Tone Matching**: ${toneInstructions[tone]}
+${improveClarity ? "6. **Clarity**: Simplify complex sentences, remove ambiguity, improve flow" : ""}
+${level === "professional" ? "7. **Professional Polish**: Optimize word choice, enhance impact, ensure perfect presentation" : ""}
+
+# Output Format
+${showExplanations ? `Provide your response in this exact format:
+
+## ✅ CORRECTED TEXT
+[The fully corrected and improved text here]
+
+## 📝 IMPROVEMENTS MADE
+Briefly explain the key changes:
+- **Grammar & Spelling**: [Number] errors fixed
+- **Punctuation**: [Key punctuation improvements]
+- **Clarity**: [How readability was improved]
+- **Style**: [Notable style enhancements]
+- **Key Changes**: [2-3 most significant improvements]` : "Provide ONLY the corrected text with no labels, explanations, or commentary. The output should be clean and ready to use immediately."}
+
+# Quality Standards
+Before finalizing, verify:
+- ✓ All spelling errors are corrected
+- ✓ Grammar is perfect throughout
+- ✓ Punctuation is proper and consistent
+- ✓ Sentence structure is clear and logical
+- ✓ Tone matches the ${tone} requirement
+- ✓ Original meaning is fully preserved
+- ✓ Text flows naturally and reads smoothly
+${improveClarity ? "- ✓ Clarity and readability are enhanced" : ""}
+${level === "professional" ? "- ✓ Professional polish is applied throughout" : ""}
+
+# Special Instructions
+- Keep factual information unchanged
+- Preserve proper nouns and technical terms
+- Don't add information that wasn't in the original
+- Maintain paragraph structure unless it needs improvement
+- If the original text is already perfect, return it as-is
+
+Now proceed to correct the text according to these specifications.`;
 
   return prompt;
 };
+</text>
+
 
 const stats = [
   { value: "250K+", label: "Texts Fixed", icon: CheckCircle2 },

@@ -103,73 +103,125 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
 
   const levelContext: Record<string, string> = {
     "high-school":
-      "Use clear, accessible language appropriate for high school students. Focus on fundamental concepts.",
+      "high school level with clear, accessible language and fundamental concepts",
     undergraduate:
-      "Use sophisticated vocabulary and demonstrate deeper analysis suitable for college-level writing.",
+      "undergraduate college level with sophisticated vocabulary and deeper analytical thinking",
     graduate:
-      "Employ advanced academic language with nuanced argumentation and critical thinking.",
+      "graduate level with advanced academic language, nuanced argumentation, and critical analysis",
   };
 
-  let prompt = `Write a ${type} essay at ${level} level about: "${input}"
+  const essayTypeGuidance: Record<string, string> = {
+    argumentative:
+      "Present a clear position and defend it with logical reasoning and evidence. Address counterarguments.",
+    expository:
+      "Explain and inform objectively without taking a position. Present facts and analysis clearly.",
+    narrative:
+      "Tell a story with a clear beginning, middle, and end. Use descriptive language and sensory details.",
+    descriptive:
+      "Create vivid imagery using sensory details. Show rather than tell.",
+    persuasive:
+      "Convince the reader of your viewpoint using emotional appeals, logic, and credibility.",
+    analytical:
+      "Break down and examine components critically. Analyze relationships and draw conclusions.",
+  };
 
-Requirements:
-- Target Length: ${lengthWords[length]}
-- Academic Level: ${levelContext[level]}
-- Essay Type: ${type}
+  let prompt = `# Role & Task
+You are an expert academic writer and educator. Write a complete, well-structured ${type} essay at the ${level} level.
 
-Structure (use these exact labels):
-`;
+# Essay Topic
+"${input}"
 
-  if (includeOutline) {
-    prompt += `
-📋 ESSAY OUTLINE:
-- Brief outline showing main points
-- Thesis statement preview
+# Requirements
+- **Essay Type**: ${type} - ${essayTypeGuidance[type] || "Follow standard academic conventions"}
+- **Target Length**: ${lengthWords[length]} (adhere strictly to this range)
+- **Academic Level**: ${levelContext[level]}
+- **Formatting**: Use clear paragraph breaks and proper essay structure
 
-`;
-  }
+# Output Structure
+${
+  includeOutline
+    ? `
+## 📋 ESSAY OUTLINE
+Provide a brief outline before the essay:
+- **Thesis Statement**: [Your main argument]
+- **Main Point 1**: [Brief description]
+- **Main Point 2**: [Brief description]
+- **Main Point 3**: [Brief description]
+- **Conclusion Focus**: [What you'll emphasize]
 
-  prompt += `
-📖 INTRODUCTION:
-- Engaging hook to capture attention
-- Relevant background/context
-- Clear thesis statement
+---
+`
+    : ""
+}
+## 📖 INTRODUCTION (1 paragraph)
+Write an engaging introduction that includes:
+1. **Hook**: Start with an attention-grabbing opening (question, quote, statistic, or anecdote)
+2. **Context**: Provide necessary background information
+3. **Thesis Statement**: Present a clear, specific thesis that outlines your main argument
 
-📝 BODY PARAGRAPH 1:
-- Topic sentence introducing first main point
-- Supporting evidence or examples
-- Analysis and explanation
-- Transition to next point
+## 📝 BODY PARAGRAPH 1
+**Focus**: [First main supporting point]
+- Start with a clear topic sentence
+- Provide specific evidence, examples, or data
+- Analyze and explain how this supports your thesis
+- Use smooth transition to next paragraph
 
-📝 BODY PARAGRAPH 2:
-- Topic sentence for second main point
-- Supporting evidence or examples
-- Analysis and explanation
-- Transition to next point
+## 📝 BODY PARAGRAPH 2
+**Focus**: [Second main supporting point]
+- Start with a clear topic sentence
+- Provide specific evidence, examples, or data
+- Analyze and explain the significance
+- Use smooth transition to next paragraph
 
-📝 BODY PARAGRAPH 3:
-- Topic sentence for third main point
-- Supporting evidence or examples
-- Analysis and explanation
-- Connection back to thesis
+## 📝 BODY PARAGRAPH 3
+**Focus**: [Third main supporting point]
+- Start with a clear topic sentence
+- Provide specific evidence, examples, or data
+- Analyze and connect back to thesis
+- Prepare for conclusion
 
-🎯 CONCLUSION:
-- Restate thesis in new words
-- Summarize key points
-- Broader implications or call to action
-- Memorable closing thought
+## 🎯 CONCLUSION (1 paragraph)
+Write a strong conclusion that:
+1. **Restates thesis** in fresh language (don't just repeat)
+2. **Synthesizes main points** (show how they connect)
+3. **Broader implications**: Discuss significance or call to action
+4. **Memorable closing**: End with a thought-provoking final sentence
+${
+  includeCitations
+    ? `
+## 📚 CITATION & RESEARCH SUGGESTIONS
+Provide guidance on sources to strengthen this essay:
+- **Primary Sources**: 2-3 specific types of primary sources relevant to this topic
+- **Academic Fields**: Which disciplines or areas of study to research
+- **Expert Perspectives**: Types of experts or authorities to cite
+- **Current Research**: Suggest recent developments or studies to reference
+`
+    : ""
+}
+## 💡 WRITING TIP
+Provide one specific, actionable tip for improving this particular ${type} essay.
 
-💡 WRITING TIP:
-- One practical tip for improving this type of essay
-`;
+# Quality Standards
+Before submitting, verify:
+- ✓ Thesis is clear, specific, and arguable
+- ✓ Each body paragraph has a distinct topic sentence
+- ✓ Evidence and examples are specific and relevant
+- ✓ Analysis explains HOW evidence supports claims
+- ✓ Transitions between paragraphs flow smoothly
+- ✓ Conclusion synthesizes rather than just summarizes
+- ✓ Grammar, spelling, and punctuation are correct
+- ✓ Word count is within the ${lengthWords[length]} range
+- ✓ Tone and vocabulary match ${level} level
 
-  if (includeCitations) {
-    prompt += `
-📚 CITATION SUGGESTIONS:
-- Suggest 3-4 types of sources that would strengthen this essay
-- Mention relevant fields of study or experts to reference
-`;
-  }
+# Special Instructions
+- Use proper paragraph structure with clear breaks between sections
+- Maintain consistent academic tone throughout
+- Ensure each paragraph is 4-7 sentences long
+- Avoid repetitive language - vary sentence structure
+- Do not use contractions in formal essays
+- Support claims with specific examples, not vague generalizations
+
+Now write the complete ${type} essay following this structure exactly.`;
 
   return prompt;
 };

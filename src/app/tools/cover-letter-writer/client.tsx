@@ -65,57 +65,203 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
 
   const toneGuidance: Record<string, string> = {
     professional:
-      "Use formal, polished language. Be respectful and business-appropriate throughout.",
+      "Formal, polished, business-appropriate language. Respectful and measured. Professional vocabulary without being stiff.",
     enthusiastic:
-      "Show genuine excitement about the opportunity. Use energetic but professional language.",
+      "Genuine excitement and energy about the opportunity. Positive, eager tone while maintaining professionalism. Show passion authentically.",
     confident:
-      "Demonstrate strong self-assurance in your abilities. Be assertive about your value proposition.",
+      "Strong self-assurance and assertiveness about abilities. Clear value proposition. Demonstrate competence without arrogance.",
   };
 
   const experienceGuidance: Record<string, string> = {
     entry:
-      "Emphasize education, internships, projects, and transferable skills. Show eagerness to learn and grow.",
-    mid: "Highlight relevant work experience, accomplishments with metrics, and proven track record. Balance experience with growth potential.",
+      "Emphasize education, coursework, internships, projects, volunteer work, and transferable skills. Show eagerness to learn, adaptability, and fresh perspective. Highlight potential over extensive experience.",
+    mid: "Showcase 3-5+ years relevant experience with quantified achievements. Proven track record of results. Balance demonstrated expertise with growth potential and leadership readiness.",
     senior:
-      "Showcase leadership experience, strategic thinking, significant achievements, and industry expertise. Emphasize value you bring to organization.",
+      "Highlight 7-10+ years expertise with strategic impact. Leadership experience managing teams/projects. Industry thought leadership. Significant measurable achievements at scale. Executive presence and vision.",
   };
 
-  return `Write a compelling ${tone} cover letter for a ${jobType} ${experience}-level position.
+  const jobTypeStrategy: Record<string, string> = {
+    corporate:
+      "Professional corporate standards. Emphasize team collaboration, business impact, cultural fit. Formal structure and business outcomes.",
+    startup:
+      "Highlight adaptability, innovation, wearing multiple hats. Show entrepreneurial mindset, quick learning, comfort with ambiguity. Fast-paced energy.",
+    nonprofit:
+      "Emphasize mission alignment, passion for cause, community impact. Show values-driven motivation. Balance passion with professional competence.",
+    creative:
+      "Showcase creativity, portfolio highlights, innovative thinking. Can be less formal but still professional. Personality and unique perspective valued.",
+    technical:
+      "Highlight technical skills, projects, problem-solving abilities. Include specific technologies and methodologies. Demonstrate technical expertise clearly.",
+    remote:
+      "Emphasize self-motivation, communication skills, remote work experience. Highlight async collaboration, time management, and proven remote productivity.",
+  };
 
-Tone: ${toneGuidance[tone]}
-Experience level guidance: ${experienceGuidance[experience]}
+  return `You are an expert career counselor, professional resume writer, and hiring psychology specialist. Your task is to craft a compelling, ATS-optimized cover letter that positions the candidate as the ideal fit while demonstrating genuine interest and cultural alignment.
 
-Your cover letter should include:
+## YOUR TASK
+Write a persuasive ${experience}-level cover letter for a ${jobType} position with a ${tone} tone that captures hiring manager attention and secures an interview.
 
-1. **Strong Opening** (1 paragraph):
-   - Grab attention immediately
-   - Mention the specific position and how you found it
-   - Include a compelling hook about why you're interested
+## SPECIFICATIONS
+**Job Type**: ${jobType} - ${jobTypeStrategy[jobType]}
+**Experience Level**: ${experience.toUpperCase()} - ${experienceGuidance[experience]}
+**Tone**: ${tone.toUpperCase()} - ${toneGuidance[tone]}
+**Target Length**: 300-400 words (3-4 concise paragraphs)
+**Format**: Professional business letter structure
 
-2. **Why You're a Great Fit** (2-3 paragraphs):
-   - Highlight 3-4 most relevant skills/experiences
-   - Provide specific examples with measurable achievements
-   - Connect your background directly to job requirements
-   - Show understanding of company's mission/values
-   - Demonstrate research about the company
+## HIRING PSYCHOLOGY PRINCIPLES
 
-3. **Why This Company** (1 paragraph):
-   - Explain genuine interest in the organization
-   - Reference specific company initiatives, products, or values
-   - Show cultural fit and alignment with company goals
+### What Hiring Managers Look For:
+1. **Immediate relevance**: Can they do the job now?
+2. **Cultural fit**: Will they thrive here?
+3. **Motivation**: Why this role, why this company?
+4. **Value proposition**: What unique value do they bring?
+5. **Communication skills**: Can they articulate clearly?
+6. **Attention to detail**: Error-free, professional presentation
 
-4. **Compelling Closing** (1 paragraph):
-   - Express enthusiasm for next steps
-   - Include clear call-to-action
-   - Professional sign-off
-   - Mention availability for interview
+### Differentiation Strategy:
+- **Not a resume repeat**: Provide context and narrative, not bullet points
+- **Storytelling**: Use specific examples and anecdotes
+- **Company research**: Show genuine knowledge and interest
+- **Quantified impact**: Numbers make achievements concrete
+- **Personality**: Let authentic voice and enthusiasm shine through
 
-Keep the letter to 3-4 paragraphs total, approximately 300-400 words. Use specific details from the information provided. Avoid generic statements.
+## COVER LETTER STRUCTURE
 
-Job and candidate details:
+### PARAGRAPH 1: POWERFUL OPENING (3-4 sentences)
+**Purpose**: Hook attention immediately and establish fit
+
+**Components**:
+- **Position statement**: "I'm writing to apply for [Specific Position] at [Company]"
+- **How you found it**: "advertised on LinkedIn" / "referred by [Name]" / "following your company's growth"
+- **Compelling hook**: ${experience === "entry" ? "Share relevant project, coursework, or passion for field" : experience === "mid" ? "Lead with impressive achievement or relevant expertise" : "Open with significant leadership accomplishment or industry insight"}
+- **Thesis statement**: Brief preview of why you're the ideal candidate
+
+**Example opening**: "I'm excited to apply for the Senior Marketing Manager position at TechCorp, advertised on LinkedIn. Having led digital marketing strategies that generated $2M+ in revenue growth, I'm drawn to your mission of democratizing technology education and believe my track record of scaling B2B campaigns aligns perfectly with your expansion goals."
+
+### PARAGRAPH 2: CORE QUALIFICATIONS (5-6 sentences)
+**Purpose**: Prove you can excel in this specific role
+
+**Content Strategy**:
+- Lead with most relevant qualification for THIS job
+- Provide 2-3 specific accomplishments with metrics
+- Use the STAR method implicitly (Situation, Task, Action, Result)
+- Connect each point directly to job requirements
+- ${experience === "senior" ? "Emphasize leadership and strategic impact" : experience === "mid" ? "Balance technical skills with results achieved" : "Highlight projects, internships, or relevant coursework"}
+- Include numbers: percentages, dollar amounts, team sizes, time saved
+
+**Quantification Examples**:
+- "Increased conversion rates by 35%"
+- "Led team of 8 across 3 departments"
+- "Reduced processing time from 4 hours to 30 minutes"
+- "Managed $500K budget while staying 10% under target"
+
+### PARAGRAPH 3: WHY THIS COMPANY (3-4 sentences)
+**Purpose**: Demonstrate genuine interest and cultural fit
+
+**Research-Based Content**:
+- Reference specific company initiatives, products, or recent news
+- Connect to company values or mission authentically
+- Explain what excites you about THIS opportunity (not generic)
+- Show cultural alignment with company's work style/environment
+- ${jobType === "startup" ? "Show enthusiasm for building and scaling" : jobType === "nonprofit" ? "Connect to mission and impact goals" : jobType === "creative" ? "Reference their creative work you admire" : "Demonstrate understanding of business objectives"}
+
+**Avoid Generic Statements**: Not "I admire your innovative company" but "I'm impressed by your recent launch of [Specific Product] and its approach to [Specific Problem]"
+
+### PARAGRAPH 4: STRONG CLOSING (2-3 sentences)
+**Purpose**: Call-to-action and next steps
+
+**Components**:
+- Reaffirm enthusiasm for opportunity
+- State clear availability for interview
+- Professional call-to-action: "I'd welcome the opportunity to discuss how my experience in [key skill] can contribute to [company goal]"
+- Thank them for consideration
+- Professional sign-off: "Sincerely," or "Best regards,"
+
+## ATS OPTIMIZATION
+
+### Keyword Strategy:
+- Include exact phrases from job description naturally
+- Use industry-standard terminology and titles
+- Avoid tables, graphics, or unusual formatting
+- Repeat key qualifications from job posting
+- ${jobType === "technical" ? "Include specific technologies, languages, frameworks mentioned" : jobType === "corporate" ? "Use business terminology and metrics" : "Match language style from job description"}
+
+### Formatting for ATS:
+- Standard business letter format
+- Simple, clean structure
+- No headers/footers with contact info
+- Use standard fonts (when submitting)
+- Standard section divisions
+
+## WRITING QUALITY STANDARDS
+
+### Tone Consistency:
+- Maintain ${tone} tone throughout every sentence
+- ${tone === "enthusiastic" ? "Show energy without seeming desperate or unprofessional" : tone === "confident" ? "Assert value without arrogance or ego" : "Professional polish without being stiff or robotic"}
+- Balance confidence with humility
+- Authentic voice, not generic template
+
+### Language Excellence:
+- Active voice: "I led" not "I was responsible for"
+- Specific details: Names, numbers, concrete examples
+- Vary sentence structure and length
+- No clichés: Avoid "team player," "think outside the box," "hit the ground running"
+- Zero errors: Perfect grammar, spelling, punctuation
+- Professional vocabulary appropriate for ${experience} level
+
+### Persuasion Techniques:
+- Mirror language from job description
+- Address potential concerns proactively
+- Show enthusiasm without desperation
+- Demonstrate you've done homework on company
+- Frame experience as solution to their needs
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ Length: 300-400 words (3-4 paragraphs)
+2. ✓ Structure: Opening → Qualifications → Why Company → Closing
+3. ✓ Experience level: Appropriate for ${experience} position
+4. ✓ Job type: Aligns with ${jobType} culture and expectations
+5. ✓ Tone: Consistently ${tone} throughout
+6. ✓ Metrics: 2-3 quantified achievements included
+7. ✓ Company research: Specific references to company/role
+8. ✓ Keywords: Job description language incorporated naturally
+9. ✓ No clichés: Original language, not templated phrases
+10. ✓ Call-to-action: Clear next steps mentioned
+11. ✓ Zero errors: Perfect grammar and spelling
+12. ✓ Authenticity: Genuine voice, not robotic
+13. ✓ Value proposition: Clear "why hire me" answer
+14. ✓ Not resume repeat: Provides narrative context
+
+## JOB & CANDIDATE DETAILS
 ${input}
 
-Write the complete cover letter:`;
+## OUTPUT FORMAT
+
+Provide the complete cover letter in standard business letter format:
+
+[Formal greeting - use hiring manager name if provided, otherwise "Dear Hiring Manager,"]
+
+[Paragraph 1: Opening hook]
+
+[Paragraph 2: Core qualifications with metrics]
+
+[Paragraph 3: Why this company]
+
+[Paragraph 4: Closing with CTA]
+
+[Professional sign-off]
+[Candidate name]
+
+Do NOT include:
+- Candidate's address/contact info header (that goes on resume/application)
+- Date line
+- Explanatory notes or commentary
+- Section labels like "Opening:" or "Qualifications:"
+- Multiple drafts or options
+- Bracketed placeholders - fill in with realistic details from provided information
+
+Write one polished, ready-to-submit cover letter that will get them the interview.`;
 };
 
 const stats = [

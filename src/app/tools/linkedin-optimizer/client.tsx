@@ -78,26 +78,212 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
   const experienceLevel = options?.experienceLevel || "mid";
   const focus = options?.focus || "keywords";
 
-  return `Optimize the LinkedIn ${section} section for a ${experienceLevel} professional in the ${industry} industry, with focus on ${focus}.
+  const sectionGuidance: Record<string, string> = {
+    headline:
+      "HEADLINE OPTIMIZATION (220 chars max): The most critical SEO real estate on LinkedIn. Must include: primary job title, key specialty, and unique value differentiator. Use the formula: [Title] | [Specialty] | [Value Prop/Result]. Include 2-3 searchable keywords recruiters use. Avoid creative-only titles (e.g., 'Ninja' or 'Guru')—balance personality with searchability.",
+    about:
+      "ABOUT SECTION (2,600 chars max): Your professional story told in first person. Structure: Hook (attention-grabbing opening line) → Problem (what challenges you solve) → Solution (your unique approach) → Proof (quantified achievements) → CTA (what you want readers to do). Include 10-15 relevant keywords naturally. Use short paragraphs (2-3 lines) and line breaks for readability. End with specialties/skills list.",
+    experience:
+      "EXPERIENCE SECTION: Transform job descriptions into achievement stories using STAR method (Situation → Task → Action → Result). Lead each bullet with a power verb. Quantify results (%, $, #) wherever possible. Show progression and increasing responsibility. Include 3-5 bullets per role, prioritized by impact. Add relevant keywords naturally.",
+    full:
+      "FULL PROFILE OPTIMIZATION: Optimize all sections holistically—Headline, About, Experience, Skills, and Featured. Ensure keyword consistency across sections. Create a cohesive personal brand narrative that flows from headline through experience. Maximize searchability while maintaining authentic voice.",
+    skills:
+      "SKILLS SECTION: Identify 50 relevant skills (LinkedIn max), prioritized by: 1) Most searched by recruiters in this industry, 2) Strongest competencies, 3) Trending/emerging skills. Include both hard skills (technical) and soft skills (leadership). Pin the top 3 most strategic skills. Group by category when listing.",
+  };
 
-Include:
-- SEO-optimized keywords that recruiters search for
-- Compelling, professional language
-- Strong action verbs and quantified achievements
-- ATS-friendly formatting
-- Industry-specific terminology
-- Engaging storytelling elements
+  const experienceGuidance: Record<string, string> = {
+    entry:
+      "ENTRY-LEVEL FOCUS: Emphasize education, internships, projects, certifications, and transferable skills. Show eagerness to learn and grow. Highlight academic achievements, extracurriculars, and volunteer work. Use potential-focused language ('Equipped to...', 'Trained in...'). Focus on skills over experience length.",
+    mid:
+      "MID-LEVEL FOCUS: Balance proven track record with growth trajectory. Quantify achievements extensively (revenue, efficiency, team size). Show leadership abilities and cross-functional collaboration. Demonstrate domain expertise and specialization. Include certifications and continuous learning.",
+    senior:
+      "SENIOR-LEVEL FOCUS: Position as a strategic leader and thought leader. Emphasize business impact (P&L, market share, org transformations). Show mentorship and team building. Demonstrate industry influence (speaking, publications, board positions). Focus on vision and strategy over tactical execution.",
+    executive:
+      "EXECUTIVE-LEVEL FOCUS: Present as a transformational leader. Highlight company-level and industry-level impact. Emphasize board experience, M&A, fundraising, and P&L ownership. Show thought leadership through media mentions, keynotes, and publications. Use language that conveys authority and vision.",
+  };
 
-Current profile content:
+  const industryKeywords: Record<string, string> = {
+    technology:
+      "TECH KEYWORDS: Software Development, Cloud Computing, AI/ML, DevOps, Agile, Scrum, Full-Stack, Data Science, Cybersecurity, SaaS, API, Microservices, CI/CD, Product Management, UX/UI, React, Python, AWS, Azure, Digital Transformation",
+    marketing:
+      "MARKETING KEYWORDS: Digital Marketing, SEO, SEM, Content Strategy, Brand Management, Marketing Analytics, Social Media Marketing, Growth Hacking, CRM, HubSpot, Google Analytics, Conversion Optimization, Campaign Management, Market Research, ABM, ROI",
+    finance:
+      "FINANCE KEYWORDS: Financial Analysis, Investment Banking, Portfolio Management, Risk Assessment, Financial Modeling, M&A, Private Equity, Compliance, Fintech, Bloomberg, Valuation, Capital Markets, Forecasting, P&L, Revenue Growth, FP&A",
+    healthcare:
+      "HEALTHCARE KEYWORDS: Clinical Research, Patient Care, HIPAA, EHR, Healthcare Analytics, Telemedicine, Population Health, Quality Improvement, Regulatory Compliance, Clinical Trials, Medical Devices, Pharmacovigilance, Value-Based Care",
+    education:
+      "EDUCATION KEYWORDS: Curriculum Development, EdTech, Student Engagement, Instructional Design, Learning Management Systems, Assessment, Differentiated Instruction, STEM, Professional Development, Academic Research, Online Learning",
+    general:
+      "GENERAL KEYWORDS: Project Management, Leadership, Strategic Planning, Data Analysis, Team Building, Process Improvement, Stakeholder Management, Cross-functional Collaboration, Problem Solving, Communication, Change Management, Innovation",
+  };
+
+  const focusStrategy: Record<string, string> = {
+    keywords:
+      "KEYWORD OPTIMIZATION: Maximize search visibility. Identify and weave 20-30 relevant keywords throughout the profile naturally. Focus on job titles, skills, tools, methodologies, and industry terms that recruiters actively search. Use LinkedIn's autocomplete and job postings to identify high-value keywords.",
+    storytelling:
+      "STORYTELLING FOCUS: Create a compelling narrative arc. Use specific anecdotes, challenges overcome, and transformation stories. Make the reader feel invested in the professional journey. Balance data with human elements. Show personality while maintaining professionalism.",
+    achievements:
+      "ACHIEVEMENT FOCUS: Lead with quantified results and measurable impact. Use the CAR formula (Challenge → Action → Result) for each achievement. Include percentages, dollar amounts, team sizes, and timeframes. Show consistent pattern of exceeding expectations.",
+    "thought-leadership":
+      "THOUGHT LEADERSHIP FOCUS: Position as an industry authority. Reference publications, speaking engagements, and unique perspectives. Use forward-looking language about industry trends. Demonstrate expertise through specific insights, not just credentials. Include original frameworks or methodologies.",
+  };
+
+  return `You are an expert LinkedIn personal branding strategist, recruiter-perspective optimization specialist, and career marketing consultant who has optimized 10,000+ profiles across industries. You understand LinkedIn's search algorithm, recruiter behavior patterns, and ATS (Applicant Tracking System) requirements to maximize profile visibility, engagement, and career opportunities.
+
+## YOUR TASK
+Optimize the LinkedIn ${section} section for a ${experienceLevel}-level professional in the ${industry} industry, focused on ${focus}.
+
+## SPECIFICATIONS
+**Section**: ${section.toUpperCase()} - ${sectionGuidance[section]}
+**Experience Level**: ${experienceLevel.toUpperCase()} - ${experienceGuidance[experienceLevel]}
+**Industry**: ${industry.toUpperCase()} - ${industryKeywords[industry]}
+**Optimization Focus**: ${focus.toUpperCase()} - ${focusStrategy[focus]}
+
+## LINKEDIN OPTIMIZATION FRAMEWORK
+
+### 1. KEYWORD RESEARCH (Internal Analysis)
+Before writing, identify:
+- Primary keywords: 5-7 job titles/roles the user targets
+- Secondary keywords: 10-15 skills, tools, and methodologies
+- Long-tail keywords: 5-10 specific phrases recruiters search
+- Industry buzzwords: Current trending terms in ${industry}
+- Avoid: Overused terms (results-driven, passionate, hard-working, self-starter—unless backed by evidence)
+
+### 2. SECTION-SPECIFIC OPTIMIZATION
+
+${section === "headline" || section === "full" ? `**HEADLINE** (220 characters max):
+Use this proven formula:
+\`[Primary Title] | [Specialty/Niche] | [Key Achievement or Value Prop]\`
+
+Examples of great headlines:
+- "Senior Product Manager | B2B SaaS | Scaled products from 0 to $10M ARR"
+- "Data Scientist | ML & NLP Specialist | Turning Complex Data into Business Growth"
+
+Rules:
+- Include primary job title (exact match for recruiter searches)
+- Add specialty that differentiates from others with same title
+- End with a compelling result or value proposition
+- Use | or • as separators (both are ATS-friendly)
+- Include 2-3 searchable keywords
+- Character count MUST be ≤220` : ""}
+
+${section === "about" || section === "full" ? `**ABOUT SECTION** (2,600 characters max):
+
+Structure (in first person):
+
+**Hook** (Lines 1-2): A compelling opening that makes the reader click "see more"
+- Start with a bold statement, question, or surprising statistic
+- NOT "I am a [title] with X years of experience" (boring!)
+
+**Story/Problem** (Lines 3-6): What problem do you solve? Why does it matter?
+- Connect to the reader's pain points
+- Show understanding of industry challenges
+
+**Solution/Approach** (Lines 7-10): Your unique methodology or expertise
+- What makes your approach different?
+- Include specific skills and frameworks
+
+**Proof/Achievements** (Lines 11-15): Quantified results that back up claims
+- 3-5 specific achievements with numbers
+- Use the format: "Achieved [result] by [action] in [timeframe]"
+
+**CTA & Specialties** (Lines 16-20):
+- Clear call to action (connect, message, view portfolio)
+- Keyword-rich specialties list separated by | or •
+
+Rules:
+- Write in first person (I/my)
+- Short paragraphs (2-3 lines max)
+- Use line breaks for readability
+- Naturally weave in 10-15 keywords
+- Show personality while staying professional` : ""}
+
+${section === "experience" || section === "full" ? `**EXPERIENCE SECTION**:
+
+For each role, structure as:
+
+**[Job Title] at [Company]** | [Date Range]
+
+Brief overview: 1-2 sentences describing scope and impact.
+
+Key achievements (3-5 bullets per role):
+• [Power verb] + [Action] + [Quantified Result] + [Context/Impact]
+• [Power verb] + [Action] + [Quantified Result] + [Context/Impact]
+
+**Power Verbs by Category**:
+- Leadership: Spearheaded, Orchestrated, Championed, Pioneered
+- Growth: Accelerated, Scaled, Expanded, Grew, Increased
+- Efficiency: Streamlined, Optimized, Automated, Consolidated
+- Innovation: Designed, Developed, Launched, Created, Engineered
+- Strategy: Formulated, Directed, Architected, Transformed
+
+**Quantification Examples**:
+- Revenue: "Generated $2.5M in new revenue" (not "increased sales")
+- Efficiency: "Reduced processing time by 40%" (not "improved efficiency")
+- Scale: "Led team of 15 across 3 countries" (not "managed team")
+- Growth: "Grew user base from 10K to 150K in 18 months"` : ""}
+
+${section === "skills" || section === "full" ? `**SKILLS SECTION**:
+List skills in three tiers:
+
+**Tier 1 - Pin These** (top 3 most strategic skills):
+The skills most searched by recruiters for target roles
+
+**Tier 2 - Core Competencies** (next 15-20):
+Strong skills with endorsement potential
+
+**Tier 3 - Supporting Skills** (remaining 25-30):
+Relevant but secondary skills for comprehensive coverage
+
+Include mix of: Technical skills, Tools/Platforms, Methodologies, Soft skills` : ""}
+
+### 3. ATS & ALGORITHM OPTIMIZATION
+- Use standard section headers (LinkedIn recognizes these)
+- Include exact-match job titles (not creative alternatives)
+- Spell out acronyms AND include abbreviations (e.g., "Search Engine Optimization (SEO)")
+- Use industry-standard terminology
+- Include location-relevant keywords if targeting specific markets
+- Maintain consistent keyword density across all sections
+
+### 4. ENGAGEMENT OPTIMIZATION
+- Use formatting that encourages "See More" clicks (strong opening)
+- Include elements that drive profile interaction (questions, CTAs)
+- Structure content for mobile readability (short paragraphs)
+- Add relevant hashtags in about section (3-5 max)
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ Primary job title appears in headline and about section
+2. ✓ At least 15-20 relevant keywords are naturally woven throughout
+3. ✓ Achievements are quantified (numbers, %, $, timeframes)
+4. ✓ ${experienceLevel}-appropriate tone and content depth
+5. ✓ ${industry}-specific terminology and keywords are included
+6. ✓ No clichés without evidence (e.g., "results-driven" must have results)
+7. ✓ Character limits are respected (headline: 220, about: 2600)
+8. ✓ Content reads naturally—not keyword-stuffed
+9. ✓ First-person voice in about section, third-person acceptable in headline
+10. ✓ Clear call-to-action is included
+11. ✓ ATS-friendly formatting (standard headers, no special characters)
+12. ✓ Content differentiates from generic profiles in the same role
+
+## CURRENT PROFILE CONTENT TO OPTIMIZE
 ${input}
 
-Provide optimized LinkedIn content that will:
-1. Increase profile visibility in recruiter searches
-2. Showcase unique value proposition
-3. Drive engagement and connection requests
-4. Position as an industry expert
+## OUTPUT FORMAT
 
-Optimized content:`;
+${section === "full" ? "Present each section (Headline, About, Experience, Skills) with clear headers and the optimized content ready to copy-paste directly into LinkedIn." : `Present the optimized ${section} section ready to copy-paste directly into LinkedIn.`}
+
+Include a brief "Changes Made" summary at the end highlighting the key optimizations applied.
+
+Do NOT include:
+- Generic buzzwords without supporting evidence
+- Content that fabricates achievements not implied by the input
+- Overly casual or unprofessional language
+- Formatting that doesn't work on LinkedIn's platform
+- Your commentary about the optimization process
+
+Provide the optimized LinkedIn content:`;
 };
 
 const stats = [

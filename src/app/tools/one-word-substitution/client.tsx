@@ -76,40 +76,169 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
   const count = options?.count || "50";
   const format = options?.format || "list";
 
-  let formatInstructions = "";
-  if (format === "quiz") {
-    formatInstructions =
-      "Present as quiz questions with the phrase as the question and the one-word answer.";
-  } else if (format === "flashcards") {
-    formatInstructions =
-      "Format as flashcards with the phrase on one side and the word on the other.";
-  } else {
-    formatInstructions = "Present as a numbered list with clear organization.";
-  }
+  const levelGuidance: Record<string, string> = {
+    beginner:
+      "BEGINNER: Common substitutions every educated adult should know. High-frequency words like 'autobiography', 'omnivore', 'anonymous'. Focus on words used in everyday English and basic exam preparation.",
+    intermediate:
+      "INTERMEDIATE: Standard competitive exam level. Words regularly tested in SSC, Banking, and state-level exams. Examples: 'misogynist', 'somnambulism', 'blasphemy'. Include clear definitions and practical context.",
+    advanced:
+      "ADVANCED: High-difficulty words for UPSC, GRE, and advanced competitive exams. Examples: 'logorrhea', 'petrichor', 'defenestration'. Include detailed etymological breakdowns and sophisticated usage.",
+    expert:
+      "EXPERT: Rare, erudite substitutions for the most challenging exams. Words that appear in advanced verbal reasoning and rarely in everyday speech. Include comprehensive analysis with roots and memory aids.",
+  };
 
-  return `Generate ${count} one-word substitutions at ${level} difficulty level for ${category} category.
+  const categoryGuidance: Record<string, string> = {
+    general:
+      "GENERAL: Cover diverse topics — people, places, actions, qualities, science, arts, governance, and abstract concepts. Ensure a wide spread across domains.",
+    people:
+      "PEOPLE & PROFESSIONS: Focus on words describing types of people, professions, behaviors, and character traits. Examples: 'philanthropist' (one who loves humanity), 'misanthrope' (one who hates humankind).",
+    science:
+      "SCIENCE & MEDICINE: Focus on scientific, medical, and technical terms. Examples: 'autopsy' (examination of a dead body), 'endemic' (disease prevalent in a particular area).",
+    government:
+      "GOVERNMENT & POLITICS: Focus on governance, law, politics, and administration terms. Examples: 'autocracy' (government by one person), 'amnesty' (general pardon).",
+    arts:
+      "ARTS & LITERATURE: Focus on literary, artistic, and cultural terms. Examples: 'soliloquy' (talking to oneself), 'epilogue' (concluding part of a literary work).",
+  };
 
-For each substitution, provide:
-1. The phrase or description (what needs to be replaced)
-2. The one-word substitute (the single word answer)
-3. Part of speech (noun, adjective, verb, etc.)
-4. Clear definition of the word
-5. Example sentence using the word correctly
-6. Memory tip or mnemonic device (for advanced words)
-7. Related words or synonyms
+  const formatInstructions: Record<string, string> = {
+    list:
+      "NUMBERED LIST: Present as a clean, numbered list. Each entry shows the phrase/description followed by the one-word answer with full analysis.",
+    quiz:
+      "QUIZ FORMAT: Present as questions where the phrase is the question. Provide the answer below each question with a brief explanation. Include 4 multiple-choice options (1 correct, 3 distractors) for each.",
+    flashcards:
+      "FLASHCARD FORMAT: Present each entry as a two-sided card. FRONT: The descriptive phrase (question). BACK: The one-word answer with definition and memory tip. Separated by a clear divider.",
+  };
 
-${formatInstructions}
+  return `You are an expert verbal aptitude specialist, competitive exam preparation coach, and etymology scholar who specializes in one-word substitutions—the art of replacing descriptive phrases with precise single words. You have helped thousands of students master this critical exam topic through systematic learning, etymological analysis, and effective memory techniques.
 
-${input ? `Focus on topic or theme: ${input}` : "Cover diverse topics commonly tested in competitive exams (UPSC, SSC, Banking, etc.)"}
+## YOUR TASK
+Generate ${count} one-word substitutions at ${level} difficulty, covering ${category} topics, presented in ${format} format for effective learning and exam preparation.
 
-Organize by:
-- Difficulty progression (easier to harder)
-- Thematic grouping when applicable
-- Common exam patterns
+## SPECIFICATIONS
+**Count**: ${count} substitutions
+**Level**: ${level.toUpperCase()} - ${levelGuidance[level]}
+**Category**: ${category.toUpperCase()} - ${categoryGuidance[category]}
+**Format**: ${format.toUpperCase()} - ${formatInstructions[format]}
 
-Provide comprehensive, educational content suitable for exam preparation.
+## ONE-WORD SUBSTITUTION FRAMEWORK
 
-One-Word Substitutions:`;
+### SELECTION CRITERIA
+- **Exam frequency**: Prioritize words that frequently appear in competitive exams
+- **Difficulty calibration**: Match ${level} level precisely
+- **Category alignment**: All entries must relate to ${category}
+- **Uniqueness**: No overlapping or similar substitutions
+- **Practical utility**: Words that can enrich vocabulary beyond exams
+- **Progressive difficulty**: Start slightly easier, build to harder
+
+### ENTRY STRUCTURE
+
+${format === "list" ? `**[Number].** *[Descriptive phrase/definition]*
+→ **[ONE-WORD ANSWER]** *(part of speech)*
+
+- **Definition**: [Clear, exam-style definition]
+- **Example**: "[Sentence using the word correctly in context]"
+- **Roots**: 📜 [Greek/Latin root breakdown — prefix + root + suffix with meanings]
+- **Memory Tip**: 💡 [Creative mnemonic — visual, auditory, or story-based association]
+- **Related Words**: [2-3 words from the same root family]
+${level === "advanced" || level === "expert" ? "- **Exam Note**: [How this word typically appears in exam questions — as the answer, distractor, or in comprehension]" : ""}` : ""}
+
+${format === "quiz" ? `**Q[Number].** A single word for: *"[Descriptive phrase]"*
+
+**Options**:
+(a) [Distractor 1]   (b) [Correct Answer]   (c) [Distractor 2]   (d) [Distractor 3]
+
+**Answer**: (b) **[CORRECT WORD]**
+**Explanation**: [Brief definition + why other options are wrong]
+**Memory Tip**: 💡 [Quick mnemonic]` : ""}
+
+${format === "flashcards" ? `---
+**CARD [Number] — FRONT**
+📝 *[Descriptive phrase/definition]*
+
+**CARD [Number] — BACK**
+✅ **[ONE-WORD ANSWER]** *(part of speech)*
+Definition: [Clear meaning]
+💡 Memory Tip: [Quick mnemonic]
+---` : ""}
+
+### ROOT ANALYSIS PATTERNS
+
+Help learners recognize word-building patterns:
+
+**Common Prefixes**:
+- Mis- (wrong/bad): misogynist, misanthrope, misnomer
+- Phil- (love): philanthropist, philosopher, bibliophile
+- -cide (killing): homicide, genocide, fratricide
+- Omni- (all): omnivore, omniscient, omnipotent
+- Auto- (self): autobiography, autopsy, autocracy
+
+Show these patterns within the entries to help learners decode unknown words.
+
+### THEMATIC GROUPING
+
+Organize entries into sub-groups where natural:
+
+${category === "general" ? `**👤 People & Behaviors**
+[Entries about types of people]
+
+**🏛️ Government & Society**
+[Entries about governance and social concepts]
+
+**🔬 Science & Nature**
+[Entries about scientific and natural phenomena]
+
+**📚 Arts & Knowledge**
+[Entries about literature, arts, and learning]
+
+**💀 Death & Crime**
+[Entries about morbid or legal concepts]` : `Organize by natural sub-themes within ${category}.`}
+
+### DIFFICULTY PROGRESSION
+
+Order within each group:
+1. Words most learners know (anchor concepts)
+2. Words learners have seen but may not recall
+3. Words learners need to learn fresh
+
+${category === "general" && (level === "advanced" || level === "expert") ? `### COMMONLY TESTED PAIRS
+
+Include 5-10 frequently confused pairs:
+| Word 1 | Meaning | Word 2 | Meaning |
+| --- | --- | --- | --- |
+| Emigrate | Leave a country | Immigrate | Enter a country |
+| [Continue with relevant pairs]` : ""}
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ Exactly ${count} substitutions are provided
+2. ✓ All entries match ${level} difficulty level
+3. ✓ Entries relate to ${category} category
+4. ✓ Each descriptive phrase has exactly ONE correct word answer
+5. ✓ Word answers are genuine single words (not hyphenated compounds)
+6. ✓ No duplicate or near-duplicate entries
+7. ✓ Definitions are accurate and exam-standard
+8. ✓ Format follows ${format} structure correctly
+9. ✓ ${format === "quiz" ? "All 4 options are plausible but only 1 is correct" : "Memory tips are creative and genuinely helpful"}
+10. ✓ Entries progress from easier to harder
+11. ✓ Root/etymology breakdowns are linguistically accurate
+12. ✓ Example sentences demonstrate natural word usage
+
+## TOPIC/FOCUS
+${input ? `Focus on topic or theme: ${input}` : "Cover diverse topics commonly tested in competitive exams (UPSC, SSC, Banking, GRE, CAT, IELTS, etc.)"}
+
+## OUTPUT FORMAT
+
+Present in ${format} format with consistent structure. Use markdown formatting for readability. ${format === "list" ? "Number each entry clearly." : ""} ${format === "quiz" ? "Randomize the position of correct answers across options." : ""} ${format === "flashcards" ? "Use horizontal rules to separate cards." : ""}
+
+Do NOT include:
+- Phrases that have multiple equally valid one-word answers (ambiguous entries)
+- Made-up or non-standard words
+- Entries significantly above or below ${level} level
+- Generic memory tips ("just memorize it")
+- Your commentary about the generation process
+
+Generate a comprehensive, exam-ready one-word substitution collection:`;
 };
 
 const stats = [

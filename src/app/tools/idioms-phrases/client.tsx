@@ -74,37 +74,139 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
   const count = options?.count || "20";
   const include = options?.include || "all";
 
-  let includeInstructions = "";
-  if (include === "all") {
-    includeInstructions =
-      "Include meaning, origin/etymology, example sentences, and similar expressions.";
-  } else if (include === "origin") {
-    includeInstructions = "Include meaning and origin/etymology.";
-  } else if (include === "examples") {
-    includeInstructions = "Include meaning and example sentences.";
-  } else {
-    includeInstructions = "Include clear, concise meanings.";
-  }
+  const categoryGuidance: Record<string, string> = {
+    general:
+      "GENERAL: Include versatile idioms and phrases used across contexts—daily conversation, writing, and speaking. Prioritize widely recognized expressions with high practical utility.",
+    academic:
+      "ACADEMIC/FORMAL: Focus on idioms and phrases appropriate for essays, research writing, formal speeches, and professional documents. Include expressions used in analytical and argumentative writing (e.g., 'the crux of the matter', 'by and large').",
+    competitive:
+      "COMPETITIVE EXAMS: Focus on idioms frequently tested in GRE, SAT, IELTS, UPSC, SSC, Banking, and CAT exams. Prioritize expressions that appear in reading comprehension passages and verbal reasoning. Include commonly tested idiomatic pairs and confusing expressions.",
+    conversational:
+      "CONVERSATIONAL: Focus on everyday spoken English idioms and colloquial phrases. Include expressions used in casual conversation, social media, and informal writing. Prioritize natural, contemporary usage.",
+    literary:
+      "LITERARY: Focus on idioms and phrases found in classic and contemporary literature, poetry, and creative writing. Include expressions with rich imagery and cultural depth.",
+  };
 
-  return `Provide ${count} idioms and phrases related to the following topic or keyword for ${category} usage, focusing on ${region} English.
+  const regionGuidance: Record<string, string> = {
+    global:
+      "GLOBAL ENGLISH: Include widely understood idioms used across English-speaking cultures. Avoid highly region-specific expressions that might be unknown elsewhere.",
+    american:
+      "AMERICAN ENGLISH: Include idioms specific to or predominantly used in American English. Include expressions from American culture, sports (baseball, football), and history.",
+    british:
+      "BRITISH ENGLISH: Include idioms specific to or predominantly used in British English. Include expressions rooted in British culture, history, and traditions.",
+    indian:
+      "INDIAN ENGLISH: Include idioms commonly used in Indian English, as well as translated expressions from Hindi and regional languages. Focus on phrases frequently tested in Indian competitive exams (UPSC, SSC, Banking).",
+  };
 
-For each idiom/phrase, provide:
-1. The idiom or phrase (in bold or CAPS)
-2. Clear meaning/definition
-3. ${include === "all" || include === "origin" ? "Origin or etymology (if known)" : ""}
-4. ${include === "all" || include === "examples" ? "Example sentence showing usage in context" : ""}
-5. ${include === "all" ? "Similar or related expressions" : ""}
-6. Formality level (casual, neutral, or formal)
-7. Usage notes or cultural context
+  const includeConfig: Record<string, string> = {
+    all:
+      "FULL ANALYSIS: Include meaning, origin/etymology, 2 example sentences, similar expressions, formality level, and usage notes.",
+    origin:
+      "MEANING + ORIGIN: Include meaning and fascinating origin/etymology story. Focus on the historical context that gave rise to each expression.",
+    examples:
+      "MEANING + EXAMPLES: Include meaning and 2 practical example sentences showing natural usage in context.",
+    basic:
+      "MEANING ONLY: Include clear, concise meaning. Keep output scannable for quick reference.",
+  };
 
-${includeInstructions}
+  return `You are an expert phraseologist, idiom specialist, and English language educator with deep knowledge of figurative language across cultures and historical periods. You specialize in curating idiom collections that maximize language fluency, exam performance, and expressive communication.
 
-Topic/Keyword:
+## YOUR TASK
+Provide ${count} carefully curated idioms and phrases related to the given topic, optimized for ${category} usage in ${region} English.
+
+## SPECIFICATIONS
+**Count**: ${count} idioms and phrases
+**Category**: ${category.toUpperCase()} - ${categoryGuidance[category]}
+**Region**: ${region.toUpperCase()} - ${regionGuidance[region]}
+**Detail Level**: ${include.toUpperCase()} - ${includeConfig[include]}
+
+## IDIOM CURATION FRAMEWORK
+
+### SELECTION CRITERIA
+- **Relevance**: Each idiom must clearly relate to the given topic/keyword
+- **Utility**: Prioritize expressions the learner will actually encounter and can use
+- **Recognition**: ${category === "competitive" ? "Include frequently tested expressions from past exam papers" : "Include widely recognized expressions"}
+- **Diversity**: Mix metaphorical, proverbial, and phrasal expressions
+- **Progression**: Order from most common/useful to more specialized
+- **Uniqueness**: No overlapping or near-identical expressions
+
+### IDIOM ANALYSIS STRUCTURE
+
+For EACH idiom/phrase:
+
+${include === "all" ? `**[Number]. "[IDIOM/PHRASE]"**
+- **Meaning**: [Clear, precise definition of the figurative meaning — what it ACTUALLY means when used, not the literal interpretation]
+- **Literal vs. Figurative**: [Brief note on the gap between literal and intended meaning]
+- **Origin**: 📜 [Fascinating etymological story — when, where, and why this expression originated. Make it memorable!]
+- **Example 1**: "[Formal/written context demonstrating natural usage]"
+- **Example 2**: "[Conversational context showing everyday usage]"
+- **Similar Expressions**: [2-3 related idioms or phrases with similar meanings]
+- **Register**: Casual / Neutral / Formal / Literary
+- **Usage Note**: 💡 [When to use this expression, when to avoid it, and any cultural sensitivity considerations]
+${category === "competitive" ? "- **Exam Tip**: [How this idiom typically appears in exam questions — as the answer, as a distractor, or in reading passages]" : ""}` : ""}
+
+${include === "origin" ? `**[Number]. "[IDIOM/PHRASE]"**
+- **Meaning**: [Clear figurative meaning]
+- **Origin**: 📜 [Detailed, fascinating etymology — the story behind the expression. Include historical period, cultural context, and how it evolved to its current meaning. Make it engaging and memorable!]` : ""}
+
+${include === "examples" ? `**[Number]. "[IDIOM/PHRASE]"**
+- **Meaning**: [Clear figurative meaning]
+- **Example 1**: "[Formal sentence showing natural usage]"
+- **Example 2**: "[Conversational sentence showing everyday usage]"` : ""}
+
+${include === "basic" ? `**[Number]. "[IDIOM/PHRASE]"** — [concise figurative meaning]` : ""}
+
+### ORGANIZATION
+
+Group idioms by sub-theme or conceptual category where natural:
+- **[Sub-theme 1]** (e.g., Success & Achievement)
+  - [Idioms]
+- **[Sub-theme 2]** (e.g., Failure & Difficulty)
+  - [Idioms]
+
+If the topic doesn't naturally subdivide, organize by frequency of use (most common first).
+
+${include === "all" ? `### COMPARISON TABLE
+
+| # | Idiom | Meaning (Brief) | Register | Region |
+| --- | --- | --- | --- | --- |
+| 1 | [Idiom] | [2-3 word meaning] | Formal/Informal | US/UK/Global |
+[Continue for all]` : ""}
+
+${category === "competitive" ? `### EXAM STRATEGY NOTES
+- Flag idioms that are "favorites" in specific exam types
+- Note commonly confused idiom pairs (e.g., "break the ice" vs. "break the mold")
+- Identify idioms where the literal interpretation is tested as a distractor` : ""}
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ Exactly ${count} idioms/phrases are provided
+2. ✓ All idioms genuinely relate to the given topic
+3. ✓ Figurative meanings are accurately explained (not literal translations)
+4. ✓ ${include === "all" || include === "origin" ? "Origins are historically accurate and engaging" : "Meanings are clear and concise"}
+5. ✓ ${include === "all" || include === "examples" ? "Example sentences demonstrate natural, idiomatic usage" : "Definitions are easy to understand"}
+6. ✓ ${region}-appropriate expressions are prioritized
+7. ✓ No duplicate or near-identical phrases
+8. ✓ Idioms are ordered from most common to more specialized
+9. ✓ Register labels are accurate (formal/informal/neutral)
+10. ✓ ${category === "competitive" ? "Exam-relevant idioms are highlighted" : "Practical usage context is clear"}
+
+## TOPIC/KEYWORD
 ${input}
 
-Organize idioms by theme or subcategory if applicable. Make explanations clear and educational.
+## OUTPUT FORMAT
 
-Idioms and Phrases:`;
+Use numbered list with consistent formatting. Group by sub-theme where applicable. ${include === "all" ? "Include the comparison table at the end." : ""} Bold idiom phrases.
+
+Do NOT include:
+- Expressions unrelated to the given topic
+- Made-up or non-standard idioms
+- Incorrect etymologies (say "origin uncertain" if unknown)
+- Overly obscure regional expressions (unless specifically relevant to ${region})
+- Your commentary about the curation process
+
+Provide an expertly curated idioms and phrases collection:`;
 };
 
 const stats = [

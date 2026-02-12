@@ -101,65 +101,150 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
 
   const gradeLevelContext: Record<string, string> = {
     elementary:
-      "Use simple language appropriate for elementary school students (ages 6-11). Focus on basic concepts with relatable examples.",
+      "elementary school level (ages 6-11). Use simple, clear language with relatable examples and basic concepts",
     middle:
-      "Use clear language for middle school students (ages 11-14). Introduce intermediate concepts with practical examples.",
-    high: "Use sophisticated language for high school students (ages 14-18). Cover advanced topics with detailed explanations.",
+      "middle school level (ages 11-14). Use age-appropriate language with intermediate concepts and practical examples",
+    high: "high school level (ages 14-18). Use sophisticated language with advanced topics and detailed analytical thinking",
     college:
-      "Use academic language for college/university level. Provide in-depth analysis and complex problem-solving.",
+      "college/university level. Use academic language with in-depth analysis, complex problem-solving, and theoretical frameworks",
   };
 
   const explanationStyles: Record<string, string> = {
     detailed:
-      "Provide comprehensive step-by-step explanations with detailed reasoning for each step.",
-    concise: "Give a clear, direct solution with essential steps only.",
-    eli5: "Explain in the simplest terms possible, as if teaching a 5-year-old. Use analogies and simple examples.",
+      "Provide comprehensive step-by-step explanations with detailed reasoning, showing WHY each step is necessary",
+    concise:
+      "Give clear, direct solutions with essential steps only. Focus on efficiency while maintaining clarity",
+    eli5: "Explain in the simplest possible terms using analogies, metaphors, and everyday examples anyone can understand",
     visual:
-      "Include descriptions of diagrams, charts, or visual representations to illustrate concepts.",
+      "Include detailed descriptions of visual representations, diagrams, charts, or illustrations to aid understanding",
   };
 
-  let prompt = `You are helping a ${gradeLevel} student with their homework.
+  const subjectSpecifics: Record<string, string> = {
+    math: "Show all mathematical work clearly. Use proper notation. Explain the logic behind each calculation.",
+    science:
+      "Explain scientific concepts and principles. Connect theory to real-world applications.",
+    english:
+      "Analyze literary elements, provide textual evidence, and explain interpretations thoroughly.",
+    history:
+      "Provide historical context, explain cause-and-effect relationships, and analyze significance.",
+    general:
+      "Provide clear, logical explanations appropriate for the subject matter.",
+  };
 
-📚 Subject: ${subject}
-📝 Grade Level: ${gradeLevelContext[gradeLevel]}
-🎯 Explanation Style: ${explanationStyles[explanation]}
+  let prompt = `# Role & Task
+You are an expert tutor and educator. Your goal is to help a student understand and solve their homework problem while promoting genuine learning and comprehension.
 
-Problem: ${input}
+# Student Context
+- **Grade Level**: ${gradeLevel} - ${gradeLevelContext[gradeLevel]}
+- **Subject**: ${subject}
+- **Explanation Style**: ${explanation} - ${explanationStyles[explanation]}
 
-Please provide a solution using this EXACT structure (use these emoji labels):
+# Homework Problem
+${input}
 
-🎯 **ANSWER:**
-[Provide the final answer here clearly]
+# Teaching Approach
+${subjectSpecifics[subject] || subjectSpecifics.general}
 
-📝 **STEP-BY-STEP SOLUTION:**
-Step 1: [First step with explanation]
-Step 2: [Second step with explanation]
-Step 3: [Continue as needed...]
-[Explain WHY each step works, not just HOW]
+# Required Output Structure
+Use this EXACT format with these section headers:
 
-✅ **VERIFICATION:**
-[Show how to check if the answer is correct]
-`;
+## 🎯 FINAL ANSWER
+Provide the complete, clear answer in a box or highlighted format. This should be what the student writes as their final answer.
 
-  if (showFormulas && ["math", "physics", "chemistry"].includes(subject)) {
-    prompt += `
-📐 **KEY FORMULAS/CONCEPTS:**
-[List relevant formulas or key concepts used]
-`;
-  }
+## 📝 STEP-BY-STEP SOLUTION
+Break down the solution into clear, numbered steps:
 
-  if (includeExamples) {
-    prompt += `
-💡 **PRACTICE PROBLEMS:**
-[Provide 1-2 similar practice problems for the student to try]
-`;
-  }
+**Step 1**: [First action or concept]
+- Explain WHAT you're doing
+- Explain WHY you're doing it
+- Show the work or reasoning
 
-  prompt += `
-🌟 **PRO TIP:**
-[One helpful tip for mastering this type of problem]
+**Step 2**: [Second action or concept]
+- Explain WHAT you're doing
+- Explain WHY you're doing it
+- Show the work or reasoning
 
-Remember: Be encouraging, patient, and focus on teaching understanding, not just providing answers.`;
+**Step 3**: [Continue as needed...]
+- Each step should build logically on the previous one
+- Show all work and calculations clearly
+- Explain the reasoning behind each decision
+
+${
+  explanation === "detailed"
+    ? `
+**Note**: For each step, include:
+- The mathematical/logical operation performed
+- Why this operation is appropriate
+- How it connects to the overall solution strategy
+`
+    : ""
+}
+
+## ✅ VERIFICATION
+Show how to check if the answer is correct:
+- Substitute the answer back into the original problem
+- Use alternative method to verify
+- Check if the answer makes logical sense
+- Confirm units, signs, or formats are correct
+${
+  showFormulas && ["math", "physics", "chemistry"].includes(subject)
+    ? `
+## 📐 FORMULAS & CONCEPTS
+List and explain all formulas, equations, or key concepts used:
+- **Formula Name**: [Write the formula]
+  - **What it means**: [Explanation]
+  - **When to use it**: [Context]
+  - **Variables explained**: [Define each variable]
+`
+    : ""
+}
+${
+  includeExamples
+    ? `
+## 💡 PRACTICE PROBLEM
+Provide a similar problem for practice:
+- **Problem**: [Write a similar problem]
+- **Hint**: [Give a helpful hint]
+- **Expected approach**: [Brief outline of solution method]
+`
+    : ""
+}
+
+## 🎓 KEY CONCEPTS EXPLAINED
+Identify and explain the main concepts:
+- **Core Concept**: What fundamental idea is this problem testing?
+- **Why It Matters**: How does this concept apply in real situations?
+- **Common Mistakes**: What errors do students typically make with this concept?
+- **Study Tips**: How can the student better understand this topic?
+
+# Educational Guidelines
+1. **Teach, Don't Just Answer**: Focus on building understanding, not just providing solutions
+2. **Show Your Work**: Display all steps clearly so the student can follow the logic
+3. **Use Appropriate Language**: Match vocabulary and complexity to ${gradeLevel} level
+4. **Connect to Prior Knowledge**: Reference concepts the student should already know
+5. **Encourage Critical Thinking**: Ask rhetorical questions that promote deeper understanding
+${gradeLevel === "elementary" ? "6. **Be Encouraging**: Use positive, supportive language that builds confidence" : ""}
+${gradeLevel === "college" ? "6. **Academic Rigor**: Include theoretical background and advanced analytical frameworks" : ""}
+
+# Quality Standards
+Before finalizing, verify:
+- ✓ Solution is completely accurate and correct
+- ✓ All steps are shown clearly and logically
+- ✓ Explanations match ${gradeLevel} comprehension level
+- ✓ Mathematical notation or terminology is proper
+- ✓ Student can learn from this, not just copy it
+- ✓ Work is organized and easy to follow
+- ✓ Verification method is provided
+${includeExamples ? "- ✓ Practice problem is similar but not identical" : ""}
+
+# Special Instructions
+- Never just give the answer without explanation
+- If the problem is ambiguous, state your assumptions
+- For multi-part questions, address each part clearly
+- Use proper formatting for equations, chemical formulas, etc.
+- Make learning the priority over speed
+
+Now provide the complete educational solution following this structure precisely.`;
 
   return prompt;
 };

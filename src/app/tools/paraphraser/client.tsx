@@ -100,23 +100,42 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
       "Make extensive changes - completely restructure sentences, use entirely different wording, but preserve all original meaning.",
   };
 
-  let prompt = `Paraphrase the following text:
+  let prompt = `# Role & Task
+You are an expert writer and language specialist. Your task is to paraphrase the given text while preserving its exact meaning.
 
-Original text:
+# Original Text
 ${input}
 
-Instructions:
-- Mode: ${modeInstructions[mode]}
-- Strength: ${strengthInstructions[strength]}
-${preserveKeywords ? "- Keep technical terms, names, and specific keywords unchanged" : "- You can change all words as needed"}
+# Paraphrasing Requirements
+- **Style Mode**: ${mode} - ${modeInstructions[mode]}
+- **Paraphrase Strength**: ${strength} - ${strengthInstructions[strength]}
+- **Keyword Preservation**: ${preserveKeywords ? "Keep technical terms, proper nouns, specific keywords, and specialized terminology unchanged" : "You may change all words and phrases as needed for natural paraphrasing"}
 
-Important:
-- Preserve the original meaning completely
-- Make it sound natural and fluent
-- Ensure it's grammatically correct
-- Don't just replace words - restructure sentences appropriately
+# Paraphrasing Guidelines
+1. **Meaning Preservation**: Retain 100% of the original meaning - don't add or remove information
+2. **Natural Flow**: Ensure the paraphrased text reads naturally and fluently
+3. **Sentence Restructuring**: Vary sentence structure - don't just swap synonyms
+4. **Grammar & Style**: Maintain proper grammar, punctuation, and the specified style
+5. **Tone Consistency**: Keep the same overall tone and intent as the original
+6. **Vocabulary Variety**: Use diverse vocabulary appropriate for the ${mode} mode
+${strength === "heavy" ? "7. **Extensive Changes**: Completely rewrite sentences while preserving meaning\n8. **Fresh Perspective**: Approach the content from a different structural angle" : ""}
+${strength === "light" ? "7. **Subtle Changes**: Make minimal but effective modifications\n8. **Structure Similarity**: Maintain similar sentence flow with different words" : ""}
 
-Provide ONLY the paraphrased text without any explanations or labels.`;
+# Quality Standards
+Before finalizing, verify:
+- ✓ Original meaning is completely preserved
+- ✓ No information added or omitted
+- ✓ Text flows naturally in ${mode} style
+- ✓ Grammar and punctuation are correct
+- ✓ Sentence structures are appropriately varied
+- ✓ Vocabulary matches the ${mode} mode
+${preserveKeywords ? "- ✓ Technical terms and keywords remain unchanged" : ""}
+- ✓ Length is similar to original (unless mode is 'shorter' or 'longer')
+
+# Output Format
+Provide ONLY the paraphrased text with no explanations, labels, or commentary. Output should be clean and ready to use immediately.
+
+Now paraphrase the text following these instructions precisely.`;
 
   return prompt;
 };

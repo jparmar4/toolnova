@@ -65,43 +65,149 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
     "3months": "3 months",
   };
 
-  return `Create a comprehensive, day-by-day revision/study plan for the following subjects and topics.
+  const durationStrategy: Record<string, string> = {
+    "1week":
+      "INTENSIVE SPRINT: Focus exclusively on high-priority topics and exam-likely content. Minimal depth, maximum coverage. Daily reviews mandatory. No rest days—only strategic micro-breaks. Prioritize weak areas ruthlessly.",
+    "2weeks":
+      "FOCUSED PREPARATION: Balanced coverage with dedicated review cycles. First week: learn new material. Second week: review, practice, and consolidate. Include 1 rest day. Active recall every other day.",
+    "1month":
+      "COMPREHENSIVE STUDY: Deep understanding with multiple review cycles. Week 1-2: cover all topics systematically. Week 3: intensive practice and past papers. Week 4: comprehensive revision, weak areas, and mock tests. Include 2-3 rest days.",
+    "3months":
+      "MASTERY PROGRAM: Thorough learning with spaced repetition across multiple cycles. Month 1: foundational understanding of all topics. Month 2: deep practice, problem-solving, and connections. Month 3: mock exams, weak area targeting, and final consolidation. Include weekly rest days.",
+  };
 
-Timeline: ${durationText[duration]}
-Daily study time available: ${hoursPerDay} hours per day
-${includeBreaks ? "IMPORTANT: Include strategic short breaks (5-10 min every hour) and rest days to prevent burnout and optimize retention." : "Focus on continuous study blocks without break scheduling."}
+  const breakStrategy = includeBreaks
+    ? "BREAK SCHEDULE: Apply the Pomodoro-enhanced approach—50 minutes focused study + 10 minute break. After every 3 study blocks, take a 30-minute extended break. Include 1 longer break (1-2 hours) for meals/exercise. Breaks should involve: brief walks, hydration, light stretching, or mindfulness—NOT screens or social media."
+    : "Schedule continuous study blocks. Transitions between topics serve as natural mental breaks.";
 
-Your revision plan should include:
+  return `You are an expert academic success coach, cognitive learning scientist, and study strategy specialist. You design evidence-based revision plans using proven techniques (spaced repetition, active recall, interleaving, and elaborative interrogation) to maximize retention, minimize burnout, and ensure exam readiness.
 
-1. **Daily Breakdown**:
-   - Specific topics/chapters to cover each day
-   - Precise time allocation for each topic (be realistic)
-   - Study session structure (e.g., 90-min blocks with breaks)
+## YOUR TASK
+Create a complete, day-by-day revision plan for ${durationText[duration]} with ${hoursPerDay} hours of daily study time that transforms the listed subjects into mastered material.
 
-2. **Learning Strategy**:
-   - Progressive difficulty (easier topics first to build confidence)
-   - Spaced repetition (review previous material at intervals)
-   - Active recall sessions (testing yourself, not just reading)
+## SPECIFICATIONS
+**Duration**: ${durationText[duration].toUpperCase()} - ${durationStrategy[duration]}
+**Daily Hours**: ${hoursPerDay} hours of productive study time per day
+**Breaks**: ${breakStrategy}
+**Methodology**: Evidence-based learning science (spaced repetition, active recall, interleaving)
 
-3. **Review & Practice**:
-   - Dedicated review days for previously covered material
-   - Practice problem/question sessions
-   - Mock tests or self-assessment checkpoints
+## REVISION PLAN FRAMEWORK
 
-4. **Balance & Wellness**:
-   - Rest days to consolidate learning
-   - Buffer time for difficult topics
-   - Final comprehensive review before exam/deadline
+### 1. PLAN OVERVIEW & STRATEGY
+- **Total study hours available**: ${durationText[duration]} × ${hoursPerDay} hrs/day = [calculate]
+- **Subject prioritization**: Weight allocation based on difficulty, breadth, and exam importance
+- **Learning phase distribution**:
+  - Learning new material: ${duration === "1week" ? "60%" : duration === "2weeks" ? "50%" : "40%"}
+  - Active practice & problems: ${duration === "1week" ? "25%" : duration === "2weeks" ? "30%" : "35%"}
+  - Review & consolidation: ${duration === "1week" ? "15%" : duration === "2weeks" ? "20%" : "25%"}
 
-5. **Progress Tracking**:
-   - Milestones to hit each week
-   - Completion checkpoints
-   - Suggested self-assessment points
+### 2. DAILY SCHEDULE STRUCTURE
 
-Subjects/Topics to cover:
+**Each Day Should Include**:
+- **Session blocks**: ${hoursPerDay === "2" ? "2 × 50-min blocks" : hoursPerDay === "4" ? "4 × 50-min blocks" : hoursPerDay === "6" ? "6 × 50-min blocks" : "8 × 50-min blocks"} with breaks
+- **New material**: ${duration === "1week" ? "Most of the session" : "First half of study session"}
+- **Review of previous days**: ${duration === "1week" ? "Brief 10-min recap" : "Dedicated review block (15-30 min)"}
+- **Active recall practice**: Self-testing, flashcards, or practice problems
+${includeBreaks ? "- **Strategic breaks**: 10 min between blocks, 30 min extended break midway" : ""}
+- **End-of-day reflection**: 5-minute review of what was learned today
+
+**Daily Format**:
+| Time | Activity | Duration | Notes |
+| --- | --- | --- | --- |
+| [Start] | [Subject/Topic] | [Duration] | [Method: read/practice/review] |
+[Fill for each scheduled block]
+
+### 3. LEARNING TECHNIQUES TO INTEGRATE
+
+**Spaced Repetition Schedule**:
+- Day 1: Learn new topic → Review same day (evening)
+- Day 2: Quick review (10 min recall)
+- Day 4: Active recall test
+- Day 7: Comprehensive review
+- Day 14+: Final consolidation review
+
+**Active Recall Methods**:
+- Close the book and write/recite what you remember
+- Create and answer practice questions
+- Teach the concept to an imaginary student (Feynman technique)
+- Use flashcards for definitions, formulas, and key facts
+
+**Interleaving**:
+- Alternate between different subjects/topics within a session
+- Don't study the same topic for more than ${hoursPerDay === "2" ? "50 minutes" : "90 minutes"} straight
+- Mix problem types during practice sessions
+
+### 4. WEEKLY MILESTONES & CHECKPOINTS
+
+**For each week, specify**:
+- **Topics to complete**: Exact chapters/subjects to finish
+- **Review targets**: Previously learned material to revisit
+- **Self-assessment**: Mini-test or practice problems to evaluate understanding
+- **Confidence check**: Rate understanding of each topic (1-5)
+- **Adjustment notes**: How to adapt if falling behind
+
+### 5. PROGRESS TRACKING SYSTEM
+
+Include:
+- **Daily checkbox**: ☐ for each planned topic (mark ☑ when done)
+- **Weekly assessment**: Brief self-test covering all material from that week
+- **Confidence tracker**: Rate each topic: 🔴 Weak → 🟡 Moderate → 🟢 Strong
+- **Buffer allocation**: How to use extra time or catch up if behind
+${duration !== "1week" ? "- **Mid-plan review point**: Halfway checkpoint to reassess and adjust priorities" : ""}
+
+### 6. FINAL PREPARATION PHASE
+
+${duration === "1week" ? "**Day 7 (Final Day)**:" : duration === "2weeks" ? "**Days 13-14 (Final Days)**:" : duration === "1month" ? "**Week 4 (Final Week)**:" : "**Month 3, Week 4 (Final Week)**:"}
+- Comprehensive review of ALL topics (speed round)
+- Focus on 🔴 weak areas identified during tracking
+- Practice with mock questions or past papers
+- Review formulas, definitions, and key facts
+- Relaxation and confidence-building (no new material)
+
+### 7. WELLNESS & SUSTAINABILITY
+
+${includeBreaks ? `**Anti-burnout Measures**:
+- ${duration === "1week" ? "Micro-breaks every 50 min, no rest days but lighter evening sessions" : "Scheduled rest day(s) for mental recovery"}
+- Sleep minimum: 7-8 hours (non-negotiable for memory consolidation)
+- Physical activity: 20-30 min daily (walk, exercise, sports)
+- Healthy meals: Scheduled mealtimes, not skipped for study
+- Reward milestones: Small rewards for hitting weekly targets` : "Focus on continuous, efficient study sessions with natural topic transitions as mental breaks."}
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ Every listed subject/topic has allocated study time
+2. ✓ Daily plans are realistic for ${hoursPerDay} hours
+3. ✓ Spaced repetition is built in (topics revisited at intervals)
+4. ✓ Active recall methods are included, not just passive reading
+5. ✓ Progressive difficulty: easier topics first, harder later
+6. ✓ ${includeBreaks ? "Breaks and rest days are scheduled" : "Study blocks are logically organized"}
+7. ✓ Final review/consolidation period is included
+8. ✓ Weekly milestones and checkpoints are clear
+9. ✓ Plan is flexible with buffer time for difficulties
+10. ✓ No single day is overloaded or unrealistic
+11. ✓ Mix of subjects prevents monotony (interleaving)
+12. ✓ Progress tracking system is actionable
+
+## SUBJECTS & TOPICS TO PLAN
 ${input}
 
-Create a detailed, realistic revision plan:`;
+## OUTPUT FORMAT
+
+Present the plan day-by-day with clear markdown formatting:
+- Use headers for each day/week
+- Use tables for daily schedules where appropriate
+- Bold topic names and time allocations
+- Include emoji indicators for activity types (📖 Learn, 🔄 Review, ✍️ Practice, 🧪 Test, 😴 Rest)
+
+Do NOT include:
+- Generic study advice unrelated to the specific topics
+- Motivational speeches or pep talks
+- Vague time allocations ("spend some time on...")
+- Unrealistic expectations for the given timeframe
+- Your commentary about the planning process
+
+Create a detailed, science-backed revision plan ready for immediate use:`;
 };
 
 const stats = [

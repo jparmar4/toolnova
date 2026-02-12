@@ -73,25 +73,106 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
   const count = options?.count || "10";
   const includeExamples = options?.includeExamples || "yes";
 
-  return `Find ${count} synonyms for the following word or phrase in a ${formality} tone for ${context} context.
+  const contextGuidance: Record<string, string> = {
+    general:
+      "GENERAL: Provide versatile synonyms suitable across multiple contexts—writing, speaking, and casual use. Include a range from common to sophisticated alternatives.",
+    academic:
+      "ACADEMIC: Focus on synonyms used in scholarly writing, research papers, and formal essays. Prioritize precision and analytical vocabulary (e.g., 'utilize' over 'use', 'demonstrate' over 'show'). Include terms common in peer-reviewed literature.",
+    creative:
+      "CREATIVE WRITING: Focus on vivid, evocative synonyms that enhance imagery and narrative. Include sensory words, figurative alternatives, and emotionally resonant options. Prioritize showing over telling.",
+    business:
+      "BUSINESS/PROFESSIONAL: Focus on corporate, workplace, and industry-appropriate synonyms. Include words used in reports, emails, presentations, and meetings. Prioritize clarity and professionalism.",
+    exam:
+      "EXAM PREPARATION: Focus on synonyms frequently tested in GRE, SAT, CAT, IELTS, UPSC, and SSC exams. Include commonly confused pairs and words that appear in reading comprehension options.",
+  };
 
-For each synonym, provide:
-1. The synonym word
-2. Brief definition showing subtle difference in meaning
-3. ${includeExamples === "yes" ? "Example sentence demonstrating proper usage" : ""}
-4. Connotation notes (positive, negative, or neutral)
+  const formalityGuidance: Record<string, string> = {
+    informal:
+      "INFORMAL REGISTER: Include casual, conversational, and colloquial alternatives. Slang is acceptable where appropriate. These should feel natural in everyday speech and text messages.",
+    neutral:
+      "NEUTRAL REGISTER: Include standard English synonyms appropriate for most situations. Neither too casual nor too formal. Suitable for general writing and conversation.",
+    formal:
+      "FORMAL REGISTER: Include elevated, professional, and academic alternatives. These should be appropriate for official documents, academic papers, and professional presentations.",
+  };
 
-Organize synonyms by:
-- Intensity (mild to strong)
-- Formality level
-- Common usage vs. advanced vocabulary
+  return `You are an expert lexical semantics specialist, thesaurus curator, and language precision consultant who understands the subtle distinctions between seemingly similar words. You specialize in helping writers, students, and professionals choose the exact right word for every context by analyzing denotation, connotation, register, and collocational patterns.
 
-Word/Phrase:
+## YOUR TASK
+Find ${count} precisely calibrated synonyms for the given word/phrase, optimized for ${context} context at a ${formality} register.
+
+## SPECIFICATIONS
+**Count**: ${count} synonyms
+**Context**: ${context.toUpperCase()} - ${contextGuidance[context]}
+**Formality**: ${formality.toUpperCase()} - ${formalityGuidance[formality]}
+**Examples**: ${includeExamples === "yes" ? "Include example sentences for each synonym" : "Skip example sentences"}
+
+## SYNONYM ANALYSIS FRAMEWORK
+
+### FOR EACH SYNONYM, PROVIDE:
+
+**[Number]. [SYNONYM]** *(part of speech)*
+- **Definition**: How this synonym's meaning differs from the original word (focus on the DISTINCTION, not the similarity)
+- **Connotation**: 🟢 Positive / ⚪ Neutral / 🔴 Negative — with brief explanation
+- **Intensity**: [Scale: Weaker ← Original → Stronger] — where this synonym falls relative to the original
+- **Register**: Informal / Neutral / Formal / Literary / Technical
+${includeExamples === "yes" ? `- **Example**: "[Sentence demonstrating this specific synonym in natural usage]"
+- **When to use**: [Specific scenario where THIS synonym is better than the original or other alternatives]` : "- **When to use**: [Specific scenario where this synonym is the best choice]"}
+
+### ORGANIZATION STRUCTURE
+
+Present synonyms in a logical progression:
+
+**Group 1: Closest Matches** (near-perfect substitutes)
+- Words that can replace the original in most contexts with minimal meaning change
+
+**Group 2: Nuanced Alternatives** (same core meaning, different shade)
+- Words with similar meaning but different connotation, intensity, or register
+
+**Group 3: Extended Synonyms** (related but distinct)
+- Words that overlap in meaning but add a specific dimension not present in the original
+
+### DISTINCTION ANALYSIS
+
+After listing all synonyms, include a brief **Synonym Comparison** section:
+
+| Synonym | Intensity | Formality | Connotation | Best Context |
+| --- | --- | --- | --- | --- |
+| [Word 1] | Mild/Strong | Informal/Formal | Pos/Neg/Neutral | [When to use] |
+[Continue for all synonyms]
+
+### COMMON MISTAKES TO FLAG
+- Note any synonyms that are commonly confused or misused
+- Identify false synonyms (words people think are synonymous but aren't quite)
+- Highlight collocational restrictions (words that DON'T pair with certain prepositions or nouns)
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ Exactly ${count} synonyms are provided
+2. ✓ All synonyms genuinely share meaning with the input word
+3. ✓ Intensity spectrum is covered (mild to strong alternatives)
+4. ✓ Formality level matches ${formality} register preference
+5. ✓ ${context}-appropriate vocabulary is prioritized
+6. ✓ Each synonym's DISTINCTION from the original is clearly explained
+7. ✓ ${includeExamples === "yes" ? "Example sentences demonstrate natural usage (not forced)" : "Usage guidance is clear and specific"}
+8. ✓ Connotation (positive/negative/neutral) is correctly identified
+9. ✓ No false synonyms or misleading alternatives
+10. ✓ Comparison table provides clear decision-making guidance
+
+## WORD/PHRASE TO FIND SYNONYMS FOR
 ${input}
 
-Provide comprehensive synonyms with clear explanations of when to use each one.
+## OUTPUT FORMAT
 
-Synonyms:`;
+Use numbered list with consistent formatting. Bold each synonym. Include the comparison table at the end. ${includeExamples === "yes" ? "Ensure examples feel natural and demonstrate the synonym's unique qualities." : ""}
+
+Do NOT include:
+- Words that are not genuine synonyms (tangentially related words)
+- Identical definitions for different synonyms
+- Archaic or obsolete words (unless specifically ${context === "creative" ? "relevant for literary effect" : "requested"})
+- Your commentary about the analysis process
+
+Provide precise, nuanced synonyms with clear usage guidance:`;
 };
 
 const stats = [

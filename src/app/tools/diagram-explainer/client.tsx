@@ -60,29 +60,115 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
 
   const detailStyles: Record<string, string> = {
     basic:
-      "Provide a basic overview of the main components and their primary functions. Keep explanations concise and accessible.",
+      "Concise overview (150-250 words). Cover main components and their primary functions. Accessible language, no excessive technical depth.",
     detailed:
-      "Provide detailed explanation of all parts, their functions, and how they interact. Include technical terminology with clear definitions.",
+      "Thorough explanation (400-600 words). All parts, functions, and interactions explained. Technical terminology with clear definitions. Include underlying mechanisms.",
     comprehensive:
-      "Provide comprehensive analysis including all components, their relationships, underlying processes, and biological/chemical/physical significance. Include advanced details.",
+      "In-depth analysis (700-1000 words). Complete breakdown of all components, relationships, processes, and scientific significance. Advanced details, cross-references, and clinical/practical applications.",
   };
 
-  return `Explain the following ${subject} diagram or visual concept in detail.
+  const subjectGuidance: Record<string, string> = {
+    biology:
+      "Use biological terminology and nomenclature. Explain cellular, molecular, or organismal structures. Reference relevant biological processes (e.g., mitosis, photosynthesis, homeostasis). Include taxonomy and classification where relevant.",
+    chemistry:
+      "Use IUPAC nomenclature and chemical notation. Explain molecular geometry, bonding, and electronic structure. Reference reaction mechanisms, equilibria, and thermodynamic principles where relevant.",
+    physics:
+      "Use SI units and proper physical notation. Explain forces, fields, motion, and energy transformations. Reference relevant laws (Newton's, Ohm's, Faraday's, etc.) and include vector/scalar distinctions.",
+    geography:
+      "Use proper geographic and geological terminology. Explain spatial relationships, scales, and environmental processes. Reference climate patterns, tectonic activity, or human geography concepts as relevant.",
+    general:
+      "Use clear, accessible language suitable for the diagram type. Adapt terminology to the specific field. Focus on logical flow and conceptual clarity.",
+  };
 
-Detail level: ${detailStyles[detail]}
-${labelParts ? "Label and explain each part/component clearly with its specific name and function." : "Focus on the overall concept and main relationships."}
+  const labelStrategy = labelParts
+    ? "LABELING REQUIRED: Identify and label every distinct part/component with its specific scientific name, function, and role in the system. Use numbered labels or bold formatting for each part."
+    : "Focus on the overall concept and major relationships without exhaustive part-by-part labeling.";
 
-Your explanation should include:
-1. **Overview**: What the diagram represents and its purpose
-2. **Components**: Each part/element with its name and function
-3. **Relationships**: How the parts work together or interact
-4. **Process/Flow**: If applicable, explain the sequence or cycle shown
-5. **Key Takeaways**: Main concepts to understand from this diagram
+  return `You are an expert visual learning specialist, scientific diagram analyst, and ${subject} educator with extensive experience translating complex visual representations into clear, structured explanations that promote deep understanding.
 
-Diagram/Visual description:
+## YOUR TASK
+Analyze and explain the described ${subject} diagram with ${detail}-level depth, transforming the visual description into a comprehensive educational explanation.
+
+## SPECIFICATIONS
+**Subject Area**: ${subject.toUpperCase()} - ${subjectGuidance[subject]}
+**Detail Level**: ${detail.toUpperCase()} - ${detailStyles[detail]}
+**Labeling**: ${labelStrategy}
+**Audience**: Students seeking to understand visual scientific/academic concepts
+
+## DIAGRAM ANALYSIS FRAMEWORK
+
+### 1. CONTEXTUAL OVERVIEW (Opening Section)
+- **What it represents**: Name the diagram type and subject
+- **Purpose**: Why this diagram is important in ${subject}
+- **Scope**: What aspects of the topic this diagram covers
+- **Context**: How it fits into the broader topic or curriculum
+${detail === "comprehensive" ? "- **Historical significance**: Brief mention of discovery or development if relevant" : ""}
+
+### 2. COMPONENT IDENTIFICATION & ANALYSIS
+${labelParts ? `**For EACH identifiable component, provide**:
+- **Name**: Proper scientific/technical name (bold)
+- **Location**: Where in the diagram it appears
+- **Structure**: Physical characteristics or appearance
+- **Function**: What it does and why it matters
+- **Significance**: Its role in the overall system
+${detail === "comprehensive" ? "- **Additional detail**: Size, composition, variations, or clinical relevance" : ""}` : "Identify the major components and explain their primary functions."}
+
+### 3. RELATIONSHIPS & INTERACTIONS
+- **Connections**: How components connect to or affect each other
+- **Flow/Direction**: If arrows present, explain what they indicate
+- **Hierarchy**: Organizational structure (if applicable)
+- **Dependencies**: Which parts rely on others to function
+${detail !== "basic" ? "- **Feedback loops**: Any circular or regulatory relationships\n- **Cause and effect**: How changes in one component affect others" : ""}
+
+### 4. PROCESS & SEQUENCE ANALYSIS (If Applicable)
+- **Starting point**: Where the process begins
+- **Steps/Stages**: Sequential breakdown of the process shown
+- **Inputs & Outputs**: What enters and leaves at each stage
+- **Energy/Resource flow**: Transformations occurring at each step
+${detail === "comprehensive" ? "- **Rate-limiting steps**: Bottlenecks or critical stages\n- **Regulation points**: Where the process is controlled" : ""}
+
+### 5. KEY TAKEAWAYS & LEARNING POINTS
+- **Essential concepts**: 3-5 most important things to understand
+- **Common misconceptions**: What students often get wrong about this diagram
+${detail !== "basic" ? "- **Exam relevance**: Points likely to appear in assessments\n- **Memory aids**: Tips for remembering key components or sequences" : ""}
+${detail === "comprehensive" ? "- **Real-world applications**: Practical or clinical significance\n- **Connections to other topics**: How this relates to other chapters/concepts" : ""}
+
+### 6. SUBJECT-SPECIFIC REQUIREMENTS
+
+${subject === "biology" ? "**Biology Diagram Standards**:\n- Use correct biological nomenclature\n- Explain organelle/organ functions at appropriate depth\n- Reference relevant biological processes and pathways\n- Note structural adaptations and their functional significance\n- Include magnification/scale context where relevant" : ""}
+${subject === "chemistry" ? "**Chemistry Diagram Standards**:\n- Use proper chemical notation and IUPAC names\n- Explain bond types, angles, and molecular geometry\n- Reference electron configurations where relevant\n- Discuss reaction conditions and mechanisms if shown\n- Include state symbols and energy changes" : ""}
+${subject === "physics" ? "**Physics Diagram Standards**:\n- Specify all quantities with SI units\n- Distinguish vectors (direction + magnitude) from scalars\n- Reference applicable physical laws and equations\n- Explain field lines, force arrows, or circuit symbols precisely\n- Include relevant formulas connecting depicted quantities" : ""}
+${subject === "geography" ? "**Geography Diagram Standards**:\n- Reference map scales, coordinates, or spatial relationships\n- Explain geological or atmospheric processes shown\n- Discuss temporal aspects (seasons, geological time)\n- Connect to climate patterns or human geography impacts\n- Include regional/global context" : ""}
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ All described components have been identified and explained
+2. ✓ Relationships between parts are clearly described
+3. ✓ Explanation depth matches ${detail} level requirements
+4. ✓ ${subject}-appropriate terminology is used correctly
+5. ✓ ${labelParts ? "Every part is labeled with name and function" : "Major components are identified"}
+6. ✓ Processes/sequences are explained in logical order
+7. ✓ Key takeaways are actionable and exam-relevant
+8. ✓ Common misconceptions are addressed
+9. ✓ Scientific accuracy is maintained throughout
+10. ✓ Language is clear and educational
+
+## DIAGRAM DESCRIPTION TO ANALYZE
 ${input}
 
-Provide a clear, structured explanation:`;
+## OUTPUT FORMAT
+
+Use clear markdown with headers for each section. ${labelParts ? "Number or bold each component label." : ""} Use bullet points for detailed breakdowns. ${detail === "comprehensive" ? "Include a brief summary table of components if helpful." : ""}
+
+Do NOT include:
+- Conversational filler ("Sure, let me explain...")
+- Disclaimers about not being able to see the actual image
+- Generic definitions unrelated to the specific diagram
+- Excessive repetition across sections
+- Your commentary about the explanation process
+
+Provide a clear, structured, and educational explanation of this diagram:`;
 };
 
 const stats = [

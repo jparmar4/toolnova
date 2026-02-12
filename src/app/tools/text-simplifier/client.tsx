@@ -58,55 +58,85 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
 
   const levelDescriptions: Record<string, string> = {
     elementary:
-      "Simplify to elementary school reading level (grades 3-5). Use very simple words, short sentences (10-15 words max), and basic concepts. Avoid complex vocabulary entirely.",
+      "Elementary school reading level (grades 3-5). Use very simple words, short sentences (8-12 words max), and basic concepts only.",
     middle:
-      "Simplify to middle school reading level (grades 6-8). Use common words, moderate sentence length (15-20 words), and explain any necessary technical concepts simply.",
+      "Middle school reading level (grades 6-8). Use common vocabulary, moderate sentence length (12-18 words), and explain technical concepts simply.",
     simple:
-      "Simplify for adult readers seeking clarity. Use everyday language, clear sentence structure (15-25 words), and minimal jargon. Maintain professionalism.",
+      "Simple adult reading level. Use everyday language, clear structure (15-20 words per sentence), minimal jargon, but maintain professionalism.",
     conversational:
-      "Rewrite in a friendly, conversational tone. Use natural language as if explaining to a friend, with contractions and casual phrasing while remaining clear.",
+      "Friendly, conversational tone. Write as if explaining to a friend - use natural language, contractions, and casual phrasing while staying clear.",
   };
 
-  const styleDescriptions: Record<string, string> = {
+  const styleInstructions: Record<string, string> = {
     standard:
-      "Rewrite the text in simpler language while maintaining the same structure and flow.",
+      "Rewrite the text in simpler language, maintaining the original paragraph structure and flow.",
     explain:
-      "When you encounter technical terms or complex concepts, briefly explain them in parentheses or simple language.",
+      "When you encounter technical terms or complex concepts, keep them but add brief explanations in parentheses immediately after: 'photosynthesis (how plants make food from sunlight)'",
     bullets:
-      "Break the information into clear bullet points or numbered lists for easier scanning and comprehension.",
+      "Break the content into clear bullet points or numbered lists. Each point should be concise and scannable.",
   };
 
-  return `Simplify the following text to make it easy to understand for a broader audience.
+  return `You are an expert content simplification specialist and plain language editor. Your task is to transform complex text into clear, accessible language that preserves the exact meaning while making it easy to understand.
 
-Target reading level: ${levelDescriptions[level]}
-Simplification approach: ${styleDescriptions[style]}
-${preserveTerms ? "IMPORTANT: When technical terms are essential to meaning, keep them but provide a brief, simple explanation in parentheses. Example: 'photosynthesis (the process plants use to make food from sunlight)'" : "Replace all technical terms with simpler alternatives."}
+## YOUR TASK
+Simplify the provided text to the specified reading level while maintaining 100% accuracy of the original message.
 
-Guidelines for simplification:
-1. **Vocabulary**: Replace complex words with common alternatives
-   - Instead of: utilize, commence, endeavor
-   - Use: use, start, try
+## SPECIFICATIONS
+**Target Reading Level**: ${levelDescriptions[level]}
+**Simplification Style**: ${styleInstructions[style]}
+**Technical Terms**: ${preserveTerms ? "Keep essential technical terms but add simple explanations in parentheses: 'cryptocurrency (digital money)'" : "Replace ALL technical terms with simple everyday alternatives"}
 
-2. **Sentence Structure**: Break long, complex sentences into shorter ones
-   - Avoid multiple clauses and nested ideas
-   - One main idea per sentence
+## SIMPLIFICATION FRAMEWORK
 
-3. **Active Voice**: Use active voice instead of passive
-   - Instead of: "The report was completed by the team"
-   - Use: "The team completed the report"
+### 1. Vocabulary Transformation
+- Replace complex/formal words with common alternatives
+- Examples:
+  • utilize → use
+  • commence → start
+  • endeavor → try
+  • expedite → speed up
+  • terminate → end
+  • ascertain → find out
+  • subsequently → then
+  • approximately → about
 
-4. **Clarity**: Remove unnecessary jargon and wordiness
-   - Get straight to the point
-   - Eliminate redundant phrases
+### 2. Sentence Structure
+- Break long sentences (25+ words) into shorter ones (${level === "elementary" ? "8-12" : level === "middle" ? "12-18" : "15-20"} words)
+- One main idea per sentence
+- Avoid nested clauses and complex subordination
+- Remove double negatives
 
-5. **Meaning**: Keep the core message intact
-   - Don't remove important information
-   - Maintain accuracy of facts
+### 3. Active Voice Priority
+- Convert passive constructions to active voice
+- ❌ "The report was completed by the team"
+- ✅ "The team completed the report"
 
-Text to simplify:
+### 4. Clarity Enhancements
+- Remove unnecessary jargon and legal language
+- Eliminate redundant phrases ("end result" → "result")
+- Replace nominalizations with verbs ("make a decision" → "decide")
+- Use concrete examples instead of abstract concepts
+
+### 5. Formatting for Readability
+${style === "bullets" ? "- Organize into clear bullet points\n- Use parallel structure\n- Keep points concise and actionable" : "- Maintain logical paragraph breaks\n- Use transition words (however, therefore, next)\n- Keep related ideas together"}
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ All original information is preserved (no meaning lost)
+2. ✓ Facts and numbers remain accurate
+3. ✓ Reading level matches target: ${level}
+4. ✓ Sentence length appropriate: ${level === "elementary" ? "8-12 words" : level === "middle" ? "12-18 words" : "15-20 words"} average
+5. ✓ No unnecessary jargon remains
+6. ✓ Technical terms ${preserveTerms ? "are explained in parentheses" : "are replaced with simple words"}
+7. ✓ Text flows naturally and sounds conversational
+8. ✓ Key message is immediately clear
+
+## TEXT TO SIMPLIFY
 ${input}
 
-Provide the simplified version:`;
+## OUTPUT FORMAT
+Provide ONLY the simplified text. Do not add explanations, notes, or commentary. Just return the clear, simplified version that anyone can understand.`;
 };
 
 const stats = [

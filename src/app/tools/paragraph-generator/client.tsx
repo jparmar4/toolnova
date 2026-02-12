@@ -70,32 +70,101 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
 
   const typeInstructions: Record<string, string> = {
     general:
-      "Write a clear, well-structured paragraph that effectively communicates the main idea.",
+      "Write a clear, well-structured general paragraph that effectively develops the main idea with supporting details.",
     introduction:
-      "Write an engaging introduction paragraph that hooks the reader and introduces the topic with a clear thesis statement.",
+      "Write an engaging introduction paragraph with a hook, background context, and a clear thesis statement that previews what follows.",
     conclusion:
-      "Write a strong conclusion paragraph that summarizes key points and leaves a lasting impression.",
-    body: "Write a detailed body paragraph with a clear topic sentence, supporting evidence, and smooth transitions.",
+      "Write a strong conclusion paragraph that synthesizes key points, reinforces the main argument, and provides closure or a call to action.",
+    body: "Write a detailed body paragraph with a clear topic sentence, 2-3 supporting points with evidence or examples, and a smooth transition to the next idea.",
     creative:
-      "Write a creative, engaging paragraph that uses vivid language and descriptive details to bring the topic to life.",
+      "Write a creative, vivid paragraph that uses descriptive language, sensory details, figurative language, and engaging narrative techniques.",
   };
 
-  return `${typeInstructions[type]}
+  const toneGuidelines: Record<string, string> = {
+    formal:
+      "Use professional vocabulary, complete sentences, third-person perspective, and avoid contractions or colloquialisms.",
+    casual:
+      "Use conversational language, contractions, second-person 'you', and friendly tone as if speaking to a peer.",
+    academic:
+      "Use scholarly language, precise terminology, objective tone, evidence-based statements, and formal citation-ready structure.",
+  };
 
-Tone: ${tone}
-Length: ${lengthSentences[length]}
+  return `You are an expert writing coach and paragraph construction specialist. Your task is to generate a well-crafted, cohesive paragraph that meets specific requirements.
 
-Requirements:
-- Start with a strong topic sentence
-- Include relevant supporting details
-- Use smooth transitions between ideas
-- Maintain consistent tone throughout
-- End with a conclusive or transitional sentence
+## YOUR TASK
+Write a ${type} paragraph about the provided topic, following all specified guidelines for structure, tone, and length.
 
-Topic:
+## SPECIFICATIONS
+**Paragraph Type**: ${typeInstructions[type]}
+**Target Length**: ${lengthSentences[length]} (strictly adhere to this)
+**Tone**: ${toneGuidelines[tone]}
+
+## PARAGRAPH STRUCTURE REQUIREMENTS
+
+### Opening (Topic Sentence)
+- Start with a strong, clear topic sentence that introduces the main idea
+- Make it engaging and directly address the topic
+- ${type === "introduction" ? "Include a hook (question, fact, quote, or anecdote)" : "Clearly state what this paragraph will discuss"}
+
+### Development (Supporting Sentences)
+- Develop 2-3 supporting points that elaborate on the topic sentence
+- Use specific details, examples, or evidence
+- Ensure each sentence logically flows from the previous one
+- ${type === "body" ? "Include concrete evidence or examples to support claims" : "Maintain focus on the central theme"}
+- Use transitions between ideas (Furthermore, Additionally, However, In contrast, For example)
+
+### Conclusion (Closing Sentence)
+- ${type === "introduction" ? "End with a clear thesis statement" : type === "conclusion" ? "Provide a memorable final thought or call to action" : "End with a transitional or conclusive sentence"}
+- Connect back to the main idea
+- ${type !== "conclusion" ? "Set up natural flow to what might come next" : "Leave reader with lasting impression"}
+
+## WRITING QUALITY STANDARDS
+
+### Coherence
+- Every sentence must relate directly to the topic
+- Ideas flow logically from one to the next
+- Use transition words to connect thoughts
+
+### Unity
+- Single, focused main idea throughout
+- No tangential or off-topic sentences
+- All details support the central point
+
+### Tone Consistency
+- Maintain ${tone} tone throughout every sentence
+- ${tone === "academic" ? "Use scholarly vocabulary and precise terminology" : tone === "formal" ? "Use professional language, no slang" : "Use natural, conversational language"}
+- Appropriate word choice for ${tone} writing
+
+### Sentence Variety
+- Mix sentence lengths (short punchy sentences with longer complex ones)
+- Vary sentence structures (simple, compound, complex)
+- Avoid starting consecutive sentences the same way
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ Sentence count: ${lengthSentences[length]} (count carefully)
+2. ✓ Paragraph type: Meets all ${type} paragraph requirements
+3. ✓ Tone: Consistently ${tone} throughout
+4. ✓ Topic sentence: Strong, clear, and engaging
+5. ✓ Supporting details: 2-3 well-developed points
+6. ✓ Coherence: Smooth transitions between all ideas
+7. ✓ Unity: Every sentence relates to main idea
+8. ✓ Closing: ${type === "conclusion" ? "Memorable final thought" : "Strong transitional sentence"}
+9. ✓ Grammar: No errors, proper punctuation
+10. ✓ Engagement: Interesting and well-written
+
+## TOPIC
 ${input}
 
-Paragraph:`;
+## OUTPUT FORMAT
+Provide ONLY the paragraph itself. Do not include:
+- Titles or headings
+- Explanations or commentary
+- Labels like "Paragraph:" or "Topic sentence:"
+- Bullet points or numbering
+
+Just write the complete, polished paragraph ready to use.`;
 };
 
 const stats = [

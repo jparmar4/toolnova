@@ -58,46 +58,206 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
   const tone = options?.tone || "casual";
   const includeHashtags = options?.includeHashtags !== false;
 
-  const platformGuidance: Record<string, string> = {
+  const platformStrategy: Record<string, string> = {
     instagram:
-      "Instagram captions should be engaging, visual, and encourage interaction. Often include questions or calls-to-action.",
+      "Visual storytelling platform. Algorithm favors engagement (saves, shares, comments). Captions can be long. First 1-2 lines crucial (before 'more'). Questions and CTAs boost interaction.",
     facebook:
-      "Facebook captions can be longer and more conversational. Focus on storytelling and community engagement.",
+      "Community-focused platform. Algorithm prioritizes meaningful conversations. Longer captions work well. Stories and emotional connections perform best. Encourage comments and shares.",
     linkedin:
-      "LinkedIn captions should be professional and value-driven. Share insights, tips, or professional updates.",
+      "Professional networking platform. Algorithm favors native content and engagement. Value-driven captions with insights. Professional tone but authentic. Use line breaks for readability.",
     tiktok:
-      "TikTok captions should be short, punchy, and trend-aware. Often reference the video content directly.",
+      "Entertainment-first platform. Captions are secondary to video but add context. Keep ultra-short (1-2 sentences). Trend-aware language. Hook users who watch without sound.",
     twitter:
-      "Twitter captions should be concise and impactful. Stay under 280 characters and make every word count.",
+      "Real-time conversation platform. 280 character limit. Brevity is key. Thread-worthy insights perform well. Retweets matter. Clear, punchy, quotable content.",
   };
 
-  return `Create 3 ${platform} captions with a ${tone} tone for the following photo/post.
+  const toneGuidelines: Record<string, string> = {
+    casual:
+      "Friendly, conversational, relatable. Use contractions, everyday language, and personality. Like chatting with a friend. Warm and approachable.",
+    professional:
+      "Polished, credible, value-focused. Industry-appropriate language. Share expertise and insights. Authoritative yet accessible. Business-minded.",
+    funny:
+      "Humorous, entertaining, witty. Use clever wordplay, puns, or observations. Self-aware and playful. Don't force jokes - natural humor works best.",
+    inspirational:
+      "Uplifting, motivational, empowering. Share wisdom, encouragement, and positive messages. Aspirational tone. Make readers feel inspired to take action.",
+  };
 
-Platform: ${platform}
-${platformGuidance[platform]}
+  const hashtagStrategy = includeHashtags
+    ? {
+        instagram:
+          "5-10 hashtags. Mix popular (100K+ posts), medium (10K-100K), and niche (under 10K). Place at end or in first comment.",
+        facebook:
+          "1-3 hashtags max. Facebook users don't engage heavily with hashtags. Keep minimal and relevant.",
+        linkedin:
+          "3-5 hashtags. Use industry-specific tags. Place at end. Help with discoverability in professional searches.",
+        tiktok:
+          "3-5 hashtags. Include trending tags + niche tags. Research current trending hashtags for your content type.",
+        twitter:
+          "1-3 hashtags. Keep concise due to character limit. Trend-aware hashtags can boost visibility.",
+      }
+    : null;
 
-${includeHashtags ? "Include 5-10 relevant, trending hashtags with each caption." : "Do not include hashtags."}
+  return `You are an expert social media manager and content strategist specializing in high-engagement captions. Your task is to create scroll-stopping captions optimized for ${platform}'s algorithm and audience behavior.
 
-Each caption should:
-- Be engaging and scroll-stopping
-- Match the ${tone} tone perfectly
-- Include a call-to-action or question to encourage engagement
-- Be optimized for ${platform}'s audience and algorithm
-- Be unique and different from the other options
+## YOUR TASK
+Write 3 distinct ${platform} captions with a ${tone} tone that maximize engagement and align with platform best practices.
 
-Photo/Post description:
+## SPECIFICATIONS
+**Platform**: ${platform.toUpperCase()} - ${platformStrategy[platform]}
+**Tone**: ${tone.toUpperCase()} - ${toneGuidelines[tone]}
+**Hashtags**: ${includeHashtags ? hashtagStrategy![platform] : "NO hashtags - caption text only"}
+**Quantity**: Exactly 3 unique, distinct caption options
+
+## PLATFORM-SPECIFIC OPTIMIZATION
+
+### ${platform.toUpperCase()} Caption Strategy:
+
+${
+  platform === "instagram"
+    ? `**Length**: 125-150 words optimal (can go longer for storytelling)
+**Hook**: First 1-2 lines must grab attention (visible before "more")
+**Structure**: Hook → Story/Value → Call-to-Action
+**Engagement Tactics**:
+- Ask questions to spark comments
+- Use emoji line breaks for scannability
+- Include clear CTA (tag a friend, share thoughts, save for later)
+- Carousel posts: Tease content in caption
+**Algorithm Boost**: Saves > Shares > Comments > Likes`
+    : ""
+}${
+    platform === "facebook"
+      ? `**Length**: 40-80 words for high engagement (can be longer for stories)
+**Structure**: Attention-grabbing opener → Story/insight → Discussion prompt
+**Engagement Tactics**:
+- Ask open-ended questions
+- Encourage tagging friends
+- Create conversation starters
+- Share relatable experiences
+**Algorithm Boost**: Meaningful conversations > Reactions > Shares`
+      : ""
+  }${
+    platform === "linkedin"
+      ? `**Length**: 150-200 words for thought leadership
+**Structure**: Hook → Insight/Lesson → Value/Takeaway → CTA
+**Formatting**: Use line breaks for readability (2-3 lines per paragraph)
+**Engagement Tactics**:
+- Share professional insights
+- Ask for experiences/opinions
+- Provide actionable advice
+- Tag relevant professionals (when appropriate)
+**Algorithm Boost**: Comments > Reactions > Shares`
+      : ""
+  }${
+    platform === "tiktok"
+      ? `**Length**: 1-2 sentences (ultra-short)
+**Purpose**: Add context to video, not standalone content
+**Structure**: Hook or question → Relate to video
+**Engagement Tactics**:
+- Reference video content directly
+- Use trending phrases or sounds
+- Encourage duets/stitches
+- Ask viewers to comment answers
+**Algorithm Boost**: Watch time > Shares > Comments`
+      : ""
+  }${
+    platform === "twitter"
+      ? `**Length**: 100-280 characters (punchy and complete)
+**Structure**: Hook → Insight/Value (if space allows)
+**Engagement Tactics**:
+- Quotable and retweetable
+- Clear, bold statements
+- Questions that prompt replies
+- Thread-starters for complex topics
+**Algorithm Boost**: Retweets > Replies > Likes`
+      : ""
+  }
+
+## CAPTION WRITING FRAMEWORK
+
+### 1. OPENING HOOK (First 1-2 Sentences)
+**Purpose**: Stop the scroll immediately
+
+Proven hook types:
+- **Question**: "Ever felt like you're the only one who...?"
+- **Bold Statement**: "This changed everything for me."
+- **Relatable Confession**: "Real talk: I used to struggle with..."
+- **Controversy/Hot Take**: "Unpopular opinion: [surprising view]"
+- **Curiosity Gap**: "The secret to [desired outcome]? It's not what you think."
+- **Direct Address**: "You need to hear this today..."
+
+${tone === "funny" ? "Use humor or wit in the opening to hook attention" : tone === "inspirational" ? "Lead with powerful, uplifting statement" : tone === "professional" ? "Open with valuable insight or question" : "Be relatable and conversational"}
+
+### 2. BODY CONTENT (Middle Section)
+- **Story**: Share personal experience or observation
+- **Value**: Provide tip, insight, or lesson learned
+- **Details**: ${platform === "instagram" || platform === "facebook" ? "Can elaborate with details and context" : platform === "linkedin" ? "Professional insights with takeaways" : "Keep minimal - video is the star"}
+- **Emotion**: ${tone === "inspirational" ? "Build emotional connection and motivation" : tone === "funny" ? "Deliver punchline or humorous payoff" : "Connect authentically with audience"}
+- **Formatting**: ${platform === "linkedin" || platform === "instagram" ? "Use line breaks and spacing for readability" : "Keep tight and concise"}
+
+### 3. CALL-TO-ACTION (Closing)
+Include clear CTA to boost algorithm performance:
+
+${platform === "instagram" ? "- 'Save this for later' (saves boost reach)\n- 'Tag someone who needs this'\n- 'Drop a 💜 if you agree'\n- 'Share your experience in comments'" : ""}${platform === "facebook" ? "- 'What's your experience with this?'\n- 'Tag a friend who relates'\n- 'Share your thoughts below'\n- 'Who else feels this way?'" : ""}${platform === "linkedin" ? "- 'What's been your experience?'\n- 'Thoughts on this approach?'\n- 'How do you handle [situation]?'\n- 'Share your insights below'" : ""}${platform === "tiktok" ? "- 'Comment if you relate'\n- 'Duet this with your version'\n- 'Follow for more [content type]'\n- 'Which one are you?'" : ""}${platform === "twitter" ? "- 'Retweet if you agree'\n- 'Thoughts?'\n- 'Quote tweet with your take'\n- Thread-starting question" : ""}
+
+### 4. HASHTAG INTEGRATION
+${
+  includeHashtags
+    ? `**Hashtag Strategy for ${platform}**: ${hashtagStrategy![platform]}
+
+**Selection Criteria**:
+- Relevant to content (not generic #love #instagood)
+- Mix of popularity levels (high, medium, niche)
+- Industry/niche-specific tags
+- Location tags if relevant
+- Branded hashtag if applicable
+
+**Placement**: ${platform === "instagram" ? "At the end after line breaks, or as first comment" : platform === "facebook" ? "Integrated naturally in caption or at end (minimal)" : platform === "linkedin" ? "At the very end of caption" : platform === "tiktok" ? "Mixed with caption or at end" : "Integrated naturally (1-3 max)"}
+
+**Format**: Space-separated with # symbol. Capitalize for readability (#SocialMediaTips)`
+    : "NO HASHTAGS - Focus entirely on caption content quality"
+}
+
+## QUALITY CHECKPOINTS (For Each Caption)
+
+Before finalizing each option, verify:
+1. ✓ Length: Appropriate for ${platform} (${platform === "instagram" ? "125-150 words" : platform === "facebook" ? "40-80 words" : platform === "linkedin" ? "150-200 words" : platform === "tiktok" ? "1-2 sentences" : "100-280 characters"})
+2. ✓ Hook: First line immediately grabs attention
+3. ✓ Tone: Consistently ${tone} throughout
+4. ✓ Platform: Optimized for ${platform} culture and algorithm
+5. ✓ CTA: Clear call-to-action for engagement
+6. ✓ ${includeHashtags ? `Hashtags: ${hashtagStrategy![platform].split(".")[0]}` : "No hashtags included"}
+7. ✓ Formatting: ${platform === "linkedin" || platform === "instagram" ? "Line breaks for readability" : "Appropriate spacing"}
+8. ✓ Engagement: Encourages comments, saves, or shares
+9. ✓ Authentic: Genuine, not overly salesy or generic
+10. ✓ Complete: Feels finished, not cut off
+11. ✓ Distinct: Different angle/approach from other 2 options
+12. ✓ No clichés: Avoid overused phrases
+
+## PHOTO/POST DESCRIPTION
 ${input}
 
-Generate 3 distinct caption options:
+## OUTPUT FORMAT
 
-Caption 1:
-[First caption with ${includeHashtags ? "hashtags" : "no hashtags"}]
+Provide exactly 3 distinct captions in this format:
 
-Caption 2:
-[Second caption with ${includeHashtags ? "hashtags" : "no hashtags"}]
+**Caption 1:**
+[Complete first caption here${includeHashtags ? " with hashtags at the end" : ""}]
 
-Caption 3:
-[Third caption with ${includeHashtags ? "hashtags" : "no hashtags"}]`;
+**Caption 2:**
+[Complete second caption here with different angle/approach${includeHashtags ? " with hashtags at the end" : ""}]
+
+**Caption 3:**
+[Complete third caption here with unique perspective${includeHashtags ? " with hashtags at the end" : ""}]
+
+IMPORTANT:
+- Each caption must be complete and ready to post
+- Make each option distinctly different (varied hook, structure, or emphasis)
+- ${includeHashtags ? "Include strategic hashtags matching the criteria above" : "No hashtags - caption only"}
+- Do NOT include labels like "Hook:", "Body:", "CTA:" in the actual caption
+- Do NOT add explanations or commentary
+- Write as if posting directly to ${platform}
+
+Create 3 scroll-stopping captions that drive engagement:`;
 };
 
 const stats = [

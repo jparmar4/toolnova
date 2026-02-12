@@ -84,50 +84,111 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
   const includeKeyTerms = options?.includeKeyTerms ?? false;
 
   const lengthInstructions: Record<string, string> = {
-    brief:
-      "Create a very brief summary in just 1-2 sentences. Capture only the absolute core message.",
+    brief: "1-2 sentences capturing only the absolute core message",
     short:
-      "Create a concise summary in one clear paragraph. Include the main points and key takeaways.",
+      "One concise paragraph (3-5 sentences) covering main points and key takeaways",
     medium:
-      "Create a comprehensive summary in 2-3 paragraphs. Cover all major points with supporting details.",
+      "2-3 comprehensive paragraphs covering all major points with supporting details",
     detailed:
-      "Create a detailed summary that thoroughly covers all important aspects. Multiple paragraphs with full explanations.",
+      "Multiple detailed paragraphs (4-6 paragraphs) thoroughly covering all important aspects and nuances",
   };
 
   const styleInstructions: Record<string, string> = {
     paragraph:
-      "Write in flowing paragraphs with smooth transitions between ideas.",
+      "Write in flowing paragraphs with smooth transitions between ideas. Use complete sentences.",
     bullets:
-      "Format as bullet points (•) with each major point on a separate line.",
+      "Format as bullet points with • symbol. Each major point on a separate line. Start each point with a capital letter.",
     numbered:
-      "Format as a numbered list (1, 2, 3) with each key point clearly numbered.",
+      "Format as a numbered list (1., 2., 3., etc.). Each key point clearly numbered and on its own line.",
     keypoints:
-      "Present only the essential key points in the most concise format possible.",
+      "Present only the most essential key points in concise format. Each point should be crystal clear and standalone.",
   };
 
   const toneInstructions: Record<string, string> = {
-    neutral: "Use neutral, balanced language suitable for general audiences.",
+    neutral:
+      "Use objective, balanced language suitable for general audiences. Avoid bias or emotional language.",
     academic:
-      "Use formal, academic language appropriate for scholarly or educational contexts.",
+      "Use formal, scholarly language with precise terminology appropriate for academic or research contexts.",
     simple:
-      "Use simple, easy-to-understand language. Explain concepts clearly as if for a general audience.",
+      "Use plain, easy-to-understand language. Avoid jargon and complex terms. Explain concepts clearly.",
     professional:
-      "Use professional business language appropriate for workplace or formal settings.",
+      "Use polished business language appropriate for corporate and professional workplace settings.",
   };
 
-  let prompt = `Summarize the following text:
+  let prompt = `# Role & Task
+You are an expert at summarizing content. Your task is to create a ${length} summary of the provided text while preserving all key information.
 
+# Text to Summarize
 ${input}
 
-Instructions:
-- Length: ${lengthInstructions[length]}
-- Style: ${styleInstructions[style]}
-- Tone: ${toneInstructions[tone]}
+# Summary Requirements
+- **Length**: ${length} - ${lengthInstructions[length]}
+- **Format**: ${style} - ${styleInstructions[style]}
+- **Tone**: ${tone} - ${toneInstructions[tone]}
 
-${includeKeyTerms ? "After the summary, add a 'KEY TERMS:' section listing important terms or concepts mentioned." : ""}
+# Summarization Guidelines
+1. **Identify Core Message**: Determine the main point or thesis of the text
+2. **Extract Key Information**: Include all important facts, arguments, and conclusions
+3. **Maintain Accuracy**: Represent the original meaning faithfully - don't add interpretations
+4. **Preserve Context**: Keep essential context that makes the summary understandable
+5. **Logical Flow**: Organize information in a clear, logical sequence
+6. **Appropriate Detail**: Balance brevity with completeness for ${length} length
+${length === "brief" ? "7. **Extreme Concision**: Focus only on the single most important takeaway" : ""}
+${length === "detailed" ? "7. **Comprehensive Coverage**: Include supporting details, examples, and nuances from the original text" : ""}
 
-Important:
-- Capture the main ideas accurately
+# Output Structure
+${style === "paragraph" ? "Write in clear, well-structured paragraphs with smooth transitions." : ""}
+${
+  style === "bullets"
+    ? `Use this format:
+• First major point here
+• Second major point here
+• Third major point here
+(Continue for all key points)`
+    : ""
+}
+${
+  style === "numbered"
+    ? `Use this format:
+1. First major point here
+2. Second major point here
+3. Third major point here
+(Continue for all key points)`
+    : ""
+}
+${style === "keypoints" ? "List only the most critical points in the most concise way possible." : ""}
+${
+  includeKeyTerms
+    ? `
+
+## KEY TERMS
+After the summary, list 5-8 important terms or concepts:
+- **Term 1**: Brief explanation
+- **Term 2**: Brief explanation
+(etc.)`
+    : ""
+}
+
+# Quality Standards
+Before finalizing, verify:
+- ✓ Main message is clearly communicated
+- ✓ All critical information is included
+- ✓ No important details are omitted
+- ✓ No information is added that wasn't in the original
+- ✓ Length matches ${length} requirement
+- ✓ Format matches ${style} style exactly
+- ✓ Tone is consistently ${tone}
+- ✓ Summary is accurate and faithful to original
+${includeKeyTerms ? "- ✓ Key terms are identified and explained" : ""}
+
+# Special Instructions
+- Do not include your own opinions or interpretations
+- Maintain objectivity throughout
+- If the original text is unclear, summarize what IS clear
+- Use third person perspective unless the original requires first person
+- Preserve any critical statistics, dates, or specific data points
+
+Now create the ${length} summary in ${style} format with ${tone} tone.
 - Preserve the original meaning
 - Make it clear and easy to understand
 - Focus on the most important information

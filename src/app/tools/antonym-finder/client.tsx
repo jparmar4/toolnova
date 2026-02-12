@@ -72,45 +72,125 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
   const includeExamples = options?.includeExamples || "yes";
   const showExplanation = options?.showExplanation || "yes";
 
-  let typeInstruction = "";
-  if (type === "direct") {
-    typeInstruction = "Focus on direct opposites (e.g., hot-cold, big-small).";
-  } else if (type === "gradable") {
-    typeInstruction =
-      "Focus on gradable antonyms with degrees between them (e.g., hot-warm-cool-cold).";
-  } else if (type === "complementary") {
-    typeInstruction =
-      "Focus on complementary antonyms where one excludes the other (e.g., alive-dead, on-off).";
-  } else if (type === "relational") {
-    typeInstruction =
-      "Focus on relational antonyms that depend on perspective (e.g., buy-sell, teacher-student).";
-  } else {
-    typeInstruction =
-      "Include all types of antonyms with clear categorization.";
-  }
+  const typeGuidance: Record<string, string> = {
+    direct:
+      "DIRECT/BINARY ANTONYMS: Focus on clear, unambiguous opposites where one negates the other completely. Examples: hot↔cold, big↔small, fast↔slow, light↔dark. These are the most commonly tested and recognized opposites.",
+    gradable:
+      "GRADABLE ANTONYMS: Focus on words that exist on a scale/spectrum with degrees between them. Show the full gradient. Examples: hot—warm—lukewarm—cool—cold, ecstatic—happy—content—sad—miserable. Include the full range of intermediate terms.",
+    complementary:
+      "COMPLEMENTARY ANTONYMS: Focus on binary pairs where one necessarily implies the absence of the other—no middle ground. Examples: alive↔dead, on↔off, pass↔fail, true↔false, married↔single. These are absolute oppositions.",
+    relational:
+      "RELATIONAL/CONVERSE ANTONYMS: Focus on pairs where the relationship is reversed but both terms imply each other's existence. Examples: buy↔sell, teacher↔student, parent↔child, employer↔employee, above↔below. One cannot exist without the other.",
+    all:
+      "ALL TYPES: Include diverse antonym types with clear categorization. Show the full range of opposition types to provide a comprehensive understanding of how the word contrasts with others.",
+  };
 
-  return `Find antonyms (opposite meanings) for the following word or phrase in ${context} context.
+  const contextGuidance: Record<string, string> = {
+    general:
+      "Provide antonyms suitable for general use in writing, speaking, and comprehension.",
+    academic:
+      "Focus on antonyms used in academic and analytical writing. Include formal, precise opposites appropriate for essays and research.",
+    exam:
+      "Prioritize antonyms frequently tested in competitive exams (GRE, SAT, UPSC, SSC, CAT). Include commonly tested pairs and tricky oppositions.",
+    creative:
+      "Include vivid, expressive antonyms suitable for creative writing. Focus on contrasts that create dramatic effect and strong imagery.",
+  };
 
-${typeInstruction}
+  return `You are an expert semantic opposition specialist, lexical contrast analyst, and language educator who understands the full taxonomy of antonymic relationships. You help students, writers, and exam aspirants master the nuances of word opposition—going beyond simple "opposite" to explore the rich spectrum of semantic contrast.
 
-For each antonym, provide:
-1. The antonym word
-2. Type of antonym (direct, gradable, complementary, or relational)
-3. ${showExplanation === "yes" ? "Brief explanation of the opposite relationship" : ""}
-4. ${includeExamples === "yes" ? "Example sentence showing usage in contrast" : ""}
-5. Degree of opposition (complete opposite vs. partial opposite)
+## YOUR TASK
+Find comprehensive antonyms for the given word/phrase, analyzing all forms of semantic opposition in ${context} context, focusing on ${type === "all" ? "all antonym types" : type + " antonyms"}.
 
-Word/Phrase:
+## SPECIFICATIONS
+**Antonym Type**: ${type.toUpperCase()} - ${typeGuidance[type]}
+**Context**: ${context.toUpperCase()} - ${contextGuidance[context]}
+**Examples**: ${includeExamples === "yes" ? "Include contrastive example sentences" : "Skip examples"}
+**Explanations**: ${showExplanation === "yes" ? "Include detailed opposition analysis" : "Provide concise antonym list"}
+
+## ANTONYM ANALYSIS FRAMEWORK
+
+### FOR EACH ANTONYM, PROVIDE:
+
+**[Number]. [ANTONYM]** *(part of speech)*
+- **Type**: 🔄 Direct | 📊 Gradable | ⚖️ Complementary | 🔗 Relational
+- **Opposition degree**: Complete opposite / Strong opposite / Partial opposite
+${showExplanation === "yes" ? `- **Relationship**: How and why this word is the opposite of the input word. What dimension of meaning is being negated or reversed?
+- **Context note**: Where this antonym pairing is most commonly used (academic, everyday, literary, technical)` : ""}
+${includeExamples === "yes" ? `- **Contrastive example**: "[Sentence using BOTH the original word and this antonym to highlight the contrast]"
+  Example format: "While she was [original], her brother was decidedly [antonym]."` : ""}
+
+${type === "all" || type === "gradable" ? `### SEMANTIC SPECTRUM (For Gradable Words)
+
+If the input word exists on a spectrum, show the full gradient:
+
+**[Extreme Negative]** ← ← ← **[Mild Negative]** ← **[Neutral]** → **[Mild Positive]** → → → **[Extreme Positive]**
+
+Mark the input word's position and all antonyms' positions on this spectrum.
+Example for "happy":
+😢 Miserable ← Sad ← Unhappy ← ⚪ Neutral → Content → Happy → Elated → Ecstatic 😊` : ""}
+
+### ORGANIZATION BY ANTONYM TYPE
+
+${type === "all" ? `**🔄 Direct/Binary Antonyms**
+[List clearly opposing pairs]
+
+**📊 Gradable Antonyms**
+[List with spectrum positions]
+
+**⚖️ Complementary Antonyms**
+[List binary-exclusive pairs]
+
+**🔗 Relational Antonyms**
+[List perspective-reversed pairs]` : `Group antonyms by intensity and formality within the ${type} category.`}
+
+### ADDITIONAL ANALYSIS
+
+**Common Mistakes**:
+- Flag any commonly confused antonym pairs
+- Note false antonyms (words often thought to be opposites but aren't truly)
+- Highlight polysemous words whose antonym changes depending on meaning
+  (e.g., "light" → antonym varies: "heavy" for weight, "dark" for illumination)
+
+**Antonym Comparison Table**:
+
+| Antonym | Type | Opposition Degree | Register | Best Context |
+| --- | --- | --- | --- | --- |
+| [Word] | Direct/Gradable/etc. | Complete/Strong/Partial | Formal/Neutral/Informal | [When to use] |
+
+${context === "exam" ? `**Exam Tips**:
+- Note which antonym pairs are frequently tested
+- Identify tricky options that might appear as distractors
+- Highlight commonly confused pairs in competitive exams` : ""}
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ All antonyms genuinely oppose the input word's meaning
+2. ✓ Antonym types are correctly classified (direct vs. gradable vs. complementary vs. relational)
+3. ✓ Opposition degree is accurately assessed
+4. ✓ ${includeExamples === "yes" ? "Contrastive examples clearly demonstrate the opposition" : "Antonym relationships are clearly stated"}
+5. ✓ ${showExplanation === "yes" ? "Explanations illuminate WHY these words are opposites" : "Antonym list is clear and concise"}
+6. ✓ ${type === "all" ? "Multiple antonym types are represented and categorized" : type + " antonyms are correctly identified"}
+7. ✓ Polysemous meanings are addressed (different antonyms for different senses)
+8. ✓ ${type === "gradable" || type === "all" ? "Semantic spectrum is included for gradable words" : "Opposition relationships are clearly explained"}
+9. ✓ No false antonyms or misleading oppositions
+10. ✓ ${context}-appropriate vocabulary is used
+
+## WORD/PHRASE TO FIND ANTONYMS FOR
 ${input}
 
-Organize antonyms by:
-- Type of opposition
-- Formality level
-- Context appropriateness
+## OUTPUT FORMAT
 
-Provide clear, educational antonym analysis.
+Use organized sections by antonym type (if showing all types) or by intensity/formality. Include the comparison table. ${type === "gradable" || type === "all" ? "Include the semantic spectrum visualization." : ""}
 
-Antonyms:`;
+Do NOT include:
+- Words that are not genuine antonyms
+- Synonyms mistakenly listed as antonyms
+- Overly obscure words with no practical usage
+- Identical analysis for different antonyms
+- Your commentary about the analysis process
+
+Provide comprehensive, educational antonym analysis:`;
 };
 
 const stats = [

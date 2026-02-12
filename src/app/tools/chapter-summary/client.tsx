@@ -58,39 +58,121 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
 
   const lengthStyles: Record<string, string> = {
     brief:
-      "Create a very brief summary in 1-2 short paragraphs capturing only the most essential points.",
+      "Ultra-concise summary (100-200 words). Only the most essential points. 1-2 short paragraphs capturing the core thesis and 3-5 key facts.",
     medium:
-      "Create a moderate summary in 3-5 paragraphs covering main points, key concepts, and important details.",
+      "Balanced summary (300-500 words). Main points, key concepts, supporting details, and important examples. 3-5 well-structured sections.",
     detailed:
-      "Create a comprehensive summary covering all key topics, concepts, examples, and important details from the chapter.",
+      "Comprehensive summary (600-1000 words). Complete coverage of all topics, concepts, examples, evidence, and nuances. Full chapter representation suitable for exam review.",
   };
 
-  const formatStyles: Record<string, string> = {
+  const formatInstructions: Record<string, string> = {
     paragraph:
-      "Write in flowing paragraph format with smooth transitions between ideas.",
+      "Flowing paragraph format with smooth transitions between ideas. Each paragraph covers a distinct subtopic. Use topic sentences and concluding transitions.",
     bullets:
-      "Use clear bullet points for easy scanning and quick reference. Group related points together.",
+      "Clean bullet point format for easy scanning. Group related points under bold subheadings. Use indented sub-bullets for supporting details. One concept per bullet.",
     outline:
-      "Use a numbered outline structure with main topics and subtopics clearly organized hierarchically.",
+      "Hierarchical numbered outline (1., 1.1, 1.1.1). Main topics as primary numbers, subtopics as secondary, details as tertiary. Clear indentation showing relationships.",
   };
 
-  return `Summarize the following chapter or content section.
+  const highlightStrategy = highlightKeyTerms
+    ? "KEY TERM HIGHLIGHTING: Use **bold** for critical vocabulary, concepts, definitions, names, dates, and formulas throughout. These should be the terms a student would need to memorize or recognize on an exam."
+    : "Present information clearly without special formatting emphasis on individual terms.";
 
-${lengthStyles[length]}
-${formatStyles[format]}
-${highlightKeyTerms ? "Use **bold** to highlight key terms, important concepts, and critical vocabulary throughout the summary." : "Present information clearly without special formatting for terms."}
+  return `You are an expert academic content analyst, study guide specialist, and educational summarizer with deep experience condensing complex material into clear, retention-optimized summaries across all academic disciplines.
 
-Your summary should include:
-1. **Main Topic/Theme**: What is this chapter primarily about?
-2. **Key Concepts**: The most important ideas or principles covered
-3. **Important Details**: Supporting facts, examples, or data that matter
-4. **Connections**: How concepts relate to each other
-5. **Takeaways**: What students should remember from this chapter
+## YOUR TASK
+Create a ${length} summary of the provided chapter/content in ${format} format that captures all essential information while eliminating redundancy.
 
-Content to summarize:
+## SPECIFICATIONS
+**Summary Length**: ${length.toUpperCase()} - ${lengthStyles[length]}
+**Format**: ${format.toUpperCase()} - ${formatInstructions[format]}
+**Highlighting**: ${highlightStrategy}
+**Purpose**: Exam preparation, quick review, and efficient study material creation
+
+## SUMMARIZATION FRAMEWORK
+
+### 1. COGNITIVE PRIORITIZATION (Internal Analysis)
+Before writing, mentally:
+- Identify the chapter's central thesis or main argument
+- Distinguish primary concepts (must include) from secondary details (include if space)
+- Recognize cause-effect relationships and hierarchies
+- Note definitions, formulas, and key data points
+- Identify exam-likely topics and commonly tested points
+
+### 2. OPENING CONTEXT (First Section)
+- **Chapter Theme**: One sentence stating what this chapter is fundamentally about
+- **Scope**: What specific aspects of the broader topic are covered
+- **Significance**: Why this content matters in the subject area
+${length === "detailed" ? "- **Prerequisites**: What knowledge this chapter builds upon" : ""}
+
+### 3. CORE CONTENT EXTRACTION
+
+${format === "paragraph" ? `**Paragraph Format Rules**:
+- Lead each paragraph with a clear topic sentence
+- Present information in logical progression (chronological, causal, or thematic)
+- Use transition words between paragraphs (Furthermore, In contrast, Consequently)
+- Conclude each paragraph by connecting to the next concept
+- Final paragraph should synthesize rather than introduce new information` : ""}
+
+${format === "bullets" ? `**Bullet Point Format Rules**:
+- Group bullets under **bold section headings**
+- One distinct concept per bullet point
+- Start each bullet with the key concept, then explain
+- Use indented sub-bullets (—) for supporting details, examples, or evidence
+- Keep bullets concise: 1-2 sentences maximum
+- Leave blank line between major sections` : ""}
+
+${format === "outline" ? `**Outline Format Rules**:
+- Use numbered hierarchy: 1. Main Topic → 1.1 Subtopic → 1.1.1 Detail
+- Bold main topic numbers for visual distinction
+- Include brief explanations alongside points, not just labels
+- Indent consistently to show relationships
+- Cross-reference between sections where concepts connect` : ""}
+
+**Content to Extract**:
+- **Main concepts & theories**: Central ideas with clear explanations
+- **Key definitions**: Important terms with precise definitions
+- **Evidence & examples**: Supporting facts, data, and illustrative examples
+- **Relationships**: Cause-effect chains, comparisons, and contrasts
+- **Processes & sequences**: Step-by-step breakdowns of any procedures
+${length !== "brief" ? "- **Dates, names, formulas**: Specific data points that are commonly tested\n- **Exceptions & nuances**: Important caveats or special cases" : ""}
+${length === "detailed" ? "- **Debates & perspectives**: Different viewpoints or interpretations\n- **Applications**: Real-world uses or implications of concepts" : ""}
+
+### 4. SYNTHESIS & TAKEAWAYS (Closing Section)
+- **Key takeaways**: ${length === "brief" ? "2-3" : length === "medium" ? "3-5" : "5-7"} most important points to remember
+- **Connections**: How concepts in this chapter relate to each other
+${length !== "brief" ? "- **Study focus areas**: What to prioritize when reviewing this material" : ""}
+${length === "detailed" ? "- **Potential exam questions**: 2-3 questions likely to be asked about this content\n- **Further reading**: Connections to related topics or chapters" : ""}
+
+## QUALITY CHECKPOINTS
+
+Before finalizing, verify:
+1. ✓ Length: Appropriate for ${length} setting (${length === "brief" ? "100-200" : length === "medium" ? "300-500" : "600-1000"} words)
+2. ✓ Format: Correctly structured as ${format}
+3. ✓ Completeness: All major topics from the chapter are represented
+4. ✓ Accuracy: Facts, dates, and definitions are faithfully preserved
+5. ✓ ${highlightKeyTerms ? "Key terms are bolded throughout" : "Clean formatting without excessive emphasis"}
+6. ✓ No filler: Every sentence adds value; no generic padding
+7. ✓ Hierarchy: Most important concepts receive proportionally more coverage
+8. ✓ Coherence: Summary reads logically even without the original chapter
+9. ✓ Exam readiness: A student could use this to review effectively
+10. ✓ Original meaning: No distortion or misinterpretation of source material
+
+## CONTENT TO SUMMARIZE
 ${input}
 
-Provide a clear, well-organized summary:`;
+## OUTPUT FORMAT
+
+Begin directly with the summary content. ${format === "bullets" ? "Start with bold section headings and grouped bullet points." : ""} ${format === "outline" ? "Start with the numbered outline structure." : ""} ${format === "paragraph" ? "Start with the opening context paragraph." : ""}
+
+Do NOT include:
+- Introductory text ("Here is your summary...")
+- Meta-commentary about the summarization process
+- Content not present in the original chapter
+- Opinions or editorializing beyond the source material
+- Excessive length beyond the ${length} specification
+
+Create a clear, well-organized, exam-ready summary:`;
 };
 
 const stats = [
