@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   GraduationCap,
@@ -19,6 +19,11 @@ import {
   Search,
   Filter,
   Calendar,
+  X,
+  Users,
+  Award,
+  Clock,
+  Globe,
 } from "lucide-react";
 
 // Tool data with categories
@@ -28,41 +33,56 @@ const ALL_TOOLS = [
     name: "Homework Solver",
     slug: "homework-solver",
     category: "Study Tools",
-    description: "Get step-by-step solutions to homework problems",
+    description: "Get step-by-step solutions to homework problems across math, science, and more",
     icon: BookOpen,
     color: "text-blue-500",
+    gradient: "from-blue-500 to-indigo-600",
+    isNew: false,
+    isPopular: true,
   },
   {
     name: "Notes Generator",
     slug: "notes-generator",
     category: "Study Tools",
-    description: "Generate comprehensive study notes from any topic",
+    description: "Generate comprehensive study notes from any topic instantly",
     icon: BookOpen,
     color: "text-indigo-500",
+    gradient: "from-indigo-500 to-violet-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "MCQ Generator",
     slug: "mcq-generator",
     category: "Study Tools",
-    description: "Create multiple choice questions for practice",
+    description: "Create multiple choice questions for exam preparation",
     icon: Star,
     color: "text-purple-500",
+    gradient: "from-purple-500 to-fuchsia-600",
+    isNew: false,
+    isPopular: true,
   },
   {
     name: "Flashcard Maker",
     slug: "flashcard-maker",
     category: "Study Tools",
-    description: "Create digital flashcards for memorization",
+    description: "Create digital flashcards for quick memorization",
     icon: Zap,
     color: "text-yellow-500",
+    gradient: "from-yellow-500 to-amber-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Quiz Generator",
     slug: "quiz-generator",
     category: "Study Tools",
-    description: "Generate practice quizzes on any subject",
+    description: "Generate practice quizzes on any subject instantly",
     icon: Sparkles,
     color: "text-green-500",
+    gradient: "from-green-500 to-emerald-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Doubt Solver",
@@ -71,6 +91,9 @@ const ALL_TOOLS = [
     description: "Get instant answers to your study questions",
     icon: GraduationCap,
     color: "text-cyan-500",
+    gradient: "from-cyan-500 to-blue-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Formula Generator",
@@ -79,6 +102,9 @@ const ALL_TOOLS = [
     description: "Generate formulas for math and science topics",
     icon: Wrench,
     color: "text-orange-500",
+    gradient: "from-orange-500 to-red-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Concept Explainer",
@@ -87,30 +113,42 @@ const ALL_TOOLS = [
     description: "Break down complex topics into simple explanations",
     icon: BookOpen,
     color: "text-teal-500",
+    gradient: "from-teal-500 to-cyan-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Diagram Explainer",
     slug: "diagram-explainer",
     category: "Study Tools",
-    description: "Explain diagrams and visual concepts",
+    description: "Explain diagrams and visual concepts clearly",
     icon: ImageIcon,
     color: "text-pink-500",
+    gradient: "from-pink-500 to-rose-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Chapter Summary",
     slug: "chapter-summary",
     category: "Study Tools",
-    description: "Summarize chapter content quickly",
+    description: "Summarize chapter content quickly and accurately",
     icon: BookOpen,
     color: "text-violet-500",
+    gradient: "from-violet-500 to-purple-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Revision Planner",
     slug: "revision-planner",
     category: "Study Tools",
-    description: "Create structured study schedules",
+    description: "Create structured revision schedules",
     icon: Calendar,
     color: "text-blue-600",
+    gradient: "from-blue-600 to-indigo-700",
+    isNew: false,
+    isPopular: false,
   },
 
   // Writing Tools
@@ -118,9 +156,12 @@ const ALL_TOOLS = [
     name: "Essay Writer",
     slug: "essay-writer",
     category: "Writing Tools",
-    description: "Generate structured essays on any topic",
+    description: "Generate structured, well-researched essays on any topic",
     icon: Pencil,
     color: "text-purple-500",
+    gradient: "from-purple-500 to-pink-600",
+    isNew: false,
+    isPopular: true,
   },
   {
     name: "Paragraph Generator",
@@ -129,14 +170,20 @@ const ALL_TOOLS = [
     description: "Create paragraphs for various purposes",
     icon: Pencil,
     color: "text-indigo-500",
+    gradient: "from-indigo-500 to-blue-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Story Generator",
     slug: "story-generator",
     category: "Writing Tools",
-    description: "Create engaging stories with AI",
+    description: "Create engaging stories with AI creativity",
     icon: BookOpen,
     color: "text-green-500",
+    gradient: "from-green-500 to-teal-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Speech Writer",
@@ -145,38 +192,53 @@ const ALL_TOOLS = [
     description: "Write compelling speeches for any occasion",
     icon: Sparkles,
     color: "text-pink-500",
+    gradient: "from-pink-500 to-rose-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Email Writer",
     slug: "email-writer",
     category: "Writing Tools",
-    description: "Draft professional emails instantly",
+    description: "Draft professional emails in seconds",
     icon: Sparkles,
     color: "text-blue-500",
+    gradient: "from-blue-500 to-cyan-600",
+    isNew: false,
+    isPopular: true,
   },
   {
     name: "Grammar Fix",
     slug: "grammar-fix",
     category: "Writing Tools",
-    description: "Fix grammar and improve writing quality",
+    description: "Fix grammar and improve writing quality instantly",
     icon: Pencil,
     color: "text-red-500",
+    gradient: "from-red-500 to-orange-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Paraphraser",
     slug: "paraphraser",
     category: "Writing Tools",
-    description: "Rewrite text while keeping the meaning",
+    description: "Rewrite text while keeping the original meaning",
     icon: Pencil,
     color: "text-cyan-500",
+    gradient: "from-cyan-500 to-blue-600",
+    isNew: false,
+    isPopular: true,
   },
   {
     name: "Resume Bullets",
     slug: "resume-bullets",
     category: "Writing Tools",
-    description: "Generate impactful resume bullet points",
+    description: "Generate impactful ATS-optimized resume bullet points",
     icon: Pencil,
     color: "text-yellow-500",
+    gradient: "from-yellow-500 to-orange-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Bio Generator",
@@ -185,6 +247,9 @@ const ALL_TOOLS = [
     description: "Create social media bios instantly",
     icon: Sparkles,
     color: "text-purple-600",
+    gradient: "from-purple-600 to-violet-700",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Caption Generator",
@@ -193,6 +258,9 @@ const ALL_TOOLS = [
     description: "Generate catchy social media captions",
     icon: Sparkles,
     color: "text-pink-600",
+    gradient: "from-pink-600 to-rose-700",
+    isNew: false,
+    isPopular: false,
   },
 
   // Image & PDF Tools
@@ -200,17 +268,23 @@ const ALL_TOOLS = [
     name: "Merge PDF",
     slug: "merge-pdf",
     category: "Image & PDF Tools",
-    description: "Combine multiple PDFs into one file",
+    description: "Combine multiple PDFs into one file seamlessly",
     icon: ImageIcon,
     color: "text-red-500",
+    gradient: "from-red-500 to-rose-600",
+    isNew: false,
+    isPopular: true,
   },
   {
     name: "Split PDF",
     slug: "split-pdf",
     category: "Image & PDF Tools",
-    description: "Extract pages or split PDFs",
+    description: "Extract pages or split large PDFs",
     icon: ImageIcon,
     color: "text-orange-500",
+    gradient: "from-orange-500 to-amber-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Image to PDF",
@@ -219,14 +293,20 @@ const ALL_TOOLS = [
     description: "Convert images to PDF documents",
     icon: ImageIcon,
     color: "text-amber-500",
+    gradient: "from-amber-500 to-yellow-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Image Compressor",
     slug: "image-compressor",
     category: "Image & PDF Tools",
-    description: "Reduce image file size",
+    description: "Reduce image file size without quality loss",
     icon: ImageIcon,
     color: "text-yellow-500",
+    gradient: "from-yellow-500 to-lime-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "JPG to PNG",
@@ -235,6 +315,9 @@ const ALL_TOOLS = [
     description: "Convert JPG images to PNG format",
     icon: ImageIcon,
     color: "text-green-500",
+    gradient: "from-green-500 to-emerald-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "PNG to JPG",
@@ -243,6 +326,9 @@ const ALL_TOOLS = [
     description: "Convert PNG images to JPG format",
     icon: ImageIcon,
     color: "text-teal-500",
+    gradient: "from-teal-500 to-green-600",
+    isNew: false,
+    isPopular: false,
   },
 
   // Utility Tools
@@ -253,6 +339,9 @@ const ALL_TOOLS = [
     description: "Count words, characters, sentences & paragraphs",
     icon: TrendingUp,
     color: "text-cyan-500",
+    gradient: "from-cyan-500 to-blue-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Character Counter",
@@ -261,14 +350,20 @@ const ALL_TOOLS = [
     description: "Count characters with social media limits",
     icon: Wrench,
     color: "text-blue-500",
+    gradient: "from-blue-500 to-indigo-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Case Converter",
     slug: "case-converter",
     category: "Utility Tools",
-    description: "Convert text to different cases",
+    description: "Convert text to different cases instantly",
     icon: Wrench,
     color: "text-purple-500",
+    gradient: "from-purple-500 to-violet-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Text Summarizer",
@@ -277,6 +372,9 @@ const ALL_TOOLS = [
     description: "Summarize long texts into key points",
     icon: TrendingUp,
     color: "text-indigo-500",
+    gradient: "from-indigo-500 to-purple-600",
+    isNew: false,
+    isPopular: true,
   },
   {
     name: "Text Simplifier",
@@ -285,6 +383,9 @@ const ALL_TOOLS = [
     description: "Simplify complex text for easy reading",
     icon: Wrench,
     color: "text-pink-500",
+    gradient: "from-pink-500 to-fuchsia-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Age Calculator",
@@ -293,6 +394,9 @@ const ALL_TOOLS = [
     description: "Calculate age from date of birth",
     icon: Calendar,
     color: "text-green-500",
+    gradient: "from-green-500 to-teal-600",
+    isNew: false,
+    isPopular: false,
   },
 
   // Career Tools
@@ -300,17 +404,23 @@ const ALL_TOOLS = [
     name: "Cover Letter Writer",
     slug: "cover-letter-writer",
     category: "Career Tools",
-    description: "Generate professional cover letters",
+    description: "Generate tailored, professional cover letters",
     icon: Briefcase,
     color: "text-amber-500",
+    gradient: "from-amber-500 to-orange-600",
+    isNew: false,
+    isPopular: true,
   },
   {
     name: "Interview Generator",
     slug: "interview-generator",
     category: "Career Tools",
-    description: "Practice with interview questions",
+    description: "Practice with AI-generated interview questions",
     icon: Briefcase,
     color: "text-blue-500",
+    gradient: "from-blue-500 to-indigo-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Goal Planner",
@@ -319,6 +429,9 @@ const ALL_TOOLS = [
     description: "Break down goals into actionable steps",
     icon: Rocket,
     color: "text-yellow-500",
+    gradient: "from-yellow-500 to-amber-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Timetable Generator",
@@ -327,6 +440,9 @@ const ALL_TOOLS = [
     description: "Create structured weekly schedules",
     icon: Calendar,
     color: "text-purple-500",
+    gradient: "from-purple-500 to-pink-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "To-Do List Generator",
@@ -335,6 +451,9 @@ const ALL_TOOLS = [
     description: "Turn goals into organized task lists",
     icon: ShieldCheck,
     color: "text-green-500",
+    gradient: "from-green-500 to-emerald-600",
+    isNew: false,
+    isPopular: false,
   },
 
   // Exam Prep Tools
@@ -345,14 +464,20 @@ const ALL_TOOLS = [
     description: "Learn new words with meanings and examples",
     icon: BookOpen,
     color: "text-green-500",
+    gradient: "from-green-500 to-lime-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Synonym Finder",
     slug: "synonym-finder",
     category: "Exam Prep Tools",
-    description: "Find synonyms for any word",
+    description: "Find synonyms for any word instantly",
     icon: Search,
     color: "text-emerald-500",
+    gradient: "from-emerald-500 to-teal-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Antonym Finder",
@@ -361,6 +486,9 @@ const ALL_TOOLS = [
     description: "Find antonyms for any word",
     icon: Search,
     color: "text-teal-500",
+    gradient: "from-teal-500 to-cyan-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "Idioms & Phrases",
@@ -369,6 +497,9 @@ const ALL_TOOLS = [
     description: "Learn idioms with meanings and examples",
     icon: BookOpen,
     color: "text-cyan-500",
+    gradient: "from-cyan-500 to-blue-600",
+    isNew: false,
+    isPopular: false,
   },
   {
     name: "One Word Substitution",
@@ -377,6 +508,20 @@ const ALL_TOOLS = [
     description: "Find single words for phrases",
     icon: Pencil,
     color: "text-blue-500",
+    gradient: "from-blue-500 to-indigo-600",
+    isNew: false,
+    isPopular: false,
+  },
+  {
+    name: "LinkedIn Optimizer",
+    slug: "linkedin-optimizer",
+    category: "Career Tools",
+    description: "Optimize your LinkedIn profile for recruiters",
+    icon: Users,
+    color: "text-blue-600",
+    gradient: "from-blue-600 to-cyan-600",
+    isNew: true,
+    isPopular: false,
   },
 ];
 
@@ -425,9 +570,29 @@ const categories = [
   },
 ];
 
+const heroStats = [
+  { icon: Zap, value: "50+", label: "AI Tools" },
+  { icon: Globe, value: "100%", label: "Free Forever" },
+  { icon: ShieldCheck, value: "No", label: "Sign-up" },
+  { icon: Clock, value: "<10s", label: "Results" },
+];
+
 export function ToolsClient() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  // Keyboard shortcut Ctrl+K for search
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault();
+        searchRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
 
   const filteredTools = useMemo(() => {
     return ALL_TOOLS.filter((tool) => {
@@ -440,8 +605,21 @@ export function ToolsClient() {
     });
   }, [searchQuery, activeCategory]);
 
+  const popularTools = useMemo(
+    () => ALL_TOOLS.filter((t) => t.isPopular),
+    []
+  );
+
+  const toolCountByCategory = useMemo(() => {
+    const counts: Record<string, number> = {};
+    ALL_TOOLS.forEach((t) => {
+      counts[t.category] = (counts[t.category] || 0) + 1;
+    });
+    return counts;
+  }, []);
+
   return (
-    <div className="w-full min-h-screen bg-slate-50 dark:bg-[#0b0f1a]">
+    <div className="w-full min-h-screen bg-background">
       {/* Background Ornaments */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse"></div>
@@ -449,129 +627,256 @@ export function ToolsClient() {
           className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] bg-purple-500/10 rounded-full blur-[100px] animate-pulse"
           style={{ animationDelay: "2s" }}
         ></div>
+        <div
+          className="absolute bottom-[10%] left-[20%] w-[25%] h-[25%] bg-emerald-500/8 rounded-full blur-[100px] animate-pulse"
+          style={{ animationDelay: "4s" }}
+        ></div>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-[1240px] px-6 py-12">
+      <div className="relative z-10 mx-auto max-w-[1280px] px-6 py-12">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-6xl md:text-8xl font-black leading-[1.1] tracking-tight mb-8 animate-slide-up">
+        <div className="text-center mb-12 animate-slide-up">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6 border border-primary/20">
+            <Sparkles className="h-4 w-4" />
+            <span>All Tools. Free. No Sign-up.</span>
+          </div>
+
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] tracking-tight mb-6">
             <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-              AI Tools
+              AI Tools{" "}
             </span>
-            <span className="text-slate-900 dark:text-white"> Library</span>
+            <span className="text-foreground">Library</span>
           </h1>
 
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+            Powerful AI tools for students, writers, and professionals.
+            Supercharge your productivity in seconds.
+          </p>
+
+          {/* Stats Bar */}
+          <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-12">
+            {heroStats.map((stat) => (
+              <div key={stat.label} className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <stat.icon className="h-5 w-5 text-primary" />
+                </div>
+                <div className="text-left">
+                  <div className="text-xl font-black text-foreground leading-tight">
+                    {stat.value}
+                  </div>
+                  <div className="text-xs text-muted-foreground font-medium">
+                    {stat.label}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
           {/* Search Bar */}
-          <div className="max-w-3xl mx-auto mb-12">
+          <div className="max-w-3xl mx-auto mb-10">
             <div className="relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-[2rem] blur-xl opacity-20 group-hover:opacity-40 transition duration-500"></div>
-              <div className="relative flex items-center bg-white dark:bg-slate-900/80 backdrop-blur-3xl rounded-[1.8rem] border border-slate-200 dark:border-slate-800 p-2 shadow-2xl">
-                <Search className="text-slate-400 h-6 w-6 ml-6 mr-3" />
+              <div className="relative flex items-center bg-card backdrop-blur-3xl rounded-[1.8rem] border border-border p-2 shadow-2xl">
+                <Search className="text-muted-foreground h-6 w-6 ml-6 mr-3 shrink-0" />
                 <input
+                  ref={searchRef}
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search 50+ tools... (e.g. 'homework')"
-                  className="flex-1 py-4 bg-transparent border-none text-foreground placeholder:text-slate-500 focus:outline-none text-xl font-medium"
+                  placeholder="Search tools... (e.g. 'essay', 'pdf', 'resume')"
+                  className="flex-1 py-4 bg-transparent border-none text-foreground placeholder:text-muted-foreground focus:outline-none text-lg font-medium"
                 />
+                {searchQuery ? (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="mr-4 p-2 rounded-full hover:bg-muted transition-colors"
+                  >
+                    <X className="h-5 w-5 text-muted-foreground" />
+                  </button>
+                ) : (
+                  <div className="hidden md:flex items-center gap-1 mr-5 px-2.5 py-1 rounded-lg bg-muted text-muted-foreground text-xs font-mono">
+                    Ctrl+K
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
           {/* Category Filter Pills */}
-          <div className="flex flex-wrap justify-center gap-3 mb-16">
-            {["All", ...categories.map((c) => c.name)].map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-8 py-3 rounded-2xl font-black text-sm uppercase tracking-widest transition-all ${
-                  activeCategory === cat
-                    ? "bg-primary text-white shadow-xl shadow-primary/30 active:scale-95"
-                    : "bg-white dark:bg-slate-800 text-slate-500 hover:text-primary border border-slate-200 dark:border-slate-700 hover:border-primary/50"
+          <div className="flex flex-wrap justify-center gap-2.5 mb-8">
+            <button
+              onClick={() => setActiveCategory("All")}
+              className={`px-6 py-2.5 rounded-2xl font-bold text-sm tracking-wide transition-all ${activeCategory === "All"
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                  : "glass-card !p-0 px-6 py-2.5 !rounded-2xl text-muted-foreground hover:text-foreground hover:border-primary/40"
                 }`}
+            >
+              All ({ALL_TOOLS.length})
+            </button>
+            {categories.map((cat) => (
+              <button
+                key={cat.name}
+                onClick={() => setActiveCategory(cat.name)}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl font-bold text-sm tracking-wide transition-all ${activeCategory === cat.name
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                    : "glass-card !p-0 px-5 py-2.5 !rounded-2xl text-muted-foreground hover:text-foreground hover:border-primary/40"
+                  }`}
               >
-                {cat}
+                <cat.icon className="h-4 w-4" />
+                <span>{cat.name.replace(" Tools", "")}</span>
+                <span className="text-xs opacity-70">
+                  {toolCountByCategory[cat.name] || 0}
+                </span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Dynamic Tools Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
-          {filteredTools.length > 0 ? (
-            filteredTools.map((tool, index) => (
-              <Link
-                key={tool.slug}
-                href={`/tools/${tool.slug}`}
-                className="group relative bg-white dark:bg-slate-900/40 rounded-[2.5rem] border border-slate-100 dark:border-slate-800/60 p-8 hover-float transition-all"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <div className="flex items-start justify-between mb-8">
-                  <div
-                    className={`w-16 h-16 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}
-                  >
-                    <tool.icon
-                      className={`h-8 w-8 ${tool.color}`}
-                      strokeWidth={1.5}
-                    />
-                  </div>
-                  <div className="bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500">
-                    {tool.category}
-                  </div>
-                </div>
-
-                <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3 group-hover:text-primary transition-colors">
-                  {tool.name}
-                </h3>
-                <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed mb-8 line-clamp-2">
-                  {tool.description}
-                </p>
-
-                <div className="flex items-center gap-2 text-primary font-bold group-hover:gap-4 transition-all">
-                  <span>Open Tool</span>
-                  <ArrowRight className="h-5 w-5" />
-                </div>
-              </Link>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-20">
-              <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Search className="h-10 w-10 text-slate-400" />
+        {/* Featured / Popular Tools Banner (only when no search/filter) */}
+        {!searchQuery && activeCategory === "All" && (
+          <div className="mb-16 animate-fade-in">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                <Award className="h-4 w-4 text-white" />
               </div>
-              <h3 className="text-2xl font-black text-slate-900 dark:text-white">
-                No tools found
-              </h3>
-              <p className="text-slate-500">
-                Try searching for something else or browse categories.
-              </p>
+              <h2 className="text-2xl font-black text-foreground">
+                Popular Tools
+              </h2>
             </div>
-          )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {popularTools.slice(0, 4).map((tool) => (
+                <Link
+                  key={tool.slug}
+                  href={`/tools/${tool.slug}`}
+                  className="group glass-card !p-5 flex items-center gap-4"
+                >
+                  <div
+                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform duration-300`}
+                  >
+                    <tool.icon className="h-6 w-6" strokeWidth={1.5} />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-foreground group-hover:text-primary transition-colors truncate">
+                      {tool.name}
+                    </h3>
+                    <p className="text-sm text-muted-foreground truncate">
+                      {tool.description}
+                    </p>
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0 ml-auto" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Tools Grid */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-foreground">
+              {activeCategory === "All" ? "All Tools" : activeCategory}
+              <span className="text-muted-foreground font-medium ml-2 text-base">
+                ({filteredTools.length})
+              </span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-24">
+            {filteredTools.length > 0 ? (
+              filteredTools.map((tool, index) => (
+                <Link
+                  key={tool.slug}
+                  href={`/tools/${tool.slug}`}
+                  className="group glass-card hover-float"
+                  style={{ animationDelay: `${index * 30}ms` }}
+                >
+                  <div className="flex items-start justify-between mb-5">
+                    <div
+                      className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
+                    >
+                      <tool.icon className="h-7 w-7" strokeWidth={1.5} />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {tool.isNew && (
+                        <span className="px-2.5 py-1 rounded-full bg-green-500/15 text-green-600 dark:text-green-400 text-[10px] font-black uppercase tracking-wider">
+                          New
+                        </span>
+                      )}
+                      <span className="px-3 py-1.5 rounded-full bg-muted text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                        {tool.category.replace(" Tools", "")}
+                      </span>
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl font-black text-foreground mb-2 group-hover:text-primary transition-colors">
+                    {tool.name}
+                  </h3>
+                  <p className="text-muted-foreground text-[15px] leading-relaxed mb-6 line-clamp-2">
+                    {tool.description}
+                  </p>
+
+                  <div className="flex items-center gap-2 text-primary font-bold text-sm group-hover:gap-3 transition-all">
+                    <span>Open Tool</span>
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-24">
+                <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Search className="h-10 w-10 text-muted-foreground" />
+                </div>
+                <h3 className="text-2xl font-black text-foreground mb-2">
+                  No tools found
+                </h3>
+                <p className="text-muted-foreground mb-6">
+                  Try a different search term or browse by category.
+                </p>
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setActiveCategory("All");
+                  }}
+                  className="px-6 py-3 rounded-2xl bg-primary text-primary-foreground font-bold hover:opacity-90 transition-opacity"
+                >
+                  Show All Tools
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Categories Section (Hidden if searching) */}
+        {/* Categories Section */}
         {!searchQuery && activeCategory === "All" && (
-          <div className="mb-24">
-            <h2 className="text-4xl font-black text-slate-900 dark:text-white mb-12 text-center flex items-center justify-center gap-4">
-              <Filter className="h-8 w-8 text-primary" /> Browse by Category
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mb-24 animate-fade-in">
+            <div className="flex items-center gap-3 mb-8 justify-center">
+              <Filter className="h-6 w-6 text-primary" />
+              <h2 className="text-3xl font-black text-foreground">
+                Browse by Category
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {categories.map((category) => (
                 <Link
                   key={category.slug}
                   href={`/tools/${category.slug}`}
-                  className="group p-8 rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-primary transition-all text-center"
+                  className="group glass-card text-center hover-float"
                 >
                   <div
-                    className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform`}
+                    className={`w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}
                   >
                     <category.icon className="h-8 w-8" />
                   </div>
-                  <h4 className="font-black text-slate-900 dark:text-white mb-2">
+                  <h4 className="font-black text-foreground mb-1.5 text-lg">
                     {category.name}
                   </h4>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-3">
                     {category.description}
                   </p>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold">
+                    {toolCountByCategory[category.name] || 0} tools
+                    <ArrowRight className="h-3 w-3" />
+                  </div>
                 </Link>
               ))}
             </div>
