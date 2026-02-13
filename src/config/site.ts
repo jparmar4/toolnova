@@ -67,9 +67,9 @@ export const siteConfig = {
 
   // Verification codes
   verification: {
-    google: "", // Add your Google Search Console verification code
+    google: "google-site-verification=YOUR_VERIFICATION_CODE", // Add your Google Search Console verification code
     bing: "0FEE172B08E59C4D96EC21C37F806047",
-    yandex: "", // Add your Yandex verification code
+    yandex: "yandex-verification=YOUR_VERIFICATION_CODE", // Add your Yandex verification code
   },
 } as const;
 

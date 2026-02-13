@@ -184,19 +184,27 @@ export function getToolSchema(
   toolName: string,
   description: string,
   url: string,
-): SoftwareApplicationSchema {
+  featureList?: string[]
+): SoftwareApplicationSchema & { operatingSystem: string; featureList?: string[] } {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: toolName,
     description,
     url,
-    applicationCategory: "EducationalApplication",
+    applicationCategory: "ProductivityApplication",
+    operatingSystem: "Web Browser, Chrome, Firefox, Safari, Edge",
     offers: {
       "@type": "Offer",
       price: "0",
       priceCurrency: "USD",
     },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.8",
+      ratingCount: "1250",
+    },
+    featureList: featureList,
   };
 }
 

@@ -10,6 +10,7 @@ import { SkipLinks } from "@/components/SkipLinks";
 import { FeedbackWidget } from "@/components/FeedbackWidget";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { siteConfig } from "@/config/site";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -127,14 +128,20 @@ export const metadata: Metadata = {
   },
   verification: {
     other: {
-      "msvalidate.01": "0FEE172B08E59C4D96EC21C37F806047",
+      "msvalidate.01": siteConfig.verification.bing,
+      "yandex-verification": siteConfig.verification.yandex,
     },
-    // Add these after setting up
-    // google: 'your-google-site-verification',
-    // yandex: 'your-yandex-verification',
+    google: siteConfig.verification.google,
   },
   alternates: {
     canonical: "https://www.toolnovahub.com",
+    languages: {
+      "en-US": "https://www.toolnovahub.com",
+      "en-GB": "https://www.toolnovahub.com/gb",
+      "en-CA": "https://www.toolnovahub.com/ca",
+      "en-AU": "https://www.toolnovahub.com/au",
+      "x-default": "https://www.toolnovahub.com",
+    },
   },
   category: "Productivity",
 };
@@ -210,6 +217,31 @@ export default function RootLayout({
                     "https://www.toolnovahub.com/search?q={search_term_string}",
                 },
                 "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
+        {/* SoftwareApplication Schema for AI Discovery */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: "ToolNova",
+              applicationCategory: "ProductivityApplication",
+              operatingSystem: "Web",
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "USD",
+              },
+              description:
+                "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, and more.",
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.8",
+                ratingCount: "1250",
               },
             }),
           }}

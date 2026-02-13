@@ -1,0 +1,18 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "ToolNova",
+    "name_for_model": "toolnova",
+    "description_for_human": "Access 50+ free AI tools for students and professionals. Merge PDFs, fix grammar, write essays, and more.",
+    "description_for_model": "ToolNova provides a suite of 50+ free AI-powered tools for productivity, writing, and study assistance. Capabilities include PDF manipulation (merge, split), text processing (summarize, paraphrase, grammar check), and content generation (essays, flashcards). Use the '/api/tools' endpoint to discover available tools and their metadata. The site is a frontend wrapper around these tools.",
+    "auth": {
+        "type": "none"
+    },
+    "api": {
+        "type": "openapi",
+        "url": "https://www.toolnovahub.com/openapi.yaml"
+    },
+    "logo_url": "https://www.toolnovahub.com/logo.png",
+    "contact_email": "support@toolnovahub.com",
+    "legal_info_url": "https://www.toolnovahub.com/terms",
+    "home_url": "https://www.toolnovahub.com"
+}

@@ -1,0 +1,38 @@
+openapi: 3.0.1
+info:
+  title: ToolNova AI Tools
+  description: API for discovering available AI tools on ToolNova.
+  version: '1.0'
+servers:
+  - url: https://www.toolnovahub.com
+paths:
+  /api/tools:
+    get:
+      operationId: getTools
+      summary: Get list of available tools
+      description: Returns a list of all available AI tools on ToolNova with their metadata (slug, name, description, keywords).
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tools:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        slug:
+                          type: string
+                          description: The URL slug for the tool.
+                        name:
+                          type: string
+                          description: The human-readable name of the tool.
+                        description:
+                          type: string
+                          description: A brief description of what the tool does.
+                        url:
+                          type: string
+                          description: The full URL to access the tool.
