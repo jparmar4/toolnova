@@ -140,6 +140,22 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/disclaimer"
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                >
+                  Disclaimer
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/cookie-policy"
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                >
+                  Cookie Policy
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/refund"
                   className="text-muted-foreground hover:text-primary transition-colors text-sm"
                 >

@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
-import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolData } from '@/data/tools';
+import { RelatedTools } from '@/components/RelatedTools';
 import TimetableGeneratorClient from './client';
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 export const metadata: Metadata = {
     title: 'Timetable Generator – Create Study Schedule Free | ToolNova',
@@ -9,13 +12,43 @@ export const metadata: Metadata = {
     alternates: { canonical: 'https://www.toolnovahub.com/tools/timetable-generator' },
 };
 
-const toolSchema = getToolSchema('Timetable Generator', 'Create structured weekly schedules', 'https://www.toolnovahub.com/tools/timetable-generator');
-
 export default function TimetableGeneratorPage() {
+    const toolData = getToolData('timetable-generator');
+
+    const toolSchema = getToolSchema(
+        toolData?.name || 'timetable-generator',
+        toolData?.description || '',
+        'https://www.toolnovahub.com/tools/timetable-generator'
+    );
+
     return (
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
+            {toolData && (
+                <>
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getHowToSchema(
+                        `How to use ${toolData.name}`,
+                        toolData.description,
+                        toolData.howItWorks.map(step => ({
+                            name: step.title,
+                            text: step.desc,
+                            url: `https://www.toolnovahub.com/tools/timetable-generator#step-${step.step}`
+                        }))
+                    )) }} />
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getFAQSchema(toolData.faqs)) }} />
+                </>
+            )}
             <TimetableGeneratorClient />
+            {toolData && (
+                <ToolRichContent
+                    title={toolData.name}
+                    description={toolData.description}
+                    steps={toolData.howItWorks}
+                    benefits={toolData.benefits}
+                    faq={toolData.faqs}
+                />
+            )}
+            <RelatedTools currentTool="timetable-generator" category="Study" />
         </>
     );
 }

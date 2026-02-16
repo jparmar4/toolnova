@@ -185,9 +185,25 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "ToolNova",
+              name: "ToolNovaHub",
+              alternateName: "ToolNova",
               url: "https://www.toolnovahub.com",
               logo: "https://www.toolnovahub.com/logo.png",
+              contactPoint: {
+                "@type": "ContactPoint",
+                telephone: "",
+                contactType: "customer service",
+                email: "support@toolnovahub.com",
+                areaServed: "World",
+                availableLanguage: "English"
+              },
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "71 Ayer Rajah Crescent",
+                addressLocality: "Singapore",
+                postalCode: "139951",
+                addressCountry: "SG"
+              },
               description:
                 "The ultimate hub for premium AI tools. Edit PDFs, optimize images, and boost productivity with ToolNova's advanced suite.",
               sameAs: [

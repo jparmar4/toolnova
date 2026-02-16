@@ -176,15 +176,6 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4">About Our Cookies</h2>
-          <p>
-            Our cookies are used to improve your site experience and for
-            advertising purposes. We do not sell your personal data. You can
-            manage your cookie preferences through your browser settings.
-          </p>
-        </section>
-
-        <section>
           <h2 className="text-2xl font-semibold mb-4">
             7. CCPA Privacy Rights (Do Not Sell My Personal Information)
           </h2>

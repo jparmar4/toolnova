@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
-import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolData } from '@/data/tools';
+import { RelatedTools } from '@/components/RelatedTools';
 import CaptionGeneratorClient from './client';
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 export const metadata: Metadata = {
   title: 'AI Caption Generator – Create Social Media Captions Free | ToolNova',
@@ -9,13 +12,43 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.toolnovahub.com/tools/caption-generator' },
 };
 
-const toolSchema = getToolSchema('AI Caption Generator', 'Generate engaging social media captions for any platform', 'https://www.toolnovahub.com/tools/caption-generator');
-
 export default function CaptionGeneratorPage() {
-  return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
-      <CaptionGeneratorClient />
-    </>
-  );
+    const toolData = getToolData('caption-generator');
+
+    const toolSchema = getToolSchema(
+        toolData?.name || 'caption-generator',
+        toolData?.description || '',
+        'https://www.toolnovahub.com/tools/caption-generator'
+    );
+
+    return (
+        <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
+            {toolData && (
+                <>
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getHowToSchema(
+                        `How to use ${toolData.name}`,
+                        toolData.description,
+                        toolData.howItWorks.map(step => ({
+                            name: step.title,
+                            text: step.desc,
+                            url: `https://www.toolnovahub.com/tools/caption-generator#step-${step.step}`
+                        }))
+                    )) }} />
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getFAQSchema(toolData.faqs)) }} />
+                </>
+            )}
+            <CaptionGeneratorClient />
+            {toolData && (
+                <ToolRichContent
+                    title={toolData.name}
+                    description={toolData.description}
+                    steps={toolData.howItWorks}
+                    benefits={toolData.benefits}
+                    faq={toolData.faqs}
+                />
+            )}
+            <RelatedTools currentTool="caption-generator" category="Writing" />
+        </>
+    );
 }

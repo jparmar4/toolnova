@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
-import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolData } from '@/data/tools';
+import { RelatedTools } from '@/components/RelatedTools';
 import FormulaGeneratorClient from './client';
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 export const metadata: Metadata = {
     title: 'AI Formula Generator – Math & Science Formulas Free | ToolNova',
@@ -9,13 +12,43 @@ export const metadata: Metadata = {
     alternates: { canonical: 'https://www.toolnovahub.com/tools/formula-generator' },
 };
 
-const toolSchema = getToolSchema('AI Formula Generator', 'Generate essential formulas for math and science topics', 'https://www.toolnovahub.com/tools/formula-generator');
-
 export default function FormulaGeneratorPage() {
+    const toolData = getToolData('formula-generator');
+
+    const toolSchema = getToolSchema(
+        toolData?.name || 'formula-generator',
+        toolData?.description || '',
+        'https://www.toolnovahub.com/tools/formula-generator'
+    );
+
     return (
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
+            {toolData && (
+                <>
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getHowToSchema(
+                        `How to use ${toolData.name}`,
+                        toolData.description,
+                        toolData.howItWorks.map(step => ({
+                            name: step.title,
+                            text: step.desc,
+                            url: `https://www.toolnovahub.com/tools/formula-generator#step-${step.step}`
+                        }))
+                    )) }} />
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getFAQSchema(toolData.faqs)) }} />
+                </>
+            )}
             <FormulaGeneratorClient />
+            {toolData && (
+                <ToolRichContent
+                    title={toolData.name}
+                    description={toolData.description}
+                    steps={toolData.howItWorks}
+                    benefits={toolData.benefits}
+                    faq={toolData.faqs}
+                />
+            )}
+            <RelatedTools currentTool="formula-generator" category="Utility" />
         </>
     );
 }

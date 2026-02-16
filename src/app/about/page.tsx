@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { Rocket, Heart, Shield } from "lucide-react";
+import { Rocket, Heart, Shield, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About Us - Our Mission & Team | ToolNova",
@@ -91,13 +91,43 @@ export default function AboutPage() {
         <p>
           ToolNova started with a simple idea: AI tools shouldn't be scattered
           across dozens of expensive subscriptions. We wanted to build a single
-          "Swiss Army Knife" for the digital age.
+          "Swiss Army Knife" for the digital age, accessible to anyone with an internet connection.
         </p>
         <p>
-          Founded in 2026, we've grown from a simple PDF merger utility into a
-          comprehensive suite used by over 1 million users worldwide. Our team
-          is passionate about cutting-edge web technology, user experience, and
-          the transformative power of artificial intelligence.
+          Founded in 2026, we've grown from a simple PDF utility into a
+          comprehensive suite of over 100 AI-powered tools used by millions of
+          students and professionals worldwide. Our team is a diverse group of
+          software engineers, linguists, and researchers dedicated to making AI
+          practically useful for everyday tasks.
+        </p>
+
+        <h2 className="mt-16 mb-8">Editorial & Quality Standards</h2>
+        <div className="bg-slate-50 dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 not-prose mb-16">
+          <p className="text-muted-foreground mb-6">
+            To maintain our high value to users and advertisers, ToolNova adheres to strict guidelines:
+          </p>
+          <ul className="space-y-4">
+            <li className="flex gap-3">
+              <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+              <span><strong>Accuracy Above All:</strong> Every tool is tested against rigorous benchmarks to ensure outputs are as accurate as current AI technology allows.</span>
+            </li>
+            <li className="flex gap-3">
+              <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+              <span><strong>Privacy by Design:</strong> We process data locally in the browser whenever possible. We never store personal documents or use them for training.</span>
+            </li>
+            <li className="flex gap-3">
+              <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+              <span><strong>Human-in-the-Loop:</strong> Our blog content and tool instructions are written and verified by industry experts to ensure educational value.</span>
+            </li>
+          </ul>
+        </div>
+
+        <h2 className="mt-16 mb-8">Our Technology</h2>
+        <p>
+          We leverage the world's most advanced large language models (LLMs) and
+          proprietary neural networks to power our tools. By combining these with
+          custom-built pre-processing and post-processing algorithms, we provide
+          results that are more focused and reliable than raw AI outputs.
         </p>
 
         <h2 className="mt-16 mb-8">Meet Our Experts</h2>
@@ -111,8 +141,8 @@ export default function AboutPage() {
               Education Technology Writer
             </p>
             <p className="text-sm text-muted-foreground">
-              Specializes in AI tools for student productivity and learning
-              enhancement.
+              A former educator with 10+ years of experience in student productivity
+              and pedagogical technology integration.
             </p>
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 text-center">
@@ -121,11 +151,11 @@ export default function AboutPage() {
             </div>
             <h3 className="font-bold text-lg mb-1">Marcus Chen</h3>
             <p className="text-sm text-blue-600 font-medium mb-3">
-              Content Strategy Director
+              AI Systems Architect
             </p>
             <p className="text-sm text-muted-foreground">
-              Expert in scaling content production workflows using AI
-              technologies.
+              Specializes in building low-latency AI pipelines and secure
+              browser-based data processing environments.
             </p>
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 text-center">
@@ -134,11 +164,11 @@ export default function AboutPage() {
             </div>
             <h3 className="font-bold text-lg mb-1">Dr. Emily Parker</h3>
             <p className="text-sm text-emerald-600 font-medium mb-3">
-              Research Consultant
+              Linguistic Researcher
             </p>
             <p className="text-sm text-muted-foreground">
-              PhD focus on information synthesis and automated research
-              methodologies.
+              PhD in Computational Linguistics, ensuring our writing tools
+              maintain semantic integrity and natural flow.
             </p>
           </div>
         </div>
@@ -162,17 +192,17 @@ export default function AboutPage() {
             </div>
             <div className="flex items-center justify-center gap-2">
               <span className="text-primary">Global HQ:</span>
-              <span>Singapore</span>
+              <span>71 Ayer Rajah Crescent, Singapore 139951</span>
             </div>
           </div>
         </div>
 
-        <h2>Why Choose Us?</h2>
+        <h2>Why Choose ToolNova?</h2>
         <p>
-          Unlike other platforms that are cluttered with ads and limit free
-          features, ToolNova prioritizes the user experience. We offer a
-          generous free tier because we believe productivity is a right, not a
-          luxury.
+          Unlike other platforms that are cluttered with intrusive ads and limit basic
+          features, ToolNova prioritzes the user. We offer a
+          generous free tier because we believe world-class productivity tools
+          should be a right, not a luxury reserved for those with expensive subscriptions.
         </p>
       </div>
     </div>

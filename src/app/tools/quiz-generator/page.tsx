@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
-import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolData } from '@/data/tools';
+import { RelatedTools } from '@/components/RelatedTools';
 import QuizGeneratorClient from './client';
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 export const metadata: Metadata = {
   title: 'AI Quiz Generator – Create Practice Quizzes Free | ToolNova',
@@ -9,13 +12,43 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.toolnovahub.com/tools/quiz-generator' },
 };
 
-const toolSchema = getToolSchema('AI Quiz Generator', 'Generate practice quizzes from any topic or study material', 'https://www.toolnovahub.com/tools/quiz-generator');
-
 export default function QuizGeneratorPage() {
-  return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
-      <QuizGeneratorClient />
-    </>
-  );
+    const toolData = getToolData('quiz-generator');
+
+    const toolSchema = getToolSchema(
+        toolData?.name || 'quiz-generator',
+        toolData?.description || '',
+        'https://www.toolnovahub.com/tools/quiz-generator'
+    );
+
+    return (
+        <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
+            {toolData && (
+                <>
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getHowToSchema(
+                        `How to use ${toolData.name}`,
+                        toolData.description,
+                        toolData.howItWorks.map(step => ({
+                            name: step.title,
+                            text: step.desc,
+                            url: `https://www.toolnovahub.com/tools/quiz-generator#step-${step.step}`
+                        }))
+                    )) }} />
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getFAQSchema(toolData.faqs)) }} />
+                </>
+            )}
+            <QuizGeneratorClient />
+            {toolData && (
+                <ToolRichContent
+                    title={toolData.name}
+                    description={toolData.description}
+                    steps={toolData.howItWorks}
+                    benefits={toolData.benefits}
+                    faq={toolData.faqs}
+                />
+            )}
+            <RelatedTools currentTool="quiz-generator" category="Study" />
+        </>
+    );
 }

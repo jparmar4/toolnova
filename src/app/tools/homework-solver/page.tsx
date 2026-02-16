@@ -1,41 +1,67 @@
 import { Metadata } from 'next';
-import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
-import { getOptimizedToolMetadata } from '@/lib/tool-metadata';
+import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
 import HomeworkSolverClient from './client';
-
-const toolMeta = getOptimizedToolMetadata('homework-solver');
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 export const metadata: Metadata = {
-  title: toolMeta?.title || 'AI Homework Solver – Get Instant Homework Help Free | ToolNova',
-  description: toolMeta?.description || 'Get step-by-step solutions to any homework problem with our free AI homework solver. Supports Math, Science, History, English, Programming and more. Perfect for students of all grades.',
-  keywords: toolMeta?.keywords || ['AI homework solver', 'homework help', 'math solver', 'study help', 'homework answers', 'step by step solutions', 'math homework help', 'science homework help', 'free homework solver', 'AI tutor'],
-  alternates: { canonical: 'https://www.toolnovahub.com/tools/homework-solver' },
-  openGraph: {
-    title: toolMeta?.title || 'AI Homework Solver – Get Instant Homework Help Free',
-    description: toolMeta?.description || 'Get step-by-step solutions to any homework problem. Math, Science, History, English & more.',
-    url: 'https://www.toolnovahub.com/tools/homework-solver',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: toolMeta?.title || 'AI Homework Solver – Free Homework Help',
-    description: toolMeta?.description || 'Get step-by-step solutions to any homework problem with AI.',
-  },
+    title: 'AI Homework Solver – Get Instant Homework Help Free | ToolNova',
+    description: 'Get step-by-step solutions to any homework problem with our free AI homework solver. Supports Math, Science, History, English, Programming and more. Perfect for students of all grades.',
+    keywords: ['AI homework solver', 'homework help', 'math solver', 'study help', 'homework answers', 'step by step solutions', 'math homework help', 'science homework help', 'free homework solver', 'AI tutor'],
+    alternates: { canonical: 'https://www.toolnovahub.com/tools/homework-solver' },
+    openGraph: {
+        title: 'AI Homework Solver – Get Instant Homework Help Free',
+        description: 'Get step-by-step solutions to any homework problem. Math, Science, History, English & more.',
+        url: 'https://www.toolnovahub.com/tools/homework-solver',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'AI Homework Solver – Free Homework Help',
+        description: 'Get step-by-step solutions to any homework problem with AI.',
+    },
 };
 
-const toolSchema = getToolSchema(
-  'AI Homework Solver',
-  'Get step-by-step solutions to homework problems in Math, Science, History, English, Programming and more',
-  'https://www.toolnovahub.com/tools/homework-solver'
-);
-
 export default function HomeworkSolverPage() {
-  return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
-      <HomeworkSolverClient />
-      <RelatedTools currentTool="homework-solver" category="Study" />
-    </>
-  );
+    const toolData = getToolData('homework-solver');
+
+    const toolSchema = getToolSchema(
+        toolData?.name || 'homework-solver',
+        toolData?.description || '',
+        'https://www.toolnovahub.com/tools/homework-solver'
+    );
+
+    return (
+        <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
+            {toolData && (
+                <>
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{
+                        __html: schemaToJsonLd(getHowToSchema(
+                            `How to use ${toolData.name}`,
+                            toolData.description,
+                            toolData.howItWorks.map(step => ({
+                                name: step.title,
+                                text: step.desc,
+                                url: `https://www.toolnovahub.com/tools/homework-solver#step-${step.step}`
+                            }))
+                        ))
+                    }} />
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getFAQSchema(toolData.faqs)) }} />
+                </>
+            )}
+            <HomeworkSolverClient />
+            {toolData && (
+                <ToolRichContent
+                    title={toolData.name}
+                    description={toolData.description}
+                    steps={toolData.howItWorks}
+                    benefits={toolData.benefits}
+                    faq={toolData.faqs}
+                />
+            )}
+            <RelatedTools currentTool="homework-solver" category="Study" />
+        </>
+    );
 }

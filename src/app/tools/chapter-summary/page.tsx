@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
-import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolData } from '@/data/tools';
+import { RelatedTools } from '@/components/RelatedTools';
 import ChapterSummaryClient from './client';
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 export const metadata: Metadata = {
     title: 'AI Chapter Summary – Summarize Textbook Chapters Free | ToolNova',
@@ -9,13 +12,43 @@ export const metadata: Metadata = {
     alternates: { canonical: 'https://www.toolnovahub.com/tools/chapter-summary' },
 };
 
-const toolSchema = getToolSchema('AI Chapter Summary', 'Summarize textbook chapters into exam-ready notes', 'https://www.toolnovahub.com/tools/chapter-summary');
-
 export default function ChapterSummaryPage() {
+    const toolData = getToolData('chapter-summary');
+
+    const toolSchema = getToolSchema(
+        toolData?.name || 'chapter-summary',
+        toolData?.description || '',
+        'https://www.toolnovahub.com/tools/chapter-summary'
+    );
+
     return (
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
+            {toolData && (
+                <>
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getHowToSchema(
+                        `How to use ${toolData.name}`,
+                        toolData.description,
+                        toolData.howItWorks.map(step => ({
+                            name: step.title,
+                            text: step.desc,
+                            url: `https://www.toolnovahub.com/tools/chapter-summary#step-${step.step}`
+                        }))
+                    )) }} />
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getFAQSchema(toolData.faqs)) }} />
+                </>
+            )}
             <ChapterSummaryClient />
+            {toolData && (
+                <ToolRichContent
+                    title={toolData.name}
+                    description={toolData.description}
+                    steps={toolData.howItWorks}
+                    benefits={toolData.benefits}
+                    faq={toolData.faqs}
+                />
+            )}
+            <RelatedTools currentTool="chapter-summary" category="Study" />
         </>
     );
 }

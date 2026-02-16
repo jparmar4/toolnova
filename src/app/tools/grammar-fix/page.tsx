@@ -4,13 +4,14 @@ import { getToolData } from '@/data/tools';
 import { getOptimizedToolMetadata } from '@/lib/tool-metadata';
 import { RelatedTools } from '@/components/RelatedTools';
 import GrammarFixClient from './client';
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 const toolMeta = getOptimizedToolMetadata('grammar-fix');
 
 export const metadata: Metadata = {
   title: toolMeta?.title || 'AI Grammar Fix – Fix Grammar Errors Free | ToolNova',
-  description: toolMeta?.description || 'Fix grammar, spelling, and punctuation errors instantly with our free AI grammar checker. Perfect for essays, emails, and documents.',
-  keywords: toolMeta?.keywords || ['AI grammar fix', 'grammar checker', 'spelling correction', 'punctuation fix'],
+  description: toolMeta?.description || 'Fix grammar, spelling, and punctuation errors instantly with our free AI grammar checker. Perfect for essays, emails, and documents. Professional results, fast.',
+  keywords: toolMeta?.keywords || ['AI grammar fix', 'grammar checker', 'spelling correction', 'punctuation fix', 'proofreading tool'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/grammar-fix' },
 };
 
@@ -39,6 +40,15 @@ export default function GrammarFixPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(faqSchema) }} />
       <GrammarFixClient />
+
+      <ToolRichContent
+        title={toolData.name}
+        description={toolData.description}
+        steps={toolData.howItWorks}
+        benefits={toolData.benefits}
+        faq={toolData.faqs}
+      />
+
       <RelatedTools currentTool="grammar-fix" category="Writing" />
     </>
   );

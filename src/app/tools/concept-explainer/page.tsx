@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
-import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolData } from '@/data/tools';
+import { RelatedTools } from '@/components/RelatedTools';
 import ConceptExplainerClient from './client';
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 export const metadata: Metadata = {
     title: 'AI Concept Explainer – Simplify Complex Topics Free | ToolNova',
@@ -9,13 +12,43 @@ export const metadata: Metadata = {
     alternates: { canonical: 'https://www.toolnovahub.com/tools/concept-explainer' },
 };
 
-const toolSchema = getToolSchema('AI Concept Explainer', 'Break down complex topics into simple explanations', 'https://www.toolnovahub.com/tools/concept-explainer');
-
 export default function ConceptExplainerPage() {
+    const toolData = getToolData('concept-explainer');
+
+    const toolSchema = getToolSchema(
+        toolData?.name || 'concept-explainer',
+        toolData?.description || '',
+        'https://www.toolnovahub.com/tools/concept-explainer'
+    );
+
     return (
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
+            {toolData && (
+                <>
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getHowToSchema(
+                        `How to use ${toolData.name}`,
+                        toolData.description,
+                        toolData.howItWorks.map(step => ({
+                            name: step.title,
+                            text: step.desc,
+                            url: `https://www.toolnovahub.com/tools/concept-explainer#step-${step.step}`
+                        }))
+                    )) }} />
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getFAQSchema(toolData.faqs)) }} />
+                </>
+            )}
             <ConceptExplainerClient />
+            {toolData && (
+                <ToolRichContent
+                    title={toolData.name}
+                    description={toolData.description}
+                    steps={toolData.howItWorks}
+                    benefits={toolData.benefits}
+                    faq={toolData.faqs}
+                />
+            )}
+            <RelatedTools currentTool="concept-explainer" category="Study" />
         </>
     );
 }

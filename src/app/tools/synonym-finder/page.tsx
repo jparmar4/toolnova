@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
-import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolData } from '@/data/tools';
+import { RelatedTools } from '@/components/RelatedTools';
 import SynonymFinderClient from './client';
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 export const metadata: Metadata = {
     title: 'Synonym Finder – Find Similar Words Free | ToolNova',
@@ -9,13 +12,43 @@ export const metadata: Metadata = {
     alternates: { canonical: 'https://www.toolnovahub.com/tools/synonym-finder' },
 };
 
-const toolSchema = getToolSchema('Synonym Finder', 'Find similar words and enhance your vocabulary', 'https://www.toolnovahub.com/tools/synonym-finder');
-
 export default function SynonymFinderPage() {
+    const toolData = getToolData('synonym-finder');
+
+    const toolSchema = getToolSchema(
+        toolData?.name || 'synonym-finder',
+        toolData?.description || '',
+        'https://www.toolnovahub.com/tools/synonym-finder'
+    );
+
     return (
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
+            {toolData && (
+                <>
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getHowToSchema(
+                        `How to use ${toolData.name}`,
+                        toolData.description,
+                        toolData.howItWorks.map(step => ({
+                            name: step.title,
+                            text: step.desc,
+                            url: `https://www.toolnovahub.com/tools/synonym-finder#step-${step.step}`
+                        }))
+                    )) }} />
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getFAQSchema(toolData.faqs)) }} />
+                </>
+            )}
             <SynonymFinderClient />
+            {toolData && (
+                <ToolRichContent
+                    title={toolData.name}
+                    description={toolData.description}
+                    steps={toolData.howItWorks}
+                    benefits={toolData.benefits}
+                    faq={toolData.faqs}
+                />
+            )}
+            <RelatedTools currentTool="synonym-finder" category="Language" />
         </>
     );
 }

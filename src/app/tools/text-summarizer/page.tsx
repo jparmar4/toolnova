@@ -4,13 +4,14 @@ import { getToolData } from '@/data/tools';
 import { getOptimizedToolMetadata } from '@/lib/tool-metadata';
 import { RelatedTools } from '@/components/RelatedTools';
 import TextSummarizerClient from './client';
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 const toolMeta = getOptimizedToolMetadata('text-summarizer');
 
 export const metadata: Metadata = {
   title: toolMeta?.title || 'AI Text Summarizer – Summarize Any Text Free | ToolNova',
-  description: toolMeta?.description || 'Summarize long texts instantly with our free AI text summarizer. Get concise summaries of articles, essays, and documents.',
-  keywords: toolMeta?.keywords || ['AI text summarizer', 'summarize text', 'article summarizer', 'summary generator'],
+  description: toolMeta?.description || 'Summarize long texts instantly with our free AI text summarizer. Get concise summaries of articles, essays, and documents. Accurate, fast, and secure.',
+  keywords: toolMeta?.keywords || ['AI text summarizer', 'summarize text', 'article summarizer', 'summary generator', 'tl;dr generator'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/text-summarizer' },
 };
 
@@ -39,6 +40,15 @@ export default function TextSummarizerPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(faqSchema) }} />
       <TextSummarizerClient />
+
+      <ToolRichContent
+        title={toolData.name}
+        description={toolData.description}
+        steps={toolData.howItWorks}
+        benefits={toolData.benefits}
+        faq={toolData.faqs}
+      />
+
       <RelatedTools currentTool="text-summarizer" category="Writing" />
     </>
   );

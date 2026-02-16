@@ -4,13 +4,14 @@ import { getToolData } from '@/data/tools';
 import { getOptimizedToolMetadata } from '@/lib/tool-metadata';
 import { RelatedTools } from '@/components/RelatedTools';
 import ParaphraserClient from './client';
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 const toolMeta = getOptimizedToolMetadata('paraphraser');
 
 export const metadata: Metadata = {
   title: toolMeta?.title || 'AI Paraphraser – Rewrite Text Instantly Free | ToolNova',
-  description: toolMeta?.description || 'Paraphrase any text instantly with our free AI paraphraser. Rewrite sentences, paragraphs, and essays while keeping the same meaning. Perfect for students.',
-  keywords: toolMeta?.keywords || ['AI paraphraser free', 'paraphrasing tool', 'rewrite text', 'rephrase sentences', 'article rewriter'],
+  description: toolMeta?.description || 'Paraphrase any text instantly with our free AI paraphraser. Rewrite sentences, paragraphs, and essays while keeping the same meaning. Fast, secure, and unique.',
+  keywords: toolMeta?.keywords || ['AI paraphraser free', 'paraphrasing tool', 'rewrite text', 'rephrase sentences', 'article rewriter', 'plagiarism-free rewriter'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/paraphraser' },
 };
 
@@ -39,6 +40,15 @@ export default function ParaphraserPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(faqSchema) }} />
       <ParaphraserClient />
+
+      <ToolRichContent
+        title={toolData.name}
+        description={toolData.description}
+        steps={toolData.howItWorks}
+        benefits={toolData.benefits}
+        faq={toolData.faqs}
+      />
+
       <RelatedTools currentTool="paraphraser" category="Writing" />
     </>
   );

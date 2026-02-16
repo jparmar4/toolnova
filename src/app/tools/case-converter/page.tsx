@@ -1,7 +1,9 @@
-
 import { Metadata } from 'next';
-import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolData } from '@/data/tools';
+import { RelatedTools } from '@/components/RelatedTools';
 import CaseConverterClient from './client';
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 export const metadata: Metadata = {
   title: 'Case Converter Free – Change Text Case Online | ToolNova',
@@ -10,13 +12,43 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.toolnovahub.com/tools/case-converter' },
 };
 
-const toolSchema = getToolSchema('Case Converter', 'Convert text to various cases: uppercase, lowercase, title case, and more', 'https://www.toolnovahub.com/tools/case-converter');
-
 export default function CaseConverterPage() {
-  return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
-      <CaseConverterClient />
-    </>
-  );
+    const toolData = getToolData('case-converter');
+
+    const toolSchema = getToolSchema(
+        toolData?.name || 'case-converter',
+        toolData?.description || '',
+        'https://www.toolnovahub.com/tools/case-converter'
+    );
+
+    return (
+        <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
+            {toolData && (
+                <>
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getHowToSchema(
+                        `How to use ${toolData.name}`,
+                        toolData.description,
+                        toolData.howItWorks.map(step => ({
+                            name: step.title,
+                            text: step.desc,
+                            url: `https://www.toolnovahub.com/tools/case-converter#step-${step.step}`
+                        }))
+                    )) }} />
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getFAQSchema(toolData.faqs)) }} />
+                </>
+            )}
+            <CaseConverterClient />
+            {toolData && (
+                <ToolRichContent
+                    title={toolData.name}
+                    description={toolData.description}
+                    steps={toolData.howItWorks}
+                    benefits={toolData.benefits}
+                    faq={toolData.faqs}
+                />
+            )}
+            <RelatedTools currentTool="case-converter" category="Utility" />
+        </>
+    );
 }

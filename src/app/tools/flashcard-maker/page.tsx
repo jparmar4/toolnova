@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
-import { getToolSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolData } from '@/data/tools';
+import { RelatedTools } from '@/components/RelatedTools';
 import FlashcardMakerClient from './client';
+import { ToolRichContent } from '@/components/ToolRichContent';
 
 export const metadata: Metadata = {
   title: 'AI Flashcard Maker – Create Study Flashcards Free | ToolNova',
@@ -9,13 +12,43 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.toolnovahub.com/tools/flashcard-maker' },
 };
 
-const toolSchema = getToolSchema('AI Flashcard Maker', 'Generate Q&A flashcards from any text or topic', 'https://www.toolnovahub.com/tools/flashcard-maker');
-
 export default function FlashcardMakerPage() {
-  return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
-      <FlashcardMakerClient />
-    </>
-  );
+    const toolData = getToolData('flashcard-maker');
+
+    const toolSchema = getToolSchema(
+        toolData?.name || 'flashcard-maker',
+        toolData?.description || '',
+        'https://www.toolnovahub.com/tools/flashcard-maker'
+    );
+
+    return (
+        <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
+            {toolData && (
+                <>
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getHowToSchema(
+                        `How to use ${toolData.name}`,
+                        toolData.description,
+                        toolData.howItWorks.map(step => ({
+                            name: step.title,
+                            text: step.desc,
+                            url: `https://www.toolnovahub.com/tools/flashcard-maker#step-${step.step}`
+                        }))
+                    )) }} />
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getFAQSchema(toolData.faqs)) }} />
+                </>
+            )}
+            <FlashcardMakerClient />
+            {toolData && (
+                <ToolRichContent
+                    title={toolData.name}
+                    description={toolData.description}
+                    steps={toolData.howItWorks}
+                    benefits={toolData.benefits}
+                    faq={toolData.faqs}
+                />
+            )}
+            <RelatedTools currentTool="flashcard-maker" category="Study" />
+        </>
+    );
 }
