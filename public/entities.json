@@ -1,0 +1,239 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.toolnovahub.com/#organization",
+      "name": "ToolNovaHub",
+      "alternateName": ["ToolNova", "ToolNova Hub", "AI Tools Hub"],
+      "url": "https://www.toolnovahub.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.toolnovahub.com/logo.png",
+        "width": 512,
+        "height": 512
+      },
+      "description": "ToolNovaHub is a comprehensive platform providing 50+ free AI-powered productivity tools for students, professionals, and educators worldwide. Founded in 2024, headquartered in Singapore.",
+      "foundingDate": "2024",
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Singapore",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Singapore",
+          "addressCountry": "SG"
+        }
+      },
+      "areaServed": [
+        { "@type": "Country", "name": "United States" },
+        { "@type": "Country", "name": "United Kingdom" },
+        { "@type": "Country", "name": "Canada" },
+        { "@type": "Country", "name": "Australia" },
+        { "@type": "Country", "name": "India" },
+        { "@type": "Country", "name": "Singapore" },
+        { "@type": "Country", "name": "Germany" },
+        { "@type": "Country", "name": "France" },
+        { "@type": "Country", "name": "United Arab Emirates" },
+        { "@type": "Country", "name": "World" }
+      ],
+      "serviceType": ["AI Tools", "Educational Services", "Productivity Tools", "Content Creation"],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "support@toolnovahub.com",
+        "contactType": "customer service",
+        "availableLanguage": ["English"],
+        "areaServed": "World"
+      },
+      "sameAs": [
+        "https://twitter.com/toolnovahub",
+        "https://github.com/toolnovahub",
+        "https://linkedin.com/company/toolnovahub"
+      ],
+      "brand": {
+        "@type": "Brand",
+        "name": "ToolNova",
+        "description": "Free AI-powered tools for students and professionals worldwide"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "12500",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "knowsAbout": [
+        "Artificial Intelligence",
+        "Natural Language Processing",
+        "PDF Processing",
+        "Educational Technology",
+        "Productivity Software",
+        "Content Writing",
+        "Study Tools",
+        "Career Development"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.toolnovahub.com/#website",
+      "name": "ToolNova",
+      "alternateName": ["ToolNovaHub", "AI Tools Hub", "Free AI Tools"],
+      "url": "https://www.toolnovahub.com",
+      "description": "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required.",
+      "inLanguage": ["en-US", "en-GB", "en-CA", "en-AU", "en-IN", "en-SG"],
+      "publisher": {
+        "@id": "https://www.toolnovahub.com/#organization"
+      },
+      "potentialAction": [
+        {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.toolnovahub.com/search?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        },
+        {
+          "@type": "Action",
+          "name": "Use AI Tools",
+          "description": "Access free AI-powered tools for writing, studying, and productivity",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.toolnovahub.com/tools"
+          }
+        }
+      ],
+      "hasPart": [
+        { "@type": "WebPage", "name": "All Tools", "url": "https://www.toolnovahub.com/tools" },
+        { "@type": "WebPage", "name": "Blog", "url": "https://www.toolnovahub.com/blog" },
+        { "@type": "WebPage", "name": "Writing Tools", "url": "https://www.toolnovahub.com/tools/writing-tools" },
+        { "@type": "WebPage", "name": "Study Tools", "url": "https://www.toolnovahub.com/tools/study-tools" },
+        { "@type": "WebPage", "name": "PDF Tools", "url": "https://www.toolnovahub.com/tools/image-pdf-tools" },
+        { "@type": "WebPage", "name": "Career Tools", "url": "https://www.toolnovahub.com/tools/career-tools" }
+      ]
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://www.toolnovahub.com/#webapp",
+      "name": "ToolNova",
+      "alternateName": ["ToolNovaHub", "AI Tools Hub"],
+      "url": "https://www.toolnovahub.com",
+      "description": "Free AI-powered tools platform for students and professionals. 50+ tools for writing, studying, career development, and document processing.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web Browser",
+      "browserRequirements": "Requires JavaScript",
+      "softwareVersion": "2.0",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "12500",
+        "bestRating": "5"
+      },
+      "author": { "@id": "https://www.toolnovahub.com/#organization" },
+      "publisher": { "@id": "https://www.toolnovahub.com/#organization" },
+      "featureList": [
+        "Text Summarization",
+        "Paraphrasing",
+        "Grammar Checking",
+        "Essay Writing",
+        "Homework Solving",
+        "Flashcard Creation",
+        "Quiz Generation",
+        "PDF Merging",
+        "PDF Splitting",
+        "Image Compression",
+        "Resume Building",
+        "Cover Letter Writing"
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://www.toolnovahub.com/#service",
+      "name": "ToolNova AI Tools Platform",
+      "description": "Free AI-powered productivity tools for writing, studying, career development, and document processing. No sign-up required.",
+      "provider": { "@id": "https://www.toolnovahub.com/#organization" },
+      "serviceType": "AI Tools Platform",
+      "areaServed": {
+        "@type": "GeoShape",
+        "name": "Worldwide"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Free AI Tools",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "Writing Tools",
+            "numberOfItems": 10,
+            "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Text Summarizer" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Paraphraser" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Grammar Checker" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Essay Writer" } }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Study Tools",
+            "numberOfItems": 14,
+            "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Homework Solver" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Flashcard Maker" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Quiz Generator" } }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Career Tools",
+            "numberOfItems": 5,
+            "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Resume Builder" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cover Letter Writer" } }
+            ]
+          }
+        ]
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2030-12-31"
+      }
+    },
+    {
+      "@type": "Dataset",
+      "@id": "https://www.toolnovahub.com/#dataset",
+      "name": "ToolNova AI Tools Catalog",
+      "description": "Comprehensive catalog of 50+ free AI-powered tools for productivity, education, and content creation",
+      "url": "https://www.toolnovahub.com/api/tools",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "creator": { "@id": "https://www.toolnovahub.com/#organization" },
+      "datePublished": "2024-01-01",
+      "dateModified": "2026-01-01",
+      "keywords": ["AI tools", "free tools", "productivity", "education", "writing tools", "study tools"],
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "name": "Tools API",
+          "encodingFormat": "application/json",
+          "contentUrl": "https://www.toolnovahub.com/api/tools"
+        },
+        {
+          "@type": "DataDownload",
+          "name": "OpenAPI Specification",
+          "encodingFormat": "application/yaml",
+          "contentUrl": "https://www.toolnovahub.com/openapi.yaml"
+        }
+      ],
+      "spatialCoverage": {
+        "@type": "Place",
+        "name": "Global"
+      }
+    }
+  ]
+}

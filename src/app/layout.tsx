@@ -11,6 +11,23 @@ import { FeedbackWidget } from "@/components/FeedbackWidget";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { siteConfig } from "@/config/site";
+import {
+  generateOrganizationSchema,
+  generateWebSiteSchema,
+  generateSoftwareApplicationSchema,
+  generateGeoMetaTags,
+  generateAIMetaTags,
+  generateDiscoverMetaTags,
+} from "@/lib/seo-advanced";
+import {
+  generateEnhancedOrganizationSchema,
+  generateEnhancedWebSiteSchema,
+  generateEntityData,
+  generateServiceSchema,
+  generateDatasetSchema,
+  generateKnowledgeGraphSchema,
+  generateAllToolsItemListSchema,
+} from "@/lib/seo-worldclass";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -69,6 +86,23 @@ export const metadata: Metadata = {
     "AI productivity UK",
     "free tools hub Canada",
     "AI solutions Australia",
+    // AEO Keywords (Answer Engine Optimization)
+    "how to study effectively",
+    "homework help online",
+    "essay writing tips",
+    "best study methods",
+    "learn faster techniques",
+    "improve writing skills",
+    "time management tips",
+    "resume writing tips",
+    "cover letter guide",
+    "interview preparation",
+    // Global/International Keywords
+    "AI tools Singapore",
+    "free study tools India",
+    "AI writing assistant UAE",
+    "online tools Europe",
+    "productivity tools Asia",
   ],
   authors: [{ name: "ToolNova Team", url: "https://www.toolnovahub.com" }],
   creator: "ToolNova",
@@ -102,7 +136,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "ToolNova - Premium AI Tools Hub",
+        alt: "ToolNova - Free AI Tools Hub",
+        type: "image/png",
+      },
+      {
+        url: "/logo.png",
+        width: 512,
+        height: 512,
+        alt: "ToolNova Logo",
+        type: "image/png",
       },
     ],
   },
@@ -113,6 +155,7 @@ export const metadata: Metadata = {
       "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required!",
     images: ["/og-image.png"],
     creator: "@toolnovahub",
+    site: "@toolnovahub",
   },
   robots: {
     index: true,
@@ -137,13 +180,27 @@ export const metadata: Metadata = {
     canonical: "https://www.toolnovahub.com",
     languages: {
       "en-US": "https://www.toolnovahub.com",
-      "en-GB": "https://www.toolnovahub.com/gb",
-      "en-CA": "https://www.toolnovahub.com/ca",
-      "en-AU": "https://www.toolnovahub.com/au",
+      "en-GB": "https://www.toolnovahub.com",
+      "en-CA": "https://www.toolnovahub.com",
+      "en-AU": "https://www.toolnovahub.com",
+      "en-IN": "https://www.toolnovahub.com",
+      "en-SG": "https://www.toolnovahub.com",
       "x-default": "https://www.toolnovahub.com",
     },
   },
   category: "Productivity",
+  // Additional meta for AI search engines
+  other: {
+    "ai-indexing": "allowed",
+    "content-type": "application/educational",
+    "distribution": "global",
+    "coverage": "Worldwide",
+    "rating": "general",
+    "revisit-after": "1 day",
+    "geo.region": "US, GB, CA, AU, IN, SG",
+    "geo.placename": "Global",
+    "language": "English",
+  },
 };
 
 import { MaterialSymbols } from "@/components/MaterialSymbols";
@@ -167,8 +224,10 @@ export default function RootLayout({
         {/* DNS Prefetch for faster domain resolution */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 
-        {/* Preconnect to Google Fonts for faster loading */}
+        {/* Preconnect for critical resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -178,90 +237,100 @@ export default function RootLayout({
 
         {/* Material Symbols Outlined - loaded via Client Component to prevent Server Component errors */}
         <MaterialSymbols />
-        {/* Organization Schema */}
+
+        {/* Enhanced Organization Schema with Global Presence */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "ToolNovaHub",
-              alternateName: "ToolNova",
-              url: "https://www.toolnovahub.com",
-              logo: "https://www.toolnovahub.com/logo.png",
-              contactPoint: {
-                "@type": "ContactPoint",
-                telephone: "",
-                contactType: "customer service",
-                email: "support@toolnovahub.com",
-                areaServed: "World",
-                availableLanguage: "English"
-              },
-              address: {
-                "@type": "PostalAddress",
-                streetAddress: "71 Ayer Rajah Crescent",
-                addressLocality: "Singapore",
-                postalCode: "139951",
-                addressCountry: "SG"
-              },
-              description:
-                "The ultimate hub for premium AI tools. Edit PDFs, optimize images, and boost productivity with ToolNova's advanced suite.",
-              sameAs: [
-                "https://twitter.com/toolnovahub",
-                "https://github.com/toolnovahub",
-                "https://linkedin.com/company/toolnovahub",
-              ],
-            }),
+            __html: JSON.stringify(generateOrganizationSchema()),
           }}
         />
-        {/* WebSite Schema */}
+
+        {/* Enhanced WebSite Schema with Search Action */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "ToolNova",
-              url: "https://www.toolnovahub.com",
-              description:
-                "The ultimate hub for premium AI tools. Edit PDFs, optimize images, and boost productivity with ToolNova's advanced suite.",
-              potentialAction: {
-                "@type": "SearchAction",
-                target: {
-                  "@type": "EntryPoint",
-                  urlTemplate:
-                    "https://www.toolnovahub.com/search?q={search_term_string}",
-                },
-                "query-input": "required name=search_term_string",
-              },
-            }),
+            __html: JSON.stringify(generateWebSiteSchema()),
           }}
         />
+
         {/* SoftwareApplication Schema for AI Discovery */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateSoftwareApplicationSchema()),
+          }}
+        />
+
+        {/* World-Class SEO: Enhanced Organization Schema for AI Search */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateEnhancedOrganizationSchema()),
+          }}
+        />
+
+        {/* World-Class SEO: Enhanced Website Schema for AI Search */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateEnhancedWebSiteSchema()),
+          }}
+        />
+
+        {/* World-Class SEO: Entity Data for Knowledge Graph */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateEntityData()),
+          }}
+        />
+
+        {/* World-Class SEO: Service Schema for AI Discovery */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateServiceSchema()),
+          }}
+        />
+
+        {/* World-Class SEO: Dataset Schema for AI Training Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateDatasetSchema()),
+          }}
+        />
+
+        {/* World-Class SEO: Knowledge Graph Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateKnowledgeGraphSchema()),
+          }}
+        />
+
+        {/* World-Class SEO: All Tools ItemList for AEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateAllToolsItemListSchema()),
+          }}
+        />
+
+        {/* Speakable Specification for Voice Search */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
-              name: "ToolNova",
-              applicationCategory: "ProductivityApplication",
-              operatingSystem: "Web",
-              offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "USD",
-              },
-              description:
-                "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, and more.",
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "4.8",
-                ratingCount: "1250",
-              },
+              "@type": "SpeakableSpecification",
+              cssSelector: [".hero-text", ".tool-description", ".speakable-content"],
+              xpath: ["/html/head/title", "/html/head/meta[@name='description']/@content"],
             }),
           }}
         />
+
         {/* Google AdSense */}
         <script
           async

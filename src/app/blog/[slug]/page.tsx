@@ -48,6 +48,17 @@ export async function generateMetadata({
         description: post.metaDescription,
         keywords: post.keywords,
         authors: [{ name: post.author }],
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+                "max-snippet": -1,
+                "max-image-preview": "large",
+                "max-video-preview": -1,
+            },
+        },
         openGraph: {
             title: post.title,
             description: post.metaDescription,
@@ -71,6 +82,8 @@ export async function generateMetadata({
             title: post.title,
             description: post.metaDescription,
             images: [ogImage],
+            creator: "@toolnovahub",
+            site: "@toolnovahub",
         },
         alternates: {
             canonical: canonicalUrl,
@@ -79,6 +92,9 @@ export async function generateMetadata({
                 "en-GB": canonicalUrl,
                 "en-CA": canonicalUrl,
                 "en-AU": canonicalUrl,
+                "en-DE": canonicalUrl,
+                "en-SG": canonicalUrl,
+                "en-AE": canonicalUrl,
                 "x-default": canonicalUrl,
             },
         },
@@ -111,25 +127,41 @@ export default async function BlogPostPage({
 
     const articleSchema = {
         "@context": "https://schema.org",
-        "@type": "Article",
+        "@type": "NewsArticle",
         headline: post.title,
         description: post.metaDescription,
-        image: articleImage,
+        image: {
+            "@type": "ImageObject",
+            url: articleImage,
+            width: 1200,
+            height: 630,
+        },
         author: {
             "@type": "Person",
             name: post.author,
             jobTitle: author?.role || post.authorRole,
             url: author?.profileUrl
                 ? `${siteConfig.url}${author.profileUrl}`
-                : undefined,
+                : `${siteConfig.url}/author/${post.authorSlug || ""}`,
+            sameAs: [
+                `${siteConfig.url}/author/${post.authorSlug || ""}`,
+                "https://www.linkedin.com/company/toolnova",
+            ],
         },
         publisher: {
             "@type": "Organization",
             name: siteConfig.name,
+            url: siteConfig.url,
             logo: {
                 "@type": "ImageObject",
                 url: `${siteConfig.url}/logo.png`,
+                width: 512,
+                height: 512,
             },
+            sameAs: [
+                "https://twitter.com/toolnovahub",
+                "https://www.linkedin.com/company/toolnova",
+            ],
         },
         datePublished: post.date,
         dateModified: post.dateModified || post.date,
@@ -141,10 +173,15 @@ export default async function BlogPostPage({
         keywords: post.keywords.join(", "),
         inLanguage: "en-US",
         articleSection: post.category,
+        isAccessibleForFree: true,
         about: {
             "@type": "Thing",
             name: post.keywords[0],
         },
+        mentions: post.keywords.slice(0, 5).map((kw) => ({
+            "@type": "Thing",
+            name: kw,
+        })),
         speakable: {
             "@type": "SpeakableSpecification",
             cssSelector: [".prose h1", ".prose h2", ".prose > p:first-of-type"],
