@@ -260,6 +260,45 @@ export default async function BlogPostPage({
             }
             : null;
 
+    // AEO: HowTo schema for guide/buyer's guide posts — ranks in AI Overviews & voice search
+    // Detect if post is a guide/how-to based on title keywords
+    const isGuidePost =
+        post.title.toLowerCase().includes("guide") ||
+        post.title.toLowerCase().includes("how to") ||
+        post.title.toLowerCase().includes("buyer") ||
+        post.title.toLowerCase().includes("choose") ||
+        post.title.toLowerCase().includes("best") ||
+        post.title.toLowerCase().includes("step");
+
+    const howToSchema = isGuidePost
+        ? {
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: post.title,
+            description: post.metaDescription,
+            image: {
+                "@type": "ImageObject",
+                url: articleImage,
+                width: 1200,
+                height: 630,
+            },
+            totalTime: `PT${parseInt(post.readTime) || 15}M`,
+            estimatedCost: {
+                "@type": "MonetaryAmount",
+                currency: "USD",
+                value: "0",
+            },
+            step: post.faq?.slice(0, 5).map((item, index) => ({
+                "@type": "HowToStep",
+                position: index + 1,
+                name: item.question,
+                text: item.answer,
+                url: `${articleUrl}#faq`,
+            })) || [],
+        }
+        : null;
+
+
     return (
         <>
             {/* JSON-LD Structured Data */}
@@ -298,6 +337,16 @@ export default async function BlogPostPage({
                     __html: JSON.stringify(speakableSchema),
                 }}
             />
+            {/* AEO: HowTo Schema for AI Overviews & Voice Search */}
+            {howToSchema && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify(howToSchema),
+                    }}
+                />
+            )}
+
 
             <div className="min-h-screen bg-slate-50">
                 {/* Header with Back Link */}

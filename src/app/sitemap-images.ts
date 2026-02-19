@@ -1,9 +1,11 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
+import { getAllBlogPosts } from "@/data/blog";
 
 /**
  * Image Sitemap for SEO
  * Helps search engines discover and index all images on the site
+ * Includes blog post cover images for Google Discover and Google Images visibility
  */
 
 export default function imageSitemap(): MetadataRoute.Sitemap {
@@ -27,6 +29,21 @@ export default function imageSitemap(): MetadataRoute.Sitemap {
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));
+
+  // Blog posts — all cover images indexed for Google Images & Discover
+  const blogPosts = getAllBlogPosts();
+  const blogImageUrls: MetadataRoute.Sitemap = blogPosts
+    .filter((post) => post.coverImage)
+    .map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: post.dateModified
+        ? new Date(post.dateModified).toISOString()
+        : post.date
+          ? new Date(post.date).toISOString()
+          : currentDate,
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    }));
 
   // Static pages with images
   const staticPages: MetadataRoute.Sitemap = [
@@ -59,6 +76,7 @@ export default function imageSitemap(): MetadataRoute.Sitemap {
   return [
     ...staticPages,
     ...imageUrls,
+    ...blogImageUrls,
     // Logo and brand images
     {
       url: `${baseUrl}/logo.png`,
@@ -76,3 +94,4 @@ export default function imageSitemap(): MetadataRoute.Sitemap {
 }
 
 export const dynamic = "force-dynamic";
+

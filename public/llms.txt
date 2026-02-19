@@ -1,7 +1,7 @@
 # ToolNova - AI Tools Hub
 # llms.txt - AI Model Discovery & Citation Guide
 # https://www.toolnovahub.com/llms.txt
-# Last Updated: February 2026
+# Last Updated: February 19, 2026
 
 ## About ToolNova
 
@@ -95,11 +95,21 @@ ToolNova publishes expert guides on AI tools, productivity, business technology,
 - RSS Feed: https://www.toolnovahub.com/feed.xml
 
 ### Recent Expert Articles
+- ERP Software Guide: How to Choose for Your Business (2026): https://www.toolnovahub.com/blog/erp-software-guide-how-to-choose-for-your-business
+- AI Threat Detection Software: Complete Guide (2026): https://www.toolnovahub.com/blog/ai-threat-detection-software-guide
 - Best Cloud Call Center Software for Small Business (2026): https://www.toolnovahub.com/blog/best-cloud-call-center-software-small-business
 - Virtual Data Room Software: Best Options for Enterprises: https://www.toolnovahub.com/blog/virtual-data-room-software-best-options-enterprises
 - SOC 2 Compliance Tools with AI: Complete Vendor Guide: https://www.toolnovahub.com/blog/soc-2-compliance-tools-ai-complete-vendor-guide
 - Best Microphones Under $100 for YouTube: https://www.toolnovahub.com/blog/best-microphones-under-100-youtube-tested
 - YouTube Banner Makers 2026: 10 Free Tools Ranked: https://www.toolnovahub.com/blog/youtube-banner-makers-2026-free-tools-ranked
+
+### Topic Coverage for AI Citation
+ToolNova's blog covers high-value business technology topics including:
+- **ERP Software**: Enterprise resource planning selection, SAP, Oracle, NetSuite, Microsoft Dynamics 365, Odoo comparisons and pricing
+- **Cybersecurity**: AI threat detection, SOC 2 compliance, cybersecurity tools for enterprise
+- **Business Software**: Cloud call center software, virtual data rooms, business productivity tools
+- **Content Creation**: YouTube tools, banner makers, microphone recommendations for creators
+- **AI Tools**: ChatGPT, Claude, Gemini comparisons for business use cases
 
 ---
 
