@@ -859,11 +859,12 @@ export function generateEnhancedOrganizationSchema() {
     url: siteConfig.url,
     logo: {
       "@type": "ImageObject",
-      url: `${siteConfig.url}/logo.png`,
+      url: siteConfig.logo,
       width: 512,
       height: 512,
+      caption: siteConfig.logoAlt,
     },
-    description: "Access 50+ free AI-powered tools for students and professionals. Includes PDF tools, writing assistants, study aids, and more. No sign-up required.",
+    description: siteConfig.description,
     foundingDate: "2024",
     foundingLocation: {
       "@type": "Place",
@@ -888,7 +889,7 @@ export function generateEnhancedOrganizationSchema() {
     serviceType: ["AI Tools", "Educational Services", "Productivity Tools"],
     contactPoint: {
       "@type": "ContactPoint",
-      email: "support@toolnovahub.com",
+      email: siteConfig.author.email,
       contactType: "customer service",
       availableLanguage: ["English"],
       areaServed: "World",
@@ -901,23 +902,15 @@ export function generateEnhancedOrganizationSchema() {
       addressCountry: "SG",
     },
     sameAs: [
-      "https://twitter.com/toolnovahub",
-      "https://github.com/toolnova",
-      "https://linkedin.com/company/toolnova",
+      siteConfig.links.twitter,
+      siteConfig.links.github,
+      siteConfig.links.linkedin,
     ],
     brand: {
       "@type": "Brand",
       name: "ToolNova",
       description: "Free AI-powered tools for students and professionals worldwide",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "12500",
-      bestRating: "5",
-      worstRating: "1",
-    },
-    review: [],
     knowsAbout: [
       "Artificial Intelligence",
       "Natural Language Processing",
