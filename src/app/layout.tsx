@@ -12,7 +12,6 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { siteConfig } from "@/config/site";
 import {
-  generateOrganizationSchema,
   generateWebSiteSchema,
   generateSoftwareApplicationSchema,
   generateGeoMetaTags,
@@ -238,13 +237,7 @@ export default function RootLayout({
         {/* Material Symbols Outlined - loaded via Client Component to prevent Server Component errors */}
         <MaterialSymbols />
 
-        {/* Enhanced Organization Schema with Global Presence */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateOrganizationSchema()),
-          }}
-        />
+
 
         {/* Enhanced WebSite Schema with Search Action */}
         <script

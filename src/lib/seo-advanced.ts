@@ -163,71 +163,7 @@ export const AEO_KEYWORDS = {
 // SCHEMA GENERATORS
 // ============================================
 
-/**
- * Generate Organization Schema with global presence
- */
-export function generateOrganizationSchema() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": `${siteConfig.url}/#organization`,
-    name: "ToolNovaHub",
-    alternateName: "ToolNova",
-    url: siteConfig.url,
-    logo: {
-      "@type": "ImageObject",
-      url: siteConfig.logo,
-      width: 512,
-      height: 512,
-      caption: "ToolNova - Free AI Tools Hub",
-    },
-    description: siteConfig.description,
-    foundingDate: "2024",
-    // Global presence
-    areaServed: [
-      { "@type": "Country", name: "United States" },
-      { "@type": "Country", name: "United Kingdom" },
-      { "@type": "Country", name: "Canada" },
-      { "@type": "Country", name: "Australia" },
-      { "@type": "Country", name: "India" },
-      { "@type": "Country", name: "Singapore" },
-      { "@type": "Country", name: "World" },
-    ],
-    contactPoint: {
-      "@type": "ContactPoint",
-      email: "support@toolnovahub.com",
-      contactType: "customer service",
-      availableLanguage: ["English"],
-      areaServed: "World",
-    },
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "71 Ayer Rajah Crescent",
-      addressLocality: "Singapore",
-      postalCode: "139951",
-      addressCountry: "SG",
-    },
-    sameAs: [
-      siteConfig.links.twitter,
-      siteConfig.links.github,
-      siteConfig.links.linkedin,
-    ],
-    // Brand info for AI
-    brand: {
-      "@type": "Brand",
-      name: "ToolNova",
-      description: "Free AI-powered tools for students and professionals",
-    },
-    // Awards/Trust signals
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "12500",
-      bestRating: "5",
-      worstRating: "1",
-    },
-  };
-}
+
 
 /**
  * Generate WebSite Schema with enhanced search action
@@ -907,10 +843,10 @@ export function generateRSSItem(
     pubDate: new Date(publishedDate).toUTCString(),
     enclosure: image
       ? {
-          url: image,
-          type: "image/png",
-          length: "0",
-        }
+        url: image,
+        type: "image/png",
+        length: "0",
+      }
       : undefined,
     category: category || "Education",
     source: siteConfig.name,
@@ -919,7 +855,7 @@ export function generateRSSItem(
 }
 
 export default {
-  generateOrganizationSchema,
+
   generateWebSiteSchema,
   generateSoftwareApplicationSchema,
   generateFAQSchema,

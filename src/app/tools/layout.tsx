@@ -1,4 +1,5 @@
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { GlobalRelatedTools } from "@/components/GlobalRelatedTools";
 
 export default function ToolsLayout({
     children,
@@ -11,6 +12,7 @@ export default function ToolsLayout({
                 <Breadcrumbs />
                 {children}
             </div>
+            <GlobalRelatedTools />
         </div>
     );
 }

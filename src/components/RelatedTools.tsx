@@ -73,7 +73,14 @@ const toolData: Record<string, { name: string; description: string; category: st
 };
 
 export function RelatedTools({ currentTool, category }: RelatedToolsProps) {
-    const relatedSlugs = relatedToolsMap[currentTool] || [];
+    let relatedSlugs = relatedToolsMap[currentTool] || [];
+
+    // Fallback if specific mapping is not found to maintain internal link equity
+    if (relatedSlugs.length === 0) {
+        const fallbackTools = ['text-summarizer', 'essay-writer', 'merge-pdf', 'homework-solver', 'cover-letter-writer'];
+        relatedSlugs = fallbackTools.filter(slug => slug !== currentTool).slice(0, 4);
+    }
+
     const relatedTools: RelatedTool[] = relatedSlugs
         .map(slug => ({
             slug,
