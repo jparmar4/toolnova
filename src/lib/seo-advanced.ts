@@ -462,11 +462,6 @@ export function generateProductSchema(
       availability: "https://schema.org/InStock",
       priceValidUntil: "2027-12-31",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      reviewCount: "1250",
-    },
     // Features
     additionalProperty: [
       {
@@ -644,7 +639,6 @@ export function generateToolPageSchemas(
 
   // Always include these
   schemas.push(generateWebPageSchema(toolName, toolDescription, url));
-  schemas.push(generateSoftwareApplicationSchema(toolSlug, toolName));
   schemas.push(generateProductSchema(toolName, toolDescription, url, toolCategory));
 
   // Breadcrumbs

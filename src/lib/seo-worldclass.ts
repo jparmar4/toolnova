@@ -1264,11 +1264,6 @@ export function generateKnowledgeGraphSchema() {
           price: "0",
           priceCurrency: "USD",
         },
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: "4.8",
-          ratingCount: "12500",
-        },
         author: { "@id": `${siteConfig.url}/#organization` },
         publisher: { "@id": `${siteConfig.url}/#organization` },
       },
