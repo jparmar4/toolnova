@@ -707,8 +707,8 @@ export function ToolsClient() {
             <button
               onClick={() => setActiveCategory("All")}
               className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeCategory === "All"
-                  ? "bg-foreground text-background shadow-xl scale-105"
-                  : "bg-background/50 backdrop-blur-sm text-muted-foreground border border-border/50 hover:text-foreground hover:border-foreground/20 hover:bg-background/80"
+                ? "bg-foreground text-background shadow-xl scale-105"
+                : "bg-background/50 backdrop-blur-sm text-muted-foreground border border-border/50 hover:text-foreground hover:border-foreground/20 hover:bg-background/80"
                 }`}
             >
               All Tools ({ALL_TOOLS.length})
@@ -718,16 +718,16 @@ export function ToolsClient() {
                 key={cat.name}
                 onClick={() => setActiveCategory(cat.name)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeCategory === cat.name
-                    ? `bg-gradient-to-r ${cat.gradient} text-white shadow-lg shadow-purple-500/20 scale-105 ring-2 ring-offset-2 ring-offset-background ring-transparent`
-                    : "bg-background/50 backdrop-blur-sm text-muted-foreground border border-border/50 hover:text-foreground hover:border-foreground/20 hover:bg-background/80"
+                  ? `bg-gradient-to-r ${cat.gradient} text-white shadow-lg shadow-purple-500/20 scale-105 ring-2 ring-offset-2 ring-offset-background ring-transparent`
+                  : "bg-background/50 backdrop-blur-sm text-muted-foreground border border-border/50 hover:text-foreground hover:border-foreground/20 hover:bg-background/80"
                   }`}
               >
                 <cat.icon className={`h-4 w-4 ${activeCategory === cat.name ? "text-white" : ""}`} />
                 <span>{cat.name.replace(" Tools", "")}</span>
                 <span
                   className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ml-1 ${activeCategory === cat.name
-                      ? "bg-white/20 text-white"
-                      : "bg-muted text-muted-foreground"
+                    ? "bg-white/20 text-white"
+                    : "bg-muted text-muted-foreground"
                     }`}
                 >
                   {toolCountByCategory[cat.name] || 0}
@@ -887,6 +887,25 @@ export function ToolsClient() {
             </div>
           </div>
         )}
+
+        {/* SEO Text Block for AdSense / Thin Content Prevention */}
+        <section className="mt-24 py-12 border-t border-slate-200 dark:border-slate-800">
+          <div className="max-w-4xl mx-auto prose prose-slate dark:prose-invert">
+            <h2 className="text-2xl font-bold mb-4">About ToolNova's Free AI Tool Library</h2>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              Welcome to the internet's most comprehensive collection of browser-based productivity utilities. Our library features over 50 specialized tools designed to streamline the workflows of students, educators, writers, and digital professionals. Unlike complex enterprise software suites that require expensive subscriptions and steep learning curves, ToolNova offers specialized, single-purpose micro-applications that solve immediate problems instantly.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              Our curated categories cover every aspect of modern digital life. For academic success, our <strong>Study Tools</strong> and <strong>Exam Prep Tools</strong> include advanced flashcard generators, concept explainers, and math formula creators that leverage advanced AI to simplify complex learning objectives. Digital creators and marketers rely heavily on our <strong>Writing Tools</strong>—including AI essay generators, email drafters, and semantic paraphrasers—to produce high-quality written content efficiently.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              Furthermore, we understand the critical importance of document and media management. Our robust suite of <strong>Image & PDF Tools</strong> allows users to merge, split, compress, and convert files securely directly within their browser, ensuring sensitive data never leaves their local device permanently. For job seekers, our <strong>Career Tools</strong> provide actionable, AI-driven feedback for resume building and cover letter drafting to help you land your dream role.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              Every tool on this platform operates on a frictionless, "no sign-up required" model. By processing heavily optimized algorithms on our secure global edge network, we guarantee sub-second response times for routine tasks and unparalleled privacy for your personal documents. Browse the directory above to discover how ToolNova can automate your repetitive tasks and return hours of valuable time to your week.
+            </p>
+          </div>
+        </section>
       </div>
     </div>
   );

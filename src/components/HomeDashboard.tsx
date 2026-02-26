@@ -230,6 +230,44 @@ export function HomeDashboard() {
         </div>
       </section>
 
+      {/* About ToolNova & E-E-A-T Section for AdSense/SEO */}
+      <section className="py-24 bg-slate-50 dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800">
+        <div className="container mx-auto px-6 max-w-[1000px] prose prose-slate dark:prose-invert prose-lg">
+          <div className="mb-16">
+            <span className="inline-block text-primary font-bold tracking-wider uppercase text-sm mb-4 px-4 py-1.5 bg-primary/10 rounded-full">About ToolNova</span>
+            <h2 className="text-3xl md:text-5xl font-bold text-foreground leading-tight mb-6">Empowering Digital Workflows for Students and Professionals</h2>
+            <p className="text-muted-foreground leading-relaxed mb-6">
+              At ToolNova, our mission is fundamentally simple: to eliminate the friction from your daily digital tasks. In a world increasingly saturated with complex software and fragmented applications, we recognized a critical need for a unified, high-performance toolkit that is accessible directly from your browser. We built ToolNova to serve as the definitive hub for document management, image optimization, and AI-accelerated study workflows.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-6">
+              Whether you are a university student organizing a semester's worth of research PDFs, a digital marketer needing rapid image compression without quality degradation, or an educator seeking to generate interactive learning materials like active-recall flashcards, our growing suite of over 10 specialized micro-applications is engineered to save you hours of administrative labor. By leveraging state-of-the-art Artificial Intelligence and optimized processing algorithms, we transform tasks that traditionally required expensive desktop software—such as merging documents, generating complex summaries, and correcting advanced grammar—into instant, frictionless experiences.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              We continually iterate on our platform based on the feedback of our global user base. Our dedicated team tracks the latest advancements in web technologies and machine learning to ensure that every tool on ToolNova is not only fast but demonstrably more accurate and capable than standard alternatives. Your productivity is our ultimate metric for success.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-16 pt-16 border-t border-slate-200 dark:border-slate-800">
+            <div>
+              <h3 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-3">
+                <ShieldCheck className="text-primary h-6 w-6" /> Our Quality Commitment
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                We are committed to delivering enterprise-grade reliability to every user. Our infrastructure is built by veteran software engineers with decades of combined experience in cloud architecture and data processing. When you use a ToolNova application, you are relying on heavily tested, secure, and robust systems designed to execute your request perfectly every single time, without fail.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-3">
+                <Check className="text-primary h-6 w-6" /> Strict Data Privacy
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Trust is the foundation of our platform. We understand that you process sensitive financial, academic, and personal documents using our PDF and summarization tools. ToolNova enforces a strict, automated zero-retention policy. All files uploaded for processing are encrypted in transit and are automatically, permanently deleted from our secure servers within hours of your session ending. We do not read, store, or sell your documents.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* AEO: FAQ Section */}
       <section className="py-16 bg-[#f8f9fb] dark:bg-[#0f1419]">
         <div className="container mx-auto px-6 max-w-[1200px]">
