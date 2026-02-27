@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
     description: 'Generate organized to-do lists from your goals. Free AI-powered task planner.',
     keywords: ['to-do list generator', 'task list', 'task planner', 'productivity tool', 'checklist maker'],
     alternates: { canonical: 'https://www.toolnovahub.com/tools/todo-list-generator' },
+  openGraph: {
+    title: 'AI To-Do List Generator – Create Task Lists Free | ToolNova',
+    description: 'Generate organized to-do lists from goals, projects, and routines.',
+    url: 'https://www.toolnovahub.com/tools/todo-list-generator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI To-Do List Generator – Create Task Lists Free | ToolNova',
+    description: 'Generate organized to-do lists from goals, projects, and routines.',
+  },
 };
 
 export default function TodoListGeneratorPage() {

@@ -4,6 +4,18 @@ import { ExamPrepToolsClient } from './client';
 export const metadata = {
     title: 'Exam Prep Tools - Vocabulary, Synonyms & More | ToolNova',
     description: 'Free exam prep tools: vocabulary builder, synonym finder, antonym finder, idioms & phrases, one word substitution.',
+    alternates: { canonical: 'https://www.toolnovahub.com/tools/exam-prep-tools' },
+    openGraph: {
+        title: 'Exam Prep Tools - Vocabulary, Synonyms & More | ToolNova',
+        description: 'Use free exam prep tools for vocabulary, synonyms, antonyms, idioms, and one-word substitution.',
+        url: 'https://www.toolnovahub.com/tools/exam-prep-tools',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Exam Prep Tools | ToolNova',
+        description: 'Free AI exam prep tools for vocabulary and language practice.',
+    },
 };
 
 const tools = [
@@ -20,6 +32,17 @@ export default function ExamPrepToolsPage() {
             <div className="mx-auto max-w-[1200px] px-6 py-10">
                 <ExamPrepToolsClient tools={tools} />
             </div>
+
+            <section className="mx-auto max-w-[1200px] px-6 pb-12">
+                <h2 className="text-xl font-semibold mb-3">Explore more categories</h2>
+                <div className="flex flex-wrap gap-3 text-sm">
+                    <Link href="/tools" className="underline underline-offset-4">All tools</Link>
+                    <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
+                    <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+                    <Link href="/tools/image-pdf-tools" className="underline underline-offset-4">Image & PDF tools</Link>
+                    <Link href="/blog" className="underline underline-offset-4">Blog</Link>
+                </div>
+            </section>
         </div>
     );
 }

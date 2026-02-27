@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
     description: 'Compress images without losing quality. Reduce JPG, PNG file size instantly. Free, private, and fast.',
     keywords: ['image compressor', 'compress image', 'reduce image size', 'image optimizer', 'compress jpg png'],
     alternates: { canonical: 'https://www.toolnovahub.com/tools/image-compressor' },
+  openGraph: {
+    title: 'Image Compressor – Reduce Image Size Free Online | ToolNova',
+    description: 'Compress images without losing quality. Reduce JPG, PNG file size instantly. Free, private, and fast.',
+    url: 'https://www.toolnovahub.com/tools/image-compressor',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Image Compressor – Reduce Image Size Free Online | ToolNova',
+    description: 'Compress images without losing quality. Reduce JPG, PNG file size instantly. Free, private, and fast.',
+  },
 };
 
 export default function ImageCompressorPage() {
@@ -48,6 +60,18 @@ export default function ImageCompressorPage() {
                     faq={toolData.faqs}
                 />
             )}
+            
+
+      <section className="mx-auto max-w-5xl px-4 py-8">
+        <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <Link href="/tools" className="underline underline-offset-4">All AI tools</Link>
+          <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
+          <Link href="/tools/image-pdf-tools" className="underline underline-offset-4">Image & PDF tools</Link>
+          <Link href="/blog" className="underline underline-offset-4">Blog guides</Link>
+        </div>
+      </section>
+
             <RelatedTools currentTool="image-compressor" category="Image" />
         </>
     );

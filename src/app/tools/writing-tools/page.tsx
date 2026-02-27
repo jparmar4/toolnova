@@ -4,6 +4,18 @@ import { WritingToolsClient } from './client';
 export const metadata = {
     title: 'AI Writing Tools - Essay Writer, Email Generator & More | ToolNova',
     description: 'Free AI writing tools: essay writer, story generator, email writer, grammar checker, paraphraser, and more.',
+    alternates: { canonical: 'https://www.toolnovahub.com/tools/writing-tools' },
+    openGraph: {
+        title: 'AI Writing Tools - Essay Writer, Email Generator & More | ToolNova',
+        description: 'Explore free AI writing tools for essays, emails, grammar fixes, paraphrasing, and more.',
+        url: 'https://www.toolnovahub.com/tools/writing-tools',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'AI Writing Tools | ToolNova',
+        description: 'Free writing tools for essays, emails, grammar and paraphrasing.',
+    },
 };
 
 const tools = [
@@ -25,6 +37,18 @@ export default function WritingToolsPage() {
             <div className="mx-auto max-w-[1200px] px-6 py-10">
                 <WritingToolsClient tools={tools} />
             </div>
+
+            <section className="mx-auto max-w-[1200px] px-6 pb-12">
+                <h2 className="text-xl font-semibold mb-3">Explore more categories</h2>
+                <div className="flex flex-wrap gap-3 text-sm">
+                    <Link href="/tools" className="underline underline-offset-4">All tools</Link>
+                    <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+                    <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
+                    <Link href="/tools/image-pdf-tools" className="underline underline-offset-4">Image & PDF tools</Link>
+                    <Link href="/tools/career-tools" className="underline underline-offset-4">Career tools</Link>
+                    <Link href="/blog" className="underline underline-offset-4">Blog</Link>
+                </div>
+            </section>
         </div>
     );
 }

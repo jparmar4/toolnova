@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { getOptimizedToolMetadata } from '@/lib/tool-metadata';
@@ -13,6 +14,17 @@ export const metadata: Metadata = {
   description: toolMeta?.description || 'Fix grammar, spelling, and punctuation errors instantly with our free AI grammar checker. Perfect for essays, emails, and documents. Professional results, fast.',
   keywords: toolMeta?.keywords || ['AI grammar fix', 'grammar checker', 'spelling correction', 'punctuation fix', 'proofreading tool'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/grammar-fix' },
+  openGraph: {
+    title: toolMeta?.title || 'AI Grammar Fix – Fix Grammar Errors Free | ToolNova',
+    description: toolMeta?.description || 'Fix grammar, spelling, and punctuation errors instantly with our free AI grammar checker.',
+    url: 'https://www.toolnovahub.com/tools/grammar-fix',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI Grammar Fix Free | ToolNova',
+    description: 'Fix grammar and spelling instantly for essays, emails, and documents.',
+  },
 };
 
 export default function GrammarFixPage() {
@@ -48,6 +60,17 @@ export default function GrammarFixPage() {
         benefits={toolData.benefits}
         faq={toolData.faqs}
       />
+
+
+      <section className="mx-auto max-w-5xl px-4 py-8">
+        <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <Link href="/tools" className="underline underline-offset-4">All AI tools</Link>
+          <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+          <Link href="/tools/image-pdf-tools" className="underline underline-offset-4">Image & PDF tools</Link>
+          <Link href="/blog" className="underline underline-offset-4">Blog guides</Link>
+        </div>
+      </section>
 
       <RelatedTools currentTool="grammar-fix" category="Writing" />
     </>

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
     description: 'Convert PNG images to JPG format with adjustable quality. Free, fast image format conversion.',
     keywords: ['png to jpg', 'png to jpeg', 'convert png to jpg', 'image converter', 'jpg converter'],
     alternates: { canonical: 'https://www.toolnovahub.com/tools/png-to-jpg' },
+  openGraph: {
+    title: 'PNG to JPG Converter – Convert PNG to JPEG Free | ToolNova',
+    description: 'Convert PNG images to JPG format with adjustable quality. Free, fast image format conversion.',
+    url: 'https://www.toolnovahub.com/tools/png-to-jpg',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'PNG to JPG Converter – Convert PNG to JPEG Free | ToolNova',
+    description: 'Convert PNG images to JPG format with adjustable quality. Free, fast image format conversion.',
+  },
 };
 
 export default function PNGtoJPGPage() {
@@ -48,6 +60,18 @@ export default function PNGtoJPGPage() {
                     faq={toolData.faqs}
                 />
             )}
+            
+
+      <section className="mx-auto max-w-5xl px-4 py-8">
+        <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <Link href="/tools" className="underline underline-offset-4">All AI tools</Link>
+          <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
+          <Link href="/tools/image-pdf-tools" className="underline underline-offset-4">Image & PDF tools</Link>
+          <Link href="/blog" className="underline underline-offset-4">Blog guides</Link>
+        </div>
+      </section>
+
             <RelatedTools currentTool="png-to-jpg" category="Image" />
         </>
     );

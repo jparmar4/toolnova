@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
     description: 'Get essential formulas for math, physics, chemistry and more. Free AI-powered formula generator for students and professionals.',
     keywords: ['formula generator', 'math formulas', 'physics formulas', 'chemistry formulas', 'study formulas'],
     alternates: { canonical: 'https://www.toolnovahub.com/tools/formula-generator' },
+  openGraph: {
+    title: 'AI Formula Generator – Generate Math & Science Formulas Free | ToolNova',
+    description: 'Generate formulas and equation references instantly for study and exams.',
+    url: 'https://www.toolnovahub.com/tools/formula-generator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI Formula Generator – Generate Math & Science Formulas Free | ToolNova',
+    description: 'Generate formulas and equation references instantly for study and exams.',
+  },
 };
 
 export default function FormulaGeneratorPage() {

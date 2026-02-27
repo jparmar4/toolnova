@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
     description: 'Generate a structured weekly timetable for study or work. Free AI-powered schedule maker.',
     keywords: ['timetable generator', 'study schedule', 'weekly planner', 'schedule maker', 'time management'],
     alternates: { canonical: 'https://www.toolnovahub.com/tools/timetable-generator' },
+  openGraph: {
+    title: 'AI Timetable Generator – Build Study Schedules Free | ToolNova',
+    description: 'Create personalized weekly study timetables in minutes.',
+    url: 'https://www.toolnovahub.com/tools/timetable-generator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI Timetable Generator – Build Study Schedules Free | ToolNova',
+    description: 'Create personalized weekly study timetables in minutes.',
+  },
 };
 
 export default function TimetableGeneratorPage() {

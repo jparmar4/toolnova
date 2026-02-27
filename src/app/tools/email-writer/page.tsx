@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
   description: 'Write professional emails instantly with our free AI email writer. Perfect for business, job applications, and personal correspondence.',
   keywords: ['AI email writer', 'email generator', 'professional email writer', 'business email'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/email-writer' },
+  openGraph: {
+    title: 'AI Email Writer – Generate Professional Emails Free | ToolNova',
+    description: 'Write professional emails instantly with AI for work, school, and business.',
+    url: 'https://www.toolnovahub.com/tools/email-writer',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI Email Writer – Generate Professional Emails Free | ToolNova',
+    description: 'Write professional emails instantly with AI for work, school, and business.',
+  },
 };
 
 export default function EmailWriterPage() {
@@ -48,6 +60,18 @@ export default function EmailWriterPage() {
                     faq={toolData.faqs}
                 />
             )}
+            
+
+      <section className="mx-auto max-w-5xl px-4 py-8">
+        <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <Link href="/tools" className="underline underline-offset-4">All AI tools</Link>
+          <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+          <Link href="/tools/utility-tools" className="underline underline-offset-4">Utility tools</Link>
+          <Link href="/blog" className="underline underline-offset-4">Blog guides</Link>
+        </div>
+      </section>
+
             <RelatedTools currentTool="email-writer" category="Writing" />
         </>
     );

@@ -4,6 +4,18 @@ import { UtilityToolsClient } from './client';
 export const metadata = {
     title: 'Utility Tools - Word Counter, Case Converter & More | ToolNova',
     description: 'Free utility tools: word counter, character counter, case converter, text summarizer, text simplifier, age calculator.',
+    alternates: { canonical: 'https://www.toolnovahub.com/tools/utility-tools' },
+    openGraph: {
+        title: 'Utility Tools - Word Counter, Case Converter & More | ToolNova',
+        description: 'Use free utility tools for text counting, formatting, summarizing, and calculations.',
+        url: 'https://www.toolnovahub.com/tools/utility-tools',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Utility Tools | ToolNova',
+        description: 'Free utility tools for word count, text formatting, summaries, and more.',
+    },
 };
 
 const tools = [
@@ -21,6 +33,18 @@ export default function UtilityToolsPage() {
             <div className="mx-auto max-w-[1200px] px-6 py-10">
                 <UtilityToolsClient tools={tools} />
             </div>
+
+            <section className="mx-auto max-w-[1200px] px-6 pb-12">
+                <h2 className="text-xl font-semibold mb-3">Explore more categories</h2>
+                <div className="flex flex-wrap gap-3 text-sm">
+                    <Link href="/tools" className="underline underline-offset-4">All tools</Link>
+                    <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+                    <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
+                    <Link href="/tools/image-pdf-tools" className="underline underline-offset-4">Image & PDF tools</Link>
+                    <Link href="/tools/career-tools" className="underline underline-offset-4">Career tools</Link>
+                    <Link href="/blog" className="underline underline-offset-4">Blog</Link>
+                </div>
+            </section>
         </div>
     );
 }

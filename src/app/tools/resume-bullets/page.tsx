@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
   description: 'Generate powerful resume bullet points instantly with our free AI resume writer. ATS-friendly and impactful.',
   keywords: ['AI resume bullets', 'resume writer', 'resume generator', 'job application'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/resume-bullets' },
+  openGraph: {
+    title: 'AI Resume Bullets – Create Resume Points Free | ToolNova',
+    description: 'Generate powerful ATS-friendly resume bullet points instantly.',
+    url: 'https://www.toolnovahub.com/tools/resume-bullets',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI Resume Bullets Free | ToolNova',
+    description: 'Create impactful resume points for job applications in seconds.',
+  },
 };
 
 export default function ResumeBulletsPage() {
@@ -48,6 +60,18 @@ export default function ResumeBulletsPage() {
                     faq={toolData.faqs}
                 />
             )}
+
+
+      <section className="mx-auto max-w-5xl px-4 py-8">
+        <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <Link href="/tools" className="underline underline-offset-4">All AI tools</Link>
+          <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+          <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
+          <Link href="/blog" className="underline underline-offset-4">Blog guides</Link>
+        </div>
+      </section>
+
             <RelatedTools currentTool="resume-bullets" category="Career" />
         </>
     );

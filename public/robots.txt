@@ -1,284 +1,48 @@
-# ============================================
-# ToolNova Robots.txt - Optimized for SEO, AEO, and GEO
-# Last Updated: 2026
-# ============================================
+# ToolNova robots.txt
+# Clean, search-friendly crawl policy
 
-# Default rules for all crawlers
 User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /admin/
-Disallow: /_next/
 Disallow: /private/
-Disallow: /login
 Disallow: /auth/
-Disallow: /*.json$
-Disallow: /*?*debug=*
+Disallow: /login
 Disallow: /*?*preview=*
+Disallow: /*?*debug=*
 
-# Crawl delay for respectful crawling (optional, not all bots respect this)
-Crawl-delay: 1
-
-# ============================================
-# AI Search Engine Crawlers (AEO/GEO Optimization)
-# Explicitly allowing all AI crawlers for maximum visibility in AI search results
-# ============================================
-
-# OpenAI / ChatGPT
-User-agent: GPTBot
-User-agent: ChatGPT-User
-Allow: /
-
-# Google AI (Gemini, Bard, SGE, AI Overviews)
-User-agent: Google-Extended
-Allow: /
-
-# Common Crawl (used by many AI models for training)
-User-agent: CCBot
-Allow: /
-
-# Perplexity AI
-User-agent: PerplexityBot
-Allow: /
-
-# Anthropic / Claude
-User-agent: ClaudeBot
-User-agent: Claude-Web
-User-agent: Anthropic-AI
-Allow: /
-
-# Diffbot
-User-agent: Diffbot
-Allow: /
-
-# ByteDance / TikTok AI
-User-agent: Bytespider
-Allow: /
-
-# Cohere
-User-agent: cohere-ai
-Allow: /
-
-# Meta / Facebook AI
-User-agent: FacebookBot
-Allow: /
-
-# Apple
-User-agent: Applebot
-Allow: /
-
-# Amazon Alexa/AI
-User-agent: Amazonbot
-Allow: /
-
-# You.com AI Search
-User-agent: YouBot
-Allow: /
-
-# Neeva AI
-User-agent: Neevabot
-Allow: /
-
-# Mojeek
-User-agent: MojeekBot
-Allow: /
-
-# Qwant AI
-User-agent: Qwantbot
-Allow: /
-
-# Seznam
-User-agent: SeznamBot
-Allow: /
-
-# ============================================
-# Additional AI Crawlers (2024-2025)
-# ============================================
-
-# Mistral AI
-User-agent: MistralAI
-Allow: /
-
-# AI21 Labs
-User-agent: AI21Bot
-Allow: /
-
-# DeepSeek
-User-agent: DeepSeekBot
-Allow: /
-
-# Replicate
-User-agent: ReplicateBot
-Allow: /
-
-# Stability AI
-User-agent: StabilityBot
-Allow: /
-
-# Hugging Face
-User-agent: HuggingFaceBot
-Allow: /
-
-# Osumi AI
-User-agent: Omgilibot
-Allow: /
-
-# Semantic Scholar
-User-agent: SemanticScholarBot
-Allow: /
-
-# Research Gate
-User-agent: ResearchGateBot
-Allow: /
-
-# Webz.io (feeds AI models)
-User-agent: Webz.io
-Allow: /
-
-# Zyte (feeds AI models)
-User-agent: ZyteBot
-Allow: /
-
-# ImagesiftBot
-User-agent: ImagesiftBot
-Allow: /
-
-# Kangaroo Bot
-User-agent: KangarooBot
-Allow: /
-
-# AwarioBot
-User-agent: AwarioBot
-Allow: /
-
-# Brandwatch
-User-agent: BrandwatchBot
-Allow: /
-
-# Talkwalker
-User-agent: TalkwalkerBot
-Allow: /
-
-# ============================================
-# Standard Search Engines (Enhanced rules)
-# ============================================
-
-# Google
-User-agent: Googlebot
-Allow: /
-# Allow all content types for rich results
+# Keep core assets crawlable for rendering/indexing quality
+Allow: /_next/static/
 Allow: /*.css$
 Allow: /*.js$
 Allow: /*.png$
 Allow: /*.jpg$
+Allow: /*.jpeg$
 Allow: /*.webp$
 Allow: /*.svg$
-Allow: /*.pdf$
 
-# Google News (for Google Discover)
-User-agent: Googlebot-News
+# AI crawlers explicitly allowed
+User-agent: GPTBot
 Allow: /
 
-# Google Images
-User-agent: Googlebot-Image
+User-agent: ChatGPT-User
 Allow: /
 
-# Google Video
-User-agent: Googlebot-Video
+User-agent: Google-Extended
 Allow: /
 
-# Bing
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-# Yahoo
-User-agent: Slurp
-Allow: /
-Crawl-delay: 1
-
-# DuckDuckGo
-User-agent: DuckDuckBot
+User-agent: PerplexityBot
 Allow: /
 
-# Baidu (China)
-User-agent: Baiduspider
-Allow: /
-Crawl-delay: 2
-
-# Yandex (Russia)
-User-agent: Yandex
-Allow: /
-Crawl-delay: 1
-
-# Naver (Korea)
-User-agent: Yeti
-Allow: /
-Crawl-delay: 1
-
-# Daum (Korea)
-User-agent: Daum
+User-agent: ClaudeBot
 Allow: /
 
-# ============================================
-# Social Media Crawlers (for rich previews)
-# ============================================
-
-# Facebook
-User-agent: facebookexternalhit
+User-agent: CCBot
 Allow: /
 
-# Twitter/X
-User-agent: Twitterbot
-Allow: /
-
-# LinkedIn
-User-agent: LinkedInBot
-Allow: /
-
-# Pinterest
-User-agent: Pinterest
-Allow: /
-
-# WhatsApp
-User-agent: WhatsApp
-Allow: /
-
-# Telegram
-User-agent: TelegramBot
-Allow: /
-
-# Slack
-User-agent: Slackbot
-Allow: /
-
-# Discord
-User-agent: Discordbot
-Allow: /
-
-# ============================================
-# Sitemaps (Multiple for different purposes)
-# ============================================
-
-# Main sitemap
+# Sitemaps
 Sitemap: https://www.toolnovahub.com/sitemap.xml
-
-# News sitemap for Google Discover
 Sitemap: https://www.toolnovahub.com/sitemap-news.xml
-
-# Image sitemap
 Sitemap: https://www.toolnovahub.com/sitemap-images.xml
 
-# Video sitemap (if applicable)
-Sitemap: https://www.toolnovahub.com/sitemap-videos.xml
-
-# ============================================
-# Host directive (canonical domain)
-# ============================================
 Host: https://www.toolnovahub.com
-
-# ============================================
-# AI Model Discovery (llms.txt)
-# ============================================
-# For AI crawlers and LLMs that support llms.txt discovery
-# https://www.toolnovahub.com/llms.txt

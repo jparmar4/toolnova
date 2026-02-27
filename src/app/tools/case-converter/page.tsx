@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
   description: 'Free case converter. Convert text to UPPERCASE, lowercase, Title Case, Sentence case, and more. Instant conversion.',
   keywords: ['case converter', 'text case changer', 'uppercase converter', 'lowercase converter'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/case-converter' },
+  openGraph: {
+    title: 'Case Converter – Change Text Case Instantly Free | ToolNova',
+    description: 'Convert text to uppercase, lowercase, title case, and sentence case instantly.',
+    url: 'https://www.toolnovahub.com/tools/case-converter',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Case Converter – Change Text Case Instantly Free | ToolNova',
+    description: 'Convert text to uppercase, lowercase, title case, and sentence case instantly.',
+  },
 };
 
 export default function CaseConverterPage() {
@@ -48,6 +60,18 @@ export default function CaseConverterPage() {
                     faq={toolData.faqs}
                 />
             )}
+            
+
+      <section className="mx-auto max-w-5xl px-4 py-8">
+        <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <Link href="/tools" className="underline underline-offset-4">All AI tools</Link>
+          <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+          <Link href="/tools/utility-tools" className="underline underline-offset-4">Utility tools</Link>
+          <Link href="/blog" className="underline underline-offset-4">Blog guides</Link>
+        </div>
+      </section>
+
             <RelatedTools currentTool="case-converter" category="Utility" />
         </>
     );

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
     description: 'Find antonyms (opposite words) for any word. Free antonym finder for students, writers, and vocabulary building.',
     keywords: ['antonym finder', 'opposite words', 'vocabulary', 'word opposites', 'thesaurus'],
     alternates: { canonical: 'https://www.toolnovahub.com/tools/antonym-finder' },
+  openGraph: {
+    title: 'Antonym Finder – Find Opposite Words Instantly Free | ToolNova',
+    description: 'Find accurate antonyms quickly for essays, assignments, and vocabulary building.',
+    url: 'https://www.toolnovahub.com/tools/antonym-finder',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Antonym Finder – Find Opposite Words Instantly Free | ToolNova',
+    description: 'Find accurate antonyms quickly for essays, assignments, and vocabulary building.',
+  },
 };
 
 export default function AntonymFinderPage() {
@@ -48,6 +60,18 @@ export default function AntonymFinderPage() {
                     faq={toolData.faqs}
                 />
             )}
+            
+
+      <section className="mx-auto max-w-5xl px-4 py-8">
+        <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <Link href="/tools" className="underline underline-offset-4">All AI tools</Link>
+          <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+          <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
+          <Link href="/blog" className="underline underline-offset-4">Blog guides</Link>
+        </div>
+      </section>
+
             <RelatedTools currentTool="antonym-finder" category="Language" />
         </>
     );

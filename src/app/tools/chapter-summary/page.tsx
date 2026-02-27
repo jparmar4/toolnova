@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
     description: 'Turn long textbook chapters into concise, exam-ready summaries. Free AI-powered chapter summarizer for students.',
     keywords: ['chapter summary', 'textbook summary', 'study notes', 'exam revision', 'summarize chapter'],
     alternates: { canonical: 'https://www.toolnovahub.com/tools/chapter-summary' },
+  openGraph: {
+    title: 'AI Chapter Summary – Summarize Chapters Instantly | ToolNova',
+    description: 'Get concise chapter summaries with key points and takeaways.',
+    url: 'https://www.toolnovahub.com/tools/chapter-summary',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI Chapter Summary – Summarize Chapters Instantly | ToolNova',
+    description: 'Get concise chapter summaries with key points and takeaways.',
+  },
 };
 
 export default function ChapterSummaryPage() {
@@ -48,6 +60,18 @@ export default function ChapterSummaryPage() {
                     faq={toolData.faqs}
                 />
             )}
+            
+
+      <section className="mx-auto max-w-5xl px-4 py-8">
+        <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <Link href="/tools" className="underline underline-offset-4">All AI tools</Link>
+          <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
+          <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+          <Link href="/blog" className="underline underline-offset-4">Blog guides</Link>
+        </div>
+      </section>
+
             <RelatedTools currentTool="chapter-summary" category="Study" />
         </>
     );

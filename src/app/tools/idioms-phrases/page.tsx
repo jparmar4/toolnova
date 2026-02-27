@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
     description: 'Learn common idioms and phrases with meanings and examples. Free tool for English language learning and exam preparation.',
     keywords: ['idioms and phrases', 'English idioms', 'common phrases', 'language learning', 'English expressions'],
     alternates: { canonical: 'https://www.toolnovahub.com/tools/idioms-phrases' },
+  openGraph: {
+    title: 'Idioms and Phrases Generator – Learn Usage Examples Free | ToolNova',
+    description: 'Discover idioms, meanings, and usage examples to improve fluency and writing.',
+    url: 'https://www.toolnovahub.com/tools/idioms-phrases',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Idioms and Phrases Generator – Learn Usage Examples Free | ToolNova',
+    description: 'Discover idioms, meanings, and usage examples to improve fluency and writing.',
+  },
 };
 
 export default function IdiomsPhrasesPage() {
@@ -48,6 +60,18 @@ export default function IdiomsPhrasesPage() {
                     faq={toolData.faqs}
                 />
             )}
+            
+
+      <section className="mx-auto max-w-5xl px-4 py-8">
+        <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <Link href="/tools" className="underline underline-offset-4">All AI tools</Link>
+          <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+          <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
+          <Link href="/blog" className="underline underline-offset-4">Blog guides</Link>
+        </div>
+      </section>
+
             <RelatedTools currentTool="idioms-phrases" category="Language" />
         </>
     );

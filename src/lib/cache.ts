@@ -19,7 +19,9 @@ export async function getCachedResponse(prompt: string): Promise<string | null> 
 
     try {
         const hash = hashPrompt(prompt);
-        const cachedItem = await db.aICache.findUnique({
+        const cacheModel = (db as any).aICache;
+        if (!cacheModel) return null;
+        const cachedItem = await cacheModel.findUnique({
             where: { promptHash: hash },
         });
 
@@ -41,7 +43,9 @@ export async function cacheResponse(prompt: string, response: string): Promise<v
     try {
         const hash = hashPrompt(prompt);
         // Use upsert to prevent race conditions or duplicates
-        await db.aICache.upsert({
+        const cacheModel = (db as any).aICache;
+        if (!cacheModel) return;
+        await cacheModel.upsert({
             where: { promptHash: hash },
             update: {}, // If exists, do nothing (keep oldest/original) or update if needed
             create: {

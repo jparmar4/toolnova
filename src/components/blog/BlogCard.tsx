@@ -27,9 +27,9 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
             <article className={`h-full bg-white rounded-2xl border border-slate-200/80 overflow-hidden transition-all duration-300 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 ${featured ? 'md:flex' : ''}`}>
                 {/* Image */}
                 <div className={`relative bg-gradient-to-br from-slate-100 to-slate-50 ${featured ? 'md:w-2/5 aspect-[4/3] md:aspect-auto' : 'aspect-[16/9]'}`}>
-                    {post.imageUrl && post.imageUrl !== '' ? (
+                    {post.coverImage && post.coverImage !== '' ? (
                         <Image
-                            src={post.imageUrl}
+                            src={post.coverImage}
                             alt={post.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -54,7 +54,7 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
                         <div className="flex items-center gap-1.5">
                             <Calendar className="h-3.5 w-3.5" />
                             <span>
-                                {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                                {new Date(post.date).toLocaleDateString('en-US', {
                                     month: 'short',
                                     day: 'numeric',
                                     year: 'numeric',
@@ -63,7 +63,7 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
                         </div>
                         <div className="flex items-center gap-1.5">
                             <Clock className="h-3.5 w-3.5" />
-                            <span>{post.readingTime} min read</span>
+                            <span>{post.readTime} min read</span>
                         </div>
                     </div>
 
@@ -74,7 +74,7 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
 
                     {/* Description */}
                     <p className={`text-slate-600 leading-relaxed mb-4 flex-grow ${featured ? 'line-clamp-3' : 'line-clamp-2'}`}>
-                        {post.description}
+                        {post.excerpt}
                     </p>
 
                     {/* Author & CTA */}

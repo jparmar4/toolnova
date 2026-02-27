@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
   description: 'Generate multiple choice questions instantly with our free AI MCQ generator. Perfect for teachers, students, and exam prep.',
   keywords: ['AI MCQ generator', 'multiple choice generator', 'quiz question maker', 'test generator'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/mcq-generator' },
+  openGraph: {
+    title: 'AI MCQ Generator – Create Multiple Choice Questions Free | ToolNova',
+    description: 'Generate MCQs instantly from any topic for exams and practice.',
+    url: 'https://www.toolnovahub.com/tools/mcq-generator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI MCQ Generator – Create Multiple Choice Questions Free | ToolNova',
+    description: 'Generate MCQs instantly from any topic for exams and practice.',
+  },
 };
 
 export default function MCQGeneratorPage() {
@@ -48,6 +60,18 @@ export default function MCQGeneratorPage() {
                     faq={toolData.faqs}
                 />
             )}
+            
+
+      <section className="mx-auto max-w-5xl px-4 py-8">
+        <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <Link href="/tools" className="underline underline-offset-4">All AI tools</Link>
+          <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
+          <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+          <Link href="/blog" className="underline underline-offset-4">Blog guides</Link>
+        </div>
+      </section>
+
             <RelatedTools currentTool="mcq-generator" category="Study" />
         </>
     );

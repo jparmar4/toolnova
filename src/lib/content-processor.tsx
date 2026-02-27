@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import NextImage from "next/image";
 import { FaInfoCircle, FaLightbulb, FaExclamationTriangle, FaBolt } from "react-icons/fa";
 
@@ -158,8 +159,8 @@ export function processContent(content: string): React.ReactNode[] {
             } else {
                 // Alert styles
                 let styles = "";
-                let icon = null;
-                let title = "";
+                let icon: ReactNode = null;
+                let title: string = "";
 
                 switch (blockquoteType) {
                     case 'NOTE':

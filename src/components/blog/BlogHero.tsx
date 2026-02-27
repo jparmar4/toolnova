@@ -38,7 +38,7 @@ export function BlogHero({ post }: BlogHeroProps) {
 
                         {/* Description */}
                         <p className="text-lg text-slate-300 leading-relaxed max-w-xl">
-                            {post.description}
+                            {post.excerpt}
                         </p>
 
                         {/* Meta Info */}
@@ -50,7 +50,7 @@ export function BlogHero({ post }: BlogHeroProps) {
                             <div className="flex items-center gap-2">
                                 <Calendar className="h-4 w-4" />
                                 <span>
-                                    {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                                    {new Date(post.date).toLocaleDateString('en-US', {
                                         month: 'long',
                                         day: 'numeric',
                                         year: 'numeric',
@@ -59,7 +59,7 @@ export function BlogHero({ post }: BlogHeroProps) {
                             </div>
                             <div className="flex items-center gap-2">
                                 <Clock className="h-4 w-4" />
-                                <span>{post.readingTime} min read</span>
+                                <span>{post.readTime} min read</span>
                             </div>
                         </div>
 
@@ -76,9 +76,9 @@ export function BlogHero({ post }: BlogHeroProps) {
                     {/* Featured Image */}
                     <div className="relative">
                         <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-white/10 shadow-2xl">
-                            {post.imageUrl && post.imageUrl !== '' ? (
+                            {post.coverImage && post.coverImage !== '' ? (
                                 <Image
-                                    src={post.imageUrl}
+                                    src={post.coverImage}
                                     alt={post.title}
                                     fill
                                     className="object-cover"

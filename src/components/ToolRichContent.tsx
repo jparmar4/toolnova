@@ -1,12 +1,13 @@
-
 import React from 'react';
+import Link from 'next/link';
 import {
     FaLightbulb,
     FaQuestionCircle,
-    FaArrowRight,
     FaShieldAlt,
     FaRocket,
-    FaCheckCircle
+    FaCheckCircle,
+    FaBullseye,
+    FaExclamationTriangle,
 } from 'react-icons/fa';
 
 interface ToolRichContentProps {
@@ -17,6 +18,10 @@ interface ToolRichContentProps {
     faq: { question: string; answer: string }[];
 }
 
+const getAnswerSnippet = (title: string, description: string) => {
+    return `${title} helps you complete the task quickly and accurately in your browser. It is best for users who want fast results without complex setup. ${description}`;
+};
+
 export const ToolRichContent: React.FC<ToolRichContentProps> = ({
     title,
     description,
@@ -24,8 +29,16 @@ export const ToolRichContent: React.FC<ToolRichContentProps> = ({
     benefits,
     faq
 }) => {
+    const answerSnippet = getAnswerSnippet(title, description);
+
     return (
-        <div className="max-w-4xl mx-auto px-6 py-16 space-y-24 text-slate-800 dark:text-slate-200">
+        <div className="max-w-4xl mx-auto px-6 py-16 space-y-20 text-slate-800 dark:text-slate-200">
+            {/* AEO: Quick answer block */}
+            <section className="rounded-2xl border border-primary/20 bg-primary/5 p-6">
+                <h2 className="text-2xl font-bold mb-3">Quick answer</h2>
+                <p className="text-base leading-relaxed text-muted-foreground">{answerSnippet}</p>
+            </section>
+
             {/* Overview */}
             <section className="space-y-6">
                 <h2 className="text-3xl font-bold tracking-tight">
@@ -34,6 +47,32 @@ export const ToolRichContent: React.FC<ToolRichContentProps> = ({
                 <p className="text-lg text-muted-foreground leading-relaxed">
                     {description}
                 </p>
+            </section>
+
+            {/* Intent fit: best for / not for */}
+            <section className="grid md:grid-cols-2 gap-6">
+                <div className="rounded-2xl border border-emerald-200 bg-emerald-50/50 dark:bg-emerald-950/20 p-6">
+                    <div className="flex items-center gap-2 mb-3 text-emerald-700 dark:text-emerald-400">
+                        <FaBullseye />
+                        <h3 className="font-bold text-lg">Best for</h3>
+                    </div>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li>• Fast task completion with minimal steps</li>
+                        <li>• Students and professionals who need reliable output</li>
+                        <li>• Users who want browser-based workflow without installs</li>
+                    </ul>
+                </div>
+                <div className="rounded-2xl border border-amber-200 bg-amber-50/50 dark:bg-amber-950/20 p-6">
+                    <div className="flex items-center gap-2 mb-3 text-amber-700 dark:text-amber-400">
+                        <FaExclamationTriangle />
+                        <h3 className="font-bold text-lg">Not ideal for</h3>
+                    </div>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li>• Extremely niche enterprise workflows with custom compliance rules</li>
+                        <li>• Offline-only environments</li>
+                        <li>• Cases requiring human legal/professional certification</li>
+                    </ul>
+                </div>
             </section>
 
             {/* How to Use */}
@@ -96,6 +135,19 @@ export const ToolRichContent: React.FC<ToolRichContentProps> = ({
                 </div>
             </section>
 
+            {/* Internal intent links */}
+            <section className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900">
+                <h2 className="text-xl font-bold mb-4">Explore related categories</h2>
+                <div className="flex flex-wrap gap-3 text-sm">
+                    <Link href="/tools" className="underline underline-offset-4">All tools</Link>
+                    <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+                    <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
+                    <Link href="/tools/career-tools" className="underline underline-offset-4">Career tools</Link>
+                    <Link href="/tools/image-pdf-tools" className="underline underline-offset-4">Image & PDF tools</Link>
+                    <Link href="/blog" className="underline underline-offset-4">Guides & blog</Link>
+                </div>
+            </section>
+
             {/* Trust Banner */}
             <section className="p-8 bg-gradient-to-br from-primary/10 to-blue-500/10 rounded-3xl border border-primary/20 flex flex-col md:flex-row items-center gap-6">
                 <div className="w-16 h-16 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center text-primary shadow-xl">
@@ -105,7 +157,7 @@ export const ToolRichContent: React.FC<ToolRichContentProps> = ({
                     <h3 className="text-xl font-bold mb-2">Safe & Secure Processing</h3>
                     <p className="text-muted-foreground">
                         Your data is processed locally in your browser when possible and never stored on our servers.
-                        All AI processing is encrypted and adheres to strict privacy standards.
+                        All AI processing is encrypted and follows strict privacy standards.
                     </p>
                 </div>
             </section>

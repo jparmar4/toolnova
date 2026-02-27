@@ -1431,7 +1431,7 @@ export function generateAllToolSchemas(
   };
 }
 
-export default {
+const seoWorldclass = {
   TOOL_FAQS,
   TOOL_HOWTOS,
   HREFLANG_REGIONS,
@@ -1461,3 +1461,5 @@ export default {
   generateClaimSchema,
   generateAllToolSchemas,
 };
+
+export default seoWorldclass;

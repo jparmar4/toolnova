@@ -180,6 +180,42 @@ export function HomeDashboard() {
         </div>
       </section>
 
+      {/* SEO Internal Links Hub */}
+      <section className="py-14 bg-white dark:bg-background border-y border-slate-100 dark:border-slate-800">
+        <div className="container mx-auto px-6 max-w-[1200px]">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">Explore by category</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+            <div>
+              <h3 className="font-semibold mb-3">Writing & Study</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li><Link href="/tools/writing-tools" className="hover:text-primary">AI Writing Tools</Link></li>
+                <li><Link href="/tools/study-tools" className="hover:text-primary">Study Tools</Link></li>
+                <li><Link href="/tools/exam-prep-tools" className="hover:text-primary">Exam Prep Tools</Link></li>
+                <li><Link href="/tools/flashcard-maker" className="hover:text-primary">Flashcard Maker</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-3">PDF & Utility</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li><Link href="/tools/image-pdf-tools" className="hover:text-primary">Image & PDF Tools</Link></li>
+                <li><Link href="/tools/merge-pdf" className="hover:text-primary">Merge PDF</Link></li>
+                <li><Link href="/tools/split-pdf" className="hover:text-primary">Split PDF</Link></li>
+                <li><Link href="/tools/utility-tools" className="hover:text-primary">Utility Tools</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-3">Career & Guides</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li><Link href="/tools/career-tools" className="hover:text-primary">Career Tools</Link></li>
+                <li><Link href="/blog" className="hover:text-primary">AI Productivity Blog</Link></li>
+                <li><Link href="/about" className="hover:text-primary">About ToolNova</Link></li>
+                <li><Link href="/contact" className="hover:text-primary">Contact Support</Link></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-24 bg-white dark:bg-background relative overflow-hidden">
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">

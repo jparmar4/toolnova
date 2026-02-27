@@ -24,12 +24,10 @@ export function AdUnit({
     className = '',
     style = {},
 }: AdUnitProps) {
-    // Don't render if ads are disabled
-    if (!shouldShowAds()) {
-        return null; // or return a placeholder in development
-    }
+    const showAds = shouldShowAds();
 
     useEffect(() => {
+        if (!showAds) return;
         try {
             // Push ad to AdSense
             if (window.adsbygoogle && window.adsbygoogle.length) {
@@ -39,6 +37,10 @@ export function AdUnit({
             console.error('AdSense error:', error);
         }
     }, []);
+
+    if (!showAds) {
+        return null;
+    }
 
     return (
         <div className={`adsense-container ${className}`} style={style}>

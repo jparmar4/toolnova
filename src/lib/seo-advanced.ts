@@ -848,7 +848,7 @@ export function generateRSSItem(
   };
 }
 
-export default {
+const seoAdvanced = {
 
   generateWebSiteSchema,
   generateSoftwareApplicationSchema,
@@ -872,3 +872,5 @@ export default {
   combineSchemas,
   generateRSSItem,
 };
+
+export default seoAdvanced;

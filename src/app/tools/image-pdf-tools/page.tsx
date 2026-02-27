@@ -13,6 +13,18 @@ import {
 export const metadata = {
     title: 'Image & PDF Tools - Merge, Split, Compress & Convert | ToolNova',
     description: 'Free image and PDF tools: merge PDF, split PDF, image to PDF, image compressor, JPG to PNG, PNG to JPG.',
+    alternates: { canonical: 'https://www.toolnovahub.com/tools/image-pdf-tools' },
+    openGraph: {
+        title: 'Image & PDF Tools - Merge, Split, Compress & Convert | ToolNova',
+        description: 'Use free image and PDF tools to merge, split, compress, and convert files instantly.',
+        url: 'https://www.toolnovahub.com/tools/image-pdf-tools',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Image & PDF Tools | ToolNova',
+        description: 'Merge, split, compress, and convert image/PDF files for free.',
+    },
 };
 
 const tools = [
@@ -78,6 +90,18 @@ export default function ImagePDFToolsPage() {
                     </p>
                 </div>
             </div>
+
+            <section className="mx-auto max-w-[1200px] px-6 pb-12">
+                <h2 className="text-xl font-semibold mb-3">Explore more categories</h2>
+                <div className="flex flex-wrap gap-3 text-sm">
+                    <Link href="/tools" className="underline underline-offset-4">All tools</Link>
+                    <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+                    <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
+                    <Link href="/tools/image-pdf-tools" className="underline underline-offset-4">Image & PDF tools</Link>
+                    <Link href="/tools/career-tools" className="underline underline-offset-4">Career tools</Link>
+                    <Link href="/blog" className="underline underline-offset-4">Blog</Link>
+                </div>
+            </section>
         </div>
     );
 }

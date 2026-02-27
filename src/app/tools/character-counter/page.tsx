@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { getToolData } from '@/data/tools';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -10,6 +11,17 @@ export const metadata: Metadata = {
   description: 'Free character counter. Count characters with or without spaces instantly. Perfect for Twitter, SMS, and word limits.',
   keywords: ['character counter', 'char count', 'text length counter', 'Twitter character counter'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/character-counter' },
+  openGraph: {
+    title: 'Character Counter – Count Characters Online Free | ToolNova',
+    description: 'Count characters, spaces, words, and paragraphs instantly.',
+    url: 'https://www.toolnovahub.com/tools/character-counter',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Character Counter – Count Characters Online Free | ToolNova',
+    description: 'Count characters, spaces, words, and paragraphs instantly.',
+  },
 };
 
 export default function CharacterCounterPage() {
@@ -48,6 +60,18 @@ export default function CharacterCounterPage() {
                     faq={toolData.faqs}
                 />
             )}
+            
+
+      <section className="mx-auto max-w-5xl px-4 py-8">
+        <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <Link href="/tools" className="underline underline-offset-4">All AI tools</Link>
+          <Link href="/tools/career-tools" className="underline underline-offset-4">Career tools</Link>
+          <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
+          <Link href="/blog" className="underline underline-offset-4">Blog guides</Link>
+        </div>
+      </section>
+
             <RelatedTools currentTool="character-counter" category="Utility" />
         </>
     );
