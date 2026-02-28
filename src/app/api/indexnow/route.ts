@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { siteConfig } from "@/config/site";
 
 // Keep this synced with the file in /public/[KEY].txt
-const INDEXNOW_KEY = "e8f9b90c102b4d91a7e4b5c6d7e8f9a0";
+const INDEXNOW_KEY = "fdcca368392a42d9916dcffd147d6ebf";
 const INDEXNOW_KEY_LOCATION = `${siteConfig.url}/${INDEXNOW_KEY}.txt`;
 
 // IndexNow endpoints
