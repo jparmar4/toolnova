@@ -44,7 +44,7 @@ export async function generateMetadata({
         : `${siteConfig.url}/og-image.png`;
 
     return {
-        title: `${post.title} | ToolNova Blog`,
+        title: post.title,
         description: post.metaDescription,
         keywords: post.keywords,
         authors: [{ name: post.author }],

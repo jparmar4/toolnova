@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import NextImage from "next/image";
 import { getAllBlogPosts, getAllCategories } from "@/data/blog";
 import { FaArrowRight, FaCalendar, FaClock, FaRocket, FaChevronRight } from "react-icons/fa";
 import { siteConfig } from "@/config/site";
@@ -130,13 +131,26 @@ export default function BlogPage() {
                                     </div>
                                 </div>
 
-                                {/* Visual Element */}
+                                {/* Featured Post Cover Image — Required for Google Discover */}
                                 <div className="relative hidden lg:block">
-                                    <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-purple-100 to-fuchsia-100 flex items-center justify-center overflow-hidden">
-                                        <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center shadow-2xl shadow-purple-500/30">
-                                            <FaRocket className="text-white text-4xl" />
+                                    {featuredPost.coverImage ? (
+                                        <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl shadow-purple-900/10">
+                                            <NextImage
+                                                src={featuredPost.coverImage}
+                                                alt={featuredPost.imageAlt || featuredPost.title}
+                                                width={800}
+                                                height={600}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                priority
+                                            />
                                         </div>
-                                    </div>
+                                    ) : (
+                                        <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-purple-100 to-fuchsia-100 flex items-center justify-center">
+                                            <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center shadow-2xl shadow-purple-500/30">
+                                                <FaRocket className="text-white text-4xl" />
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </article>
                         </Link>
