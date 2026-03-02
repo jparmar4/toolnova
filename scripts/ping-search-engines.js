@@ -1,18 +1,50 @@
 const https = require('https');
+const fs = require('fs');
+const path = require('path');
 
 const SITE_URL = 'https://www.toolnovahub.com';
 const INDEXNOW_KEY = "e8f9b90c102b4d91a7e4b5c6d7e8f9a0";
 const INDEXNOW_KEY_LOCATION = `${SITE_URL}/${INDEXNOW_KEY}.txt`;
 
+// Extract slugs robustly without needing TS compilation
+function extractSlugs(filePath, prefix) {
+    try {
+        const fullPath = path.resolve(__dirname, '..', filePath);
+        if (!fs.existsSync(fullPath)) return [];
+
+        const content = fs.readFileSync(fullPath, 'utf8');
+        const matches = [...content.matchAll(/slug:\s*["']([^"']+)["']/g)];
+        return matches.map(m => `${SITE_URL}/${prefix}/${m[1]}`);
+    } catch (e) {
+        console.error(`Error reading ${filePath}:`, e);
+        return [];
+    }
+}
+
+const toolUrls = extractSlugs('src/data/tools.ts', 'tools');
+const blogUrls = extractSlugs('src/data/blog.ts', 'blog');
+const categoryUrls = [
+    "writing-tools", "study-tools", "exam-prep-tools",
+    "image-pdf-tools", "utility-tools", "career-tools"
+].map(c => `${SITE_URL}/tools/${c}`);
+
+const urlList = [
+    SITE_URL,
+    `${SITE_URL}/tools`,
+    `${SITE_URL}/blog`,
+    `${SITE_URL}/about`,
+    ...categoryUrls,
+    ...toolUrls,
+    ...blogUrls
+];
+
+console.log(`🚀 Submitting ${urlList.length} total URLs to IndexNow protocol...`);
+
 const payload = JSON.stringify({
     host: "www.toolnovahub.com",
     key: INDEXNOW_KEY,
     keyLocation: INDEXNOW_KEY_LOCATION,
-    urlList: [
-        SITE_URL,
-        `${SITE_URL}/tools`,
-        `${SITE_URL}/blog`
-    ]
+    urlList: urlList
 });
 
 const ENGINES = [
@@ -41,8 +73,6 @@ const ENGINES = [
         }
     }
 ];
-
-console.log('🚀 Submitting core URLs to IndexNow protocol...');
 
 let completed = 0;
 let errors = 0;

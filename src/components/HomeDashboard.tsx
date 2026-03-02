@@ -41,11 +41,11 @@ export function HomeDashboard() {
                 <Sparkles className="h-4 w-4" /> Trusted by 1M+ students worldwide
               </div>
               <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-6">
-                The Smartest Way <br className="hidden sm:block" />
-                to <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200">Study & Create</span>
+                50+ Free AI Tools for <br className="hidden sm:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200">Students & Professionals</span>
               </h1>
               <p className="text-blue-100 text-lg md:text-xl max-w-xl leading-relaxed mb-10">
-                A professional suite of high-utility tools designed for modern students. Merge PDFs, edit images, and generate flashcards with AI-powered precision.
+                A professional suite of <strong>free AI writing, study, and productivity tools</strong>. Merge PDFs, generate flashcards, fix grammar, and write essays instantly with AI. No sign-up required.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                 <Link href="/tools">
