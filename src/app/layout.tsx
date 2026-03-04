@@ -13,19 +13,9 @@ import { Footer } from "@/components/Footer";
 import { siteConfig } from "@/config/site";
 import {
   generateWebSiteSchema,
-  generateSoftwareApplicationSchema,
-  generateGeoMetaTags,
-  generateAIMetaTags,
-  generateDiscoverMetaTags,
 } from "@/lib/seo-advanced";
 import {
   generateEnhancedOrganizationSchema,
-  generateEnhancedWebSiteSchema,
-  generateEntityData,
-  generateServiceSchema,
-  generateDatasetSchema,
-  generateKnowledgeGraphSchema,
-  generateAllToolsItemListSchema,
 } from "@/lib/seo-worldclass";
 
 const inter = Inter({
@@ -200,7 +190,7 @@ export default function RootLayout({
 
 
 
-        {/* Enhanced WebSite Schema with Search Action */}
+        {/* WebSite Schema with SearchAction — essential for sitelinks search box */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -208,80 +198,11 @@ export default function RootLayout({
           }}
         />
 
-        {/* SoftwareApplication Schema for AI Discovery */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateSoftwareApplicationSchema()),
-          }}
-        />
-
-        {/* World-Class SEO: Enhanced Organization Schema for AI Search */}
+        {/* Organization Schema — essential for Knowledge Panel */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(generateEnhancedOrganizationSchema()),
-          }}
-        />
-
-        {/* World-Class SEO: Enhanced Website Schema for AI Search */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateEnhancedWebSiteSchema()),
-          }}
-        />
-
-        {/* World-Class SEO: Entity Data for Knowledge Graph */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateEntityData()),
-          }}
-        />
-
-        {/* World-Class SEO: Service Schema for AI Discovery */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateServiceSchema()),
-          }}
-        />
-
-        {/* World-Class SEO: Dataset Schema for AI Training Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateDatasetSchema()),
-          }}
-        />
-
-        {/* World-Class SEO: Knowledge Graph Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateKnowledgeGraphSchema()),
-          }}
-        />
-
-        {/* World-Class SEO: All Tools ItemList for AEO */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateAllToolsItemListSchema()),
-          }}
-        />
-
-        {/* Speakable Specification for Voice Search */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "SpeakableSpecification",
-              cssSelector: [".hero-text", ".tool-description", ".speakable-content"],
-              xpath: ["/html/head/title", "/html/head/meta[@name='description']/@content"],
-            }),
           }}
         />
 

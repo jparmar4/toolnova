@@ -36,6 +36,23 @@ const nextConfig: NextConfig = {
         : false,
   },
 
+  // Redirect non-www to www (canonical domain)
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "toolnovahub.com",
+          },
+        ],
+        destination: "https://www.toolnovahub.com/:path*",
+        permanent: true,
+      },
+    ];
+  },
+
   // Security + Performance + Caching Headers
   async headers() {
     return [
@@ -90,6 +107,10 @@ const nextConfig: NextConfig = {
           {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=()",
+          },
+          {
+            key: "X-Robots-Tag",
+            value: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
           },
         ],
       },

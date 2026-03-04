@@ -277,8 +277,8 @@ export function ToolsLibrary() {
                                         key={cat.name}
                                         onClick={() => setActiveCategory(cat.name)}
                                         className={`flex h-11 shrink-0 items-center justify-center gap-x-2 rounded-xl px-5 transition-all duration-300 active:scale-95 font-semibold ${isActive
-                                                ? 'bg-gradient-to-r from-primary to-blue-600 text-white shadow-lg shadow-primary/30'
-                                                : 'bg-slate-100 dark:bg-slate-800 text-foreground hover:bg-slate-200 dark:hover:bg-slate-700'
+                                            ? 'bg-gradient-to-r from-primary to-blue-600 text-white shadow-lg shadow-primary/30'
+                                            : 'bg-slate-100 dark:bg-slate-800 text-foreground hover:bg-slate-200 dark:hover:bg-slate-700'
                                             }`}
                                     >
                                         {cat.icon && <cat.icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-muted-foreground'}`} />}
@@ -300,7 +300,7 @@ export function ToolsLibrary() {
 
                 {/* CTA Section */}
                 <div className="mt-16 mb-8 p-8 md:p-12 rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 dark:from-slate-800 dark:to-slate-900 text-center relative overflow-hidden">
-                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySC0yNHYtMmgxMnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-50"></div>
+                    <div className="absolute inset-0 bg-pattern-dots opacity-50"></div>
                     <div className="relative">
                         <h3 className="text-white text-2xl md:text-3xl font-bold mb-4">Can't find what you're looking for?</h3>
                         <p className="text-slate-300 text-lg mb-8 max-w-lg mx-auto">We're constantly adding new tools. Request a feature and we'll build it!</p>

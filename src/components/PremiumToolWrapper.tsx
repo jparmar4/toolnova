@@ -384,7 +384,7 @@ export function PremiumToolWrapper({
       {ctaTitle && (
         <div className="max-w-6xl mx-auto px-6 py-24">
           <div className="relative group p-12 md:p-20 rounded-[3rem] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white text-center overflow-hidden shadow-2xl">
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+            <div className="absolute inset-0 bg-pattern-noise opacity-20 mix-blend-overlay"></div>
             <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/10 rounded-full blur-[100px] group-hover:scale-110 transition-transform duration-700"></div>
 
             <div className="relative z-10">

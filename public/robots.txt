@@ -40,9 +40,5 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-# Sitemaps
+# Sitemap — single consolidated sitemap
 Sitemap: https://www.toolnovahub.com/sitemap.xml
-Sitemap: https://www.toolnovahub.com/sitemap-news.xml
-Sitemap: https://www.toolnovahub.com/sitemap-images.xml
-
-Host: https://www.toolnovahub.com

@@ -436,7 +436,7 @@ export default function PricingPage() {
 
                 {/* Final CTA */}
                 <div className="relative rounded-[3rem] overflow-hidden p-12 md:p-24 text-center bg-[#0a0a0c]">
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+                    <div className="absolute inset-0 bg-pattern-noise opacity-20" />
                     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-indigo-500/20 to-transparent pointer-events-none" />
 
                     <div className="relative z-10 max-w-3xl mx-auto">
