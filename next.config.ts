@@ -36,23 +36,6 @@ const nextConfig: NextConfig = {
         : false,
   },
 
-  // Redirect non-www to www (canonical domain)
-  async redirects() {
-    return [
-      {
-        source: "/:path*",
-        has: [
-          {
-            type: "host",
-            value: "toolnovahub.com",
-          },
-        ],
-        destination: "https://www.toolnovahub.com/:path*",
-        permanent: true,
-      },
-    ];
-  },
-
   // Security + Performance + Caching Headers
   async headers() {
     return [
