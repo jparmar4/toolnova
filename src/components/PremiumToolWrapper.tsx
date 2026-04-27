@@ -24,8 +24,9 @@ interface RelatedTool {
 }
 
 interface Stat {
-  value: string;
+  value?: string;
   label: string;
+  sublabel?: string;
   icon: LucideIcon;
 }
 
@@ -38,10 +39,11 @@ interface SubjectCard {
 
 interface FeatureCard {
   title: string;
-  description: string;
+  description?: string;
+  desc?: string;
   icon: LucideIcon;
-  gradient: string;
-  bgLight: string;
+  gradient?: string;
+  bgLight?: string;
 }
 
 interface PremiumToolWrapperProps {
@@ -64,7 +66,8 @@ interface PremiumToolWrapperProps {
     color: string;
   }[];
   testimonial?: {
-    quote: string;
+    quote?: string;
+    text?: string;
     author: string;
     role: string;
     initial: string;
@@ -72,6 +75,7 @@ interface PremiumToolWrapperProps {
   relatedTools?: RelatedTool[];
   ctaTitle?: string;
   ctaDescription?: string;
+  ctaButtonText?: string;
   ctaIcon?: LucideIcon;
   expertName?: string;
   expertRole?: string;
@@ -183,10 +187,10 @@ export function PremiumToolWrapper({
                     </div>
                     <div className="text-left">
                       <div className="text-sm font-black text-slate-900 leading-none">
-                        {stat.value}
+                        {stat.value ?? stat.label}
                       </div>
                       <div className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
-                        {stat.label}
+                        {stat.sublabel ?? stat.label}
                       </div>
                     </div>
                   </div>
@@ -250,11 +254,11 @@ export function PremiumToolWrapper({
             {features.map((feature, i) => (
               <div key={i} className="group relative h-full">
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem] blur-2xl -z-10`}
+                    className={`absolute inset-0 bg-gradient-to-br ${feature.gradient ?? "from-indigo-500 to-purple-500"} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem] blur-2xl -z-10`}
                 />
                 <div className="h-full relative p-10 rounded-[2rem] bg-white border border-slate-200 hover-float flex flex-col">
                   <div
-                    className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-8 shadow-xl`}
+                    className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient ?? "from-indigo-500 to-purple-500"} flex items-center justify-center mb-8 shadow-xl`}
                   >
                     <feature.icon className="h-7 w-7 text-white" />
                   </div>
@@ -262,7 +266,7 @@ export function PremiumToolWrapper({
                     {feature.title}
                   </h3>
                   <p className="text-slate-600 leading-relaxed">
-                    {feature.description}
+                    {feature.description ?? feature.desc}
                   </p>
                 </div>
               </div>
@@ -332,7 +336,7 @@ export function PremiumToolWrapper({
                   ))}
                 </div>
                 <blockquote className="text-2xl md:text-3xl font-medium text-slate-900 italic mb-10 leading-relaxed">
-                  "{testimonial.quote}"
+                  "{testimonial.quote ?? testimonial.text}"
                 </blockquote>
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-xl font-black text-white shadow-xl">

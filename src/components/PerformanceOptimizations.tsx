@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/google-font-preconnect */
 /**
  * Core Web Vitals Optimization
  * Resource hints and performance improvements

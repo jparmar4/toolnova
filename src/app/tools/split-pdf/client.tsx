@@ -23,7 +23,7 @@ import Link from 'next/link';
 import { PDFDocument } from 'pdf-lib';
 
 const relatedTools = [
-    { name: 'Merge PDF', sluge: 'merge-pdf', icon: Layers, color: 'from-red-500 to-orange-500' },
+    { name: 'Merge PDF', slug: 'merge-pdf', icon: Layers, color: 'from-red-500 to-orange-500' },
     { name: 'Image to PDF', slug: 'image-to-pdf', icon: FileText, color: 'from-green-500 to-teal-500' },
     { name: 'Image Compressor', slug: 'image-compressor', icon: Zap, color: 'from-orange-500 to-red-500' },
     { name: 'PNG to JPG', slug: 'png-to-jpg', icon: FileText, color: 'from-cyan-500 to-blue-500' },
@@ -93,7 +93,7 @@ export default function SplitPDFClient() {
                 toast.success(`Split into ${pageCount} individual pages!`);
             } else if (splitMode === 'range' || splitMode === 'extract') {
                 const newPdf = await PDFDocument.create();
-                const pageIndices = [];
+                const pageIndices: number[] = [];
                 for (let i = rangeStart - 1; i < rangeEnd; i++) {
                     pageIndices.push(i);
                 }
@@ -113,7 +113,9 @@ export default function SplitPDFClient() {
     };
 
     const downloadPDF = (pdfBytes: Uint8Array, filename: string) => {
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const pdfArrayBuffer = new ArrayBuffer(pdfBytes.byteLength);
+        new Uint8Array(pdfArrayBuffer).set(pdfBytes);
+        const blob = new Blob([pdfArrayBuffer], { type: 'application/pdf' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;

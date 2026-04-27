@@ -30,7 +30,7 @@ interface ToolOption {
   id: string;
   label: string;
   type: "select" | "toggle" | "slider" | "text";
-  options?: { value: string; label: string }[];
+  options?: readonly { value: string; label: string }[];
   defaultValue?: any;
   min?: number;
   max?: number;
@@ -49,9 +49,11 @@ interface EnhancedToolLayoutProps {
   toolSlug: string;
   toolName: string;
   placeholder: string;
-  promptTemplate: (input: string, options?: Record<string, any>) => string;
+  promptTemplate?: (input: string, options?: Record<string, any>) => string;
+  generatePrompt?: (input: string, options?: Record<string, any>) => string;
   inputRows?: number;
-  toolOptions?: ToolOption[];
+  toolOptions?: readonly ToolOption[];
+  options?: readonly ToolOption[];
   resultLabel?: string;
   generateButtonText?: string;
   customResultRenderer?: (result: string) => React.ReactNode;
@@ -64,6 +66,11 @@ interface EnhancedToolLayoutProps {
   showAdvancedOptions?: boolean;
   inputLabel?: string;
   supportedFormats?: string[];
+  showCopyButton?: boolean;
+  showDownloadButton?: boolean;
+  showWordCount?: boolean;
+  showFeedbackButtons?: boolean;
+  systemPrompt?: string;
 }
 
 export default function EnhancedToolLayout({
@@ -71,8 +78,10 @@ export default function EnhancedToolLayout({
   toolName,
   placeholder,
   promptTemplate,
+  generatePrompt,
   inputRows = 6,
   toolOptions = [],
+  options: optionAlias,
   resultLabel = "✨ Result",
   generateButtonText = "✨ Generate",
   customResultRenderer,
@@ -97,15 +106,17 @@ export default function EnhancedToolLayout({
   const [saved, setSaved] = useState(false);
   const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
   const router = useRouter();
+  const resolvedToolOptions = optionAlias ?? toolOptions;
+  const resolvedPromptTemplate = promptTemplate ?? generatePrompt;
 
   // Initialize options with default values
   useEffect(() => {
     const defaultOptions: Record<string, any> = {};
-    toolOptions.forEach((option) => {
+    resolvedToolOptions.forEach((option) => {
       defaultOptions[option.id] = option.defaultValue;
     });
     setOptions(defaultOptions);
-  }, [toolOptions]);
+  }, [resolvedToolOptions]);
 
   // Load history from localStorage
   useEffect(() => {
@@ -147,11 +158,15 @@ export default function EnhancedToolLayout({
       if (isNonAITool && nonAIHandler) {
         result = await nonAIHandler(input, options);
       } else {
-        const prompt = promptTemplate(input, options);
-        const response = await fetch("/api/generate", {
+        if (!resolvedPromptTemplate) {
+          throw new Error("No prompt template configured for this tool");
+        }
+
+        const prompt = resolvedPromptTemplate(input, options);
+        const response = await fetch("/api/ai", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt, toolSlug }),
+          body: JSON.stringify({ prompt }),
         });
 
         if (!response.ok) throw new Error("Generation failed");
@@ -291,7 +306,7 @@ export default function EnhancedToolLayout({
             )}
 
             {/* Options Toggle */}
-            {toolOptions.length > 0 && showAdvancedOptions && (
+            {resolvedToolOptions.length > 0 && showAdvancedOptions && (
               <button
                 onClick={() => setShowOptions(!showOptions)}
                 className={`p-2 rounded-xl transition-all ${
@@ -317,7 +332,7 @@ export default function EnhancedToolLayout({
         </div>
 
         {/* Advanced Options Panel */}
-        {showOptions && toolOptions.length > 0 && (
+        {showOptions && resolvedToolOptions.length > 0 && (
           <div className="p-6 bg-gradient-to-br from-slate-50 to-indigo-50/30 border-b border-slate-200">
             <div className="flex items-center gap-2 mb-4">
               <Wand2 className="h-4 w-4 text-indigo-600" />
@@ -326,7 +341,7 @@ export default function EnhancedToolLayout({
               </h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {toolOptions.map((option) => (
+              {resolvedToolOptions.map((option) => (
                 <div key={option.id} className="space-y-2">
                   <label className="text-sm font-semibold text-slate-700">
                     {option.label}

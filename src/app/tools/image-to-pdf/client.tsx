@@ -97,7 +97,9 @@ export default function ImageToPDFClient() {
             }
 
             const pdfBytes = await pdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const pdfArrayBuffer = new ArrayBuffer(pdfBytes.byteLength);
+            new Uint8Array(pdfArrayBuffer).set(pdfBytes);
+            const blob = new Blob([pdfArrayBuffer], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
 
             const a = document.createElement('a');

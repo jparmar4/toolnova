@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/google-font-preconnect */
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter, Geist_Mono } from "next/font/google";
