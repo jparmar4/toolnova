@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { QuickAnswerBox } from '@/components/aeo/QuickAnswerBox';
 import { FAQAccordion } from '@/components/aeo/FAQAccordion';
 import { getHomepageAEO } from '@/lib/global-aeo-content';
+import { motion } from 'framer-motion';
 
 export function HomeDashboard() {
   const aeoContent = getHomepageAEO();
@@ -28,30 +29,65 @@ export function HomeDashboard() {
       <section className="relative bg-gradient-to-br from-primary via-blue-600 to-indigo-700 overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-500/20 rounded-full -ml-32 -mb-32 blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-full blur-3xl"></div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl"
+          ></motion.div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" }}
+            className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-500/20 rounded-full -ml-32 -mb-32 blur-3xl"
+          ></motion.div>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 2, delay: 0.5 }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-full blur-3xl"
+          ></motion.div>
         </div>
 
         <div className="relative mx-auto max-w-[1200px] px-6 py-20 md:py-32">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
             {/* Left Content */}
             <div className="flex-1 text-center md:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white/90 text-sm font-medium mb-8">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white/90 text-sm font-medium mb-8"
+              >
                 <Sparkles className="h-4 w-4" /> Trusted by 1M+ students worldwide
-              </div>
-              <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-6">
+              </motion.div>
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-6"
+              >
                 50+ Free AI Tools for <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200">Students & Professionals</span>
-              </h1>
-              <p className="text-blue-100 text-lg md:text-xl max-w-xl leading-relaxed mb-10">
+              </motion.h1>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-blue-100 text-lg md:text-xl max-w-xl leading-relaxed mb-10"
+              >
                 A professional suite of <strong>free AI writing, study, and productivity tools</strong>. Merge PDFs, generate flashcards, fix grammar, and write essays instantly with AI. No sign-up required.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+              </motion.p>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+              >
                 <Link href="/tools">
-                  <Button className="h-14 px-8 rounded-xl bg-white text-primary hover:bg-blue-50 font-bold text-base transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                  <Button className="h-14 px-8 rounded-xl bg-white text-primary hover:bg-blue-50 font-bold text-base transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 flex items-center justify-center gap-2 group">
                     Get Started Free
-                    <ArrowRight className="h-5 w-5" />
+                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
                 <Link href="/tools">
@@ -60,26 +96,31 @@ export function HomeDashboard() {
                     Browse Tools
                   </Button>
                 </Link>
-              </div>
+              </motion.div>
             </div>
 
             {/* Right Stats */}
-            <div className="flex md:flex-col gap-8 md:gap-6">
-              <div className="text-center md:text-right p-4 rounded-2xl bg-white/10 backdrop-blur-sm">
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+              className="flex md:flex-col gap-8 md:gap-6"
+            >
+              <div className="text-center md:text-right p-4 rounded-2xl bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors">
                 <div className="text-white text-3xl md:text-4xl font-black">10+</div>
                 <div className="text-blue-200 text-sm font-medium">AI Tools</div>
               </div>
-              <div className="text-center md:text-right p-4 rounded-2xl bg-white/10 backdrop-blur-sm">
+              <div className="text-center md:text-right p-4 rounded-2xl bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors">
                 <div className="text-white text-3xl md:text-4xl font-black">1M+</div>
                 <div className="text-blue-200 text-sm font-medium">Users</div>
               </div>
-              <div className="text-center md:text-right p-4 rounded-2xl bg-white/10 backdrop-blur-sm">
+              <div className="text-center md:text-right p-4 rounded-2xl bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors">
                 <div className="text-white text-3xl md:text-4xl font-black flex items-center justify-center md:justify-end gap-1">
                   4.9 <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                 </div>
                 <div className="text-blue-200 text-sm font-medium">Rating</div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 

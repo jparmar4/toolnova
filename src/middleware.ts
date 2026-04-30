@@ -42,8 +42,19 @@ export async function updateSession(request: NextRequest) {
         }
     );
 
-    // refreshing the auth token
-    await supabase.auth.getUser();
+    // refreshing the auth token with timeout to prevent 504 gateway timeout
+    try {
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Supabase auth timeout")), 2000)
+        );
+        
+        await Promise.race([
+            supabase.auth.getUser(),
+            timeoutPromise
+        ]);
+    } catch (error) {
+        console.error("Middleware Supabase auth error:", error);
+    }
 
     return response;
 }
