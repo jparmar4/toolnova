@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import EnhancedToolLayout from "@/components/EnhancedToolLayout";
 import { PremiumToolWrapper } from "@/components/PremiumToolWrapper";
@@ -54,7 +54,7 @@ const toolOptions = [
 ] as const;
 
 const generatePrompt = (input: string, options?: Record<string, any>) => {
-  const platform = options?.platform || "instagram";
+  const platform = (options?.platform as string) || "instagram";
   const tone = options?.tone || "casual";
   const includeHashtags = options?.includeHashtags !== false;
 
@@ -82,7 +82,7 @@ const generatePrompt = (input: string, options?: Record<string, any>) => {
       "Uplifting, motivational, empowering. Share wisdom, encouragement, and positive messages. Aspirational tone. Make readers feel inspired to take action.",
   };
 
-  const hashtagStrategy = includeHashtags
+  const hashtagStrategy: Record<string, string> | null = includeHashtags
     ? {
         instagram:
           "5-10 hashtags. Mix popular (100K+ posts), medium (10K-100K), and niche (under 10K). Place at end or in first comment.",

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -12,7 +12,7 @@ const MobileMenu = lazy(() => import('./MobileMenu'));
 
 export function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<{ email?: string; id?: string } | null>(null);
     const [loading, setLoading] = useState(true);
     const supabase = createClient();
 

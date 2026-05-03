@@ -1,8 +1,8 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, Sparkles, Calculator, PenLine, BookOpen } from 'lucide-react';
+import { Search, Sparkles, PenLine, BookOpen, Calculator } from 'lucide-react';
 import {
     CommandDialog,
     CommandEmpty,
@@ -11,42 +11,19 @@ import {
     CommandItem,
     CommandList,
 } from '@/components/ui/command';
+import { toolsData } from '@/data/tools';
 
-interface Tool {
-    name: string;
-    href: string;
-    description: string;
-    category: string;
-    icon: 'sparkles' | 'pen' | 'book' | 'calculator';
-}
-
-const tools: Tool[] = [
-    // AI Study Tools
-    { name: 'AI Homework Solver', href: '/tools/homework-solver', description: 'Step-by-step explanations', category: 'AI Study Tools', icon: 'sparkles' },
-    { name: 'AI Notes Generator', href: '/tools/notes-generator', description: 'Exam-ready notes', category: 'AI Study Tools', icon: 'sparkles' },
-    { name: 'MCQ Generator', href: '/tools/mcq-generator', description: 'Practice questions', category: 'AI Study Tools', icon: 'sparkles' },
-    { name: 'Text Summarizer', href: '/tools/text-summarizer', description: 'Quick summaries', category: 'AI Study Tools', icon: 'sparkles' },
-    { name: 'Flashcard Maker', href: '/tools/flashcard-maker', description: 'Study flashcards', category: 'AI Study Tools', icon: 'sparkles' },
-    { name: 'Quiz Generator', href: '/tools/quiz-generator', description: 'Practice quizzes', category: 'AI Study Tools', icon: 'sparkles' },
-
-    // Writing Tools
-    { name: 'Essay Writer', href: '/tools/essay-writer', description: 'Structured essays', category: 'Writing Tools', icon: 'pen' },
-    { name: 'Paraphraser', href: '/tools/paraphraser', description: 'Rewrite content', category: 'Writing Tools', icon: 'pen' },
-    { name: 'Grammar Fix', href: '/tools/grammar-fix', description: 'Correct grammar', category: 'Writing Tools', icon: 'pen' },
-    { name: 'Speech Writer', href: '/tools/speech-writer', description: 'Engaging speeches', category: 'Writing Tools', icon: 'pen' },
-    { name: 'Email Writer', href: '/tools/email-writer', description: 'Professional emails', category: 'Writing Tools', icon: 'pen' },
-    { name: 'Caption Generator', href: '/tools/caption-generator', description: 'Social captions', category: 'Writing Tools', icon: 'pen' },
-
-    // Creative Tools
-    { name: 'Story Generator', href: '/tools/story-generator', description: 'Creative stories', category: 'Creative Tools', icon: 'book' },
-    { name: 'Resume Bullets', href: '/tools/resume-bullets', description: 'Resume points', category: 'Creative Tools', icon: 'book' },
-
-    // Utility Tools
-    { name: 'Word Counter', href: '/tools/word-counter', description: 'Count words', category: 'Utility Tools', icon: 'calculator' },
-    { name: 'Character Counter', href: '/tools/character-counter', description: 'Count characters', category: 'Utility Tools', icon: 'calculator' },
-    { name: 'Case Converter', href: '/tools/case-converter', description: 'Convert text case', category: 'Utility Tools', icon: 'calculator' },
-    { name: 'Age Calculator', href: '/tools/age-calculator', description: 'Calculate age', category: 'Utility Tools', icon: 'calculator' },
-];
+const categoryIcons: Record<string, 'sparkles' | 'pen' | 'book' | 'calculator'> = {
+    'AI Study Tools': 'sparkles',
+    'Writing Tools': 'pen',
+    'Creative Tools': 'book',
+    'Utility Tools': 'calculator',
+    'PDF Tools': 'book',
+    'Image Tools': 'book',
+    'Career Tools': 'pen',
+    'Study Tools': 'sparkles',
+    'Exam Prep': 'sparkles',
+};
 
 const iconMap = {
     sparkles: Sparkles,
@@ -71,13 +48,21 @@ export function GlobalSearch() {
         return () => document.removeEventListener('keydown', down);
     }, []);
 
+    const tools = Object.entries(toolsData).map(([slug, tool]) => ({
+        name: tool.name,
+        href: `/tools/${slug}`,
+        description: tool.tagline || tool.description,
+        category: tool.category,
+        icon: categoryIcons[tool.category] || 'sparkles',
+    }));
+
     const groupedTools = tools.reduce((acc, tool) => {
         if (!acc[tool.category]) {
             acc[tool.category] = [];
         }
         acc[tool.category].push(tool);
         return acc;
-    }, {} as Record<string, Tool[]>);
+    }, {} as Record<string, typeof tools>);
 
     return (
         <>
@@ -88,7 +73,7 @@ export function GlobalSearch() {
                 <Search className="h-4 w-4" />
                 <span className="hidden md:inline">Search tools...</span>
                 <kbd className="hidden md:inline-flex h-5 select-none items-center gap-1 rounded-full border border-border/60 bg-background px-2 font-mono text-[10px] font-medium text-muted-foreground">
-                    <span className="text-xs">⌘</span>K
+                    <span className="text-xs">&#8984;</span>K
                 </kbd>
             </button>
 

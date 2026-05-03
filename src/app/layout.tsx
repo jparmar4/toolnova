@@ -1,8 +1,9 @@
-/* eslint-disable @next/next/google-font-preconnect */
+﻿/* eslint-disable @next/next/google-font-preconnect */
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter, Geist_Mono } from "next/font/google";
 import { CookieConsent } from "@/components/CookieConsent";
+import { ConsentedScripts } from "@/components/ConsentedScripts";
 import "./globals.css";
 import "./accessibility.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -147,7 +148,6 @@ export const metadata: Metadata = {
     },
   },
   category: "Productivity",
-  // Additional metadata
   other: {
     "revisit-after": "3 days",
     language: "en",
@@ -164,7 +164,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* RSS Feed autodiscovery for feed readers and search engines */}
+        {/* RSS Feed autodiscovery */}
         <link
           rel="alternate"
           type="application/rss+xml"
@@ -186,12 +186,10 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Material Symbols Outlined - loaded via Client Component to prevent Server Component errors */}
+        {/* Material Symbols Outlined */}
         <MaterialSymbols />
 
-
-
-        {/* WebSite Schema with SearchAction — essential for sitelinks search box */}
+        {/* WebSite Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -199,20 +197,13 @@ export default function RootLayout({
           }}
         />
 
-        {/* Organization Schema — essential for Knowledge Panel */}
+        {/* Organization Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(generateEnhancedOrganizationSchema()),
           }}
         />
-
-        {/* Google AdSense */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1328083083403070"
-          crossOrigin="anonymous"
-        ></script>
       </head>
       <body
         className={`${inter.variable} ${geistMono.variable} font-display antialiased bg-background text-foreground`}
@@ -234,22 +225,8 @@ export default function RootLayout({
           <FeedbackWidget />
         </ThemeProvider>
         <CookieConsent />
-        {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-58TZZZDYJ7"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-58TZZZDYJ7');
-          `}
-        </Script>
-
-
+        {/* GA & AdSense loaded only after cookie consent */}
+        <ConsentedScripts />
       </body>
     </html>
   );

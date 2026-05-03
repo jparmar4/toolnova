@@ -8,11 +8,11 @@ const nextConfig: NextConfig = {
 
   // TypeScript configuration
   typescript: {
-    ignoreBuildErrors: true,
+    // ignoreBuildErrors: false (catch TS errors) //
   },
 
   // React configuration
-  reactStrictMode: false,
+  reactStrictMode: true,
 
   // Image optimization
   images: {
