@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { CareerToolsClient } from './client';
+import { getCategoryAEO } from '@/lib/global-aeo-content';
+import { generateFAQPageSchema, generateBreadcrumbListSchema, CATEGORY_BREADCRUMBS } from '@/lib/seo-worldclass';
 
 export const metadata = {
     title: 'Career Tools - Cover Letter, Interview Prep & More | ToolNova',
@@ -28,11 +30,61 @@ const tools = [
 ];
 
 export default function CareerToolsPage() {
+    const aeoContent = getCategoryAEO('career-tools');
+    const faqSchema = generateFAQPageSchema(aeoContent.faqs);
+    const breadcrumbSchema = generateBreadcrumbListSchema(CATEGORY_BREADCRUMBS['career-tools']);
+
     return (
         <div className="w-full min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-background dark:to-background">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+            />
             <div className="mx-auto max-w-[1200px] px-6 py-10">
                 <CareerToolsClient tools={tools} />
             </div>
+
+            {/* Rich Editorial Content to satisfy Google AdSense High-Quality / Thin Content policies */}
+            <section className="mx-auto max-w-4xl px-6 mt-16 pb-20 border-t border-slate-200/60 dark:border-slate-800/60 pt-16 prose prose-slate dark:prose-invert prose-lg">
+                <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-6">
+                    Navigating the Modern Job Market: ATS Optimization & Resume Strategy
+                </h2>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    Securing a position in today’s highly competitive employment landscape requires a strategic approach to application materials. Most mid-to-large-size organizations filter applications using automated Applicant Tracking Systems (ATS) before a human hiring manager ever reviews them. To stand out and pass these initial filters, job seekers must optimize their resumes, customize cover letters, and prepare for interviews using data-driven, structured methods.
+                </p>
+
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+                    Designing High-Impact Resume Bullet Points that Get Noticed
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    A common mistake on resumes is listing job duties rather than concrete achievements. Hiring managers want to see the impact of your work. By using a Resume Bullets builder, candidates can transform passive descriptions into impact-oriented statements. For example, instead of writing "responsible for managing social media," write "engineered a social media strategy that increased user engagement by 40% over six months." Utilizing action verbs and quantifying results shows your direct value and aligns your resume with what recruiters are looking for.
+                </p>
+
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+                    Crafting Personalized and Persuasive Cover Letters
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    While a resume lists your historical achievements, a cover letter explains your future value. It tells your professional story and explains *why* you are interested in a specific role. However, writing a unique letter for every single job application can lead to application fatigue. Utilizing an AI Cover Letter Writer helps job seekers generate tailored drafts based on their experience and the specific job description. This draft can then be personalized, ensuring that the tone is professional and that key cultural values of the target company are highlighted.
+                </p>
+
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+                    Simulation-Based Interview Preparation: Anticipating Key Questions
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    Once your resume and cover letter successfully pass the screening process, the final challenge is the job interview. Interviews can be stressful, but preparation can build confidence. An Interview Generator helps job seekers practice by producing relevant, role-specific questions based on industry standards and job listings. Practicing your responses using structured frameworks—such as the STAR method (Situation, Task, Action, Result)—helps you provide concise, logical, and impactful answers that demonstrate your competency.
+                </p>
+
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+                    Career Productivity: Goal Planning and Daily Actionable To-Do Lists
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    The job application process is itself a project that requires organization and persistence. Managing applications, follow-ups, and interviews requires structured goal planning. A Goal Planner helps break down long-term objectives (like landing a software engineering job) into monthly, weekly, and daily tasks. Converting these goals into simple, actionable To-Do lists prevents cognitive overload. Keeping a structured timetable ensures that you dedicate consistent time each day to applications, skill development, and interview prep, maintaining momentum until you secure your desired role.
+                </p>
+            </section>
 
             <section className="mx-auto max-w-[1200px] px-6 pb-12">
                 <h2 className="text-xl font-semibold mb-3">Explore more categories</h2>

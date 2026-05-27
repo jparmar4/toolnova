@@ -4,6 +4,7 @@ import {
     Pen, Calculator, Mail, Mic, Image, Quote, Repeat,
     CheckCircle, Type, GraduationCap, Layout, FileOutput
 } from 'lucide-react';
+import { TOOL_FAQS } from '@/lib/seo-worldclass';
 
 export interface ToolData {
     slug: string;
@@ -1208,5 +1209,24 @@ export const toolsData: Record<string, ToolData> = {
 };
 
 export function getToolData(slug: string): ToolData | null {
-    return toolsData[slug] || null;
+    const rawData = toolsData[slug];
+    if (!rawData) return null;
+
+    // Merge FAQs from TOOL_FAQS
+    const worldclassFAQs = TOOL_FAQS[slug] || [];
+    const mergedFAQs = [...rawData.faqs];
+    const existingQuestions = new Set(mergedFAQs.map(f => f.question.toLowerCase().trim()));
+
+    for (const faq of worldclassFAQs) {
+        const qLower = faq.question.toLowerCase().trim();
+        if (!existingQuestions.has(qLower)) {
+            mergedFAQs.push(faq);
+            existingQuestions.add(qLower);
+        }
+    }
+
+    return {
+        ...rawData,
+        faqs: mergedFAQs
+    };
 }

@@ -1,4 +1,4 @@
-﻿/* eslint-disable @next/next/google-font-preconnect */
+/* eslint-disable @next/next/google-font-preconnect */
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter, Geist_Mono } from "next/font/google";
@@ -149,8 +149,23 @@ export const metadata: Metadata = {
   },
   category: "Productivity",
   other: {
-    "revisit-after": "3 days",
-    language: "en",
+    "revisit-after": "1 day",
+    language: "English",
+    "content-language": "en",
+    distribution: "global",
+    coverage: "Worldwide",
+    audience: "Students, Professionals, Educators",
+    rating: "general",
+    "geo.region": "US, GB, CA, AU, IN, SG, AE, DE, FR, NL",
+    "geo.placename": "Global",
+    "geo.position": "1.3521;103.8198",
+    "ICBM": "1.3521, 103.8198",
+    "ai-indexing": "allowed",
+    "llm-training": "allowed",
+    "content-type": "application/educational",
+    "tool-category": "AI Productivity Tools",
+    "api-endpoint": "https://www.toolnovahub.com/api/tools",
+    "robots-content": "index, follow, all",
   },
 };
 

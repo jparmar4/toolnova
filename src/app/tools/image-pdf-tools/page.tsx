@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { getCategoryAEO } from '@/lib/global-aeo-content';
+import { generateFAQPageSchema, generateBreadcrumbListSchema, CATEGORY_BREADCRUMBS } from '@/lib/seo-worldclass';
 import {
     Image as ImageIcon,
     ArrowRight,
@@ -37,8 +39,20 @@ const tools = [
 ];
 
 export default function ImagePDFToolsPage() {
+    const aeoContent = getCategoryAEO('image-pdf-tools');
+    const faqSchema = generateFAQPageSchema(aeoContent.faqs);
+    const breadcrumbSchema = generateBreadcrumbListSchema(CATEGORY_BREADCRUMBS['image-pdf-tools']);
+
     return (
         <div className="w-full min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-background dark:to-background">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+            />
             <div className="mx-auto max-w-[1200px] px-6 py-10">
                 <div className="flex flex-wrap gap-2 mb-6">
                     <Link href="/" className="text-muted-foreground text-sm font-medium hover:text-primary">Home</Link>
@@ -90,6 +104,44 @@ export default function ImagePDFToolsPage() {
                     </p>
                 </div>
             </div>
+
+            {/* Rich Editorial Content to satisfy Google AdSense High-Quality / Thin Content policies */}
+            <section className="mx-auto max-w-4xl px-6 mt-12 pb-20 border-t border-slate-200/60 dark:border-slate-800/60 pt-16 prose prose-slate dark:prose-invert prose-lg">
+                <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-6">
+                    Modern Document Management and Web Asset Optimization
+                </h2>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    In today's digital environment, managing documents and digital media files efficiently is a core professional requirement. However, files are often too large for email attachments, upload portals, or web publishing. Addressing these limitations requires robust tools that optimize file sizes and convert formats while maintaining strict data privacy standards. Using local, browser-based utilities is the safest and most efficient way to handle files.
+                </p>
+
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+                    Maximizing Page Load Speeds with Smart Image Compression
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    High-resolution images are essential for modern web design, but they are also the primary cause of slow page loading. Search engines prioritize fast-loading websites, making image optimization critical for Search Engine Optimization (SEO). An Image Compressor reduces the file size of images by removing unnecessary metadata and optimizing pixel data, without causing visible quality loss. For developers and web editors, converting images from older formats to highly optimized formats (such as JPG to PNG, or PNG to JPG) ensures compatibility and faster loading across different devices and browsers.
+                </p>
+
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+                    Managing Complex Document Workflows: Merging and Splitting PDFs
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    Portable Document Format (PDF) files are the standard for professional business documents due to their consistency across operating systems. However, editing them can be difficult. Combining multiple independent documents—such as invoices, resume sections, or research papers—into a single file is simplified with a Merge PDF utility. Conversely, extracting specific pages from a large document or dividing a massive ebook into smaller chapters is achieved using a Split PDF tool. Having these utilities readily available in a browser eliminates the need to buy and install heavy desktop software.
+                </p>
+
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+                    Local and Privacy-First Processing: Why Client-Side Execution Matters
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    A major concern when uploading private documents to online converters is data security. Standard online tools upload files to third-party servers, exposing sensitive personal or financial information to data breaches. ToolNova addresses this risk by executing file processing—including merging, splitting, and converting—directly in the user's browser whenever possible. Because your files never leave your device, your private data remains completely secure. For server-side tools, we enforce encryption in transit and delete all files immediately after processing.
+                </p>
+
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+                    Cross-Format Conversions: PNG, JPG, and PDF Best Practices
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    Different file formats serve different visual and structural purposes. JPG files are ideal for complex photographs because they support millions of colors while maintaining small file sizes. PNG files are preferred for graphic designs, logos, and screenshots that require transparent backgrounds and sharp borders. Converting between these formats is necessary when adjusting files for different publishing platforms. Additionally, converting multiple reference images into a single PDF document makes it easier to share portfolios, receipts, or notes, ensuring the layout remains identical for every recipient.
+                </p>
+            </section>
 
             <section className="mx-auto max-w-[1200px] px-6 pb-12">
                 <h2 className="text-xl font-semibold mb-3">Explore more categories</h2>
