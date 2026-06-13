@@ -1,8 +1,8 @@
 import OpenAI from 'openai';
 import { getCachedResponse, cacheResponse } from './cache';
 
-export const MODEL_FREE = 'gpt-5-nano';
-export const MODEL_PREMIUM = 'gpt-5-mini';
+export const MODEL_FREE = 'gpt-4o-mini';
+export const MODEL_PREMIUM = 'gpt-4o';
 
 interface AIResponse {
   success: boolean;

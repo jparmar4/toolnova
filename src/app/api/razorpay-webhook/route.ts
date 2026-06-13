@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
-// import { prisma } from "@/lib/db"; // Uncomment and fix import based on your lib/db.ts
+import { db } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
     try {
@@ -26,39 +26,54 @@ export async function POST(req: NextRequest) {
 
         const event = JSON.parse(body);
         const { event: eventName, payload } = event;
-        const subId = payload.subscription?.entity?.id || payload.payment?.entity?.subscription_id;
+        const subId =
+            payload.subscription?.entity?.id ||
+            payload.payment?.entity?.subscription_id;
 
         console.log(`Razorpay Webhook Event: ${eventName} for Subscription: ${subId}`);
 
-        // Update your database here using Prisma
-        // Example:
-        /*
-        const updateData = {
-            status: eventName.replace("subscription.", ""),
-            currentPeriodEnd: payload.subscription?.entity?.current_end ? new Date(payload.subscription.entity.current_end * 1000) : undefined,
-        };
-    
-        await prisma.subscription.update({
-            where: { razorpaySubscriptionId: subId },
-            data: updateData,
-        });
-        */
-
-        switch (eventName) {
-            case "subscription.activated":
-                console.log("User subscription active ✅:", subId);
-                break;
-            case "subscription.charged":
-                console.log("Subscription renewed 💰:", subId);
-                break;
-            case "subscription.cancelled":
-                console.log("Subscription cancelled ❌:", subId);
-                break;
-            case "payment.failed":
-                console.log("Payment failed ⚠️:", subId);
-                break;
-            default:
-                console.log("Unhandled webhook event:", eventName);
+        if (subId) {
+            switch (eventName) {
+                case "subscription.activated":
+                case "subscription.charged": {
+                    const currentEnd = payload.subscription?.entity?.current_end;
+                    await db.subscription.updateMany({
+                        where: { razorpaySubscriptionId: subId },
+                        data: {
+                            status: "active",
+                            ...(currentEnd && {
+                                currentPeriodEnd: new Date(currentEnd * 1000),
+                            }),
+                        },
+                    });
+                    console.log(`✅ Subscription ${subId} marked active`);
+                    break;
+                }
+                case "subscription.cancelled":
+                case "subscription.completed":
+                case "subscription.expired": {
+                    await db.subscription.updateMany({
+                        where: { razorpaySubscriptionId: subId },
+                        data: { status: "cancelled" },
+                    });
+                    console.log(`❌ Subscription ${subId} marked cancelled`);
+                    break;
+                }
+                case "subscription.halted":
+                case "subscription.paused": {
+                    await db.subscription.updateMany({
+                        where: { razorpaySubscriptionId: subId },
+                        data: { status: "halted" },
+                    });
+                    console.log(`⚠️ Subscription ${subId} halted`);
+                    break;
+                }
+                case "payment.failed":
+                    console.error("Payment failed ⚠️ for subscription:", subId);
+                    break;
+                default:
+                    console.log("Unhandled webhook event:", eventName);
+            }
         }
 
         return new Response("OK", { status: 200 });

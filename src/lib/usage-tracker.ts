@@ -354,6 +354,17 @@ const challenges = [
 
 export function getDailyChallenge(): DailyChallenge {
     const today = new Date().toISOString().split('T')[0];
+    const dayIndex = new Date().getDate() % challenges.length;
+    const selectedChallenge = challenges[dayIndex];
+    const defaultChallenge: DailyChallenge = {
+        date: today,
+        toolSlug: selectedChallenge.slug,
+        toolName: selectedChallenge.name,
+        description: selectedChallenge.description,
+        completed: false,
+    };
+
+    if (typeof window === 'undefined') return defaultChallenge;
 
     try {
         const saved = localStorage.getItem(CHALLENGE_KEY);
@@ -367,25 +378,13 @@ export function getDailyChallenge(): DailyChallenge {
         console.error('Error loading daily challenge:', error);
     }
 
-    // Generate new challenge
-    const dayIndex = new Date().getDate() % challenges.length;
-    const selectedChallenge = challenges[dayIndex];
-
-    const challenge: DailyChallenge = {
-        date: today,
-        toolSlug: selectedChallenge.slug,
-        toolName: selectedChallenge.name,
-        description: selectedChallenge.description,
-        completed: false,
-    };
-
     try {
-        localStorage.setItem(CHALLENGE_KEY, JSON.stringify(challenge));
+        localStorage.setItem(CHALLENGE_KEY, JSON.stringify(defaultChallenge));
     } catch (error) {
         console.error('Error saving daily challenge:', error);
     }
 
-    return challenge;
+    return defaultChallenge;
 }
 
 /**
