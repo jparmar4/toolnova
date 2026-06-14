@@ -2,6 +2,10 @@ import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
+// Store processed event IDs for idempotency (in production, use a cache like Redis)
+const processedEvents = new Set<string>();
+const IDEMPOTENCY_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours
+
 export async function POST(req: NextRequest) {
     try {
         const body = await req.text();
@@ -11,7 +15,10 @@ export async function POST(req: NextRequest) {
 
         if (!webhookSecret) {
             console.error("RAZORPAY_WEBHOOK_SECRET is not defined");
-            return new Response("Configuration error", { status: 500 });
+            return NextResponse.json(
+                { error: "Configuration error" },
+                { status: 500 }
+            );
         }
 
         const expectedSignature = crypto
@@ -21,16 +28,32 @@ export async function POST(req: NextRequest) {
 
         if (signature !== expectedSignature) {
             console.error("Invalid Webhook Signature");
-            return new Response("Invalid signature", { status: 400 });
+            return NextResponse.json(
+                { error: "Invalid signature" },
+                { status: 400 }
+            );
         }
 
         const event = JSON.parse(body);
-        const { event: eventName, payload } = event;
+        const { event: eventName, payload, id: eventId, created_at } = event;
+
+        // Idempotency check - prevent duplicate processing
+        if (eventId && processedEvents.has(eventId)) {
+            console.log(`⚠️ Duplicate webhook event detected: ${eventId}`);
+            return NextResponse.json({ status: "ok" }, { status: 200 });
+        }
+
+        if (eventId) {
+            processedEvents.add(eventId);
+            // Clean up old events (optional: implement with a timer in production)
+            setTimeout(() => processedEvents.delete(eventId), IDEMPOTENCY_TIMEOUT);
+        }
+
         const subId =
             payload.subscription?.entity?.id ||
             payload.payment?.entity?.subscription_id;
 
-        console.log(`Razorpay Webhook Event: ${eventName} for Subscription: ${subId}`);
+        console.log(`Razorpay Webhook Event: ${eventName} | ID: ${eventId} | Subscription: ${subId}`);
 
         if (subId) {
             switch (eventName) {
@@ -69,16 +92,25 @@ export async function POST(req: NextRequest) {
                     break;
                 }
                 case "payment.failed":
-                    console.error("Payment failed ⚠️ for subscription:", subId);
+                    console.error("⚠️ Payment failed for subscription:", subId);
+                    // Optionally: update subscription status to failed
                     break;
                 default:
-                    console.log("Unhandled webhook event:", eventName);
+                    console.log("ℹ️ Unhandled webhook event:", eventName);
             }
         }
 
-        return new Response("OK", { status: 200 });
+        return NextResponse.json({ status: "ok" }, { status: 200 });
     } catch (error) {
-        console.error("Razorpay Webhook Error:", error);
-        return new Response("Internal Server Error", { status: 500 });
+        console.error("Razorpay Webhook Error:", {
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined,
+            timestamp: new Date().toISOString(),
+        });
+        return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 }
+        );
     }
 }
+

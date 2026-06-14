@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getToolSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { generateBreadcrumbSchema } from '@/lib/seo-advanced';
 import { getToolData } from '@/data/tools';
 import { getOptimizedToolMetadata } from '@/lib/tool-metadata';
 import { RelatedTools } from '@/components/RelatedTools';
@@ -40,10 +41,18 @@ export default function EssayWriterPage() {
 
   const faqSchema = getFAQSchema(toolData.faqs);
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: 'https://www.toolnovahub.com' },
+    { name: 'Tools', url: 'https://www.toolnovahub.com/tools' },
+    { name: 'Writing Tools', url: 'https://www.toolnovahub.com/tools/writing-tools' },
+    { name: toolData.name, url: 'https://www.toolnovahub.com/tools/essay-writer' },
+  ]);
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(breadcrumbSchema) }} />
       <EssayWriterClient />
 
       <ToolRichContent

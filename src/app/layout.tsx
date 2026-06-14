@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
 import { SkipLinks } from "@/components/SkipLinks";
 import { FeedbackWidget } from "@/components/FeedbackWidget";
+import { VitalsInitializer } from "@/components/VitalsInitializer";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { siteConfig } from "@/config/site";
@@ -230,6 +231,7 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
+          <VitalsInitializer />
           <SkipLinks />
           <div className="flex min-h-screen flex-col">
             <Header />

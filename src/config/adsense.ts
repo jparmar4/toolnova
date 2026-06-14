@@ -5,10 +5,11 @@
 
 export const adsenseConfig = {
     // Your AdSense Publisher ID (format: ca-pub-XXXXXXXXXXXXXXXX)
-    publisherId: 'ca-pub-XXXXXXXXXXXXXXXX', // TODO: Replace with actual publisher ID
+    // Read from environment variable or use placeholder
+    publisherId: process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-XXXXXXXXXXXXXXXX',
 
     // Enable/Disable ads globally
-    enabled: true, // Set to false during development
+    enabled: process.env.NEXT_PUBLIC_ADSENSE_ID ? true : false, // Disabled if ID not configured
 
     // Ad Units by Placement
     adUnits: {
