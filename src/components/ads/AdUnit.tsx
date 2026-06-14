@@ -25,20 +25,19 @@ export function AdUnit({
     style = {},
 }: AdUnitProps) {
     const showAds = shouldShowAds();
+    const validSlot = /^\d+$/.test(slot);
 
     useEffect(() => {
-        if (!showAds) return;
+        if (!showAds || !validSlot) return;
         try {
-            // Push ad to AdSense
-            if (window.adsbygoogle && window.adsbygoogle.length) {
-                window.adsbygoogle.push({});
-            }
+            window.adsbygoogle = window.adsbygoogle || [];
+            window.adsbygoogle.push({});
         } catch (error) {
             console.error('AdSense error:', error);
         }
-    }, []);
+    }, [showAds, validSlot]);
 
-    if (!showAds) {
+    if (!showAds || !validSlot) {
         return null;
     }
 

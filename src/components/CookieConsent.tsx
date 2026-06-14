@@ -23,11 +23,13 @@ export function CookieConsent() {
 
     const declineCookies = () => {
         localStorage.setItem("cookie_consent", "declined");
+        window.dispatchEvent(new Event("cookie-consent-changed"));
         setIsVisible(false);
     };
 
     const dismissConsent = () => {
         localStorage.setItem("cookie_consent", "dismissed");
+        window.dispatchEvent(new Event("cookie-consent-changed"));
         setIsVisible(false);
     };
 

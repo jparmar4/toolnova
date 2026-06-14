@@ -40,5 +40,5 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-# Sitemap — single consolidated sitemap
+# Sitemap - single consolidated sitemap
 Sitemap: https://www.toolnovahub.com/sitemap.xml

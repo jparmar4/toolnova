@@ -87,9 +87,9 @@ export default function ContactPage() {
                   <p className="text-muted-foreground text-sm">
                     ToolNova Inc.
                     <br />
-                    123 AI Boulevard
+                    71 Ayer Rajah Crescent
                     <br />
-                    San Francisco, CA 94107
+                    Singapore 139951
                   </p>
                 </div>
               </div>

@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { HREFLANG_REGIONS, TOOL_FAQS, TOOL_HOWTOS } from "@/lib/seo-worldclass";
 
+const LAST_UPDATED = "June 14, 2026";
+
 export const metadata: Metadata = {
   title: "SEO Audit Report | ToolNova - World-Class SEO, AEO & GEO",
   description:
@@ -278,7 +280,7 @@ export default function SEOAuditPage() {
       </div>
 
       <div className="mt-8 text-center text-muted-foreground">
-        <p>Last Updated: {new Date().toLocaleDateString()}</p>
+        <p>Last Updated: {LAST_UPDATED}</p>
         <p className="text-sm mt-2">
           For questions about our SEO strategy, contact: {siteConfig.author.email}
         </p>

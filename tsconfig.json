@@ -1,4 +1,4 @@
-﻿{
+{
   "compilerOptions": {
     "target": "ES2017",
     "lib": [
@@ -19,7 +19,7 @@
     "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
-      {
+{
         "name": "next"
       }
     ],

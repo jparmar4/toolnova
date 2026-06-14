@@ -1,6 +1,8 @@
 
 import { Metadata } from "next";
 
+const LAST_UPDATED = "June 14, 2026";
+
 export const metadata: Metadata = {
     title: "Disclaimer | ToolNova",
     description: "Legal disclaimer for using ToolNova's AI-powered tools. Understand the limitations and responsibilities when using our platform.",
@@ -14,7 +16,7 @@ export default function DisclaimerPage() {
         <div className="container mx-auto px-6 py-24 max-w-4xl text-slate-800 dark:text-slate-200">
             <h1 className="text-4xl font-bold mb-8">Disclaimer</h1>
             <p className="text-sm text-muted-foreground mb-12 italic">
-                Last Updated: {new Date().toLocaleDateString()}
+                Last Updated: {LAST_UPDATED}
             </p>
 
             <div className="prose dark:prose-invert max-w-none space-y-10 leading-relaxed">

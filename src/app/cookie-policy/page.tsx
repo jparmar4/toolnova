@@ -1,6 +1,8 @@
 
 import { Metadata } from "next";
 
+const LAST_UPDATED = "June 14, 2026";
+
 export const metadata: Metadata = {
     title: "Cookie Policy | ToolNova",
     description: "Detailed cookie policy for ToolNova. Learn how we use cookies to improve your experience and serve personalized advertisements.",
@@ -14,7 +16,7 @@ export default function CookiePolicyPage() {
         <div className="container mx-auto px-6 py-24 max-w-4xl text-slate-800 dark:text-slate-200">
             <h1 className="text-4xl font-bold mb-8">Cookie Policy</h1>
             <p className="text-sm text-muted-foreground mb-12 italic">
-                Last Updated: {new Date().toLocaleDateString()}
+                Last Updated: {LAST_UPDATED}
             </p>
 
             <div className="prose dark:prose-invert max-w-none space-y-10 leading-relaxed">
@@ -48,7 +50,8 @@ export default function CookiePolicyPage() {
                             <strong>Advertising Cookies:</strong> We work with third-party
                             advertising partners, like Google AdSense, to show you
                             relevant ads. These cookies help track ad performance and
-                            personalize content.
+                            measure ad performance and personalize ads where
+                            permitted by your consent and applicable law.
                         </li>
                     </ul>
                 </section>
@@ -63,7 +66,7 @@ export default function CookiePolicyPage() {
                     </p>
                     <p className="mt-4 italic">
                         You may opt out of personalized advertising by visiting
-                        <a href="https://www.google.com/settings/ads" className="text-primary hover:underline ml-1">
+                        <a href="https://www.google.com/settings/ads" className="text-primary hover:underline ml-1" target="_blank" rel="noopener noreferrer">
                             Google Ad Settings
                         </a>.
                     </p>

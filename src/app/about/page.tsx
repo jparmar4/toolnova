@@ -200,7 +200,7 @@ export default function AboutPage() {
         <h2>Why Choose ToolNova?</h2>
         <p>
           Unlike other platforms that are cluttered with intrusive ads and limit basic
-          features, ToolNova prioritzes the user. We offer a
+          features, ToolNova prioritizes the user. We offer a
           generous free tier because we believe world-class productivity tools
           should be a right, not a luxury reserved for those with expensive subscriptions.
         </p>
