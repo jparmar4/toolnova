@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { getAllBlogPosts } from "@/data/blog";
+import { getAllAuthors } from "@/data/authors";
 import { siteConfig } from "@/config/site";
 
 // Force dynamic generation so sitemap always reflects latest content
@@ -11,6 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Get all blog posts
   const blogPosts = getAllBlogPosts();
+
+  // Get all authors
+  const allAuthors = getAllAuthors();
 
   // ── Static pages ──────────────────────────────────────────────
   const staticPages: MetadataRoute.Sitemap = [
@@ -24,7 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/tools`,
       lastModified: currentDate,
       changeFrequency: "daily",
-      priority: 0.9,
+      priority: 0.95,
     },
     {
       url: `${baseUrl}/blog`,
@@ -61,6 +65,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: currentDate,
       changeFrequency: "monthly",
       priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/cookie-policy`,
+      lastModified: currentDate,
+      changeFrequency: "monthly" as const,
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/disclaimer`,
+      lastModified: currentDate,
+      changeFrequency: "monthly" as const,
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/refund`,
+      lastModified: currentDate,
+      changeFrequency: "monthly" as const,
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/seo-audit`,
+      lastModified: currentDate,
+      changeFrequency: "monthly" as const,
+      priority: 0.4,
     },
   ];
 
@@ -136,13 +164,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "image-compressor",
     "jpg-to-png",
     "png-to-jpg",
+    "resize-image",
   ];
 
   const toolUrls: MetadataRoute.Sitemap = tools.map((tool) => ({
     url: `${baseUrl}/tools/${tool}`,
     lastModified: currentDate,
     changeFrequency: "weekly" as const,
-    priority: 0.8,
+    priority: 0.85,
+  }));
+
+  // ── Author profile pages ──────────────────────────────────────────────
+  const authorUrls: MetadataRoute.Sitemap = allAuthors.map((author) => ({
+    url: `${baseUrl}/author/${author.slug}`,
+    lastModified: currentDate,
+    changeFrequency: "monthly" as const,
+    priority: 0.5,
   }));
 
   // ── Blog post URLs ────────────────────────────────────────────
@@ -161,6 +198,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...staticPages,
     ...categoryUrls,
     ...toolUrls,
+    ...authorUrls,
     ...blogUrls,
   ];
 }

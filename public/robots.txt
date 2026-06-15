@@ -1,6 +1,7 @@
-# ToolNova robots.txt
-# Clean, search-friendly crawl policy
+# ToolNova robots.txt — https://www.toolnovahub.com
+# Comprehensive crawl policy for search engines, AI bots, and research crawlers
 
+# ─── Default for all bots ────────────────────────────────────────────────────
 User-agent: *
 Allow: /
 Disallow: /api/
@@ -8,10 +9,12 @@ Disallow: /admin/
 Disallow: /private/
 Disallow: /auth/
 Disallow: /login
+Disallow: /signup
 Disallow: /*?*preview=*
 Disallow: /*?*debug=*
+Disallow: /*?*_next=*
 
-# Keep core assets crawlable for rendering/indexing quality
+# Core assets — must remain crawlable for rendering & indexing quality
 Allow: /_next/static/
 Allow: /*.css$
 Allow: /*.js$
@@ -20,15 +23,67 @@ Allow: /*.jpg$
 Allow: /*.jpeg$
 Allow: /*.webp$
 Allow: /*.svg$
+Allow: /*.avif$
 
-# AI crawlers explicitly allowed
+# ─── Google Bots ─────────────────────────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /blog/
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+
+# ─── Bing / Microsoft ────────────────────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+
+User-agent: msnbot
+Allow: /
+
+User-agent: AdIdxBot
+Allow: /
+
+# ─── Other Major Search Engines ──────────────────────────────────────────────
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Teoma
+Allow: /
+
+User-agent: ia_archiver
+Allow: /
+
+# ─── AI / LLM Crawlers ───────────────────────────────────────────────────────
 User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
 Allow: /
 
-User-agent: Google-Extended
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: PerplexityBot
@@ -37,8 +92,47 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: Anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
 User-agent: CCBot
 Allow: /
 
-# Sitemap - single consolidated sitemap
+User-agent: Bytespider
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: AI2Bot
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+User-agent: Timpibot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: PetalBot
+Allow: /
+
+# ─── Sitemaps ────────────────────────────────────────────────────────────────
 Sitemap: https://www.toolnovahub.com/sitemap.xml

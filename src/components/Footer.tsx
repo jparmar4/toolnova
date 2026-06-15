@@ -4,14 +4,36 @@ import Link from "next/link";
 import { School, Mail, Twitter, Github, Linkedin } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
+const writingTools = [
+  { name: "Grammar Checker", href: "/tools/grammar-fix" },
+  { name: "Essay Writer", href: "/tools/essay-writer" },
+  { name: "Paraphraser", href: "/tools/paraphraser" },
+  { name: "Text Summarizer", href: "/tools/text-summarizer" },
+  { name: "Email Writer", href: "/tools/email-writer" },
+  { name: "Caption Generator", href: "/tools/caption-generator" },
+  { name: "Story Generator", href: "/tools/story-generator" },
+  { name: "Speech Writer", href: "/tools/speech-writer" },
+];
+
+const studyCareerTools = [
+  { name: "Homework Solver", href: "/tools/homework-solver" },
+  { name: "Flashcard Maker", href: "/tools/flashcard-maker" },
+  { name: "Quiz Generator", href: "/tools/quiz-generator" },
+  { name: "Notes Generator", href: "/tools/notes-generator" },
+  { name: "Resume Bullets", href: "/tools/resume-bullets" },
+  { name: "Cover Letter Writer", href: "/tools/cover-letter-writer" },
+  { name: "Merge PDF", href: "/tools/merge-pdf" },
+  { name: "Image Compressor", href: "/tools/image-compressor" },
+];
+
 export function Footer() {
   return (
     <footer className="w-full bg-gradient-to-b from-slate-50 to-white dark:from-[#0f1419] dark:to-background border-t border-slate-100 dark:border-slate-800 mt-auto">
       <div className="mx-auto max-w-[1200px] px-6 py-16">
         {/* Top Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-12">
           {/* Brand & Description */}
-          <div className="md:col-span-2">
+          <div className="col-span-2 md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-primary to-blue-600 text-white shadow-lg shadow-primary/25">
                 <School className="h-6 w-6" />
@@ -20,16 +42,20 @@ export function Footer() {
                 ToolNova
               </span>
             </div>
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-sm mb-6">
-              The smartest way to study and create. AI-powered tools designed to
-              boost your productivity and help you achieve more.
+            <p className="text-muted-foreground text-sm leading-relaxed max-w-sm mb-4">
+              50+ free AI-powered tools for students and professionals. Write
+              better, study smarter, and get more done — no sign-up required.
+            </p>
+            <p className="text-muted-foreground text-xs mb-6">
+              Trusted by 1M+ users worldwide · Based in Singapore · Serving
+              globally
             </p>
             <div className="flex gap-3">
               <a
                 href={siteConfig.links.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Follow ToolNova on Twitter"
+                aria-label="Follow ToolNova on Twitter/X"
                 className="h-10 w-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-muted-foreground hover:bg-primary hover:text-white transition-all duration-300"
               >
                 <Twitter className="h-5 w-5" />
@@ -62,10 +88,66 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-foreground font-bold mb-4">Quick Links</h4>
-            <ul className="space-y-3">
+          {/* Writing Tools */}
+          <div className="col-span-1">
+            <h4 className="text-foreground font-bold mb-4 text-sm uppercase tracking-wider">
+              Writing Tools
+            </h4>
+            <ul className="space-y-2.5">
+              {writingTools.map((tool) => (
+                <li key={tool.href}>
+                  <Link
+                    href={tool.href}
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                  >
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link
+                  href="/tools/writing-tools"
+                  className="text-primary text-sm font-medium hover:underline"
+                >
+                  All writing tools →
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Study & Career Tools */}
+          <div className="col-span-1">
+            <h4 className="text-foreground font-bold mb-4 text-sm uppercase tracking-wider">
+              Study &amp; Career
+            </h4>
+            <ul className="space-y-2.5">
+              {studyCareerTools.map((tool) => (
+                <li key={tool.href}>
+                  <Link
+                    href={tool.href}
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                  >
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link
+                  href="/tools/study-tools"
+                  className="text-primary text-sm font-medium hover:underline"
+                >
+                  All study tools →
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Company + Legal combined */}
+          <div className="col-span-2 md:col-span-1">
+            <h4 className="text-foreground font-bold mb-4 text-sm uppercase tracking-wider">
+              Company
+            </h4>
+            <ul className="space-y-2.5 mb-8">
               <li>
                 <Link
                   href="/"
@@ -84,28 +166,20 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/pricing"
-                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
-                >
-                  Pricing
-                </Link>
-              </li>
-
-              <li>
-                <Link
                   href="/blog"
                   className="text-muted-foreground hover:text-primary transition-colors text-sm"
                 >
                   Blog
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          {/* Legal Links */}
-          <div>
-            <h4 className="text-foreground font-bold mb-4">Legal</h4>
-            <ul className="space-y-3">
+              <li>
+                <Link
+                  href="/pricing"
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                >
+                  Pricing
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/about"
@@ -114,6 +188,19 @@ export function Footer() {
                   About Us
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                >
+                  Contact
+                </Link>
+              </li>
+            </ul>
+            <h4 className="text-foreground font-bold mb-4 text-sm uppercase tracking-wider">
+              Legal
+            </h4>
+            <ul className="space-y-2.5">
               <li>
                 <Link
                   href="/privacy"
@@ -128,14 +215,6 @@ export function Footer() {
                   className="text-muted-foreground hover:text-primary transition-colors text-sm"
                 >
                   Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
-                >
-                  Contact Us
                 </Link>
               </li>
               <li>
@@ -162,23 +241,47 @@ export function Footer() {
                   Refund Policy
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/shipping"
-                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
-                >
-                  Shipping Policy
-                </Link>
-              </li>
             </ul>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-slate-100 dark:border-slate-800 pt-8">
+        {/* Tool Categories Bar */}
+        <div className="border-t border-slate-100 dark:border-slate-800 pt-8 pb-6">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+            Tool Categories
+          </p>
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            {[
+              { name: "Writing Tools", href: "/tools/writing-tools" },
+              { name: "Study Tools", href: "/tools/study-tools" },
+              { name: "Exam Prep", href: "/tools/exam-prep-tools" },
+              { name: "Career Tools", href: "/tools/career-tools" },
+              { name: "Image & PDF", href: "/tools/image-pdf-tools" },
+              { name: "Utility Tools", href: "/tools/utility-tools" },
+              { name: "Word Counter", href: "/tools/word-counter" },
+              { name: "Age Calculator", href: "/tools/age-calculator" },
+              { name: "Case Converter", href: "/tools/case-converter" },
+              { name: "Vocabulary Builder", href: "/tools/vocabulary-builder" },
+              { name: "Synonym Finder", href: "/tools/synonym-finder" },
+              { name: "LinkedIn Optimizer", href: "/tools/linkedin-optimizer" },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-xs text-muted-foreground hover:text-primary transition-colors"
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-slate-100 dark:border-slate-800 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-muted-foreground text-sm">
-              © {new Date().getFullYear()} ToolNova Inc. All rights reserved.
+              © {new Date().getFullYear()} ToolNova Inc. All rights reserved. ·
+              Free AI Tools for Students &amp; Professionals
             </div>
             <div className="flex gap-6">
               <Link
@@ -192,6 +295,12 @@ export function Footer() {
                 className="text-muted-foreground hover:text-primary transition-colors text-sm"
               >
                 Terms
+              </Link>
+              <Link
+                href="/sitemap.xml"
+                className="text-muted-foreground hover:text-primary transition-colors text-sm"
+              >
+                Sitemap
               </Link>
               <Link
                 href="/contact"

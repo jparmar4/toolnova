@@ -14,12 +14,8 @@ import { VitalsInitializer } from "@/components/VitalsInitializer";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { siteConfig } from "@/config/site";
-import {
-  generateWebSiteSchema,
-} from "@/lib/seo-advanced";
-import {
-  generateEnhancedOrganizationSchema,
-} from "@/lib/seo-worldclass";
+import { generateWebSiteSchema } from "@/lib/seo-advanced";
+import { generateEnhancedOrganizationSchema } from "@/lib/seo-worldclass";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -160,7 +156,7 @@ export const metadata: Metadata = {
     "geo.region": "US, GB, CA, AU, IN, SG, AE, DE, FR, NL",
     "geo.placename": "Global",
     "geo.position": "1.3521;103.8198",
-    "ICBM": "1.3521, 103.8198",
+    ICBM: "1.3521, 103.8198",
     "ai-indexing": "allowed",
     "llm-training": "allowed",
     "content-type": "application/educational",
@@ -188,6 +184,13 @@ export default function RootLayout({
           href="https://www.toolnovahub.com/feed.xml"
         />
 
+        {/* Entity data for AI knowledge graph */}
+        <link
+          rel="alternate"
+          type="application/ld+json"
+          href="https://www.toolnovahub.com/entities.json"
+        />
+
         {/* DNS Prefetch for faster domain resolution */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
@@ -199,6 +202,14 @@ export default function RootLayout({
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="dns-prefetch" href="https://adservice.google.com" />
+        <link rel="dns-prefetch" href="https://googleads.g.doubleclick.net" />
+        <link
+          rel="preconnect"
+          href="https://pagead2.googlesyndication.com"
           crossOrigin="anonymous"
         />
 
@@ -241,8 +252,26 @@ export default function RootLayout({
           <Toaster />
           <FeedbackWidget />
         </ThemeProvider>
+        {/* Google AdSense - loads unconditionally so AdSense bots can detect ads */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1328083083403070"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+        <Script id="adsense-init" strategy="afterInteractive">
+          {`
+            window.adsbygoogle = window.adsbygoogle || [];
+            try {
+              window.adsbygoogle.push({
+                google_ad_client: 'ca-pub-1328083083403070',
+                enable_page_level_ads: true
+              });
+            } catch(e) {}
+          `}
+        </Script>
         <CookieConsent />
-        {/* GA & AdSense loaded only after cookie consent */}
+        {/* GA loaded only after cookie consent */}
         <ConsentedScripts />
       </body>
     </html>

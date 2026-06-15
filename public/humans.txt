@@ -1,0 +1,21 @@
+/* TEAM */
+Name: ToolNova Team
+Site: https://www.toolnovahub.com
+Twitter: @toolnovahub
+LinkedIn: https://linkedin.com/company/toolnovahub
+Location: Singapore
+
+/* THANKS */
+Name: Our users
+Note: Thank you to every student and professional using ToolNova worldwide.
+
+/* SITE */
+Name: ToolNova - Free AI Tools Hub
+Language: English
+Doctype: HTML5
+Framework: Next.js 15
+Platform: Vercel
+Standards: Schema.org, Open Graph, Twitter Cards
+Components: React 19, Tailwind CSS, Radix UI
+Tools: TypeScript, Prisma, Supabase
+Last update: 2026-06-15
