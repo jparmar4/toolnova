@@ -14,6 +14,7 @@ import { VitalsInitializer } from "@/components/VitalsInitializer";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { siteConfig } from "@/config/site";
+import { Providers } from "@/components/Providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -226,7 +227,6 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-        <link rel="dns-prefetch" href="https://supabase.co" />
 
         {/* Preconnect for critical resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -263,15 +263,17 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <VitalsInitializer />
-          <SkipLinks />
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <Toaster />
-          <FeedbackWidget />
+          <Providers>
+            <VitalsInitializer />
+            <SkipLinks />
+            <div className="flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+            <Toaster />
+            <FeedbackWidget />
+          </Providers>
         </ThemeProvider>
         <CookieConsent />
         {/* GA & AdSense loaded only after cookie consent */}

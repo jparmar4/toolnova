@@ -9,6 +9,7 @@ declare global {
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 import {
   Check,
   Star,
@@ -34,7 +35,6 @@ import {
   useMotionTemplate,
 } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { createClient } from "@/utils/supabase/client";
 
 const faqs = [
   {
@@ -161,7 +161,7 @@ export default function PricingClient() {
   const [isYearly, setIsYearly] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const router = useRouter();
-  const supabase = createClient();
+  const { data: session } = useSession();
 
   // Mouse follower logic
   const mouseX = useMotionValue(0);
@@ -187,9 +187,6 @@ export default function PricingClient() {
   };
 
   const startSubscription = async (planId: string) => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
     if (!session) {
       router.push("/login");
       return;

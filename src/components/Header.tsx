@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { UsageCounter } from '@/components/UsageCounter';
 import { Menu, X, School, Sparkles, Sun, Moon, LayoutDashboard } from 'lucide-react';
-import { useState, lazy, Suspense, useEffect, useMemo } from 'react';
-import { createClient } from "@/utils/supabase/client";
+import { useState, lazy, Suspense, useEffect } from 'react';
+import { useSession, signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { AnimatePresence } from "framer-motion";
 
@@ -14,34 +14,18 @@ const MobileMenu = lazy(() => import('./MobileMenu'));
 
 export function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [user, setUser] = useState<{ email?: string; id?: string } | null>(null);
-    const [loading, setLoading] = useState(true);
-    // Memoize the Supabase client to prevent recreation on every render (bug fix)
-    const supabase = useMemo(() => createClient(), []);
+    const { data: session, status } = useSession();
+    const user = session?.user;
+    const loading = status === "loading";
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setMounted(true);
-        const checkUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            setUser(user);
-            setLoading(false);
-        };
-
-        checkUser();
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            setUser(session?.user ?? null);
-            setLoading(false);
-        });
-
-        return () => subscription.unsubscribe();
     }, []);
 
     const handleSignOut = async () => {
-        await supabase.auth.signOut();
-        setUser(null);
+        await signOut({ callbackUrl: "/" });
     };
 
     return (

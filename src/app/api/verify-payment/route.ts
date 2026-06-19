@@ -1,7 +1,8 @@
 import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { createClient } from "@/utils/supabase/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
     try {
@@ -77,10 +78,11 @@ export async function POST(req: NextRequest) {
 
         // Save subscription to DB if this is a subscription payment
         if (razorpay_subscription_id && planId) {
-            const supabase = await createClient();
-            const { data: { user } } = await supabase.auth.getUser();
+            const session = await getServerSession(authOptions);
+            const user = session?.user;
 
-            if (user) {
+            if (user && user.email) {
+                const userId = (user as any).id;
                 // Upsert subscription record
                 const existing = await db.subscription.findUnique({
                     where: { razorpaySubscriptionId: razorpay_subscription_id },
@@ -89,20 +91,20 @@ export async function POST(req: NextRequest) {
                 if (!existing) {
                     // Find or create user in DB
                     await db.user.upsert({
-                        where: { email: user.email! },
-                        create: { id: user.id, email: user.email!, name: user.user_metadata?.full_name },
-                        update: {},
+                        where: { id: userId },
+                        create: { id: userId, email: user.email, name: user.name || null },
+                        update: { email: user.email, name: user.name || null },
                     });
 
                     await db.subscription.create({
                         data: {
-                            userId: user.id,
+                            userId: userId,
                             razorpaySubscriptionId: razorpay_subscription_id,
                             planId: planId,
                             status: "active",
                         },
                     });
-                    console.log("✅ Subscription saved to DB for user:", user.id);
+                    console.log("✅ Subscription saved to DB for user:", userId);
                 }
             }
         }

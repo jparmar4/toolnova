@@ -1,6 +1,6 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
+import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -9,21 +9,13 @@ import Link from "next/link";
 
 export default function SignupPage() {
     const [loading, setLoading] = useState(false);
-    const supabase = createClient();
 
     const handleGoogleLogin = async () => {
         setLoading(true);
-        const redirectTo = `${window.location.origin}/auth/callback`;
-
-        const { error } = await supabase.auth.signInWithOAuth({
-            provider: "google",
-            options: {
-                redirectTo,
-            },
-        });
-
-        if (error) {
-            toast.error(error.message);
+        try {
+            await signIn("google", { callbackUrl: "/dashboard" });
+        } catch (error) {
+            toast.error("Failed to login with Google");
             setLoading(false);
         }
     };

@@ -47,7 +47,7 @@ import {
 import { trackToolUse } from "@/lib/usage-tracker";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
+import { useSession } from "next-auth/react";
 import { Lock, LogIn } from "lucide-react";
 import { AIResultFormatter } from "@/components/AIResultFormatter";
 import { TopBannerAd, BottomBoxAd } from "@/components/ads/AdUnit";
@@ -110,21 +110,10 @@ export function ToolLayout({
   const optionsInitialized = useRef(false);
 
   // Auth state
-  const [user, setUser] = useState<any>(null);
-  const [authLoading, setAuthLoading] = useState(true);
+  const { data: session, status } = useSession();
+  const user = session?.user;
+  const authLoading = status === "loading";
   const router = useRouter();
-  const supabase = createClient();
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-      setAuthLoading(false);
-    };
-    checkUser();
-  }, []);
 
   const handleLoginRedirect = () => {
     router.push("/login");

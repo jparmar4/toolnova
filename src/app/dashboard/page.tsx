@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/utils/supabase/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
@@ -11,16 +12,18 @@ export const metadata = {
 };
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-  const { data: { user }, error } = await supabase.auth.getUser();
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
 
-  if (error || !user) {
+  if (!user) {
     redirect("/login");
   }
 
+  const userId = (user as any).id;
+
   // Fetch history for the logged-in user
   const history = await db.generationHistory.findMany({
-    where: { userId: user.id },
+    where: { userId: userId },
     orderBy: { createdAt: "desc" },
     take: 50, // Limit to recent 50 for performance
   });

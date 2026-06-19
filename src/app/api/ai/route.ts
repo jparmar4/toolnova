@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { runAI, MODEL_FREE, MODEL_PREMIUM } from '@/lib/ai';
-import { createClient } from '@/utils/supabase/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import { DAILY_FREE_LIMIT } from '@/lib/limits';
 import { cookies } from 'next/headers';
 import { db } from '@/lib/db';
@@ -19,36 +20,38 @@ export async function POST(req: NextRequest) {
 
 
     // 1. Check Authentication
-    const supabase = await createClient();
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const session = await getServerSession(authOptions);
+    const user = session?.user;
 
-    if (authError || !user) {
-      console.error('API: Auth failed', { authError, user });
+    if (!user || !user.email) {
+      console.error('API: Auth failed, no session');
       return NextResponse.json(
         { error: 'Authentication required to use AI tools' },
         { status: 401 }
       );
     }
-    console.log('API: User authenticated', { userId: user.id });
+    // We expect user.id to be populated by our NextAuth callback
+    const userId = (user as any).id;
+    console.log('API: User authenticated', { userId });
 
     // Ensure user exists in Hostinger MySQL (Prisma)
     await db.user.upsert({
-      where: { id: user.id },
+      where: { id: userId },
       create: {
-        id: user.id,
-        email: user.email!,
-        name: user.user_metadata?.full_name || null,
+        id: userId,
+        email: user.email,
+        name: user.name || null,
       },
       update: {
-        email: user.email!,
-        name: user.user_metadata?.full_name || null,
+        email: user.email,
+        name: user.name || null,
       },
     });
 
     // 2. Check Subscription & Usage Limits
     const subscription = await db.subscription.findFirst({
       where: {
-        userId: user.id,
+        userId: userId,
         status: 'active',
       },
     });
@@ -65,7 +68,7 @@ export async function POST(req: NextRequest) {
       // Get current usage from GenerationHistory in MySQL
       const currentCount = await db.generationHistory.count({
         where: {
-          userId: user.id,
+          userId: userId,
           createdAt: {
             gte: startOfToday,
           },
@@ -95,7 +98,7 @@ export async function POST(req: NextRequest) {
     try {
       await db.generationHistory.create({
         data: {
-          userId: user.id,
+          userId: userId,
           toolSlug: toolSlug,
           prompt: JSON.stringify({ prompt, systemPrompt }),
           response: result.content || ""
