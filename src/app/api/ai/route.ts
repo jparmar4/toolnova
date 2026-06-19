@@ -31,13 +31,27 @@ export async function POST(req: NextRequest) {
     }
     console.log('API: User authenticated', { userId: user.id });
 
+    // Ensure user exists in Hostinger MySQL (Prisma)
+    await db.user.upsert({
+      where: { id: user.id },
+      create: {
+        id: user.id,
+        email: user.email!,
+        name: user.user_metadata?.full_name || null,
+      },
+      update: {
+        email: user.email!,
+        name: user.user_metadata?.full_name || null,
+      },
+    });
+
     // 2. Check Subscription & Usage Limits
-    const { data: subscription } = await supabase
-      .from('Subscription')
-      .select('status')
-      .eq('userId', user.id)
-      .eq('status', 'active')
-      .maybeSingle();
+    const subscription = await db.subscription.findFirst({
+      where: {
+        userId: user.id,
+        status: 'active',
+      },
+    });
 
     const isPremium = !!subscription;
     const model = isPremium ? MODEL_PREMIUM : MODEL_FREE;
@@ -45,37 +59,24 @@ export async function POST(req: NextRequest) {
     console.log('API: Processing request', { promptLength: prompt.length, model });
 
     if (!isPremium) {
-      const today = new Date().toISOString().split('T')[0];
+      const startOfToday = new Date();
+      startOfToday.setHours(0, 0, 0, 0);
 
-      // Get current usage
-      const { data: usageData, error: usageError } = await supabase
-        .from('user_usage')
-        .select('count')
-        .eq('user_id', user.id)
-        .eq('date', today)
-        .single();
-
-      const currentCount = usageData?.count || 0;
+      // Get current usage from GenerationHistory in MySQL
+      const currentCount = await db.generationHistory.count({
+        where: {
+          userId: user.id,
+          createdAt: {
+            gte: startOfToday,
+          },
+        },
+      });
 
       if (currentCount >= DAILY_FREE_LIMIT) {
         return NextResponse.json(
           { error: `Daily limit reached (${DAILY_FREE_LIMIT} prompts). Upgrade to Premium for unlimited access.` },
           { status: 429 }
         );
-      }
-
-      // Increment usage
-      const { error: updateError } = await supabase
-        .from('user_usage')
-        .upsert({
-          user_id: user.id,
-          date: today,
-          count: currentCount + 1
-        }, { onConflict: 'user_id, date' });
-
-      if (updateError) {
-        console.error('Error updating usage:', updateError);
-        // Continue anyway, don't block user for logging error
       }
     }
 

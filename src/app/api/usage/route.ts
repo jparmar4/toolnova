@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { DAILY_FREE_LIMIT } from '@/lib/limits';
+import { db } from '@/lib/db';
 
 export async function GET() {
     try {
@@ -11,13 +12,27 @@ export async function GET() {
             return NextResponse.json({ count: 0, limit: DAILY_FREE_LIMIT, remaining: DAILY_FREE_LIMIT, isPremium: false });
         }
 
+        // Ensure user exists in Hostinger MySQL (Prisma)
+        await db.user.upsert({
+            where: { id: user.id },
+            create: {
+                id: user.id,
+                email: user.email!,
+                name: user.user_metadata?.full_name || null,
+            },
+            update: {
+                email: user.email!,
+                name: user.user_metadata?.full_name || null,
+            },
+        });
+
         // Check if premium
-        const { data: subscription } = await supabase
-            .from('Subscription')
-            .select('status')
-            .eq('userId', user.id)
-            .eq('status', 'active')
-            .maybeSingle();
+        const subscription = await db.subscription.findFirst({
+            where: {
+                userId: user.id,
+                status: 'active',
+            },
+        });
 
         const isPremium = !!subscription;
 
@@ -25,16 +40,18 @@ export async function GET() {
             return NextResponse.json({ count: 0, limit: -1, remaining: -1, isPremium: true });
         }
 
-        const today = new Date().toISOString().split('T')[0];
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
 
-        const { data: usageData } = await supabase
-            .from('user_usage')
-            .select('count')
-            .eq('user_id', user.id)
-            .eq('date', today)
-            .single();
-
-        const count = usageData?.count || 0;
+        // Get count from GenerationHistory in MySQL
+        const count = await db.generationHistory.count({
+            where: {
+                userId: user.id,
+                createdAt: {
+                    gte: startOfToday,
+                },
+            },
+        });
 
         return NextResponse.json({
             count,
