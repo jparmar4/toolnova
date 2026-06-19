@@ -304,54 +304,28 @@ export default async function BlogPostPage({
       }
     : null;
 
+  // Consolidate all schemas into a single @graph (Google best practice)
+  const consolidatedSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      articleSchema,
+      breadcrumbSchema,
+      speakableSchema,
+      ...(faqSchema ? [faqSchema] : []),
+      ...(videoSchema ? [videoSchema] : []),
+      ...(howToSchema ? [howToSchema] : []),
+    ],
+  };
+
   return (
     <>
-      {/* JSON-LD Structured Data */}
+      {/* Consolidated JSON-LD — single @graph per Google best practice */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(articleSchema),
+          __html: JSON.stringify(consolidatedSchema),
         }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema),
-        }}
-      />
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(faqSchema),
-          }}
-        />
-      )}
-      {videoSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(videoSchema),
-          }}
-        />
-      )}
-      {/* AEO: Speakable Schema for Voice Search */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(speakableSchema),
-        }}
-      />
-      {/* AEO: HowTo Schema for AI Overviews & Voice Search */}
-      {howToSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(howToSchema),
-          }}
-        />
-      )}
-
       <div className="min-h-screen bg-slate-50">
         {/* Header with Back Link */}
         <div className="py-6 bg-white border-b border-slate-200">

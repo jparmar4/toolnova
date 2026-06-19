@@ -137,6 +137,30 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Vary: Accept-Encoding for proper proxy caching
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Vary",
+            value: "Accept-Encoding",
+          },
+        ],
+      },
+      // API routes: noindex (they should not be indexed by search engines)
+      {
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow",
+          },
+          {
+            key: "Cache-Control",
+            value: "no-store, no-cache, must-revalidate",
+          },
+        ],
+      },
     ];
   },
 

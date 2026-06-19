@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Script from "next/script";
 import { useEffect, useState } from "react";
@@ -14,7 +14,17 @@ export function ConsentedScripts() {
 
   useEffect(() => {
     const consent = localStorage.getItem("cookie_consent");
-    setConsented(consent === "accepted");
+    if (consent === "accepted") {
+      setConsented(true);
+      if (typeof window !== "undefined" && (window as any).gtag) {
+        (window as any).gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    }
   }, []);
 
   useEffect(() => {

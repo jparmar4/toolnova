@@ -16,6 +16,7 @@ model User {
   email         String         @unique
   name          String?
   subscriptions Subscription[]
+  generations   GenerationHistory[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 }
@@ -45,6 +46,16 @@ model Post {
 model AICache {
   id         String   @id @default(cuid())
   promptHash String   @unique
+  prompt     String   @db.Text
+  response   String   @db.LongText
+  createdAt  DateTime @default(now())
+}
+
+model GenerationHistory {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  toolSlug   String
   prompt     String   @db.Text
   response   String   @db.LongText
   createdAt  DateTime @default(now())

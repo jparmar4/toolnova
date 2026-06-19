@@ -166,7 +166,7 @@ export default function EnhancedToolLayout({
         const response = await fetch("/api/ai", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt }),
+          body: JSON.stringify({ prompt, toolSlug }),
         });
 
         if (!response.ok) throw new Error("Generation failed");

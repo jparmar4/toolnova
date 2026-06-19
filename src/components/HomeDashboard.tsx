@@ -65,18 +65,18 @@ export function HomeDashboard() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-6"
+                className="hero-title speakable text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-6"
               >
                 Free AI Tools for <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200">
-                  Students & Professionals
+                  Students &amp; Professionals
                 </span>
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-blue-100 text-lg md:text-xl max-w-xl leading-relaxed mb-10"
+                className="hero-description text-blue-100 text-lg md:text-xl max-w-xl leading-relaxed mb-10"
               >
                 A professional suite of{" "}
                 <strong>free AI writing, study, and productivity tools</strong>.
@@ -478,7 +478,7 @@ export function HomeDashboard() {
               of research PDFs, a digital marketer needing rapid image
               compression without quality degradation, or an educator seeking to
               generate interactive learning materials like active-recall
-              flashcards, our growing suite of over 10 specialized
+              flashcards, our growing suite of over 46 specialized
               micro-applications is engineered to save you hours of
               administrative labor. By leveraging state-of-the-art Artificial
               Intelligence and optimized processing algorithms, we transform

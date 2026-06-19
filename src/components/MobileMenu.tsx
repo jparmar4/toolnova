@@ -6,11 +6,13 @@ import { Sparkles } from 'lucide-react';
 
 interface MobileMenuProps {
     onClose: () => void;
+    id?: string;
 }
 
-export default function MobileMenu({ onClose }: MobileMenuProps) {
+export default function MobileMenu({ onClose, id }: MobileMenuProps) {
     return (
         <motion.div
+            id={id}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -19,6 +21,7 @@ export default function MobileMenu({ onClose }: MobileMenuProps) {
             <div className="flex flex-col p-6 gap-1">
                 <Link href="/" onClick={onClose} className="text-foreground font-medium py-3 px-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Home</Link>
                 <Link href="/tools" onClick={onClose} className="text-muted-foreground font-medium py-3 px-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Tools</Link>
+                <Link href="/blog" onClick={onClose} className="text-muted-foreground font-medium py-3 px-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Blog</Link>
                 <Link href="/pricing" onClick={onClose} className="text-muted-foreground font-medium py-3 px-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Pricing</Link>
 
                 <Link href="/login" onClick={onClose} className="text-muted-foreground font-medium py-3 px-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Login</Link>

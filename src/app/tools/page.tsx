@@ -1,9 +1,11 @@
 import { Metadata } from "next";
 import { ToolsClient } from "./client";
+import { siteConfig } from "@/config/site";
+import { TOOL_COUNT } from "@/data/tools";
 
 export const metadata: Metadata = {
-  title: "All Free AI Tools - 44 Writing, Study, PDF & Career Tools | ToolNova",
-  description: "Explore 44 free AI-powered tools for study, writing, exam prep, image editing, PDF management, and career development. No sign-up required.",
+  title: `All Free AI Tools - 46+ Writing, Study, PDF & Career Tools | ToolNova`,
+  description: `Explore 46+ free AI-powered tools for study, writing, exam prep, image editing, PDF management, and career development. No sign-up required.`,
   keywords: [
     "free AI tools",
     "online tools",
@@ -13,13 +15,16 @@ export const metadata: Metadata = {
     "career tools",
     "AI productivity",
     "ToolNova",
+    "free online tools 2026",
+    "AI tools for students",
+    "best free AI tools",
   ],
   alternates: {
     canonical: "https://www.toolnovahub.com/tools",
   },
   openGraph: {
-    title: "All Free AI Tools - 44 Writing, Study, PDF & Career Tools | ToolNova",
-    description: "Explore 44 free AI-powered tools for study, writing, exam prep, image editing, PDF management, and career development.",
+    title: "All Free AI Tools - 46+ Writing, Study, PDF & Career Tools | ToolNova",
+    description: "Explore 46+ free AI-powered tools for study, writing, exam prep, image editing, PDF management, and career development.",
     url: "https://www.toolnovahub.com/tools",
     type: "website",
     images: [
@@ -33,16 +38,112 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "All Free AI Tools - 44 Tools | ToolNova",
-    description: "Explore 44 free AI-powered tools. No sign-up required.",
+    title: "All Free AI Tools - 46+ Tools | ToolNova",
+    description: "Explore 46+ free AI-powered tools. No sign-up required.",
     images: ["https://www.toolnovahub.com/og-image.png"],
     creator: "@toolnovahub",
   },
 };
 
+// Tools catalog ItemList schema — helps AI search engines understand the full tool catalog
+function generateToolsPageSchema() {
+  const base = siteConfig.url;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${base}/tools#page`,
+        name: "Free AI Tools Catalog",
+        description: `${TOOL_COUNT}+ free AI-powered tools for students, professionals, and educators. No sign-up required.`,
+        url: `${base}/tools`,
+        inLanguage: "en-US",
+        isPartOf: { "@id": `${base}/#website` },
+        breadcrumb: {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: base },
+            { "@type": "ListItem", position: 2, name: "All Tools", item: `${base}/tools` },
+          ],
+        },
+      },
+      {
+        "@type": "ItemList",
+        name: "All ToolNova Free AI Tools by Category",
+        description: `Complete catalog of ${TOOL_COUNT}+ free AI tools organized by category.`,
+        url: `${base}/tools`,
+        numberOfItems: TOOL_COUNT,
+        itemListElement: [
+          {
+            "@type": "ListItem", position: 1,
+            name: "Writing Tools",
+            description: "AI writing tools for essays, emails, paraphrasing, grammar, and more",
+            url: `${base}/tools/writing-tools`,
+            item: { "@type": "ItemList", name: "Writing Tools",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Essay Writer", url: `${base}/tools/essay-writer` },
+                { "@type": "ListItem", position: 2, name: "Paraphraser", url: `${base}/tools/paraphraser` },
+                { "@type": "ListItem", position: 3, name: "Grammar Fix", url: `${base}/tools/grammar-fix` },
+                { "@type": "ListItem", position: 4, name: "Text Summarizer", url: `${base}/tools/text-summarizer` },
+                { "@type": "ListItem", position: 5, name: "Email Writer", url: `${base}/tools/email-writer` },
+              ]
+            },
+          },
+          {
+            "@type": "ListItem", position: 2,
+            name: "Study Tools",
+            description: "AI study aids: homework solver, flashcard maker, quiz generator, and notes generator",
+            url: `${base}/tools/study-tools`,
+            item: { "@type": "ItemList", name: "Study Tools",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Homework Solver", url: `${base}/tools/homework-solver` },
+                { "@type": "ListItem", position: 2, name: "Flashcard Maker", url: `${base}/tools/flashcard-maker` },
+                { "@type": "ListItem", position: 3, name: "Quiz Generator", url: `${base}/tools/quiz-generator` },
+                { "@type": "ListItem", position: 4, name: "Notes Generator", url: `${base}/tools/notes-generator` },
+              ]
+            },
+          },
+          {
+            "@type": "ListItem", position: 3,
+            name: "PDF & Image Tools",
+            description: "Merge PDFs, split PDFs, resize images, compress images and convert formats online for free",
+            url: `${base}/tools/image-pdf-tools`,
+            item: { "@type": "ItemList", name: "PDF & Image Tools",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Merge PDF", url: `${base}/tools/merge-pdf` },
+                { "@type": "ListItem", position: 2, name: "Split PDF", url: `${base}/tools/split-pdf` },
+                { "@type": "ListItem", position: 3, name: "Image Compressor", url: `${base}/tools/image-compressor` },
+                { "@type": "ListItem", position: 4, name: "Resize Image", url: `${base}/tools/resize-image` },
+              ]
+            },
+          },
+          {
+            "@type": "ListItem", position: 4,
+            name: "Career Tools",
+            description: "Resume bullets, cover letter writer, interview prep, and LinkedIn optimizer",
+            url: `${base}/tools/career-tools`,
+            item: { "@type": "ItemList", name: "Career Tools",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Resume Bullets", url: `${base}/tools/resume-bullets` },
+                { "@type": "ListItem", position: 2, name: "Cover Letter Writer", url: `${base}/tools/cover-letter-writer` },
+                { "@type": "ListItem", position: 3, name: "Interview Generator", url: `${base}/tools/interview-generator` },
+              ]
+            },
+          },
+        ],
+      },
+    ],
+  };
+}
+
 export default function ToolsPage() {
+  const toolsSchema = generateToolsPageSchema();
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(toolsSchema) }}
+      />
       <ToolsClient />
       
       {/* Rich Editorial Content to satisfy Google AdSense High-Quality / Thin Content policies */}

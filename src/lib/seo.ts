@@ -87,7 +87,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
       creator: siteConfig.twitterHandle,
     },
 
-    // Additional meta tags
+    // Robots
     robots: {
       index: true,
       follow: true,
@@ -100,10 +100,13 @@ export function generateMetadata(config: SEOConfig): Metadata {
       },
     },
 
-    // Verification tags (add your verification codes)
+    // Verification tags — pulled from siteConfig to avoid overwriting root layout
     verification: {
-      // google: 'your-google-verification-code',
-      // bing: 'your-bing-verification-code',
+      google: siteConfig.verification.google,
+      other: {
+        "msvalidate.01": siteConfig.verification.bing,
+        "yandex-verification": siteConfig.verification.yandex,
+      },
     },
   };
 }
@@ -117,17 +120,21 @@ export function generateToolMetadata(
   toolSlug: string,
   keywords: string[],
 ): Metadata {
+  const year = new Date().getFullYear();
   return generateMetadata({
-    title: `${toolName} Free – AI-Powered Online Tool | ${SITE_NAME}`,
-    description: `${description}. Free, fast, and accurate. No signup required.`,
+    title: `${toolName} Free Online – AI-Powered ${year} | ${SITE_NAME}`,
+    description: `${description}. Free, fast, and accurate. No signup required. Try it instantly.`,
     keywords: [
       ...keywords,
+      `free ${toolName.toLowerCase()}`,
+      `${toolName.toLowerCase()} online`,
       "free online tool",
       "AI tool",
       "student tools",
       "study helper",
       "homework help",
       "ToolNova",
+      `${toolName.toLowerCase()} ${year}`,
     ],
     canonical: getFullUrl(`/tools/${toolSlug}`),
     ogImage: DEFAULT_OG_IMAGE,
@@ -166,10 +173,11 @@ export function generateBlogMetadata(
  * Homepage metadata
  */
 export function getHomepageMetadata(): Metadata {
+  const year = new Date().getFullYear();
   return generateMetadata({
-    title: "Free AI Tools for Students 2026 - 44 Tools | ToolNova",
+    title: `Free AI Tools for Students ${year} - 46+ Tools | ToolNova`,
     description:
-      "Access 44 free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
+      "Access 46+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
     keywords: [
       "AI study tools",
       "free AI tools",
@@ -193,6 +201,7 @@ export function getHomepageMetadata(): Metadata {
       "text summarizer",
       "AI writing tools",
       "ToolNova",
+      `free AI tools ${year}`,
     ],
     canonical: BASE_URL,
     ogImage: DEFAULT_OG_IMAGE,

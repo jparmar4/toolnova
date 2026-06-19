@@ -1,5 +1,6 @@
 # ToolNova robots.txt — https://www.toolnovahub.com
 # Comprehensive crawl policy for search engines, AI bots, and research crawlers
+# Last Updated: 2026-06-19
 
 # ─── Default for all bots ────────────────────────────────────────────────────
 User-agent: *
@@ -38,10 +39,16 @@ Allow: /blog/
 User-agent: Google-Extended
 Allow: /
 
+User-agent: Googlebot-Video
+Allow: /
+
 User-agent: AdsBot-Google
 Allow: /
 
 User-agent: AdsBot-Google-Mobile
+Allow: /
+
+User-agent: APIs-Google
 Allow: /
 
 # ─── Bing / Microsoft ────────────────────────────────────────────────────────
@@ -52,6 +59,9 @@ User-agent: msnbot
 Allow: /
 
 User-agent: AdIdxBot
+Allow: /
+
+User-agent: BingPreview
 Allow: /
 
 # ─── Other Major Search Engines ──────────────────────────────────────────────
@@ -76,7 +86,17 @@ Allow: /
 User-agent: ia_archiver
 Allow: /
 
-# ─── AI / LLM Crawlers ───────────────────────────────────────────────────────
+User-agent: Sogou
+Allow: /
+
+User-agent: NaverBot
+Allow: /
+
+User-agent: SeznamBot
+Allow: /
+
+# ─── AI / LLM Crawlers (2026) ────────────────────────────────────────────────
+# OpenAI / ChatGPT
 User-agent: GPTBot
 Allow: /
 
@@ -86,9 +106,11 @@ Allow: /
 User-agent: OAI-SearchBot
 Allow: /
 
+# Perplexity AI
 User-agent: PerplexityBot
 Allow: /
 
+# Anthropic / Claude
 User-agent: ClaudeBot
 Allow: /
 
@@ -98,15 +120,35 @@ Allow: /
 User-agent: Claude-Web
 Allow: /
 
-User-agent: CCBot
+# Google AI / Gemini
+User-agent: Google-CloudVertexBot
 Allow: /
 
-User-agent: Bytespider
+User-agent: Gemini-Crawl
 Allow: /
 
-User-agent: Amazonbot
+# xAI / Grok
+User-agent: Grok
 Allow: /
 
+User-agent: xAI
+Allow: /
+
+# Mistral AI
+User-agent: MistralBot
+Allow: /
+
+User-agent: MistralAI-Spider
+Allow: /
+
+# DeepSeek
+User-agent: DeepSeek
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
+# Meta AI / LLaMA
 User-agent: Meta-ExternalAgent
 Allow: /
 
@@ -116,23 +158,47 @@ Allow: /
 User-agent: FacebookBot
 Allow: /
 
+# Common Crawl (used by many AI training datasets)
+User-agent: CCBot
+Allow: /
+
+# Cohere
 User-agent: cohere-ai
 Allow: /
 
+# AI2 / Allen Institute
 User-agent: AI2Bot
 Allow: /
 
+# Amazon / Alexa
+User-agent: Amazonbot
+Allow: /
+
+# ByteDance
+User-agent: Bytespider
+Allow: /
+
+# Diffbot
 User-agent: Diffbot
 Allow: /
 
-User-agent: Timpibot
-Allow: /
-
+# You.com
 User-agent: YouBot
 Allow: /
 
+# Hugging Face
+User-agent: HuggingFaceBot
+Allow: /
+
+# Timpi
+User-agent: Timpibot
+Allow: /
+
+# PetalBot (Huawei)
 User-agent: PetalBot
 Allow: /
 
 # ─── Sitemaps ────────────────────────────────────────────────────────────────
 Sitemap: https://www.toolnovahub.com/sitemap.xml
+Sitemap: https://www.toolnovahub.com/sitemap-images.xml
+Sitemap: https://www.toolnovahub.com/sitemap-news.xml

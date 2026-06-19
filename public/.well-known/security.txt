@@ -1,6 +1,8 @@
 Contact: mailto:security@toolnovahub.com
 Contact: https://www.toolnovahub.com/contact
-Expires: 2027-06-15T00:00:00.000Z
+Expires: 2027-12-31T00:00:00.000Z
+Encryption: https://www.toolnovahub.com/.well-known/pgp-key.txt
 Preferred-Languages: en
 Canonical: https://www.toolnovahub.com/.well-known/security.txt
 Policy: https://www.toolnovahub.com/privacy
+Acknowledgements: https://www.toolnovahub.com/about

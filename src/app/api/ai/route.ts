@@ -3,10 +3,11 @@ import { runAI, MODEL_FREE, MODEL_PREMIUM } from '@/lib/ai';
 import { createClient } from '@/utils/supabase/server';
 import { DAILY_FREE_LIMIT } from '@/lib/limits';
 import { cookies } from 'next/headers';
+import { db } from '@/lib/db';
 
 export async function POST(req: NextRequest) {
   try {
-    const { prompt, systemPrompt } = await req.json();
+    const { prompt, systemPrompt, toolSlug = "unknown" } = await req.json();
 
     if (!prompt || typeof prompt !== 'string') {
       console.error('API: Invalid prompt received', { prompt });
@@ -87,6 +88,21 @@ export async function POST(req: NextRequest) {
         { error: result.error || 'AI generation failed' },
         { status: 500 }
       );
+    }
+
+    // 3. Log to History
+    try {
+      await db.generationHistory.create({
+        data: {
+          userId: user.id,
+          toolSlug: toolSlug,
+          prompt: JSON.stringify({ prompt, systemPrompt }),
+          response: result.content || ""
+        }
+      });
+    } catch (historyError) {
+      console.error('Error saving history:', historyError);
+      // We don't fail the request if history logging fails
     }
 
     return NextResponse.json({

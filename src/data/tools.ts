@@ -2,7 +2,7 @@ import { LucideIcon } from 'lucide-react';
 import {
     FileText, Lightbulb, BookOpen, Target, List, ClipboardList,
     Pen, Calculator, Mail, Mic, Image, Quote, Repeat,
-    CheckCircle, Type, GraduationCap, Layout, FileOutput
+    CheckCircle, Type, GraduationCap, Layout, FileOutput, Users, Youtube, ShieldAlert
 } from 'lucide-react';
 import { TOOL_FAQS } from '@/lib/seo-worldclass';
 

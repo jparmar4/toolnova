@@ -905,7 +905,7 @@ export function generateEnhancedWebSiteSchema() {
     name: "ToolNova - Free AI Tools",
     alternateName: ["ToolNovaHub", "AI Tools Hub", "Free AI Tools"],
     url: siteConfig.url,
-    description: "Access 44 free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required.",
+    description: siteConfig.description,
     inLanguage: ["en-US", "en-GB", "en-CA", "en-AU", "en-IN", "en-SG", "en-DE", "en-FR"],
     publisher: {
       "@id": `${siteConfig.url}/#organization`,
@@ -990,10 +990,10 @@ export function generateEntityData() {
     "@type": "Thing",
     "@id": `${siteConfig.url}/#main-entity`,
     name: "ToolNova",
-    description: "A comprehensive free AI tools platform offering 44 utilities for students and professionals",
+    description: "A comprehensive free AI tools platform offering 46+ utilities for students and professionals covering writing, studying, PDF tools, career development, and productivity",
     url: siteConfig.url,
     additionalProperty: [
-      { "@type": "PropertyValue", name: "toolCount", value: "44" },
+      { "@type": "PropertyValue", name: "toolCount", value: "46+" },
       { "@type": "PropertyValue", name: "pricing", value: "Free" },
       { "@type": "PropertyValue", name: "signUpRequired", value: "No" },
       { "@type": "PropertyValue", name: "platform", value: "Web" },
@@ -1001,6 +1001,7 @@ export function generateEntityData() {
       { "@type": "PropertyValue", name: "headquarters", value: "Singapore" },
       { "@type": "PropertyValue", name: "serviceArea", value: "Global" },
       { "@type": "PropertyValue", name: "category", value: "AI Tools, Education, Productivity" },
+      { "@type": "PropertyValue", name: "toolCategories", value: "Writing, Study, Exam Prep, PDF & Image, Career, Utility" },
     ],
   };
 }
@@ -1072,7 +1073,7 @@ export function generateDatasetSchema() {
     "@context": "https://schema.org",
     "@type": "Dataset",
     name: "ToolNova AI Tools Catalog",
-    description: "Comprehensive catalog of 44 free AI-powered tools for productivity, education, and content creation",
+    description: "Comprehensive catalog of 46+ free AI-powered tools for productivity, education, and content creation",
     url: siteConfig.url,
     license: "https://creativecommons.org/licenses/by/4.0/",
     creator: {

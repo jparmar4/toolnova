@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   GraduationCap,
   Pencil,
@@ -24,6 +25,8 @@ import {
   Award,
   Clock,
   Globe,
+  Youtube,
+  ShieldAlert,
 } from "lucide-react";
 
 // Tool data with categories
@@ -523,6 +526,28 @@ const ALL_TOOLS = [
     isNew: true,
     isPopular: false,
   },
+  {
+    name: "YouTube Summarizer",
+    slug: "youtube-summarizer",
+    category: "Study Tools",
+    description: "Get instant AI summaries from any YouTube video URL.",
+    icon: Youtube,
+    color: "text-red-500",
+    gradient: "from-red-500 to-rose-600",
+    isNew: true,
+    isPopular: true,
+  },
+  {
+    name: "AI Plagiarism Checker",
+    slug: "plagiarism-checker",
+    category: "Writing Tools",
+    description: "Scan your essay for AI-generated footprints and plagiarism.",
+    icon: ShieldAlert,
+    color: "text-indigo-500",
+    gradient: "from-indigo-500 to-blue-600",
+    isNew: true,
+    isPopular: true,
+  },
 ];
 
 const categories = [
@@ -571,7 +596,7 @@ const categories = [
 ];
 
 const heroStats = [
-  { icon: Zap, value: "44", label: "AI Tools" },
+  { icon: Zap, value: "46+", label: "AI Tools" },
   { icon: Globe, value: "100%", label: "Free Forever" },
   { icon: ShieldCheck, value: "No", label: "Sign-up" },
   { icon: Clock, value: "<10s", label: "Results" },
@@ -786,47 +811,68 @@ export function ToolsClient() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-24">
-            {filteredTools.length > 0 ? (
-              filteredTools.map((tool, index) => (
-                <Link
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="group glass-card hover-float"
-                  style={{ animationDelay: `${index * 30}ms` }}
-                >
-                  <div className="flex items-start justify-between mb-5">
-                    <div
-                      className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
+          <motion.div 
+            layout
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: { staggerChildren: 0.05 }
+              }
+            }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-24"
+          >
+            <AnimatePresence>
+              {filteredTools.length > 0 ? (
+                filteredTools.map((tool) => (
+                  <motion.div
+                    key={tool.slug}
+                    layout
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                    className="h-full"
+                  >
+                    <Link
+                      href={`/tools/${tool.slug}`}
+                      className="group glass-card hover-float block h-full"
                     >
-                      <tool.icon className="h-7 w-7" strokeWidth={1.5} />
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {tool.isNew && (
-                        <span className="px-2.5 py-1 rounded-full bg-green-500/15 text-green-600 dark:text-green-400 text-[10px] font-black uppercase tracking-wider">
-                          New
-                        </span>
-                      )}
-                      <span className="px-3 py-1.5 rounded-full bg-muted text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                        {tool.category.replace(" Tools", "")}
-                      </span>
-                    </div>
-                  </div>
+                      <div className="flex items-start justify-between mb-5">
+                        <div
+                          className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
+                        >
+                          <tool.icon className="h-7 w-7" strokeWidth={1.5} />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {tool.isNew && (
+                            <span className="px-2.5 py-1 rounded-full bg-green-500/15 text-green-600 dark:text-green-400 text-[10px] font-black uppercase tracking-wider">
+                              New
+                            </span>
+                          )}
+                          <span className="px-3 py-1.5 rounded-full bg-muted text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                            {tool.category.replace(" Tools", "")}
+                          </span>
+                        </div>
+                      </div>
 
-                  <h3 className="text-xl font-black text-foreground mb-2 group-hover:text-primary transition-colors">
-                    {tool.name}
-                  </h3>
-                  <p className="text-muted-foreground text-[15px] leading-relaxed mb-6 line-clamp-2">
-                    {tool.description}
-                  </p>
+                      <h3 className="text-xl font-black text-foreground mb-2 group-hover:text-primary transition-colors">
+                        {tool.name}
+                      </h3>
+                      <p className="text-muted-foreground text-[15px] leading-relaxed mb-6 line-clamp-2">
+                        {tool.description}
+                      </p>
 
-                  <div className="flex items-center gap-2 text-primary font-bold text-sm group-hover:gap-3 transition-all">
-                    <span>Open Tool</span>
-                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </Link>
-              ))
-            ) : (
+                      <div className="flex items-center gap-2 text-primary font-bold text-sm group-hover:gap-3 transition-all mt-auto pt-4">
+                        <span>Open Tool</span>
+                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))
+              ) : (
               <div className="col-span-full text-center py-24">
                 <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
                   <Search className="h-10 w-10 text-muted-foreground" />
@@ -848,7 +894,8 @@ export function ToolsClient() {
                 </button>
               </div>
             )}
-          </div>
+            </AnimatePresence>
+          </motion.div>
         </div>
 
         {/* Categories Section */}

@@ -1,39 +1,36 @@
 /**
  * AdSense Configuration
- * Keep publisher identity and ad slot IDs in one place.
+ * Update these values with your actual AdSense publisher ID and ad unit IDs
  */
 
-const isValidPublisherId = (id?: string) => /^ca-pub-\d{16}$/.test(id ?? "");
-const envPublisherId = process.env.NEXT_PUBLIC_ADSENSE_ID;
-
 export const adsenseConfig = {
-    publisherId: isValidPublisherId(envPublisherId)
-        ? envPublisherId
-        : "ca-pub-1328083083403070",
+    // Your AdSense Publisher ID (format: ca-pub-XXXXXXXXXXXXXXXX)
+    // Read from environment variable or use placeholder
+    publisherId: process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-XXXXXXXXXXXXXXXX',
 
     // Enable/Disable ads globally
-    enabled: true,
+    enabled: process.env.NEXT_PUBLIC_ADSENSE_ID ? true : false, // Disabled if ID not configured
 
     // Ad Units by Placement
     adUnits: {
         // Homepage
-        homeHero: process.env.NEXT_PUBLIC_ADSENSE_HOME_HERO_SLOT || "",
-        homeFooter: process.env.NEXT_PUBLIC_ADSENSE_HOME_FOOTER_SLOT || "",
+        homeHero: 'XXXXXXXXXX',
+        homeFooter: 'XXXXXXXXXX',
 
         // Tool Pages
-        toolTopBanner: process.env.NEXT_PUBLIC_ADSENSE_TOOL_TOP_SLOT || "",
-        toolSidebar: process.env.NEXT_PUBLIC_ADSENSE_TOOL_SIDEBAR_SLOT || "",
-        toolInContent: process.env.NEXT_PUBLIC_ADSENSE_TOOL_CONTENT_SLOT || "",
-        toolBottomBox: process.env.NEXT_PUBLIC_ADSENSE_TOOL_BOTTOM_SLOT || "",
+        toolTopBanner: 'XXXXXXXXXX',
+        toolSidebar: 'XXXXXXXXXX',
+        toolInContent: 'XXXXXXXXXX',
+        toolBottomBox: 'XXXXXXXXXX',
 
         // Blog
-        blogSidebar: process.env.NEXT_PUBLIC_ADSENSE_BLOG_SIDEBAR_SLOT || "",
-        blogInContent: process.env.NEXT_PUBLIC_ADSENSE_BLOG_CONTENT_SLOT || "",
-        blogBottomBox: process.env.NEXT_PUBLIC_ADSENSE_BLOG_BOTTOM_SLOT || "",
+        blogSidebar: 'XXXXXXXXXX',
+        blogInContent: 'XXXXXXXXXX',
+        blogBottomBox: 'XXXXXXXXXX',
 
         // Mobile
-        mobileAnchor: process.env.NEXT_PUBLIC_ADSENSE_MOBILE_ANCHOR_SLOT || "",
-        mobileInFeed: process.env.NEXT_PUBLIC_ADSENSE_MOBILE_FEED_SLOT || "",
+        mobileAnchor: 'XXXXXXXXXX',
+        mobileInFeed: 'XXXXXXXXXX',
     },
 
     // Ad Formats
@@ -51,7 +48,7 @@ export const adsenseConfig = {
     },
 
     // Test Mode (use test ads)
-    testMode: process.env.NEXT_PUBLIC_ADSENSE_TEST_MODE === "true",
+    testMode: true, // Set to false in production
 
     // Tier 1 Countries Targeting (for revenue optimization)
     tier1Countries: ['US', 'GB', 'CA', 'AU', 'DE', 'FR', 'NL', 'SE', 'NO', 'DK'],
@@ -84,7 +81,6 @@ export function getAdsenseScriptUrl(): string {
  */
 export function shouldShowAds(): boolean {
     if (!adsenseConfig.enabled) return false;
-    if (!isValidPublisherId(adsenseConfig.publisherId)) return false;
     if (typeof window === 'undefined') return false;
 
     // Don't show ads in development unless explicitly enabled
@@ -115,6 +111,6 @@ export function initializeAutoAds(): void {
 // Type declaration for window.adsbygoogle
 declare global {
     interface Window {
-        adsbygoogle: unknown[];
+        adsbygoogle: any[];
     }
 }

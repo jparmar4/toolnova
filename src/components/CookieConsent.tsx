@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,14 @@ export function CookieConsent() {
 
     const acceptCookies = () => {
         localStorage.setItem("cookie_consent", "accepted");
+        if (typeof window !== "undefined" && (window as any).gtag) {
+            (window as any).gtag('consent', 'update', {
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted',
+                'analytics_storage': 'granted'
+            });
+        }
         window.dispatchEvent(new Event("cookie-consent-changed"));
         setIsVisible(false);
     };

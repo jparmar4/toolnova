@@ -19,32 +19,36 @@ export interface GlobalAEOContent {
 export const homepageAEO: GlobalAEOContent = {
     quickAnswer: {
         question: 'What is ToolNova?',
-        answer: 'ToolNova is a free online platform offering 44 AI-powered tools for students, professionals, and content creators. It includes PDF tools, image editors, AI writing assistants, study aids, and productivity tools—all completely free with no sign-up required.',
+        answer: 'ToolNova is a free online platform offering 46+ AI-powered tools for students, professionals, and content creators. It includes PDF tools (merge, split, compress), image editors, AI writing assistants (essay writer, paraphraser, grammar checker), study aids (flashcard maker, homework solver), and productivity tools—all completely free with no account or sign-up required.',
     },
     faqs: [
         {
             question: 'Is ToolNova really free?',
-            answer: 'Yes, ToolNova is 100% free to use. All 44 tools are available without any subscription, payment, or sign-up requirements. You can use any tool as many times as you need, completely free.',
+            answer: 'Yes, ToolNova is 100% free to use. All 46+ tools are available without any subscription, payment, or sign-up. There are no hidden fees, watermarks, or file limits. You can use any tool as many times as you need at no cost.',
         },
         {
-            question: 'Do I need to create an account?',
-            answer: 'No account is required! You can start using any tool immediately without signing up. Your privacy is important to us, so we don\'t require personal information to use our tools.',
+            question: 'Do I need to create an account to use ToolNova?',
+            answer: 'No account is required. You can start using any ToolNova tool immediately by visiting the tool page—no email, no sign-up, no password needed. Tools work directly in your browser without creating an account.',
         },
         {
             question: 'What types of tools does ToolNova offer?',
-            answer: 'ToolNova offers 6 main categories: Study Tools (homework solver, flashcards, notes), Writing Tools (essay writer, paraphraser, grammar fix), Exam Prep (vocabulary, synonyms), PDF Tools (merge, split, compress), Image Tools (resize, convert), and Career Tools (resume, cover letters).',
+            answer: 'ToolNova offers 6 main categories: Study Tools (homework solver, flashcard maker, notes generator, quiz generator), Writing Tools (essay writer, paraphraser, grammar checker, email writer), Exam Prep (vocabulary builder, synonym finder), PDF Tools (merge, split, compress), Image Tools (resize, convert, compress), and Career Tools (resume bullets, cover letter writer, interview prep).',
         },
         {
-            question: 'Are the tools AI-powered?',
-            answer: 'Yes! Many of our tools use advanced AI technology for intelligent results. Our AI writing tools, homework solver, and content generators leverage machine learning to provide accurate, context-aware outputs.',
+            question: 'Are the ToolNova tools AI-powered?',
+            answer: 'Yes. ToolNova uses advanced AI and machine learning models for intelligent tools like the homework solver, essay writer, paraphraser, flashcard maker, and content generators. These produce context-aware, accurate results in seconds rather than requiring manual input.',
         },
         {
-            question: 'Is my data secure on ToolNova?',
-            answer: 'Absolutely. We prioritize your privacy and security. All uploaded files are automatically deleted after processing. We don\'t store your data, and all processing happens securely with encryption.',
+            question: 'Is my data safe and private on ToolNova?',
+            answer: 'Yes. ToolNova enforces a strict zero-retention policy: uploaded files are encrypted during transfer and automatically deleted from servers after processing. No personal data, documents, or file contents are stored, sold, or shared.',
         },
         {
-            question: 'Can I use ToolNova on mobile?',
-            answer: 'Yes! ToolNova is fully responsive and works perfectly on smartphones, tablets, and desktop computers. All tools are optimized for mobile use with touch-friendly interfaces.',
+            question: 'Can I use ToolNova on mobile devices?',
+            answer: 'Yes. ToolNova is fully responsive and mobile-optimized. All tools work on smartphones, tablets, and desktop computers through any modern web browser—no app download required. The interface uses touch-friendly design for mobile users.',
+        },
+        {
+            question: 'How many tools does ToolNova have?',
+            answer: 'ToolNova currently offers 46+ free AI tools across 6 categories: writing, study, exam prep, PDF & image, career, and utility. New tools are added regularly based on user requests.',
         },
     ],
 };

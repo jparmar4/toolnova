@@ -188,7 +188,7 @@ export function ToolLayout({
 
         const res = await fetch("/api/ai", {
           method: "POST",
-          body: JSON.stringify({ prompt, systemPrompt }),
+          body: JSON.stringify({ prompt, systemPrompt, toolSlug }),
           headers: { "Content-Type": "application/json" },
         });
         const data = await res.json();

@@ -1,7 +1,7 @@
 {
     "name": "ToolNova - Free AI Tools for Students & Professionals",
     "short_name": "ToolNova",
-    "description": "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required.",
+    "description": "Access 46+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required.",
     "start_url": "/",
     "id": "/",
     "scope": "/",
@@ -10,13 +10,25 @@
             "src": "/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png",
-            "purpose": "any maskable"
+            "purpose": "any"
+        },
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
         },
         {
             "src": "/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
-            "purpose": "any maskable"
+            "purpose": "any"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
         },
         {
             "src": "/logo.png",
@@ -24,9 +36,49 @@
             "type": "image/png"
         }
     ],
+    "screenshots": [
+        {
+            "src": "/og-image.png",
+            "sizes": "1200x630",
+            "type": "image/png",
+            "label": "ToolNova Homepage - Free AI Tools Hub",
+            "form_factor": "wide"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Browse All Tools",
+            "short_name": "Tools",
+            "description": "Explore all 46+ free AI tools",
+            "url": "/tools",
+            "icons": [{ "src": "/favicon-32x32.png", "sizes": "32x32" }]
+        },
+        {
+            "name": "Essay Writer",
+            "short_name": "Essay",
+            "description": "Write essays with AI for free",
+            "url": "/tools/essay-writer",
+            "icons": [{ "src": "/favicon-32x32.png", "sizes": "32x32" }]
+        },
+        {
+            "name": "Homework Solver",
+            "short_name": "Homework",
+            "description": "Get step-by-step homework help",
+            "url": "/tools/homework-solver",
+            "icons": [{ "src": "/favicon-32x32.png", "sizes": "32x32" }]
+        },
+        {
+            "name": "Merge PDF",
+            "short_name": "Merge PDF",
+            "description": "Combine PDF files for free",
+            "url": "/tools/merge-pdf",
+            "icons": [{ "src": "/favicon-32x32.png", "sizes": "32x32" }]
+        }
+    ],
     "theme_color": "#3b82f6",
     "background_color": "#ffffff",
     "display": "standalone",
+    "display_override": ["window-controls-overlay", "standalone", "browser"],
     "orientation": "portrait-primary",
     "lang": "en",
     "dir": "ltr",
@@ -35,5 +87,9 @@
         "productivity",
         "utilities"
     ],
-    "prefer_related_applications": false
+    "prefer_related_applications": false,
+    "related_applications": [],
+    "edge_side_panel": {
+        "preferred_width": 400
+    }
 }

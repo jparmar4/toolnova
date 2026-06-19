@@ -5,7 +5,7 @@ export const siteConfig = {
   name: "ToolNova",
   tagline: "The Smartest Way to Study & Create",
   description:
-    "Access 44 free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required.",
+    "Access 46+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required.",
 
   // Canonical domain - THE single source of truth for all URLs
   url: "https://www.toolnovahub.com",
