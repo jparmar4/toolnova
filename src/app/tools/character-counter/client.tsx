@@ -70,11 +70,6 @@ ${
 ${words > 0 ? `📈 **Statistics:**\n- Average word length: ${(charsNoSpaces / words).toFixed(1)} characters\n- Average sentence length: ${(words / Math.max(sentences, 1)).toFixed(1)} words` : ""}`;
 }
 
-const stats = [
-  { value: "Instant", label: "Analysis", icon: Clock },
-  { value: "200K+", label: "Daily Users", icon: Users },
-  { value: "4.9/5", label: "User Rating", icon: Star },
-];
 
 const features = [
   {
@@ -203,16 +198,8 @@ export default function CharacterCounterClient() {
       badge="Utility Tool"
       category="Utility Tools"
       categorySlug="utility-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "Essential for my social media work! I use this daily to check Twitter character limits and SMS lengths. So fast and accurate!",
-        author: "Amy Rodriguez",
-        role: "Social Media Manager",
-        initial: "A",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Count Your Characters Now"
       ctaDescription="Perfect for social media posts, SMS, and content creation"

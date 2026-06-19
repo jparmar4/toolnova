@@ -192,11 +192,6 @@ Now proceed to correct the text according to these specifications.`;
 
 
 
-const stats = [
-  { value: "250K+", label: "Texts Fixed", icon: CheckCircle2 },
-  { value: "4.9/5", label: "User Rating", icon: Star },
-  { value: "<10 sec", label: "Avg Time", icon: Clock },
-];
 
 const features = [
   {
@@ -325,16 +320,8 @@ export default function GrammarFixClient() {
       badge="AI-Powered"
       category="Writing Tools"
       categorySlug="writing-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "This grammar checker is amazing! It catches errors I always miss and explains why. My writing has improved so much!",
-        author: "Jessica Martinez",
-        role: "Content Writer",
-        initial: "J",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Ready to Perfect Your Writing?"
       ctaDescription="Get instant grammar corrections and professional polish"

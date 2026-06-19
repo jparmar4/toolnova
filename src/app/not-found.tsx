@@ -4,7 +4,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Page Not Found | ToolNova",
   description:
-    "The page you're looking for doesn't exist. Explore 50+ free AI-powered tools for students and professionals at ToolNova.",
+    "The page you're looking for doesn't exist. Explore 44 free AI-powered tools for students and professionals at ToolNova.",
   robots: {
     index: false,
     follow: true,

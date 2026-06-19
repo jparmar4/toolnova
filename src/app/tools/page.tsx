@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { ToolsClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "All Free AI Tools - 50+ Writing, Study, PDF & Career Tools | ToolNova",
-  description: "Explore 50+ free AI-powered tools for study, writing, exam prep, image editing, PDF management, and career development. No sign-up required.",
+  title: "All Free AI Tools - 44 Writing, Study, PDF & Career Tools | ToolNova",
+  description: "Explore 44 free AI-powered tools for study, writing, exam prep, image editing, PDF management, and career development. No sign-up required.",
   keywords: [
     "free AI tools",
     "online tools",
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
     canonical: "https://www.toolnovahub.com/tools",
   },
   openGraph: {
-    title: "All Free AI Tools - 50+ Writing, Study, PDF & Career Tools | ToolNova",
-    description: "Explore 50+ free AI-powered tools for study, writing, exam prep, image editing, PDF management, and career development.",
+    title: "All Free AI Tools - 44 Writing, Study, PDF & Career Tools | ToolNova",
+    description: "Explore 44 free AI-powered tools for study, writing, exam prep, image editing, PDF management, and career development.",
     url: "https://www.toolnovahub.com/tools",
     type: "website",
     images: [
@@ -33,8 +33,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "All Free AI Tools - 50+ Tools | ToolNova",
-    description: "Explore 50+ free AI-powered tools. No sign-up required.",
+    title: "All Free AI Tools - 44 Tools | ToolNova",
+    description: "Explore 44 free AI-powered tools. No sign-up required.",
     images: ["https://www.toolnovahub.com/og-image.png"],
     creator: "@toolnovahub",
   },
@@ -51,7 +51,7 @@ export default function ToolsPage() {
           The Role of AI-Powered Micro-Utilities in Modern Workflows
         </h2>
         <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-          In an era characterized by rapid digital acceleration, professionals, students, and content creators are continuously challenged to optimize their daily cognitive outputs. Standard workflows are often fragmented across multiple heavy desktop installations and paid platforms. ToolNova was engineered to eliminate this friction by providing a unified, high-performance library of over 50 specialized micro-applications. Accessible directly from any modern web browser without signup or subscription requirements, our utilities cover the full spectrum of writing support, document manipulation, image compression, study planning, and career optimization.
+          In an era characterized by rapid digital acceleration, professionals, students, and content creators are continuously challenged to optimize their daily cognitive outputs. Standard workflows are often fragmented across multiple heavy desktop installations and paid platforms. ToolNova was engineered to eliminate this friction by providing a unified, high-performance library of specialized micro-applications. Accessible directly from any modern web browser without signup or subscription requirements, our utilities cover the full spectrum of writing support, document manipulation, image compression, study planning, and career optimization.
         </p>
 
         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">

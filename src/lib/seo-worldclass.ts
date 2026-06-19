@@ -602,26 +602,6 @@ export const CATEGORY_BREADCRUMBS: Record<string, BreadcrumbItem[]> = {
 };
 
 // ============================================
-// GLOBAL HREFLANG CONFIGURATION
-// ============================================
-
-export const HREFLANG_REGIONS = [
-  { code: "en-US", region: "US", name: "United States" },
-  { code: "en-GB", region: "GB", name: "United Kingdom" },
-  { code: "en-CA", region: "CA", name: "Canada" },
-  { code: "en-AU", region: "AU", name: "Australia" },
-  { code: "en-IN", region: "IN", name: "India" },
-  { code: "en-SG", region: "SG", name: "Singapore" },
-  { code: "en-AE", region: "AE", name: "United Arab Emirates" },
-  { code: "en-DE", region: "DE", name: "Germany" },
-  { code: "en-FR", region: "FR", name: "France" },
-  { code: "en-NL", region: "NL", name: "Netherlands" },
-  { code: "en-BR", region: "BR", name: "Brazil" },
-  { code: "en-JP", region: "JP", name: "Japan" },
-  { code: "x-default", region: "Default", name: "Global" },
-];
-
-// ============================================
 // SCHEMA GENERATORS
 // ============================================
 
@@ -762,13 +742,6 @@ export function generateWebApplicationSchema(toolName: string, toolDescription: 
       priceCurrency: "USD",
       priceValidUntil: "2027-12-31",
       availability: "https://schema.org/InStock",
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "12500",
-      bestRating: "5",
-      worstRating: "1",
     },
     author: {
       "@type": "Organization",
@@ -932,7 +905,7 @@ export function generateEnhancedWebSiteSchema() {
     name: "ToolNova - Free AI Tools",
     alternateName: ["ToolNovaHub", "AI Tools Hub", "Free AI Tools"],
     url: siteConfig.url,
-    description: "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required.",
+    description: "Access 44 free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required.",
     inLanguage: ["en-US", "en-GB", "en-CA", "en-AU", "en-IN", "en-SG", "en-DE", "en-FR"],
     publisher: {
       "@id": `${siteConfig.url}/#organization`,
@@ -1017,10 +990,10 @@ export function generateEntityData() {
     "@type": "Thing",
     "@id": `${siteConfig.url}/#main-entity`,
     name: "ToolNova",
-    description: "A comprehensive free AI tools platform offering 50+ utilities for students and professionals",
+    description: "A comprehensive free AI tools platform offering 44 utilities for students and professionals",
     url: siteConfig.url,
     additionalProperty: [
-      { "@type": "PropertyValue", name: "toolCount", value: "50+" },
+      { "@type": "PropertyValue", name: "toolCount", value: "44" },
       { "@type": "PropertyValue", name: "pricing", value: "Free" },
       { "@type": "PropertyValue", name: "signUpRequired", value: "No" },
       { "@type": "PropertyValue", name: "platform", value: "Web" },
@@ -1099,7 +1072,7 @@ export function generateDatasetSchema() {
     "@context": "https://schema.org",
     "@type": "Dataset",
     name: "ToolNova AI Tools Catalog",
-    description: "Comprehensive catalog of 50+ free AI-powered tools for productivity, education, and content creation",
+    description: "Comprehensive catalog of 44 free AI-powered tools for productivity, education, and content creation",
     url: siteConfig.url,
     license: "https://creativecommons.org/licenses/by/4.0/",
     creator: {
@@ -1149,8 +1122,8 @@ export function generateSoftwareSourceCodeSchema() {
     "@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
     name: "ToolNova Platform",
-    description: "Web-based platform providing 50+ free AI-powered tools",
-    codeRepository: "https://github.com/toolnova",
+    description: "Web-based platform providing 44 free AI-powered tools",
+    codeRepository: siteConfig.links.github,
     programmingLanguage: "TypeScript",
     runtimePlatform: "Next.js",
     targetProduct: {
@@ -1229,7 +1202,7 @@ export function generateAllToolsItemListSchema() {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "ToolNova AI Tools",
-    description: "Complete list of 50+ free AI-powered tools for productivity and education",
+    description: "Complete list of 44 free AI-powered tools for productivity and education",
     numberOfItems: allTools.length,
     itemListElement: allTools.map((tool, index) => ({
       "@type": "ListItem",
@@ -1351,16 +1324,10 @@ export function generateClaimSchema() {
         url: siteConfig.url,
       },
     ],
-    claimReviewed: "ToolNova provides 50+ free AI tools with no sign-up required",
+    claimReviewed: "ToolNova provides free AI tools with no sign-up required",
     itemReviewed: {
       "@type": "Service",
       name: "ToolNova AI Tools",
-    },
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue: "5",
-      bestRating: "5",
-      worstRating: "1",
     },
     author: {
       "@type": "Organization",
@@ -1372,17 +1339,6 @@ export function generateClaimSchema() {
 // ============================================
 // HELPER FUNCTIONS
 // ============================================
-
-/**
- * Generate hreflang tags for all regions
- */
-export function generateAllHreflangs(path: string = "") {
-  return HREFLANG_REGIONS.map((region) => ({
-    hrefLang: region.code,
-    href: `${siteConfig.url}${path}`,
-    region: region.region,
-  }));
-}
 
 /**
  * Get FAQ for a specific tool
@@ -1434,7 +1390,6 @@ export function generateAllToolSchemas(
 const seoWorldclass = {
   TOOL_FAQS,
   TOOL_HOWTOS,
-  HREFLANG_REGIONS,
   generateFAQPageSchema,
   generateHowToPageSchema,
   generateBreadcrumbListSchema,
@@ -1447,7 +1402,6 @@ const seoWorldclass = {
   generateEnhancedWebSiteSchema,
   generateGEOStructuredData,
   generateEntityData,
-  generateAllHreflangs,
   getToolFAQs,
   getToolHowTo,
   getCategoryBreadcrumb,

@@ -293,11 +293,6 @@ ${format !== "table" ? "- Tables if list/explained format chosen" : "- Lists if 
 Create a comprehensive, accurate formula sheet ready for immediate use as study material.`;
 };
 
-const stats = [
-  { icon: Users, label: "200K+", sublabel: "Students Helped" },
-  { icon: Star, label: "4.9/5", sublabel: "Student Rating" },
-  { icon: Zap, label: "Instant", sublabel: "Formula Sheets" },
-];
 
 const features = [
   {
@@ -414,16 +409,8 @@ export default function FormulaGeneratorClient() {
       badge="Formula Reference"
       category="Study Tools"
       categorySlug="study-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "I created formula sheets for all my STEM subjects in minutes! Perfect for exam revision and saved me hours of manual work.",
-        author: "Aisha Patel",
-        role: "Engineering Student",
-        initial: "A",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Generate Your Formula Sheet"
       ctaDescription="Never forget a formula again. Get organized formula sheets instantly!"

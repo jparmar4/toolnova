@@ -1230,3 +1230,17 @@ export function getToolData(slug: string): ToolData | null {
         faqs: mergedFAQs
     };
 }
+
+/** Total number of tools — single source of truth so marketing copy never drifts. */
+export const TOOL_COUNT = Object.keys(toolsData).length;
+
+/** All tool slugs, derived from the data so the sitemap/nav can't drift. */
+export function getAllToolSlugs(): string[] {
+    return Object.keys(toolsData);
+}
+
+/** All tool entries as { slug, data } pairs. */
+export function getAllTools(): { slug: string; data: ToolData }[] {
+    return Object.entries(toolsData).map(([slug, data]) => ({ slug, data }));
+}
+

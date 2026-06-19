@@ -249,11 +249,6 @@ Now provide the complete educational solution following this structure precisely
   return prompt;
 };
 
-const stats = [
-  { value: "100K+", label: "Problems Solved", icon: Calculator },
-  { value: "4.9/5", label: "Student Rating", icon: Star },
-  { value: "<2 min", label: "Avg Response", icon: Clock },
-];
 
 const features = [
   {
@@ -382,16 +377,8 @@ export default function HomeworkSolverClient() {
       badge="AI-Powered"
       category="Study Tools"
       categorySlug="study-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "This tool changed how I study! The step-by-step explanations help me actually understand the material instead of just memorizing answers.",
-        author: "Sarah Johnson",
-        role: "11th Grade Student",
-        initial: "S",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Ready to Solve Smarter?"
       ctaDescription="Get detailed homework help in seconds with AI-powered explanations"

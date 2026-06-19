@@ -96,11 +96,6 @@ ${inverseCase}
 - Use kebab-case for URLs and CSS classes`;
 }
 
-const stats = [
-  { value: "Instant", label: "Conversion", icon: Clock },
-  { value: "150K+", label: "Daily Users", icon: Users },
-  { value: "4.9/5", label: "User Rating", icon: Star },
-];
 
 const features = [
   {
@@ -229,16 +224,8 @@ export default function CaseConverterClient() {
       badge="Utility Tool"
       category="Utility Tools"
       categorySlug="utility-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "As a developer, I use this constantly for converting variable names between different coding styles. The camelCase and snake_case conversions are perfect!",
-        author: "James Wilson",
-        role: "Software Developer",
-        initial: "J",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Convert Your Text Now"
       ctaDescription="Perfect for programming, content creation, and formatting"

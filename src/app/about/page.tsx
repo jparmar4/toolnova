@@ -4,7 +4,7 @@ import { Rocket, Heart, Shield, CheckCircle } from "lucide-react";
 export const metadata: Metadata = {
   title: "About Us - Our Mission & Team | ToolNova",
   description:
-    "Learn about ToolNova's mission to democratize AI productivity tools. Meet the team behind 50+ free AI-powered tools for students and professionals.",
+    "Learn about ToolNova's mission to democratize AI productivity tools. Meet the team behind free AI-powered tools for students and professionals.",
   keywords: [
     "about ToolNova",
     "AI tools team",
@@ -95,8 +95,8 @@ export default function AboutPage() {
         </p>
         <p>
           Founded in 2026, we've grown from a simple PDF utility into a
-          comprehensive suite of over 100 AI-powered tools used by millions of
-          students and professionals worldwide. Our team is a diverse group of
+          comprehensive suite of free AI-powered tools used by students
+          and professionals worldwide. Our team is a diverse group of
           software engineers, linguists, and researchers dedicated to making AI
           practically useful for everyday tasks.
         </p>
@@ -130,47 +130,21 @@ export default function AboutPage() {
           results that are more focused and reliable than raw AI outputs.
         </p>
 
-        <h2 className="mt-16 mb-8">Meet Our Experts</h2>
-        <div className="grid md:grid-cols-3 gap-8 not-prose mb-16">
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 text-center">
-            <div className="w-20 h-20 bg-purple-100 rounded-full mx-auto flex items-center justify-center text-2xl font-bold text-purple-600 mb-4">
-              SM
-            </div>
-            <h3 className="font-bold text-lg mb-1">Sarah Mitchell</h3>
-            <p className="text-sm text-purple-600 font-medium mb-3">
-              Education Technology Writer
-            </p>
-            <p className="text-sm text-muted-foreground">
-              A former educator with 10+ years of experience in student productivity
-              and pedagogical technology integration.
-            </p>
+        <h2 className="mt-16 mb-8">Our Team</h2>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-sm border border-slate-100 dark:border-slate-700 text-center not-prose mb-16 max-w-2xl mx-auto">
+          <div className="w-20 h-20 bg-primary/10 rounded-full mx-auto flex items-center justify-center text-2xl font-bold text-primary mb-4">
+            TN
           </div>
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 text-center">
-            <div className="w-20 h-20 bg-blue-100 rounded-full mx-auto flex items-center justify-center text-2xl font-bold text-blue-600 mb-4">
-              MC
-            </div>
-            <h3 className="font-bold text-lg mb-1">Marcus Chen</h3>
-            <p className="text-sm text-blue-600 font-medium mb-3">
-              AI Systems Architect
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Specializes in building low-latency AI pipelines and secure
-              browser-based data processing environments.
-            </p>
-          </div>
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 text-center">
-            <div className="w-20 h-20 bg-emerald-100 rounded-full mx-auto flex items-center justify-center text-2xl font-bold text-emerald-600 mb-4">
-              EP
-            </div>
-            <h3 className="font-bold text-lg mb-1">Dr. Emily Parker</h3>
-            <p className="text-sm text-emerald-600 font-medium mb-3">
-              Linguistic Researcher
-            </p>
-            <p className="text-sm text-muted-foreground">
-              PhD in Computational Linguistics, ensuring our writing tools
-              maintain semantic integrity and natural flow.
-            </p>
-          </div>
+          <h3 className="font-bold text-lg mb-1">ToolNova Editorial Team</h3>
+          <p className="text-sm text-primary font-medium mb-3">
+            Product &amp; Engineering
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Our team of software engineers, designers, and content specialists
+            builds and maintains ToolNova&apos;s suite of free AI tools. We focus on
+            accuracy, privacy, and usability — testing every tool against
+            rigorous quality standards before release.
+          </p>
         </div>
 
         <h2 className="mt-16 mb-8 text-2xl font-bold text-center">

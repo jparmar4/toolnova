@@ -8,9 +8,8 @@
       "alternateName": ["ToolNova Hub", "toolnovahub.com"],
       "url": "https://www.toolnovahub.com",
       "logo": "https://www.toolnovahub.com/logo.png",
-      "description": "ToolNova is a free AI-powered productivity platform offering 50+ tools for students and professionals across writing, study, career, PDF, and utility categories.",
+      "description": "ToolNova is a free AI-powered productivity platform offering tools for students and professionals across writing, study, career, PDF, and utility categories.",
       "foundingDate": "2024",
-      "numberOfEmployees": { "@type": "QuantitativeValue", "value": "10" },
       "areaServed": "Worldwide",
       "serviceType": "AI Productivity Tools",
       "knowsAbout": [
@@ -53,7 +52,7 @@
         "@type": "SearchAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "https://www.toolnovahub.com/tools?q={search_term_string}"
+          "urlTemplate": "https://www.toolnovahub.com/search?q={search_term_string}"
         },
         "query-input": "required name=search_term_string"
       }

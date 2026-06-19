@@ -36,16 +36,6 @@ export const metadata: Metadata = {
     },
     alternates: {
         canonical: `${siteConfig.url}/blog`,
-        languages: {
-            "en-US": `${siteConfig.url}/blog`,
-            "en-GB": `${siteConfig.url}/blog`,
-            "en-CA": `${siteConfig.url}/blog`,
-            "en-AU": `${siteConfig.url}/blog`,
-            "en-DE": `${siteConfig.url}/blog`,
-            "en-SG": `${siteConfig.url}/blog`,
-            "en-AE": `${siteConfig.url}/blog`,
-            "x-default": `${siteConfig.url}/blog`,
-        },
     },
 };
 

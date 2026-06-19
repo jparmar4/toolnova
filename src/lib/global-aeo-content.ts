@@ -19,12 +19,12 @@ export interface GlobalAEOContent {
 export const homepageAEO: GlobalAEOContent = {
     quickAnswer: {
         question: 'What is ToolNova?',
-        answer: 'ToolNova is a free online platform offering 50+ AI-powered tools for students, professionals, and content creators. It includes PDF tools, image editors, AI writing assistants, study aids, and productivity tools—all completely free with no sign-up required.',
+        answer: 'ToolNova is a free online platform offering 44 AI-powered tools for students, professionals, and content creators. It includes PDF tools, image editors, AI writing assistants, study aids, and productivity tools—all completely free with no sign-up required.',
     },
     faqs: [
         {
             question: 'Is ToolNova really free?',
-            answer: 'Yes, ToolNova is 100% free to use. All 50+ tools are available without any subscription, payment, or sign-up requirements. You can use any tool as many times as you need, completely free.',
+            answer: 'Yes, ToolNova is 100% free to use. All 44 tools are available without any subscription, payment, or sign-up requirements. You can use any tool as many times as you need, completely free.',
         },
         {
             question: 'Do I need to create an account?',

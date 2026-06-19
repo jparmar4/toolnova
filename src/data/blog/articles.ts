@@ -8943,9 +8943,22 @@ The credential alone won't transform your career. But the combination of structu
 
 ];
 
+const EDITORIAL_AUTHOR_NAME = "ToolNova Editorial Team";
+const EDITORIAL_AUTHOR_SLUG = "editorial-team";
+const EDITORIAL_AUTHOR_ROLE = "Editorial Team";
+
+function withEditorialAuthor(post: BlogPost): BlogPost {
+    return {
+        ...post,
+        author: EDITORIAL_AUTHOR_NAME,
+        authorSlug: EDITORIAL_AUTHOR_SLUG,
+        authorRole: EDITORIAL_AUTHOR_ROLE,
+    };
+}
+
 // Utility functions
 export function getAllBlogPosts(): BlogPost[] {
-    return [...blogPosts].sort((a, b) => {
+    return blogPosts.map(withEditorialAuthor).sort((a, b) => {
         const da = new Date(a.dateModified || a.date).getTime();
         const db = new Date(b.dateModified || b.date).getTime();
         return db - da;
@@ -8953,14 +8966,15 @@ export function getAllBlogPosts(): BlogPost[] {
 }
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
-    return blogPosts.find(post => post.slug === slug);
+    const post = blogPosts.find(post => post.slug === slug);
+    return post ? withEditorialAuthor(post) : undefined;
 }
 
 export function getRelatedPosts(slug: string, limit: number = 3): BlogPost[] {
     const currentPost = getBlogPostBySlug(slug);
     if (!currentPost) return [];
 
-    return blogPosts
+    return blogPosts.map(withEditorialAuthor)
         .filter(post => post.slug !== slug && post.category === currentPost.category)
         .slice(0, limit);
 }
@@ -8987,7 +9001,6 @@ export const getAllPosts = getAllBlogPosts;
 export const getPostBySlug = getBlogPostBySlug;
 export const getAllTags = getAllKeywords;
 
-export function getPostsByAuthor(authorName: string): BlogPost[] {
-    return blogPosts.filter((post) => post.author === authorName);
+export function getPostsByAuthor(_authorName: string): BlogPost[] {
+    return getAllBlogPosts();
 }
-

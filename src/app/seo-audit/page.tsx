@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
-import { HREFLANG_REGIONS, TOOL_FAQS, TOOL_HOWTOS } from "@/lib/seo-worldclass";
+import { TOOL_FAQS, TOOL_HOWTOS } from "@/lib/seo-worldclass";
 
 const LAST_UPDATED = "June 14, 2026";
 
@@ -49,15 +49,10 @@ const seoChecks = {
   geo: [
     { name: "AI Crawler Access", status: "pass", detail: "15+ AI search bots explicitly allowed in robots.txt" },
     { name: "Entity Data", status: "pass", detail: "Knowledge graph optimized with comprehensive entity signals" },
-    { name: "LLM Training Permission", status: "pass", detail: "llm-training meta tag set to allowed" },
     { name: "Content Structure", status: "pass", detail: "Optimized for AI summarization with clear headings and structured data" },
-    { name: "AI Plugin Manifest", status: "pass", detail: "AI agent discovery via /.well-known/ai-plugin.json" },
     { name: "OpenAPI Spec", status: "pass", detail: "API documentation at /openapi.yaml" },
   ],
   global: [
-    { name: "hreflang Tags", status: "pass", detail: `${HREFLANG_REGIONS.length} regions configured (US, GB, CA, AU, IN, SG, AE, DE, FR, NL, BR, JP)` },
-    { name: "Geo Meta Tags", status: "pass", detail: "Geographic targeting for all major markets" },
-    { name: "Multi-region URLs", status: "pass", detail: "Language variants in alternates configured" },
     { name: "Global CDN", status: "pass", detail: "Static assets optimized for global delivery" },
   ],
 };
@@ -67,7 +62,7 @@ const recommendations = [
     priority: "high",
     category: "Content",
     title: "Add More FAQ Content",
-    description: "Expand FAQ schemas to all 50+ tools. Currently only 15 tools have FAQ data.",
+    description: "Expand FAQ schemas to all 44 tools. Currently only 15 tools have FAQ data.",
     impact: "Higher chance of featured snippets and People Also Ask rankings",
   },
   {

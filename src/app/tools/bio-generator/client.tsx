@@ -226,11 +226,6 @@ Bio Option 3:
 [Third bio]`;
 };
 
-const stats = [
-  { icon: Users, label: "350K+", sublabel: "Profiles Created" },
-  { icon: Star, label: "4.8/5", sublabel: "User Rating" },
-  { icon: Zap, label: "3 Options", sublabel: "Per Generation" },
-];
 
 const features = [
   {
@@ -347,16 +342,8 @@ export default function BioGeneratorClient() {
       badge="Profile Booster"
       category="Writing Tools"
       categorySlug="writing-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "Finally found the perfect Instagram bio! The witty option got me so many compliments. Love having 3 choices to pick from.",
-        author: "Sophia Wang",
-        role: "Content Creator",
-        initial: "S",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Create Your Bio"
       ctaDescription="Stand out on social media with a bio that captures who you are!"

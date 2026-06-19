@@ -171,11 +171,6 @@ Do NOT include:
 Provide a clear, structured, and educational explanation of this diagram:`;
 };
 
-const stats = [
-  { icon: Users, label: "350K+", sublabel: "Diagrams Explained" },
-  { icon: Star, label: "4.9/5", sublabel: "Student Rating" },
-  { icon: Zap, label: "All Subjects", sublabel: "Supported" },
-];
 
 const features = [
   {
@@ -292,16 +287,8 @@ export default function DiagramExplainerClient() {
       badge="Visual Learning"
       category="Study Tools"
       categorySlug="study-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "Finally understood the Krebs cycle diagram that confused me all semester! The part-by-part breakdown with functions was exactly what I needed.",
-        author: "Maria Santos",
-        role: "Biology Major",
-        initial: "M",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Decode Any Diagram"
       ctaDescription="Visual concepts made crystal clear with detailed explanations!"

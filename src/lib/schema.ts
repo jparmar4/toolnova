@@ -45,11 +45,6 @@ export interface SoftwareApplicationSchema {
     price: string;
     priceCurrency: string;
   };
-  aggregateRating?: {
-    "@type": "AggregateRating";
-    ratingValue: string;
-    ratingCount: string;
-  };
 }
 
 export interface FAQPageSchema {
@@ -198,11 +193,6 @@ export function getToolSchema(
       "@type": "Offer",
       price: "0",
       priceCurrency: "USD",
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "1250",
     },
     featureList: featureList,
   };
@@ -438,7 +428,6 @@ export function getComprehensiveToolSchema(
   features: string[],
   howToSteps: Array<{ name: string; text: string }>,
   faqs: Array<{ question: string; answer: string }>,
-  rating?: { value: string; count: string },
 ): {
   software: EnhancedSoftwareApplicationSchema;
   howTo: HowToSchema;
@@ -463,14 +452,6 @@ export function getComprehensiveToolSchema(
       name: "ToolNova",
     },
   };
-
-  if (rating) {
-    softwareSchema.aggregateRating = {
-      "@type": "AggregateRating",
-      ratingValue: rating.value,
-      ratingCount: rating.count,
-    };
-  }
 
   const howToSchema = getHowToSchema(toolName, description, howToSteps);
   const faqSchema = getFAQSchema(faqs);

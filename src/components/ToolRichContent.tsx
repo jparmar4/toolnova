@@ -19,7 +19,9 @@ interface ToolRichContentProps {
 }
 
 const getAnswerSnippet = (title: string, description: string) => {
-    return `${title} helps you complete the task quickly and accurately in your browser. It is best for users who want fast results without complex setup. ${description}`;
+    // Keep it concise (40-70 words) and answer-shaped for AI/voice extraction.
+    const trimmedDesc = description.trim();
+    return `The ${title} is a free online tool from ToolNova. ${trimmedDesc} It runs in your browser with no sign-up required and is free to use.`;
 };
 
 export const ToolRichContent: React.FC<ToolRichContentProps> = ({
@@ -33,7 +35,7 @@ export const ToolRichContent: React.FC<ToolRichContentProps> = ({
 
     return (
         <div className="max-w-4xl mx-auto px-6 py-16 space-y-20 text-slate-800 dark:text-slate-200">
-            {/* AEO: Quick answer block */}
+            {/* AEO: Quick answer block — direct, cite-friendly answer for AI search */}
             <section className="rounded-2xl border border-primary/20 bg-primary/5 p-6">
                 <h2 className="text-2xl font-bold mb-3">Quick answer</h2>
                 <p className="text-base leading-relaxed text-muted-foreground">{answerSnippet}</p>

@@ -198,11 +198,6 @@ Provide ONLY the summary (and key terms if requested) without any additional lab
   return prompt;
 };
 
-const stats = [
-  { value: "300K+", label: "Texts Summarized", icon: FileText },
-  { value: "4.8/5", label: "User Rating", icon: Star },
-  { value: "<10 sec", label: "Avg Time", icon: Clock },
-];
 
 const features = [
   {
@@ -331,16 +326,8 @@ export default function TextSummarizerClient() {
       badge="AI-Powered"
       category="Utility Tools"
       categorySlug="utility-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "This is a lifesaver for research! I can quickly understand long papers and articles without reading everything. The bullet point format is perfect.",
-        author: "Rachel Green",
-        role: "PhD Student",
-        initial: "R",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Ready to Save Time Reading?"
       ctaDescription="Get instant summaries of any text with AI"

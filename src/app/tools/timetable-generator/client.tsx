@@ -228,11 +228,6 @@ Do NOT include:
 Create a well-organized, realistic, and balanced weekly timetable:`;
 };
 
-const stats = [
-  { icon: Users, label: "380K+", sublabel: "Schedules Created" },
-  { icon: Star, label: "4.8/5", sublabel: "User Rating" },
-  { icon: Zap, label: "Organized", sublabel: "Life & Work" },
-];
 
 const features = [
   {
@@ -349,16 +344,8 @@ export default function TimetableGeneratorClient() {
       badge="Time Manager"
       category="Study Tools"
       categorySlug="study-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "Finally got my chaotic schedule under control! The time blocks format works perfectly for balancing med school and personal life.",
-        author: "Alex Turner",
-        role: "Medical Student",
-        initial: "A",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Create Your Timetable"
       ctaDescription="Time well spent starts with good planning. Organize your week now!"

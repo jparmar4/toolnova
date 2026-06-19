@@ -233,11 +233,6 @@ Just write the explanation naturally, flowing from introduction through explanat
 Create an explanation that genuinely builds understanding:`;
 };
 
-const stats = [
-  { icon: Users, label: "500K+", sublabel: "Concepts Explained" },
-  { icon: Star, label: "4.9/5", sublabel: "Student Rating" },
-  { icon: Zap, label: "Any Topic", sublabel: "Any Complexity" },
-];
 
 const features = [
   {
@@ -354,16 +349,8 @@ export default function ConceptExplainerClient() {
       badge="Learning Made Easy"
       category="Study Tools"
       categorySlug="study-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "The ELI5 mode finally helped me understand quantum mechanics! The analogies made everything click. Perfect for visual learners like me.",
-        author: "Thomas Lee",
-        role: "Physics Student",
-        initial: "T",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Start Understanding"
       ctaDescription="No concept too complex - we'll break it down for you!"

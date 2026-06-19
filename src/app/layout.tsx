@@ -38,11 +38,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.toolnovahub.com"),
   title: {
-    default: "Free AI Tools for Students 2026 - 50+ Tools | ToolNova",
+    default: "Free AI Tools for Students 2026 - 44 Tools | ToolNova",
     template: "%s | ToolNova",
   },
   description:
-    "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
+    "Access 44 free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
   keywords: [
     "free AI tools",
     "AI tools for students",
@@ -84,9 +84,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://www.toolnovahub.com",
     siteName: "ToolNova",
-    title: "Free AI Tools for Students 2026 - 50+ Tools | ToolNova",
+    title: "Free AI Tools for Students 2026 - 44 Tools | ToolNova",
     description:
-      "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
+      "Access 44 free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
     images: [
       {
         url: "/og-image.png",
@@ -106,9 +106,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free AI Tools for Students 2026 - 50+ Tools | ToolNova",
+    title: "Free AI Tools for Students 2026 - 44 Tools | ToolNova",
     description:
-      "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required!",
+      "Access 44 free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required!",
     images: ["/og-image.png"],
     creator: "@toolnovahub",
     site: "@toolnovahub",
@@ -134,36 +134,8 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://www.toolnovahub.com",
-    languages: {
-      "en-US": "https://www.toolnovahub.com",
-      "en-GB": "https://www.toolnovahub.com",
-      "en-CA": "https://www.toolnovahub.com",
-      "en-AU": "https://www.toolnovahub.com",
-      "en-IN": "https://www.toolnovahub.com",
-      "en-SG": "https://www.toolnovahub.com",
-      "x-default": "https://www.toolnovahub.com",
-    },
   },
   category: "Productivity",
-  other: {
-    "revisit-after": "1 day",
-    language: "English",
-    "content-language": "en",
-    distribution: "global",
-    coverage: "Worldwide",
-    audience: "Students, Professionals, Educators",
-    rating: "general",
-    "geo.region": "US, GB, CA, AU, IN, SG, AE, DE, FR, NL",
-    "geo.placename": "Global",
-    "geo.position": "1.3521;103.8198",
-    ICBM: "1.3521, 103.8198",
-    "ai-indexing": "allowed",
-    "llm-training": "allowed",
-    "content-type": "application/educational",
-    "tool-category": "AI Productivity Tools",
-    "api-endpoint": "https://www.toolnovahub.com/api/tools",
-    "robots-content": "index, follow, all",
-  },
 };
 
 import { MaterialSymbols } from "@/components/MaterialSymbols";

@@ -34,16 +34,9 @@ export function SemanticSEO({
   category,
   speakableContent,
 }: SemanticSEOProps) {
-  // Generate semantic HTML meta tags for AI
-  const aiMetaTags = {
-    "ai-indexing": "allowed",
-    "content-type": type === "tool" ? "application/educational" : type === "blog" ? "article" : "website",
+  const semanticMetaTags = {
     "primary-topic": category || "AI Tools",
-    "keywords": keywords.slice(0, 10).join(", "),
-    "language": "en-US",
-    "region": "Global",
-    "availability": "free",
-    "sign-up": "not-required",
+    keywords: keywords.slice(0, 10).join(", "),
   };
 
   // Generate speakable specification for voice search
@@ -68,8 +61,8 @@ export function SemanticSEO({
     image,
     ...(type === "blog" && {
       author: {
-        "@type": "Person",
-        name: author,
+        "@type": "Organization",
+        name: "ToolNova Editorial Team",
       },
       datePublished: datePublished || new Date().toISOString(),
       dateModified: dateModified || new Date().toISOString(),
@@ -92,17 +85,12 @@ export function SemanticSEO({
 
   return (
     <>
-      {/* AI-optimized meta tags */}
-      {Object.entries(aiMetaTags).map(([name, content]) => (
+      {Object.entries(semanticMetaTags).map(([name, content]) => (
         <meta key={name} name={name} content={content} />
       ))}
 
       {/* Semantic content hints for AI */}
       <meta name="about" content={keywords.slice(0, 5).join(", ")} />
-      <meta name="audience" content="students, professionals, educators" />
-      <meta name="purpose" content="educational, productivity, content-creation" />
-      <meta name="format" content="web-application" />
-      <meta name="coverage" content="global" />
       <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
       {/* Speakable Specification for Voice Search */}

@@ -209,11 +209,6 @@ Do NOT include:
 Provide an expertly curated idioms and phrases collection:`;
 };
 
-const stats = [
-  { value: "400K+", label: "Learners", icon: Users },
-  { value: "4.9/5", label: "Rating", icon: Star },
-  { value: "<2min", label: "Learn", icon: Clock },
-];
 
 const features = [
   {
@@ -256,13 +251,6 @@ const howItWorks = [
     color: "from-green-500 to-emerald-600",
   },
 ];
-
-const testimonial = {
-  text: "This tool was a game-changer for my IELTS speaking test! I learned 50+ idioms about common topics with their meanings and origins. The examiner was impressed with my natural use of expressions. Highly recommend for anyone preparing for English proficiency exams!",
-  author: "Aisha Patel",
-  role: "IELTS Candidate",
-  initial: "A",
-};
 
 const relatedTools = [
   {
@@ -349,10 +337,8 @@ export default function IdiomsPhrasesClient() {
       badge="Language Master"
       category="Exam Prep Tools"
       categorySlug="exam-prep-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={testimonial}
       relatedTools={relatedTools}
     >
       <EnhancedToolLayout

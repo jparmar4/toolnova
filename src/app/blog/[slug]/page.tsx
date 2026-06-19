@@ -51,7 +51,7 @@ export async function generateMetadata({
     title: post.title,
     description: post.metaDescription,
     keywords: post.keywords,
-    authors: [{ name: post.author }],
+    authors: [{ name: "ToolNova Editorial Team" }],
     robots: {
       index: true,
       follow: true,
@@ -69,7 +69,7 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.date,
       modifiedTime: post.dateModified || post.date,
-      authors: [post.author],
+      authors: ["ToolNova Editorial Team"],
       url: canonicalUrl,
       locale: "en_US",
       images: [
@@ -91,16 +91,6 @@ export async function generateMetadata({
     },
     alternates: {
       canonical: canonicalUrl,
-      languages: {
-        "en-US": canonicalUrl,
-        "en-GB": canonicalUrl,
-        "en-CA": canonicalUrl,
-        "en-AU": canonicalUrl,
-        "en-DE": canonicalUrl,
-        "en-SG": canonicalUrl,
-        "en-AE": canonicalUrl,
-        "x-default": canonicalUrl,
-      },
     },
     other: {
       news_keywords:
@@ -113,7 +103,7 @@ export async function generateMetadata({
         : post.date
           ? new Date(post.date).toISOString()
           : "",
-      "article:author": post.author || "ToolNova Team",
+      "article:author": "ToolNova Editorial Team",
       "article:section": post.category || "Education",
       "article:tag": post.keywords?.slice(0, 5).join(",") || "",
       "og:locale": "en_US",
@@ -162,16 +152,9 @@ export default async function BlogPostPage({
       height: 630,
     },
     author: {
-      "@type": "Person",
-      name: post.author,
-      jobTitle: author?.role || post.authorRole,
-      url: author?.profileUrl
-        ? `${siteConfig.url}${author.profileUrl}`
-        : `${siteConfig.url}/author/${post.authorSlug || ""}`,
-      sameAs: [
-        `${siteConfig.url}/author/${post.authorSlug || ""}`,
-        "https://www.linkedin.com/company/toolnova",
-      ],
+      "@type": "Organization",
+      name: "ToolNova Editorial Team",
+      url: `${siteConfig.url}/author/editorial-team`,
     },
     publisher: {
       "@type": "Organization",
@@ -183,10 +166,7 @@ export default async function BlogPostPage({
         width: 512,
         height: 512,
       },
-      sameAs: [
-        "https://twitter.com/toolnovahub",
-        "https://www.linkedin.com/company/toolnova",
-      ],
+      sameAs: Object.values(siteConfig.links),
     },
     datePublished: post.date,
     dateModified: post.dateModified || post.date,

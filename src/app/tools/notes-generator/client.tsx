@@ -178,11 +178,6 @@ Remember to:
   return prompt;
 };
 
-const stats = [
-  { value: "150K+", label: "Notes Created", icon: ClipboardList },
-  { value: "4.9/5", label: "Student Rating", icon: Star },
-  { value: "<1 min", label: "Generation Time", icon: Clock },
-];
 
 const features = [
   {
@@ -311,16 +306,8 @@ export default function NotesGeneratorClient() {
       badge="AI-Powered"
       category="Study Tools"
       categorySlug="study-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "These notes saved me so much time! The Cornell format is perfect for my study style, and the review questions really help me prepare for tests.",
-        author: "Alex Thompson",
-        role: "High School Student",
-        initial: "A",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Ready to Study Smarter?"
       ctaDescription="Generate comprehensive study notes in seconds"

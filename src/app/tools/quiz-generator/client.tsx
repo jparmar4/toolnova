@@ -256,11 +256,6 @@ Do NOT include:
 Create an educationally sound quiz that effectively measures comprehension:`;
 };
 
-const stats = [
-  { icon: Users, label: "300K+", sublabel: "Quiz Takers" },
-  { icon: Star, label: "4.8/5", sublabel: "Student Rating" },
-  { icon: Zap, label: "Instant", sublabel: "Quiz Creation" },
-];
 
 const features = [
   {
@@ -377,16 +372,8 @@ export default function QuizGeneratorClient() {
       badge="Self-Test Tool"
       category="Study Tools"
       categorySlug="study-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "I quiz myself every day before exams. This tool makes it so easy to create fresh questions! My grades improved significantly.",
-        author: "Emma Wilson",
-        role: "High School Senior",
-        initial: "E",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Generate Your Quiz"
       ctaDescription="Test yourself and track your progress with custom quizzes!"

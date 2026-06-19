@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { getAllBlogPosts } from "@/data/blog";
 import { getAllAuthors } from "@/data/authors";
+import { getAllToolSlugs } from "@/data/tools";
 import { siteConfig } from "@/config/site";
 
 // Force dynamic generation so sitemap always reflects latest content
@@ -90,6 +91,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.4,
     },
+    {
+      url: `${baseUrl}/search`,
+      lastModified: currentDate,
+      changeFrequency: "weekly" as const,
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/sitemap-page`,
+      lastModified: currentDate,
+      changeFrequency: "weekly" as const,
+      priority: 0.4,
+    },
   ];
 
   // ── Tool category pages ───────────────────────────────────────
@@ -107,68 +120,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  // ── Individual tool pages ─────────────────────────────────────
-  const tools = [
-    // Writing Tools
-    "text-summarizer",
-    "paraphraser",
-    "grammar-fix",
-    "essay-writer",
-    "speech-writer",
-    "email-writer",
-    "caption-generator",
-    "story-generator",
-    "paragraph-generator",
-    "text-simplifier",
-
-    // Study Tools
-    "homework-solver",
-    "notes-generator",
-    "flashcard-maker",
-    "quiz-generator",
-    "mcq-generator",
-    "concept-explainer",
-    "chapter-summary",
-    "doubt-solver",
-    "diagram-explainer",
-    "formula-generator",
-    "timetable-generator",
-    "revision-planner",
-    "goal-planner",
-    "todo-list-generator",
-
-    // Language Tools
-    "vocabulary-builder",
-    "synonym-finder",
-    "antonym-finder",
-    "idioms-phrases",
-    "one-word-substitution",
-
-    // Career Tools
-    "resume-bullets",
-    "cover-letter-writer",
-    "interview-generator",
-    "bio-generator",
-    "linkedin-optimizer",
-
-    // Utility Tools
-    "word-counter",
-    "character-counter",
-    "case-converter",
-    "age-calculator",
-
-    // Image & PDF Tools
-    "merge-pdf",
-    "split-pdf",
-    "image-to-pdf",
-    "image-compressor",
-    "jpg-to-png",
-    "png-to-jpg",
-    "resize-image",
-  ];
-
-  const toolUrls: MetadataRoute.Sitemap = tools.map((tool) => ({
-    url: `${baseUrl}/tools/${tool}`,
+  // ── Individual tool pages (derived from the data source of truth) ────
+  const toolUrls: MetadataRoute.Sitemap = getAllToolSlugs().map((slug) => ({
+    url: `${baseUrl}/tools/${slug}`,
     lastModified: currentDate,
     changeFrequency: "weekly" as const,
     priority: 0.85,

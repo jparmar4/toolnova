@@ -60,11 +60,6 @@ ${
 }`;
 }
 
-const stats = [
-  { value: "Instant", label: "Analysis", icon: Clock },
-  { value: "100K+", label: "Daily Users", icon: Users },
-  { value: "4.9/5", label: "User Rating", icon: Star },
-];
 
 const features = [
   {
@@ -154,16 +149,8 @@ export default function WordCounterClient() {
       badge="Utility Tool"
       category="Utility Tools"
       categorySlug="utility-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "Essential tool for bloggers and content writers! Helps me stay within word limits and optimize my content every single time.",
-        author: "David Miller",
-        role: "Content Writer",
-        initial: "D",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Count Your Words Now"
       ctaDescription="Perfect for essays, blogs, articles, and social media posts"

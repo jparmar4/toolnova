@@ -146,11 +146,6 @@ ${includeExamples ? "- Include practical, real-world examples" : ""}
   return prompt;
 };
 
-const stats = [
-  { value: "180K+", label: "Flashcards Created", icon: Layers },
-  { value: "4.9/5", label: "Student Rating", icon: Star },
-  { value: "<1 min", label: "Generation Time", icon: Clock },
-];
 
 const features = [
   {
@@ -279,16 +274,8 @@ export default function FlashcardMakerClient() {
       badge="AI-Powered"
       category="Study Tools"
       categorySlug="study-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "These flashcards with memory tips are amazing! I memorized 100+ medical terms in a week. The mnemonics really help things stick.",
-        author: "Lisa Wang",
-        role: "Medical Student",
-        initial: "L",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Ready to Master Your Subject?"
       ctaDescription="Create effective flashcards and ace your exams"

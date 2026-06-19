@@ -140,11 +140,6 @@ Now paraphrase the text following these instructions precisely.`;
   return prompt;
 };
 
-const stats = [
-  { value: "500K+", label: "Texts Paraphrased", icon: RefreshCw },
-  { value: "4.8/5", label: "User Rating", icon: Star },
-  { value: "<15 sec", label: "Avg Time", icon: Clock },
-];
 
 const features = [
   {
@@ -273,16 +268,8 @@ export default function ParaphraserClient() {
       badge="AI-Powered"
       category="Writing Tools"
       categorySlug="writing-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "The best paraphrasing tool I've used! It doesn't just swap words - it actually restructures sentences naturally. Saved me hours on my research paper!",
-        author: "Michael Chen",
-        role: "Graduate Student",
-        initial: "M",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Ready to Rewrite Your Content?"
       ctaDescription="Get unique, plagiarism-free text in seconds"

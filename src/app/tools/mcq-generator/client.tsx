@@ -169,11 +169,6 @@ Important Guidelines:
   return prompt;
 };
 
-const stats = [
-  { value: "200K+", label: "Questions Generated", icon: Target },
-  { value: "4.9/5", label: "Student Rating", icon: Star },
-  { value: "<1 min", label: "Generation Time", icon: Clock },
-];
 
 const features = [
   {
@@ -302,16 +297,8 @@ export default function MCQGeneratorClient() {
       badge="AI-Powered"
       category="Study Tools"
       categorySlug="study-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "The MCQs are exactly what I needed for exam prep! The mixed difficulty option helped me identify my weak areas. The explanations are super helpful too!",
-        author: "Priya Sharma",
-        role: "Medical Student",
-        initial: "P",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Ready to Test Your Knowledge?"
       ctaDescription="Generate practice MCQs and ace your exams"

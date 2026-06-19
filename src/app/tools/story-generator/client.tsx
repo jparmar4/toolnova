@@ -201,11 +201,6 @@ Write ONLY the complete story. Do not include:
 Start directly with the narrative. Make every word count. Create something memorable.`;
 };
 
-const stats = [
-  { icon: Users, label: "250K+", sublabel: "Stories Created" },
-  { icon: Star, label: "4.8/5", sublabel: "User Rating" },
-  { icon: Zap, label: "6 Genres", sublabel: "Available" },
-];
 
 const features = [
   {
@@ -322,16 +317,8 @@ export default function StoryGeneratorClient() {
       badge="Creative Writing"
       category="Writing Tools"
       categorySlug="writing-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "I use this for creative writing prompts. It sparks amazing ideas and helps me overcome writer's block! The stories are always engaging and unique.",
-        author: "Emma Taylor",
-        role: "Aspiring Author",
-        initial: "E",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Start Your Story"
       ctaDescription="Every great story starts with an idea. Let AI bring yours to life!"

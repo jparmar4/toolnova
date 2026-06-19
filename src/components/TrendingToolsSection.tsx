@@ -3,15 +3,13 @@
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { TrendingUp, Sparkles, Star, ArrowRight, Zap } from 'lucide-react';
+import { TrendingUp, Sparkles, ArrowRight, Zap } from 'lucide-react';
 
 interface TrendingTool {
     name: string;
     href: string;
     description: string;
     category: string;
-    weeklyUsers: string;
-    avgRating: number;
     trend: 'up' | 'hot';
     badge?: string;
 }
@@ -22,8 +20,6 @@ const trendingTools: TrendingTool[] = [
         href: '/tools/homework-solver',
         description: 'Get step-by-step solutions to any homework problem',
         category: 'AI Study Tools',
-        weeklyUsers: '5.2K',
-        avgRating: 4.9,
         trend: 'hot',
         badge: '🔥 Most Popular',
     },
@@ -32,18 +28,14 @@ const trendingTools: TrendingTool[] = [
         href: '/tools/essay-writer',
         description: 'Generate well-structured essays on any topic',
         category: 'Writing Tools',
-        weeklyUsers: '4.8K',
-        avgRating: 4.8,
         trend: 'hot',
-        badge: '⭐ Top Rated',
+        badge: '✨ Featured',
     },
     {
         name: 'Paraphraser',
         href: '/tools/paraphraser',
         description: 'Rewrite text while maintaining original meaning',
         category: 'Writing Tools',
-        weeklyUsers: '3.9K',
-        avgRating: 4.7,
         trend: 'up',
     },
     {
@@ -51,8 +43,6 @@ const trendingTools: TrendingTool[] = [
         href: '/tools/notes-generator',
         description: 'Create comprehensive study notes from any material',
         category: 'AI Study Tools',
-        weeklyUsers: '3.5K',
-        avgRating: 4.8,
         trend: 'up',
     },
     {
@@ -60,8 +50,6 @@ const trendingTools: TrendingTool[] = [
         href: '/tools/mcq-generator',
         description: 'Generate practice questions for exam preparation',
         category: 'AI Study Tools',
-        weeklyUsers: '2.8K',
-        avgRating: 4.6,
         trend: 'up',
     },
     {
@@ -69,8 +57,6 @@ const trendingTools: TrendingTool[] = [
         href: '/tools/text-summarizer',
         description: 'Summarize long texts in seconds',
         category: 'AI Study Tools',
-        weeklyUsers: '2.5K',
-        avgRating: 4.7,
         trend: 'up',
     },
 ];
@@ -91,7 +77,7 @@ export default function TrendingToolsSection() {
                         Most Popular <span className="text-gradient">Tools</span>
                     </h2>
                     <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                        Join thousands of students using these trending tools
+                        Explore our most-used tools loved by students and professionals
                     </p>
                 </div>
 
@@ -127,18 +113,6 @@ export default function TrendingToolsSection() {
                                 </CardHeader>
 
                                 <CardContent className="space-y-4">
-                                    {/* Stats */}
-                                    <div className="flex items-center justify-between text-sm">
-                                        <div className="flex items-center gap-1">
-                                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                                            <span className="font-semibold">{tool.avgRating}</span>
-                                            <span className="text-muted-foreground">/5</span>
-                                        </div>
-                                        <div className="text-muted-foreground">
-                                            {tool.weeklyUsers} users/week
-                                        </div>
-                                    </div>
-
                                     {/* Category Badge */}
                                     <div className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-primary/10 text-primary text-xs">
                                         <Sparkles className="h-3 w-3" />
@@ -147,7 +121,7 @@ export default function TrendingToolsSection() {
 
                                     {/* CTA */}
                                     <div className="flex items-center gap-2 text-primary font-medium text-sm group-hover:gap-3 transition-all">
-                                        <span>Try it now</span>
+                                        <span>Try it now — it&apos;s free</span>
                                         <ArrowRight className="h-4 w-4" />
                                     </div>
                                 </CardContent>
@@ -165,29 +139,18 @@ export default function TrendingToolsSection() {
                         asChild
                     >
                         <a href="#tools">
-                            View All 30+ Tools
+                            View All Tools
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
                     </Button>
                 </div>
 
-                {/* Live Usage Indicator */}
+                {/* Trust Signal — honest */}
                 <div className="flex items-center justify-center gap-2 mt-8">
-                    <div className="flex -space-x-2">
-                        {['👨‍🎓', '👩‍💻', '👨‍💼', '👩‍🔬', '🧑‍🎓'].map((avatar, i) => (
-                            <div
-                                key={i}
-                                className="h-8 w-8 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-background flex items-center justify-center text-sm"
-                                style={{ animationDelay: `${i * 0.1}s` }}
-                            >
-                                {avatar}
-                            </div>
-                        ))}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                        <span className="font-semibold text-foreground">247 students</span> using tools right now
-                        <span className="inline-block h-2 w-2 rounded-full bg-success ml-2 animate-pulse"></span>
-                    </div>
+                    <div className="h-2 w-2 rounded-full bg-success animate-pulse"></div>
+                    <span className="text-sm text-muted-foreground">
+                        100% free · No sign-up required · Browser-based privacy
+                    </span>
                 </div>
             </div>
         </section>

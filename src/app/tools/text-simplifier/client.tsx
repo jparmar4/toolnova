@@ -139,11 +139,6 @@ ${input}
 Provide ONLY the simplified text. Do not add explanations, notes, or commentary. Just return the clear, simplified version that anyone can understand.`;
 };
 
-const stats = [
-  { icon: Users, label: "520K+", sublabel: "Texts Simplified" },
-  { icon: Star, label: "4.9/5", sublabel: "User Rating" },
-  { icon: Zap, label: "Instant", sublabel: "Clarity Boost" },
-];
 
 const features = [
   {
@@ -260,16 +255,8 @@ export default function TextSimplifierClient() {
       badge="Clarity Tool"
       category="Writing Tools"
       categorySlug="writing-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "Perfect for simplifying our legal documents for customers. Clarity improved dramatically and customer satisfaction went up! Essential tool for our team.",
-        author: "Karen White",
-        role: "UX Writer",
-        initial: "K",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Simplify Your Text"
       ctaDescription="Clarity is the ultimate form of intelligence. Make your content accessible!"

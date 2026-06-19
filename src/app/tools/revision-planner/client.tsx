@@ -210,11 +210,6 @@ Do NOT include:
 Create a detailed, science-backed revision plan ready for immediate use:`;
 };
 
-const stats = [
-  { icon: Users, label: "450K+", sublabel: "Plans Created" },
-  { icon: Star, label: "4.8/5", sublabel: "Success Rate" },
-  { icon: Zap, label: "Structured", sublabel: "Study System" },
-];
 
 const features = [
   {
@@ -331,16 +326,8 @@ export default function RevisionPlannerClient() {
       badge="Study Scheduler"
       category="Study Tools"
       categorySlug="study-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "Used this to plan my CPA exam prep. Having a clear daily plan with built-in review sessions kept me on track for 3 months straight. Passed on first attempt!",
-        author: "Jennifer Wu",
-        role: "Accounting Graduate",
-        initial: "J",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Plan Your Success"
       ctaDescription="A structured plan is half the battle won. Start your organized study journey!"

@@ -175,11 +175,6 @@ Do NOT include:
 Create a clear, well-organized, exam-ready summary:`;
 };
 
-const stats = [
-  { icon: Users, label: "600K+", sublabel: "Chapters Summarized" },
-  { icon: Star, label: "4.9/5", sublabel: "Student Rating" },
-  { icon: Zap, label: "Hours Saved", sublabel: "Study Efficiency" },
-];
 
 const features = [
   {
@@ -296,16 +291,8 @@ export default function ChapterSummaryClient() {
       badge="Quick Review Tool"
       category="Study Tools"
       categorySlug="study-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "I summarized all 15 chapters of my textbook before finals. Saved me dozens of hours and helped me ace the exam! This tool is a lifesaver.",
-        author: "David Chen",
-        role: "MBA Student",
-        initial: "D",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Summarize Your Content"
       ctaDescription="Save hours of reading time with instant, accurate AI summaries!"

@@ -119,7 +119,7 @@ export function generateToolMetadata(
 ): Metadata {
   return generateMetadata({
     title: `${toolName} Free – AI-Powered Online Tool | ${SITE_NAME}`,
-    description: `${description}. Free, fast, and accurate. No signup required. Trusted by 1M+ users worldwide.`,
+    description: `${description}. Free, fast, and accurate. No signup required.`,
     keywords: [
       ...keywords,
       "free online tool",
@@ -167,9 +167,9 @@ export function generateBlogMetadata(
  */
 export function getHomepageMetadata(): Metadata {
   return generateMetadata({
-    title: "Free AI Tools for Students 2026 - 50+ Tools | ToolNova",
+    title: "Free AI Tools for Students 2026 - 44 Tools | ToolNova",
     description:
-      "Access 50+ free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
+      "Access 44 free AI-powered tools for students and professionals. Merge PDFs, create flashcards, fix grammar, write essays, solve homework. No sign-up required. Try now!",
     keywords: [
       "AI study tools",
       "free AI tools",

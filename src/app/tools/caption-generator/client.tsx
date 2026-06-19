@@ -260,11 +260,6 @@ IMPORTANT:
 Create 3 scroll-stopping captions that drive engagement:`;
 };
 
-const stats = [
-  { icon: Users, label: "500K+", sublabel: "Captions Created" },
-  { icon: Star, label: "4.9/5", sublabel: "User Rating" },
-  { icon: TrendingUp, label: "3x", sublabel: "Better Engagement" },
-];
 
 const features = [
   {
@@ -381,16 +376,8 @@ export default function CaptionGeneratorClient() {
       badge="Social Media Pro"
       category="Writing Tools"
       categorySlug="writing-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "My engagement went up 200% after using these captions! The hashtag suggestions are spot-on and save me so much research time.",
-        author: "Maya Johnson",
-        role: "Travel Blogger",
-        initial: "M",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Create Captions"
       ctaDescription="Boost your social media engagement with perfect captions!"

@@ -219,11 +219,6 @@ Write ONLY the complete speech ready to deliver. Do not include:
 Write as if the speaker will read this directly. Use natural paragraph breaks for breathing/pacing. Make every word count. Create something memorable that will resonate long after delivery.`;
 };
 
-const stats = [
-  { icon: Users, label: "150K+", sublabel: "Speeches Created" },
-  { icon: Star, label: "4.9/5", sublabel: "User Rating" },
-  { icon: Zap, label: "6 Occasions", sublabel: "Covered" },
-];
 
 const features = [
   {
@@ -340,16 +335,8 @@ export default function SpeechWriterClient() {
       badge="Public Speaking"
       category="Writing Tools"
       categorySlug="writing-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "Used this for my best man speech. Everyone was in tears - the good kind! Absolutely perfect and so personal. Standing ovation!",
-        author: "Robert Miller",
-        role: "Happy Best Man",
-        initial: "R",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Write Your Speech"
       ctaDescription="Make an unforgettable impression with words that matter!"

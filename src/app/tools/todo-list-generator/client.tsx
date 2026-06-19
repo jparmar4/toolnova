@@ -217,11 +217,6 @@ Do NOT include:
 Create a comprehensive, actionable, well-organized todo list:`;
 };
 
-const stats = [
-  { icon: Users, label: "420K+", sublabel: "Lists Created" },
-  { icon: Star, label: "4.8/5", sublabel: "User Rating" },
-  { icon: Zap, label: "Organized", sublabel: "Productivity" },
-];
 
 const features = [
   {
@@ -338,16 +333,8 @@ export default function TodoListGeneratorClient() {
       badge="Productivity Boost"
       category="Career Tools"
       categorySlug="career-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "This breaks down my overwhelming projects into manageable tasks. Game changer for productivity! I actually finish what I start now.",
-        author: "Mike Johnson",
-        role: "Project Manager",
-        initial: "M",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Get Things Done"
       ctaDescription="Organize your tasks and accomplish more every day!"

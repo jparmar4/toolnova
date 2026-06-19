@@ -10,9 +10,7 @@ import {
   ShieldCheck,
   Sparkles,
   Grid2X2,
-  Star,
   Check,
-  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { QuickAnswerBox } from "@/components/aeo/QuickAnswerBox";
@@ -20,6 +18,7 @@ import { FAQAccordion } from "@/components/aeo/FAQAccordion";
 import { getHomepageAEO } from "@/lib/global-aeo-content";
 import { motion } from "framer-motion";
 import { MultiplexAd, BetweenSectionsAd } from "@/components/ads/AdUnit";
+import { TOOL_COUNT } from "@/data/tools";
 
 export function HomeDashboard() {
   const aeoContent = getHomepageAEO();
@@ -60,8 +59,7 @@ export function HomeDashboard() {
                 transition={{ duration: 0.5 }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white/90 text-sm font-medium mb-8"
               >
-                <Sparkles className="h-4 w-4" /> Trusted by 1M+ students
-                worldwide
+                <Sparkles className="h-4 w-4" /> 100% free · No sign-up required
               </motion.div>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
@@ -69,7 +67,7 @@ export function HomeDashboard() {
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-6"
               >
-                50+ Free AI Tools for <br className="hidden sm:block" />
+                Free AI Tools for <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200">
                   Students & Professionals
                 </span>
@@ -118,7 +116,7 @@ export function HomeDashboard() {
             >
               <div className="text-center md:text-right p-4 rounded-2xl bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors">
                 <div className="text-white text-3xl md:text-4xl font-black">
-                  10+
+                  {TOOL_COUNT}
                 </div>
                 <div className="text-blue-200 text-sm font-medium">
                   AI Tools
@@ -126,16 +124,19 @@ export function HomeDashboard() {
               </div>
               <div className="text-center md:text-right p-4 rounded-2xl bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors">
                 <div className="text-white text-3xl md:text-4xl font-black">
-                  1M+
+                  $0
                 </div>
-                <div className="text-blue-200 text-sm font-medium">Users</div>
+                <div className="text-blue-200 text-sm font-medium">
+                  Always Free
+                </div>
               </div>
               <div className="text-center md:text-right p-4 rounded-2xl bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors">
                 <div className="text-white text-3xl md:text-4xl font-black flex items-center justify-center md:justify-end gap-1">
-                  4.9{" "}
-                  <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                  <ShieldCheck className="h-7 w-7" />
                 </div>
-                <div className="text-blue-200 text-sm font-medium">Rating</div>
+                <div className="text-blue-200 text-sm font-medium">
+                  Private & Secure
+                </div>
               </div>
             </motion.div>
           </div>
@@ -552,8 +553,8 @@ export function HomeDashboard() {
             workflow?
           </h2>
           <p className="text-slate-300 text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
-            Join over 1 million students and professionals using ToolNova to
-            achieve more every day.
+            Start using {TOOL_COUNT} free AI tools to write better, study
+            smarter, and get more done — no sign-up required.
           </p>
           <Link href="/tools">
             <Button className="h-16 px-12 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-lg transition-all shadow-2xl hover:shadow-primary/30 hover:scale-105">

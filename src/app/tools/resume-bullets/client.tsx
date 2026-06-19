@@ -213,11 +213,6 @@ Just ${bulletCount} polished, ATS-optimized resume bullets ready to copy directl
 
 };
 
-const stats = [
-  { icon: Users, value: "180K+", label: "Resumes Improved" },
-  { icon: Star, value: "4.9/5", label: "User Rating" },
-  { icon: TrendingUp, value: "3x More", label: "Interviews" },
-];
 
 const features = [
   {
@@ -340,16 +335,8 @@ export default function ResumeBulletsClient() {
       badge="Career Booster"
       category="Writing Tools"
       categorySlug="writing-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "My resume went from boring to impressive! Got 3x more interview callbacks after using these bullets. The metrics focus really made a difference.",
-        author: "Kevin O'Brien",
-        role: "Software Developer",
-        initial: "K",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Upgrade Your Resume"
       ctaDescription="Stand out from the competition with powerful resume bullets!"

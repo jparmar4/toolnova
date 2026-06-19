@@ -292,11 +292,6 @@ Do NOT include:
 Create a detailed, evidence-based, immediately actionable goal plan:`;
 };
 
-const stats = [
-  { icon: Users, label: "280K+", sublabel: "Goals Achieved" },
-  { icon: Star, label: "4.8/5", sublabel: "Success Rate" },
-  { icon: Zap, label: "SMART", sublabel: "Framework" },
-];
 
 const features = [
   {
@@ -413,16 +408,8 @@ export default function GoalPlannerClient() {
       badge="Achievement Unlock"
       category="Career Tools"
       categorySlug="career-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "This helped me create a 90-day plan that actually worked. Got promoted ahead of schedule! The milestone tracking kept me accountable.",
-        author: "David Park",
-        role: "Senior Developer",
-        initial: "D",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Plan Your Success"
       ctaDescription="A goal without a plan is just a wish. Start achieving today!"

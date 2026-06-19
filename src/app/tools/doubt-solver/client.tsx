@@ -203,11 +203,6 @@ Write the explanation naturally as if speaking to the student. ${depth === "deta
 Provide an answer that truly helps them understand:`;
 };
 
-const stats = [
-  { icon: Users, label: "400K+", sublabel: "Doubts Solved" },
-  { icon: Star, label: "4.8/5", sublabel: "Student Rating" },
-  { icon: Zap, label: "24/7", sublabel: "Available" },
-];
 
 const features = [
   {
@@ -324,16 +319,8 @@ export default function DoubtSolverClient() {
       badge="Instant Help"
       category="Study Tools"
       categorySlug="study-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "It's like having a personal tutor available anytime! Saved me during late-night study sessions and helped me ace my exams.",
-        author: "Jake Martinez",
-        role: "Engineering Student",
-        initial: "J",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Ask Your Doubt Now"
       ctaDescription="No question too big or small - get expert answers instantly!"

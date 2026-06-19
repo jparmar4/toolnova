@@ -167,11 +167,6 @@ Provide ONLY the paragraph itself. Do not include:
 Just write the complete, polished paragraph ready to use.`;
 };
 
-const stats = [
-  { icon: Users, label: "400K+", sublabel: "Content Creators" },
-  { icon: Star, label: "4.9/5", sublabel: "User Rating" },
-  { icon: Zap, label: "Instant", sublabel: "Generation" },
-];
 
 const features = [
   {
@@ -288,16 +283,8 @@ export default function ParagraphGeneratorClient() {
       badge="Writing Helper"
       category="Writing Tools"
       categorySlug="writing-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "Perfect for when I'm stuck on how to start a paragraph. The introductions are especially helpful and save me so much time!",
-        author: "Lisa Park",
-        role: "Content Writer",
-        initial: "L",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Generate Your Paragraph"
       ctaDescription="Never get stuck on a blank page again. Create perfect paragraphs in seconds!"

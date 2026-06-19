@@ -286,11 +286,6 @@ Do NOT include:
 Provide the optimized LinkedIn content:`;
 };
 
-const stats = [
-  { value: "250K+", label: "Professionals", icon: Users },
-  { value: "4.9/5", label: "Rating", icon: Star },
-  { value: "<3min", label: "Optimize", icon: Clock },
-];
 
 const features = [
   {
@@ -333,13 +328,6 @@ const howItWorks = [
     color: "from-green-500 to-emerald-600",
   },
 ];
-
-const testimonial = {
-  text: "After optimizing my LinkedIn profile, I went from 2 profile views per week to over 50! I started getting contacted by recruiters from top tech companies within days. This tool is a game-changer for career advancement.",
-  author: "Sarah Mitchell",
-  role: "Senior Product Manager",
-  initial: "S",
-};
 
 const relatedTools = [
   {
@@ -422,10 +410,8 @@ export default function LinkedInOptimizerClient() {
       badge="Professional Branding"
       category="Career Tools"
       categorySlug="career-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={testimonial}
       relatedTools={relatedTools}
     >
       <EnhancedToolLayout

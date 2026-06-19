@@ -175,11 +175,6 @@ Do NOT include:
 Provide precise, nuanced synonyms with clear usage guidance:`;
 };
 
-const stats = [
-  { value: "300K+", label: "Writers", icon: Users },
-  { value: "4.9/5", label: "Rating", icon: Star },
-  { value: "<1min", label: "Results", icon: Clock },
-];
 
 const features = [
   {
@@ -222,13 +217,6 @@ const howItWorks = [
     color: "from-green-500 to-emerald-600",
   },
 ];
-
-const testimonial = {
-  text: "This synonym finder saved my essay from being repetitive! I was using 'important' way too much, and this tool gave me 15 perfect alternatives with explanations of when to use each. My professor commented on my improved vocabulary!",
-  author: "Emma Rodriguez",
-  role: "College Student",
-  initial: "E",
-};
 
 const relatedTools = [
   {
@@ -316,10 +304,8 @@ export default function SynonymFinderClient() {
       badge="Word Explorer"
       category="Exam Prep Tools"
       categorySlug="exam-prep-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={testimonial}
       relatedTools={relatedTools}
     >
       <EnhancedToolLayout

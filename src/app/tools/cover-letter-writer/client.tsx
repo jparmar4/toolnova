@@ -264,11 +264,6 @@ Do NOT include:
 Write one polished, ready-to-submit cover letter that will get them the interview.`;
 };
 
-const stats = [
-  { icon: Users, label: "280K+", sublabel: "Letters Written" },
-  { icon: Star, label: "4.9/5", sublabel: "Success Rate" },
-  { icon: Zap, label: "3x More", sublabel: "Interview Calls" },
-];
 
 const features = [
   {
@@ -385,16 +380,8 @@ export default function CoverLetterWriterClient() {
       badge="Career Essential"
       category="Career Tools"
       categorySlug="career-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "Used this for 5 job applications and got 4 interview calls! The company-specific customization really makes a difference. Best cover letter tool I've found.",
-        author: "Michael Rodriguez",
-        role: "Software Engineer",
-        initial: "M",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Start Your Application"
       ctaDescription="Get noticed by hiring managers with a standout cover letter!"

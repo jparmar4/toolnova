@@ -226,11 +226,6 @@ Now write the complete ${type} essay following this structure exactly.`;
   return prompt;
 };
 
-const stats = [
-  { value: "50K+", label: "Essays Created", icon: FileText },
-  { value: "4.9/5", label: "User Rating", icon: Star },
-  { value: "<2 min", label: "Avg Time", icon: Clock },
-];
 
 const features = [
   {
@@ -359,16 +354,8 @@ export default function EssayWriterClient() {
       badge="AI-Powered"
       category="Writing Tools"
       categorySlug="writing-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "This tool completely transformed how I approach essays. The structure is always perfect, and it helps me understand what strong academic writing looks like!",
-        author: "Emily Chen",
-        role: "University Student",
-        initial: "E",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Ready to Write Better Essays?"
       ctaDescription="Start creating professional, well-structured essays in seconds"

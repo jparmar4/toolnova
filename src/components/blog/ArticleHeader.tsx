@@ -54,7 +54,7 @@ export function ArticleHeader({
             <div className="flex flex-wrap items-center gap-6 py-4 border-y border-slate-200 dark:border-slate-800">
                 {/* Author */}
                 <Link
-                    href={author.profileUrl || `/authors/${author.slug}`}
+                    href={`/author/${author.slug}`}
                     className="flex items-center gap-3 hover:opacity-80 transition-opacity"
                 >
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white font-bold text-lg">
@@ -91,16 +91,6 @@ export function ArticleHeader({
                         </div>
                     )}
                 </div>
-            </div>
-
-            {/* Fact-Checked Badge (GEO Signal) */}
-            <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-                <svg className="h-4 w-4 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span className="text-xs font-semibold text-green-700 dark:text-green-300">
-                    Fact-Checked & Verified
-                </span>
             </div>
         </header>
     );

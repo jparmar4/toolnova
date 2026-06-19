@@ -106,12 +106,6 @@ export default function AgeCalculatorClient() {
             categorySlug="utility-tools"
             features={customFeatures}
             howItWorks={howItWorks}
-            testimonial={{
-                quote: "Fun way to see exactly how many days I've lived! Great for birthday countdowns.",
-                author: "Emma Wilson",
-                role: "Teacher",
-                initial: "E"
-            }}
             relatedTools={relatedTools}
             ctaTitle="Calculate Your Age"
             ctaDescription="Know exactly how old you are - down to the day!"

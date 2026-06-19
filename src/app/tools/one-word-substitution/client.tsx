@@ -241,11 +241,6 @@ Do NOT include:
 Generate a comprehensive, exam-ready one-word substitution collection:`;
 };
 
-const stats = [
-  { value: "500K+", label: "Exam Takers", icon: Users },
-  { value: "4.9/5", label: "Rating", icon: Star },
-  { value: "<2min", label: "Generate", icon: Clock },
-];
 
 const features = [
   {
@@ -288,13 +283,6 @@ const howItWorks = [
     color: "from-green-500 to-emerald-600",
   },
 ];
-
-const testimonial = {
-  text: "This tool helped me ace the vocabulary section of my SSC exam! I practiced 500+ one-word substitutions in just two weeks. The memory tips were incredibly helpful for retaining difficult words. Scored 98% in the English section!",
-  author: "Ankit Kumar",
-  role: "SSC CGL Qualifier",
-  initial: "A",
-};
 
 const relatedTools = [
   {
@@ -383,10 +371,8 @@ export default function OneWordSubstitutionClient() {
       badge="Exam Essential"
       category="Exam Prep Tools"
       categorySlug="exam-prep-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={testimonial}
       relatedTools={relatedTools}
     >
       <EnhancedToolLayout

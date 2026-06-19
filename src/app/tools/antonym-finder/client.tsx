@@ -193,11 +193,6 @@ Do NOT include:
 Provide comprehensive, educational antonym analysis:`;
 };
 
-const stats = [
-  { value: "200K+", label: "Students", icon: Users },
-  { value: "4.9/5", label: "Rating", icon: Star },
-  { value: "<1min", label: "Results", icon: Clock },
-];
 
 const features = [
   {
@@ -240,13 +235,6 @@ const howItWorks = [
     color: "from-green-500 to-emerald-600",
   },
 ];
-
-const testimonial = {
-  text: "As an English teacher, this antonym finder is invaluable! The categorization by type (direct, gradable, complementary) helps my students truly understand opposite relationships. The contextual examples make abstract concepts concrete.",
-  author: "Michael Chen",
-  role: "ESL Teacher",
-  initial: "M",
-};
 
 const relatedTools = [
   {
@@ -334,10 +322,8 @@ export default function AntonymFinderClient() {
       badge="Word Pairs"
       category="Exam Prep Tools"
       categorySlug="exam-prep-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={testimonial}
       relatedTools={relatedTools}
     >
       <EnhancedToolLayout

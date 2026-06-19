@@ -206,11 +206,6 @@ Do NOT include:
 Generate an expertly curated vocabulary list:`;
 };
 
-const stats = [
-  { value: "500K+", label: "Learners", icon: Users },
-  { value: "4.9/5", label: "Rating", icon: Star },
-  { value: "<2min", label: "Learn", icon: Clock },
-];
 
 const features = [
   {
@@ -253,13 +248,6 @@ const howItWorks = [
     color: "from-green-500 to-emerald-600",
   },
 ];
-
-const testimonial = {
-  text: "This vocabulary builder helped me improve my GRE verbal score from 155 to 165! The memory tips made learning 1000+ words actually enjoyable. I used it daily for 3 months and saw consistent progress. Highly recommend for anyone preparing for standardized tests.",
-  author: "Priya Sharma",
-  role: "Graduate Student",
-  initial: "P",
-};
 
 const relatedTools = [
   {
@@ -349,10 +337,8 @@ export default function VocabularyBuilderClient() {
       badge="Word Power"
       category="Exam Prep Tools"
       categorySlug="exam-prep-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={testimonial}
       relatedTools={relatedTools}
       ctaTitle="Build Your Vocabulary"
       ctaDescription="Words are the building blocks of success."

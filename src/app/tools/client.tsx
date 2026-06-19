@@ -571,7 +571,7 @@ const categories = [
 ];
 
 const heroStats = [
-  { icon: Zap, value: "50+", label: "AI Tools" },
+  { icon: Zap, value: "44", label: "AI Tools" },
   { icon: Globe, value: "100%", label: "Free Forever" },
   { icon: ShieldCheck, value: "No", label: "Sign-up" },
   { icon: Clock, value: "<10s", label: "Results" },

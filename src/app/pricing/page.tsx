@@ -4,7 +4,7 @@ import PricingClient from "./PricingClient";
 export const metadata: Metadata = {
   title: "Pricing Plans – Free & Pro AI Tools | ToolNova",
   description:
-    "Explore ToolNova's pricing plans. Use 50+ AI tools completely free, or upgrade to Pro for unlimited access, premium AI models, and an ad-free experience. 7-day money-back guarantee.",
+    "Explore ToolNova's pricing plans. Use 44 AI tools completely free, or upgrade to Pro for unlimited access, premium AI models, and an ad-free experience. 7-day money-back guarantee.",
   keywords: [
     "ToolNova pricing",
     "AI tools free plan",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Pricing Plans – Free & Pro AI Tools | ToolNova",
     description:
-      "Free forever plan with 50+ tools, or upgrade to Pro for unlimited access and premium AI models. 7-day money-back guarantee.",
+      "Free forever plan with 44 tools, or upgrade to Pro for unlimited access and premium AI models. 7-day money-back guarantee.",
     url: "https://www.toolnovahub.com/pricing",
     type: "website",
     images: [
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Pricing – Free & Pro Plans | ToolNova",
     description:
-      "Free plan includes 50+ AI tools. Upgrade to Pro for unlimited access and premium models.",
+      "Free plan includes 44 AI tools. Upgrade to Pro for unlimited access and premium models.",
     images: ["https://www.toolnovahub.com/og-image.png"],
     creator: "@toolnovahub",
   },
@@ -56,7 +56,7 @@ const pricingSchema = {
       "@type": "Product",
       name: "ToolNova Pro",
       description:
-        "Unlimited access to all 50+ AI tools with premium models, ad-free experience, and priority support.",
+        "Unlimited access to all 44 AI tools with premium models, ad-free experience, and priority support.",
       brand: {
         "@type": "Brand",
         name: "ToolNova",
@@ -82,13 +82,6 @@ const pricingSchema = {
           url: "https://www.toolnovahub.com/pricing",
         },
       ],
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "4.8",
-        ratingCount: "2400",
-        bestRating: "5",
-        worstRating: "1",
-      },
     },
   ],
 };

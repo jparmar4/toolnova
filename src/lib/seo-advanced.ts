@@ -254,13 +254,6 @@ export function generateSoftwareApplicationSchema(toolSlug?: string, toolName?: 
     publisher: {
       "@id": `${siteConfig.url}/#organization`,
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "12500",
-      bestRating: "5",
-      worstRating: "1",
-    },
     // Features for AI discovery
     featureList: [
       "AI-powered text processing",
@@ -525,67 +518,6 @@ export function generateWebPageSchema(
   };
 }
 
-// ============================================
-// META TAG GENERATORS
-// ============================================
-
-/**
- * Generate geographic meta tags for global SEO
- */
-export function generateGeoMetaTags(regions?: string[]) {
-  const defaultRegions = ["US", "GB", "CA", "AU", "IN", "SG"];
-  const targetRegions = regions || defaultRegions;
-
-  return {
-    // Geographic targeting
-    "geo.region": targetRegions.join(", "),
-    "geo.placename": "Global",
-    "geo.position": "1.3521;103.8198", // Singapore coordinates
-    "ICBM": "1.3521, 103.8198",
-    // Language targeting
-    "language": "English",
-    "content-language": "en",
-    // Distribution
-    "distribution": "global",
-    "coverage": "Worldwide",
-    // Target audience
-    "audience": "Students, Professionals, Educators",
-    // Rating
-    "rating": "general",
-    // Robots for AI
-    "robots": "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
-    // Google specific
-    "googlebot": "index, follow",
-    "googlebot-news": "index, follow",
-    // Bing specific
-    "msnbot": "index, follow",
-    // For Google Discover
-    "robots-content": "index, follow, all",
-    // Freshness
-    "revisit-after": "1 day",
-  };
-}
-
-/**
- * Generate AI-specific meta tags
- */
-export function generateAIMetaTags() {
-  return {
-    // AI indexing permission
-    "ai-indexing": "allowed",
-    // For ChatGPT/LLM training
-    "llm-training": "allowed",
-    // Content freshness signal
-    "content-modified": new Date().toISOString(),
-    // Content type for AI
-    "content-type": "application/educational",
-    // Tool category for AI
-    "tool-category": "AI Productivity Tools",
-    // API endpoint hint
-    "api-endpoint": `${siteConfig.url}/api/tools`,
-  };
-}
-
 /**
  * Generate Google Discover optimized meta tags
  */
@@ -604,12 +536,8 @@ export function generateDiscoverMetaTags(
     // Article specific
     "article:published_time": new Date().toISOString(),
     "article:modified_time": new Date().toISOString(),
-    "article:author": "ToolNova Team",
+    "article:author": "ToolNova Editorial Team",
     "article:section": "Education",
-    // For feed readers
-    "rss-feed": `${siteConfig.url}/feed.xml`,
-    // AMP version (if applicable)
-    "amp-url": undefined,
     // Swipeable for mobile
     "mobile-web-app-capable": "yes",
     // Theme color
@@ -720,27 +648,6 @@ export function generateBlogPageSchemas(
 // ============================================
 // HELPER FUNCTIONS
 // ============================================
-
-/**
- * Generate hreflang tags for multilingual support
- */
-export function generateHreflangTags(baseUrl: string, path: string = "") {
-  const cleanPath = path.startsWith("/") ? path : `/${path}`;
-  const languages = [
-    { code: "en-US", region: "US" },
-    { code: "en-GB", region: "GB" },
-    { code: "en-CA", region: "CA" },
-    { code: "en-AU", region: "AU" },
-    { code: "en-IN", region: "IN" },
-    { code: "en-SG", region: "SG" },
-    { code: "x-default", region: "Default" },
-  ];
-
-  return languages.map((lang) => ({
-    hrefLang: lang.code,
-    href: `${baseUrl}${cleanPath}`,
-  }));
-}
 
 /**
  * Generate canonical URL with trailing slash handling
@@ -859,12 +766,9 @@ const seoAdvanced = {
   generateArticleSchema,
   generateProductSchema,
   generateWebPageSchema,
-  generateGeoMetaTags,
-  generateAIMetaTags,
   generateDiscoverMetaTags,
   generateToolPageSchemas,
   generateBlogPageSchemas,
-  generateHreflangTags,
   generateCanonicalUrl,
   generateOptimizedTitle,
   generateOptimizedDescription,

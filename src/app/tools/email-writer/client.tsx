@@ -247,11 +247,6 @@ Do NOT include:
 Just provide one polished, ready-to-send email.`;
 };
 
-const stats = [
-  { icon: Users, label: "600K+", sublabel: "Emails Sent" },
-  { icon: Star, label: "4.9/5", sublabel: "User Rating" },
-  { icon: Zap, label: "30 Sec", sublabel: "Average Time" },
-];
 
 const features = [
   {
@@ -368,16 +363,8 @@ export default function EmailWriterClient() {
       badge="Email Pro"
       category="Writing Tools"
       categorySlug="writing-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "As a non-native speaker, this helps me write confident professional emails. Essential tool that saves me hours every week!",
-        author: "Yuki Tanaka",
-        role: "Marketing Manager",
-        initial: "Y",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Compose Your Email"
       ctaDescription="Professional communication made easy. Write better emails faster!"

@@ -232,11 +232,6 @@ Do NOT include:
 Create interview questions that truly assess candidate readiness and fit:`;
 };
 
-const stats = [
-  { icon: Users, label: "320K+", sublabel: "Interviews Prepped" },
-  { icon: Star, label: "4.9/5", sublabel: "Success Rate" },
-  { icon: Zap, label: "10 Questions", sublabel: "Per Session" },
-];
 
 const features = [
   {
@@ -353,16 +348,8 @@ export default function InterviewGeneratorClient() {
       badge="Interview Prep"
       category="Career Tools"
       categorySlug="career-tools"
-      stats={stats}
       features={features}
       howItWorks={howItWorks}
-      testimonial={{
-        quote:
-          "Practiced with these questions the night before and nailed my Google interview! The STAR method answers were incredibly helpful. Got the offer!",
-        author: "Mike Chen",
-        role: "Software Engineer",
-        initial: "M",
-      }}
       relatedTools={relatedTools}
       ctaTitle="Ace Your Interview"
       ctaDescription="Confidence comes from preparation. Start practicing now!"

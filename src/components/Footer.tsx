@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { School, Mail, Twitter, Github, Linkedin } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { TOOL_COUNT } from "@/data/tools";
 
 const writingTools = [
   { name: "Grammar Checker", href: "/tools/grammar-fix" },
@@ -43,12 +44,13 @@ export function Footer() {
               </span>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-sm mb-4">
-              50+ free AI-powered tools for students and professionals. Write
-              better, study smarter, and get more done — no sign-up required.
+              {TOOL_COUNT} free AI-powered tools for students and
+              professionals. Write better, study smarter, and get more done —
+              no sign-up required.
             </p>
             <p className="text-muted-foreground text-xs mb-6">
-              Trusted by 1M+ users worldwide · Based in Singapore · Serving
-              globally
+              100% free · No sign-up required · Browser-based privacy · Based
+              in Singapore, serving users globally
             </p>
             <div className="flex gap-3">
               <a
@@ -297,7 +299,7 @@ export function Footer() {
                 Terms
               </Link>
               <Link
-                href="/sitemap.xml"
+                href="/sitemap-page"
                 className="text-muted-foreground hover:text-primary transition-colors text-sm"
               >
                 Sitemap

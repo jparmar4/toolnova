@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { getAuthor, getAllAuthors } from '@/data/authors';
 import { getPostsByAuthor } from '@/data/blog';
 import { schemaToJsonLd } from '@/lib/schema';
-import { FaTwitter, FaLinkedin, FaGlobe } from 'react-icons/fa';
 
 interface AuthorPageProps {
     params: Promise<{
@@ -31,7 +30,7 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
     }
 
     return {
-        title: `${author.name} - ${author.role} | ToolNova Experts`,
+        title: `${author.name} | ToolNova`,
         description: author.bio,
     };
 }
@@ -51,12 +50,10 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         '@context': 'https://schema.org',
         '@type': 'ProfilePage',
         mainEntity: {
-            '@type': 'Person',
+            '@type': 'Organization',
             name: author.name,
-            jobTitle: author.role,
             description: author.bio,
-            image: `https://www.toolnovahub.com/authors/${author.slug}.jpg`, // Placeholder
-            sameAs: Object.values(author.socials || {}),
+            url: 'https://www.toolnovahub.com/author/editorial-team',
         },
     };
 
@@ -91,25 +88,6 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                         <p className="text-lg text-slate-600 leading-relaxed max-w-2xl mb-8">
                             {author.bio}
                         </p>
-
-                        {/* Socials */}
-                        <div className="flex gap-4 justify-center md:justify-start">
-                            {author.socials?.twitter && (
-                                <a href={author.socials.twitter} target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-500 transition-colors">
-                                    <FaTwitter className="text-xl" />
-                                </a>
-                            )}
-                            {author.socials?.linkedin && (
-                                <a href={author.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                                    <FaLinkedin className="text-xl" />
-                                </a>
-                            )}
-                            {author.socials?.website && (
-                                <a href={author.socials.website} target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-slate-100 text-slate-600 hover:bg-purple-50 hover:text-purple-600 transition-colors">
-                                    <FaGlobe className="text-xl" />
-                                </a>
-                            )}
-                        </div>
                     </div>
                 </div>
 

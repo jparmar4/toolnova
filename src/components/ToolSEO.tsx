@@ -91,11 +91,8 @@ export function ToolSEO({
         }}
       />
 
-      {/* Meta tags for AI search engines */}
-      <meta name="ai-indexing" content="allowed" />
       <meta name="tool-category" content={toolCategory} />
       <meta name="tool-slug" content={toolSlug} />
-      <meta name="content-type" content="application/educational" />
     </>
   );
 }
