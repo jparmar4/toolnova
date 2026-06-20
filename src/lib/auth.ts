@@ -9,7 +9,6 @@ export const authOptions: NextAuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-            allowDangerousEmailAccountLinking: true,
         }),
     ],
     session: {
@@ -18,7 +17,6 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async session({ session, token }) {
             if (session.user && token.sub) {
-                // @ts-ignore
                 session.user.id = token.sub;
             }
             return session;

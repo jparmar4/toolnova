@@ -34,24 +34,25 @@ export async function POST(req: NextRequest) {
     const userId = (user as any).id;
     console.log('API: User authenticated', { userId });
 
-    // Ensure user exists in Hostinger MySQL (Prisma)
-    await db.user.upsert({
-      where: { id: userId },
+    // Ensure user exists in Hostinger MySQL (Prisma) — use email as stable lookup key
+    const dbUser = await db.user.upsert({
+      where: { email: user.email },
       create: {
-        id: userId,
         email: user.email,
         name: user.name || null,
+        image: user.image || null,
       },
       update: {
-        email: user.email,
         name: user.name || null,
+        image: user.image || null,
       },
     });
+    const resolvedUserId = dbUser.id;
 
     // 2. Check Subscription & Usage Limits
     const subscription = await db.subscription.findFirst({
       where: {
-        userId: userId,
+        userId: resolvedUserId,
         status: 'active',
       },
     });
@@ -68,7 +69,7 @@ export async function POST(req: NextRequest) {
       // Get current usage from GenerationHistory in MySQL
       const currentCount = await db.generationHistory.count({
         where: {
-          userId: userId,
+          userId: resolvedUserId,
           createdAt: {
             gte: startOfToday,
           },
@@ -98,7 +99,7 @@ export async function POST(req: NextRequest) {
     try {
       await db.generationHistory.create({
         data: {
-          userId: userId,
+          userId: resolvedUserId,
           toolSlug: toolSlug,
           prompt: JSON.stringify({ prompt, systemPrompt }),
           response: result.content || ""

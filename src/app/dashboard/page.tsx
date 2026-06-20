@@ -4,11 +4,15 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
-import { FileText, Clock, Trash2, Repeat, ExternalLink } from "lucide-react";
+import {
+  FileText, Clock, ExternalLink,
+  Crown, Zap, BarChart3, Calendar, User, Sparkles
+} from "lucide-react";
+import { DAILY_FREE_LIMIT } from "@/lib/limits";
 
 export const metadata = {
   title: "My Dashboard | ToolNova",
-  description: "View your generation history and saved tool outputs.",
+  description: "View your generation history, usage stats, and subscription plan.",
 };
 
 export default async function DashboardPage() {
@@ -19,25 +23,138 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const userId = (user as any).id;
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
 
-  // Fetch history for the logged-in user
-  const history = await db.generationHistory.findMany({
-    where: { userId: userId },
-    orderBy: { createdAt: "desc" },
-    take: 50, // Limit to recent 50 for performance
-  });
+  // Fetch all data in parallel
+  const [history, subscription, todayCount] = await Promise.all([
+    db.generationHistory.findMany({
+      where: { userId: user.id },
+      orderBy: { createdAt: "desc" },
+      take: 50,
+    }),
+    db.subscription.findFirst({
+      where: { userId: user.id, status: "active" },
+    }),
+    db.generationHistory.count({
+      where: {
+        userId: user.id,
+        createdAt: { gte: startOfToday },
+      },
+    }),
+  ]);
+
+  const isPremium = !!subscription;
+  const remaining = isPremium ? -1 : Math.max(0, DAILY_FREE_LIMIT - todayCount);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white font-heading">
             My Dashboard
           </h1>
           <p className="mt-2 text-slate-600 dark:text-slate-400">
-            View your recent tool generations and history.
+            Welcome back, {user.name?.split(" ")[0] || "there"}!
           </p>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          {/* Plan Card */}
+          <div className={`rounded-2xl p-5 border ${isPremium
+            ? "bg-gradient-to-br from-indigo-600 to-purple-600 border-transparent text-white"
+            : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"}`}>
+            <div className="flex items-center gap-3 mb-3">
+              <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${isPremium ? "bg-white/20" : "bg-indigo-50 dark:bg-indigo-900/30"}`}>
+                <Crown className={`h-5 w-5 ${isPremium ? "text-white" : "text-indigo-600 dark:text-indigo-400"}`} />
+              </div>
+              <span className={`text-sm font-semibold ${isPremium ? "text-white/80" : "text-slate-500 dark:text-slate-400"}`}>
+                Current Plan
+              </span>
+            </div>
+            <p className={`text-2xl font-black ${isPremium ? "text-white" : "text-slate-900 dark:text-white"}`}>
+              {isPremium ? "Pro" : "Free"}
+            </p>
+            {!isPremium && (
+              <Link href="/pricing" className="mt-2 inline-block text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+                Upgrade to Pro →
+              </Link>
+            )}
+            {isPremium && subscription?.currentPeriodEnd && (
+              <p className="mt-1 text-xs text-white/70">
+                Renews {formatDistanceToNow(new Date(subscription.currentPeriodEnd), { addSuffix: true })}
+              </p>
+            )}
+          </div>
+
+          {/* Today's Usage */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-10 w-10 rounded-xl bg-green-50 dark:bg-green-900/30 flex items-center justify-center">
+                <Zap className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
+              <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                Today&apos;s Usage
+              </span>
+            </div>
+            <p className="text-2xl font-black text-slate-900 dark:text-white">
+              {todayCount}{isPremium ? "" : ` / ${DAILY_FREE_LIMIT}`}
+            </p>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              {isPremium ? "Unlimited generations" : `${remaining} remaining today`}
+            </p>
+          </div>
+
+          {/* Total Generations */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-10 w-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
+                <BarChart3 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                Total Generations
+              </span>
+            </div>
+            <p className="text-2xl font-black text-slate-900 dark:text-white">
+              {history.length}{history.length === 50 ? "+" : ""}
+            </p>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">All time</p>
+          </div>
+
+          {/* Account */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-10 w-10 rounded-xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center">
+                <User className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+              </div>
+              <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                Account
+              </span>
+            </div>
+            <p className="text-sm font-bold text-slate-900 dark:text-white truncate">
+              {user.name || "User"}
+            </p>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 truncate">
+              {user.email}
+            </p>
+          </div>
+        </div>
+
+        {/* Generation History */}
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-purple-500" />
+            Recent Generations
+          </h2>
+          <Link
+            href="/tools"
+            className="text-sm font-semibold text-primary hover:underline"
+          >
+            Explore Tools →
+          </Link>
         </div>
 
         {history.length === 0 ? (
@@ -47,7 +164,7 @@ export default async function DashboardPage() {
             </div>
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">No history yet</h3>
             <p className="text-slate-500 dark:text-slate-400 mb-6">
-              You haven't generated anything using our AI tools yet.
+              You haven&apos;t generated anything using our AI tools yet.
             </p>
             <Link
               href="/tools"
@@ -68,13 +185,21 @@ export default async function DashboardPage() {
                   // Fallback to raw string if not JSON
                 }
 
+                const displayPrompt = parsedPrompt.length > 100
+                  ? parsedPrompt.substring(0, 100) + "..."
+                  : parsedPrompt;
+
+                const displayResponse = item.response.length > 200
+                  ? item.response.substring(0, 200) + "..."
+                  : item.response;
+
                 return (
                   <li key={item.id} className="p-6 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-2">
                           <span className="inline-flex items-center rounded-full bg-purple-50 dark:bg-purple-500/10 px-2.5 py-0.5 text-xs font-semibold text-purple-700 dark:text-purple-400">
-                            {item.toolSlug.replace(/-/g, ' ').toUpperCase()}
+                            {item.toolSlug.replace(/-/g, " ").toUpperCase()}
                           </span>
                           <span className="flex items-center text-xs text-slate-500 dark:text-slate-400">
                             <Clock className="mr-1 h-3 w-3" />
@@ -82,13 +207,13 @@ export default async function DashboardPage() {
                           </span>
                         </div>
                         <h4 className="text-sm font-medium text-slate-900 dark:text-white truncate mb-1">
-                          Prompt: {parsedPrompt.substring(0, 100)}...
+                          Prompt: {displayPrompt}
                         </h4>
                         <div className="text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 rounded p-3 mt-3 border border-slate-100 dark:border-slate-800">
-                          {item.response.substring(0, 200)}...
+                          {displayResponse}
                         </div>
                       </div>
-                      
+
                       <div className="flex shrink-0 gap-2">
                         <Link
                           href={`/tools/${item.toolSlug}`}
@@ -103,6 +228,23 @@ export default async function DashboardPage() {
                 );
               })}
             </ul>
+          </div>
+        )}
+
+        {/* Upgrade CTA for free users */}
+        {!isPremium && (
+          <div className="mt-8 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8 text-center text-white">
+            <Crown className="h-10 w-10 mx-auto mb-3 text-yellow-300" />
+            <h3 className="text-xl font-black mb-2">Unlock Unlimited Generations</h3>
+            <p className="text-white/80 mb-5 max-w-md mx-auto">
+              Upgrade to Pro and get unlimited AI generations, premium models, and an ad-free experience.
+            </p>
+            <Link
+              href="/pricing"
+              className="inline-flex items-center justify-center rounded-xl bg-white text-indigo-700 font-black px-8 py-3 hover:bg-white/90 transition-all shadow-xl"
+            >
+              Upgrade to Pro →
+            </Link>
           </div>
         )}
       </div>

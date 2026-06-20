@@ -169,7 +169,7 @@ export default function LoginPage() {
                             {[
                                 "One-click sign in with Google",
                                 "No password to remember",
-                                "Your data is never stored"
+                                "Your activity stays private"
                             ].map((text, index) => (
                                 <div key={index} className="flex items-center gap-3 text-sm text-muted-foreground">
                                     <div className="h-5 w-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">

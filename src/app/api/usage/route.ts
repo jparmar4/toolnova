@@ -15,24 +15,25 @@ export async function GET() {
         
         const userId = (user as any).id;
 
-        // Ensure user exists in Hostinger MySQL (Prisma)
-        await db.user.upsert({
-            where: { id: userId },
+        // Ensure user exists in Hostinger MySQL (Prisma) — use email as stable lookup key
+        const dbUser = await db.user.upsert({
+            where: { email: user.email },
             create: {
-                id: userId,
                 email: user.email,
                 name: user.name || null,
+                image: user.image || null,
             },
             update: {
-                email: user.email,
                 name: user.name || null,
+                image: user.image || null,
             },
         });
+        const resolvedUserId = dbUser.id;
 
         // Check if premium
         const subscription = await db.subscription.findFirst({
             where: {
-                userId: userId,
+                userId: resolvedUserId,
                 status: 'active',
             },
         });
@@ -49,7 +50,7 @@ export async function GET() {
         // Get count from GenerationHistory in MySQL
         const count = await db.generationHistory.count({
             where: {
-                userId: userId,
+                userId: resolvedUserId,
                 createdAt: {
                     gte: startOfToday,
                 },
