@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "windows", "debian-openssl-3.0.x"]
@@ -12,29 +9,31 @@ datasource db {
 }
 
 model User {
-  id            String         @id @default(cuid())
-  email         String         @unique
+  id            String              @id @default(cuid())
+  email         String              @unique
   name          String?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
   emailVerified DateTime?
   image         String?
   accounts      Account[]
+  generations   GenerationHistory[]
   sessions      Session[]
   subscriptions Subscription[]
-  generations   GenerationHistory[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
 }
 
 model Subscription {
   id                     String    @id @default(cuid())
   userId                 String
-  user                   User      @relation(fields: [userId], references: [id])
   razorpaySubscriptionId String    @unique
   planId                 String
   status                 String
   currentPeriodEnd       DateTime?
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
+  user                   User      @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "Subscription_userId_fkey")
 }
 
 model Post {
@@ -56,32 +55,34 @@ model AICache {
 }
 
 model GenerationHistory {
-  id         String   @id @default(cuid())
-  userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  toolSlug   String
-  prompt     String   @db.Text
-  response   String   @db.LongText
-  createdAt  DateTime @default(now())
+  id        String   @id @default(cuid())
+  userId    String
+  toolSlug  String
+  prompt    String   @db.Text
+  response  String   @db.LongText
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "GenerationHistory_userId_fkey")
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId], map: "Account_userId_fkey")
 }
 
 model Session {
@@ -90,6 +91,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "Session_userId_fkey")
 }
 
 model VerificationToken {
