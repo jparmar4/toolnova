@@ -19,26 +19,51 @@ export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
   const user = session?.user;
 
-  if (!user) {
+  if (!user || !user.email) {
     redirect("/login");
   }
 
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
 
-  // Fetch all data in parallel
+  // Look up DB user by email (since JWT user.id is Google's sub, not our DB cuid)
+  const dbUser = await db.user.findUnique({ where: { email: user.email } });
+
+  if (!dbUser) {
+    // User hasn't used any tools yet — show empty dashboard
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-white font-heading">My Dashboard</h1>
+            <p className="mt-2 text-slate-600 dark:text-slate-400">Welcome, {user.name?.split(" ")[0] || "there"}!</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-12 text-center">
+            <div className="mx-auto h-16 w-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+              <FileText className="h-8 w-8 text-slate-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">No history yet</h3>
+            <p className="text-slate-500 dark:text-slate-400 mb-6">Start using our AI tools to see your history here.</p>
+            <Link href="/tools" className="inline-flex items-center justify-center rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-purple-700">Explore Tools</Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Fetch all data in parallel using DB user ID
   const [history, subscription, todayCount] = await Promise.all([
     db.generationHistory.findMany({
-      where: { userId: user.id },
+      where: { userId: dbUser.id },
       orderBy: { createdAt: "desc" },
       take: 50,
     }),
     db.subscription.findFirst({
-      where: { userId: user.id, status: "active" },
+      where: { userId: dbUser.id, status: "active" },
     }),
     db.generationHistory.count({
       where: {
-        userId: user.id,
+        userId: dbUser.id,
         createdAt: { gte: startOfToday },
       },
     }),
