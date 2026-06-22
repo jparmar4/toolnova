@@ -180,7 +180,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { MaterialSymbols } from "@/components/MaterialSymbols";
 
 export default function RootLayout({
   children,
@@ -191,7 +190,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Google Consent Mode v2 Default State (Required for AdSense in EU/EEA) */}
-        <Script id="google-consent-mode" strategy="beforeInteractive">
+        <Script id="google-consent-mode" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -240,16 +239,6 @@ export default function RootLayout({
         <meta name="theme-color" content="#3b82f6" />
         <meta name="msapplication-TileColor" content="#3b82f6" />
 
-        {/* Preload critical OG image for LCP */}
-        <link
-          rel="preload"
-          as="image"
-          href="/og-image.png"
-          fetchPriority="low"
-        />
-
-        {/* Material Symbols Outlined */}
-        <MaterialSymbols />
 
         {/* NOTE: Page-level JSON-LD schemas are injected by each page component.
             No global schema here to avoid duplicate JSON-LD across all pages. */}
