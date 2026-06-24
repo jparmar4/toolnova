@@ -38,7 +38,9 @@ const urlList = [
     ...blogUrls
 ];
 
-console.log(`🚀 Submitting ${urlList.length} total URLs to IndexNow protocol...`);
+const startTime = Date.now();
+console.log(`\n🔍 URL Breakdown: ${toolUrls.length} tools, ${blogUrls.length} blogs, ${categoryUrls.length} categories, 4 static pages`);
+console.log(`🚀 Submitting ${urlList.length} total URLs to IndexNow protocol...\n`);
 
 const payload = JSON.stringify({
     host: "www.toolnovahub.com",
@@ -64,6 +66,30 @@ const ENGINES = [
         name: 'Bing',
         options: {
             hostname: 'www.bing.com',
+            path: '/indexnow',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(payload)
+            }
+        }
+    },
+    {
+        name: 'Yandex',
+        options: {
+            hostname: 'yandex.com',
+            path: '/indexnow',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(payload)
+            }
+        }
+    },
+    {
+        name: 'Naver',
+        options: {
+            hostname: 'searchadvisor.naver.com',
             path: '/indexnow',
             method: 'POST',
             headers: {
@@ -101,9 +127,35 @@ ENGINES.forEach(engine => {
     req.end();
 });
 
+function pingGoogle() {
+    const googleUrl = `https://www.google.com/ping?sitemap=${encodeURIComponent(SITE_URL + '/sitemap.xml')}`;
+    console.log(`📡 Pinging Google sitemap...`);
+
+    https.get(googleUrl, (res) => {
+        if (res.statusCode === 200) {
+            console.log(`✅ Successfully pinged Google sitemap (Status: ${res.statusCode})`);
+        } else {
+            console.error(`❌ Failed to ping Google sitemap. Status: ${res.statusCode}`);
+            errors++;
+        }
+        logSummary();
+    }).on('error', (e) => {
+        console.error(`❌ Error pinging Google sitemap: ${e.message}`);
+        errors++;
+        logSummary();
+    });
+}
+
+function logSummary() {
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+    console.log(`\n📊 Summary: ${ENGINES.length + 1} engines pinged, ${completed - errors} IndexNow success, ${errors} errors`);
+    console.log(`⏱️  Completed in ${elapsed}s`);
+    process.exit(errors > 0 ? 1 : 0);
+}
+
 function checkDone() {
     if (completed === ENGINES.length) {
-        console.log(`\nDone submitting to IndexNow. Success: ${completed - errors}, Errors: ${errors}`);
-        process.exit(errors > 0 ? 1 : 0);
+        console.log(`\n✅ IndexNow submissions complete. Success: ${completed - errors}, Errors: ${errors}`);
+        pingGoogle();
     }
 }

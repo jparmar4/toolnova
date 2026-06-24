@@ -322,6 +322,34 @@ export const optimizedToolMetadata: Record<string, ToolMetadata> = {
         description: 'Generate organized todo lists with AI. Create task lists and prioritize work. Free todo list generator, no sign-up required!',
         keywords: ['todo list generator', 'task list', 'AI todo', 'task manager', 'free todo tool', 'productivity planner'],
     },
+    'youtube-summarizer': {
+        slug: 'youtube-summarizer',
+        name: 'YouTube Summarizer',
+        title: 'YouTube Video Summarizer Free 2026 - AI Summary | ToolNova',
+        description: 'Summarize any YouTube video instantly with AI. Get key points, timestamps, and transcripts. Save hours of watching. Free, no sign-up!',
+        keywords: ['YouTube summarizer', 'video summarizer', 'summarize YouTube', 'AI video summary', 'free YouTube summary', 'video transcript'],
+    },
+    'linkedin-optimizer': {
+        slug: 'linkedin-optimizer',
+        name: 'LinkedIn Optimizer',
+        title: 'LinkedIn Profile Optimizer Free 2026 - AI Career | ToolNova',
+        description: 'Optimize your LinkedIn profile with AI. Improve headline, summary, and experience sections. Get more recruiter views. Free, try now!',
+        keywords: ['LinkedIn optimizer', 'LinkedIn profile', 'optimize LinkedIn', 'AI LinkedIn', 'free LinkedIn tool', 'career profile'],
+    },
+    'resize-image': {
+        slug: 'resize-image',
+        name: 'Resize Image',
+        title: 'Resize Image Online Free 2026 - Image Resizer | ToolNova',
+        description: 'Resize images by pixels or percentage online. Maintain aspect ratio, no quality loss. Free image resizer, unlimited use. Try now!',
+        keywords: ['resize image', 'image resizer', 'resize photo', 'change image size', 'free image resizer', 'photo resizer online'],
+    },
+    'plagiarism-checker': {
+        slug: 'plagiarism-checker',
+        name: 'Plagiarism Checker',
+        title: 'Plagiarism Checker Free 2026 - Check Plagiarism AI | ToolNova',
+        description: 'Check text for plagiarism with AI. Detect copied content and ensure originality. Perfect for students and writers. Free, try now!',
+        keywords: ['plagiarism checker', 'check plagiarism', 'AI plagiarism', 'plagiarism detector', 'free plagiarism check', 'content originality'],
+    },
 };
 
 /**
