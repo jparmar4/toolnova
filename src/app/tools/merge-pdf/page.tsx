@@ -1,65 +1,78 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { generateBreadcrumbSchema } from '@/lib/seo-advanced';
 import { getToolData } from '@/data/tools';
+import { getOptimizedToolMetadata } from '@/lib/tool-metadata';
 import { RelatedTools } from '@/components/RelatedTools';
 import MergePDFClient from './client';
 import { ToolRichContent } from '@/components/ToolRichContent';
 
+const toolMeta = getOptimizedToolMetadata('merge-pdf');
+
 export const metadata: Metadata = {
-    title: 'Merge PDF Files Free Online – Combine PDFs Instantly | ToolNova',
-    description: 'Merge multiple PDF files into one document for free. Upload, reorder, and combine PDFs instantly in your browser. No signup, 100% private.',
-    keywords: ['merge pdf', 'combine pdf', 'pdf merger', 'join pdf files', 'merge pdf online free', 'combine pdf files'],
+    title: toolMeta?.title || 'Merge PDF Files Online Free – No Watermark | ToolNova',
+    description: toolMeta?.description || 'Combine multiple PDF files into one document in seconds. No watermarks, no file size limits, no signup. Drag, drop, and download your merged PDF instantly.',
+    keywords: toolMeta?.keywords || ['merge PDF files online free no watermark', 'combine PDF files without watermark free', 'join multiple PDF free online', 'free PDF merger no signup'],
     alternates: { canonical: 'https://www.toolnovahub.com/tools/merge-pdf' },
     openGraph: {
-        title: 'Merge PDF Files Free Online – Combine PDFs Instantly | ToolNova',
-        description: 'Merge multiple PDF files into one document for free. Upload, reorder, and combine PDFs instantly in your browser.',
+        title: toolMeta?.title || 'Merge PDF Files Online Free – No Watermark | ToolNova',
+        description: toolMeta?.description || 'Combine multiple PDF files into one document in seconds. No watermarks, no file size limits, no signup.',
         url: 'https://www.toolnovahub.com/tools/merge-pdf',
         type: 'website',
+        images: [{ url: 'https://www.toolnovahub.com/og-image.png', width: 1200, height: 630, alt: 'Merge PDF Free Online – ToolNova' }],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Merge PDF Files Free Online | ToolNova',
-        description: 'Combine multiple PDFs instantly in your browser. Free and private.',
+        title: toolMeta?.title || 'Merge PDF Files Free – No Watermark | ToolNova',
+        description: 'Combine multiple PDFs instantly. No watermarks, no signup required.',
     },
 };
 
 export default function MergePDFPage() {
     const toolData = getToolData('merge-pdf');
 
+    if (!toolData) return <MergePDFClient />;
+
     const toolSchema = getToolSchema(
-        toolData?.name || 'merge-pdf',
-        toolData?.description || '',
+        toolData.name,
+        toolData.description,
         'https://www.toolnovahub.com/tools/merge-pdf'
     );
+
+    const howToSchema = getHowToSchema(
+        `How to Merge PDF Files Online Free`,
+        toolData.description,
+        toolData.howItWorks.map(step => ({
+            name: step.title,
+            text: step.desc,
+            url: `https://www.toolnovahub.com/tools/merge-pdf#step-${step.step}`
+        }))
+    );
+
+    const faqSchema = getFAQSchema(toolData.faqs);
+
+    const breadcrumbSchema = generateBreadcrumbSchema([
+        { name: 'Home', url: 'https://www.toolnovahub.com' },
+        { name: 'Tools', url: 'https://www.toolnovahub.com/tools' },
+        { name: 'PDF & Image Tools', url: 'https://www.toolnovahub.com/tools/image-pdf-tools' },
+        { name: 'Merge PDF', url: 'https://www.toolnovahub.com/tools/merge-pdf' },
+    ]);
 
     return (
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
-            {toolData && (
-                <>
-                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getHowToSchema(
-                        `How to use ${toolData.name}`,
-                        toolData.description,
-                        toolData.howItWorks.map(step => ({
-                            name: step.title,
-                            text: step.desc,
-                            url: `https://www.toolnovahub.com/tools/merge-pdf#step-${step.step}`
-                        }))
-                    )) }} />
-                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getFAQSchema(toolData.faqs)) }} />
-                </>
-            )}
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(howToSchema) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(faqSchema) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(breadcrumbSchema) }} />
             <MergePDFClient />
-            {toolData && (
-                <ToolRichContent
-                    title={toolData.name}
-                    description={toolData.description}
-                    steps={toolData.howItWorks}
-                    benefits={toolData.benefits}
-                    faq={toolData.faqs}
-                />
-            )}
+            <ToolRichContent
+                title={toolData.name}
+                description={toolData.description}
+                steps={toolData.howItWorks}
+                benefits={toolData.benefits}
+                faq={toolData.faqs}
+            />
 
       <section className="mx-auto max-w-5xl px-4 py-8">
         <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>

@@ -11,6 +11,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteConfig.url;
   const currentDate = new Date().toISOString();
 
+  // Real last-modified dates for static pages
+  // Update these when you actually change a page's content
+  const HOMEPAGE_MODIFIED = "2026-06-27";
+  const TOOLS_MODIFIED = "2026-06-27";
+  const BLOG_MODIFIED = "2026-06-27";
+  const ABOUT_MODIFIED = "2026-06-01";
+  const CONTACT_MODIFIED = "2026-06-01";
+  const PRICING_MODIFIED = "2026-06-15";
+  const LEGAL_MODIFIED = "2026-05-01";
+
   // Get all blog posts
   const blogPosts = getAllBlogPosts();
 
@@ -21,85 +31,85 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: currentDate,
-      changeFrequency: "daily",
+      lastModified: HOMEPAGE_MODIFIED,
+      changeFrequency: "weekly",
       priority: 1.0,
     },
     {
       url: `${baseUrl}/tools`,
-      lastModified: currentDate,
-      changeFrequency: "daily",
+      lastModified: TOOLS_MODIFIED,
+      changeFrequency: "weekly",
       priority: 0.95,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: currentDate,
+      lastModified: BLOG_MODIFIED,
       changeFrequency: "daily",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: currentDate,
+      lastModified: ABOUT_MODIFIED,
       changeFrequency: "monthly",
       priority: 0.5,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: currentDate,
+      lastModified: CONTACT_MODIFIED,
       changeFrequency: "monthly",
       priority: 0.5,
     },
     {
       url: `${baseUrl}/pricing`,
-      lastModified: currentDate,
+      lastModified: PRICING_MODIFIED,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${baseUrl}/privacy`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
+      lastModified: LEGAL_MODIFIED,
+      changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
+      lastModified: LEGAL_MODIFIED,
+      changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${baseUrl}/cookie-policy`,
-      lastModified: currentDate,
-      changeFrequency: "monthly" as const,
+      lastModified: LEGAL_MODIFIED,
+      changeFrequency: "yearly" as const,
       priority: 0.3,
     },
     {
       url: `${baseUrl}/disclaimer`,
-      lastModified: currentDate,
-      changeFrequency: "monthly" as const,
+      lastModified: LEGAL_MODIFIED,
+      changeFrequency: "yearly" as const,
       priority: 0.3,
     },
     {
       url: `${baseUrl}/refund`,
-      lastModified: currentDate,
-      changeFrequency: "monthly" as const,
+      lastModified: LEGAL_MODIFIED,
+      changeFrequency: "yearly" as const,
       priority: 0.3,
     },
     {
       url: `${baseUrl}/seo-audit`,
-      lastModified: currentDate,
+      lastModified: ABOUT_MODIFIED,
       changeFrequency: "monthly" as const,
       priority: 0.4,
     },
     {
       url: `${baseUrl}/search`,
-      lastModified: currentDate,
+      lastModified: TOOLS_MODIFIED,
       changeFrequency: "weekly" as const,
       priority: 0.5,
     },
     {
       url: `${baseUrl}/sitemap-page`,
-      lastModified: currentDate,
+      lastModified: TOOLS_MODIFIED,
       changeFrequency: "weekly" as const,
       priority: 0.4,
     },

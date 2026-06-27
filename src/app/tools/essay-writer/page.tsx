@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { getToolSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
+import { getToolSchema, getHowToSchema, getFAQSchema, schemaToJsonLd } from '@/lib/schema';
 import { generateBreadcrumbSchema } from '@/lib/seo-advanced';
 import { getToolData } from '@/data/tools';
 import { getOptimizedToolMetadata } from '@/lib/tool-metadata';
@@ -11,19 +11,20 @@ import { ToolRichContent } from '@/components/ToolRichContent';
 const toolMeta = getOptimizedToolMetadata('essay-writer');
 
 export const metadata: Metadata = {
-  title: toolMeta?.title || 'Free AI Essay Writer – Generate Essays Instantly | ToolNova',
-  description: toolMeta?.description || 'Write perfect essays instantly with our free AI essay writer. Get well-structured essays with intro, body, and conclusion. Fast, unique, and for students of all levels.',
-  keywords: toolMeta?.keywords || ['AI essay writer free', 'essay generator', 'write my essay AI', 'automatic essay writer', 'free essay writing tool', 'AI writing assistant'],
+  title: toolMeta?.title || 'Write a Free Essay Online – AI Essay Generator | ToolNova',
+  description: toolMeta?.description || 'Generate a well-structured essay with intro, body paragraphs, and conclusion in seconds. Perfect for high school and college students. Free AI essay writer, no login required.',
+  keywords: toolMeta?.keywords || ['write essay online free for students', 'free AI essay generator for high school', 'AI essay writer no login', 'write my essay free online'],
   alternates: { canonical: 'https://www.toolnovahub.com/tools/essay-writer' },
   openGraph: {
-    title: toolMeta?.title || 'Free AI Essay Writer – Generate Essays Instantly | ToolNova',
-    description: toolMeta?.description || 'Write perfect essays instantly with our free AI essay writer.',
+    title: toolMeta?.title || 'Write a Free Essay Online – AI Essay Generator | ToolNova',
+    description: toolMeta?.description || 'Generate a well-structured essay in seconds. Free AI essay writer, no login required.',
     url: 'https://www.toolnovahub.com/tools/essay-writer',
     type: 'website',
+    images: [{ url: 'https://www.toolnovahub.com/og-image.png', width: 1200, height: 630, alt: 'AI Essay Writer – ToolNova' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free AI Essay Writer | ToolNova',
+    title: toolMeta?.title || 'Write a Free Essay Online | ToolNova',
     description: 'Generate structured essays instantly with intro, body, and conclusion.',
   },
 };
@@ -39,6 +40,16 @@ export default function EssayWriterPage() {
     'https://www.toolnovahub.com/tools/essay-writer'
   );
 
+  const howToSchema = getHowToSchema(
+    `How to Write a Free Essay Online with AI`,
+    toolData.description,
+    toolData.howItWorks.map((step) => ({
+      name: step.title,
+      text: step.desc,
+      url: `https://www.toolnovahub.com/tools/essay-writer#step-${step.step}`,
+    }))
+  );
+
   const faqSchema = getFAQSchema(toolData.faqs);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -51,6 +62,7 @@ export default function EssayWriterPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(toolSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaToJsonLd(breadcrumbSchema) }} />
       <EssayWriterClient />
@@ -62,8 +74,6 @@ export default function EssayWriterPage() {
         benefits={toolData.benefits}
         faq={toolData.faqs}
       />
-
-
 
       <section className="mx-auto max-w-5xl px-4 py-8">
         <h2 className="text-xl font-semibold mb-3">Related guides and tools</h2>
