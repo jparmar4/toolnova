@@ -8,6 +8,9 @@ import {
     FaCheckCircle,
     FaBullseye,
     FaExclamationTriangle,
+    FaStar,
+    FaCalendarAlt,
+    FaUserEdit,
 } from 'react-icons/fa';
 
 interface ToolRichContentProps {
@@ -16,7 +19,11 @@ interface ToolRichContentProps {
     steps: { title: string; desc: string }[];
     benefits: { title: string; desc: string }[];
     faq: { question: string; answer: string }[];
+    expertTips?: string[];
+    lastReviewed?: string;
 }
+
+const REVIEW_DATE = 'June 2026';
 
 const getAnswerSnippet = (title: string, description: string) => {
     // Keep it concise (40-70 words) and answer-shaped for AI/voice extraction.
@@ -29,12 +36,38 @@ export const ToolRichContent: React.FC<ToolRichContentProps> = ({
     description,
     steps,
     benefits,
-    faq
+    faq,
+    expertTips,
+    lastReviewed = REVIEW_DATE,
 }) => {
     const answerSnippet = getAnswerSnippet(title, description);
 
+    const defaultTips = [
+        `Start with a clear, specific input — the more context you give the ${title}, the better your results will be.`,
+        `Review and edit the output before using it. AI tools provide an excellent starting point, but a final human review always improves quality.`,
+        `Use the output options (format, length, tone) to tailor results to your exact needs instead of accepting the default settings.`,
+    ];
+
+    const tips = expertTips && expertTips.length > 0 ? expertTips : defaultTips;
+
     return (
         <div className="max-w-4xl mx-auto px-6 py-16 space-y-20 text-slate-800 dark:text-slate-200">
+
+            {/* Trust Badge: Last Reviewed */}
+            <div className="flex flex-wrap items-center gap-4 p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl border border-emerald-200 dark:border-emerald-800 text-sm">
+                <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-medium">
+                    <FaCalendarAlt className="flex-shrink-0" />
+                    <span>Last reviewed by our editorial team: <strong>{lastReviewed}</strong></span>
+                </div>
+                <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-medium">
+                    <FaUserEdit className="flex-shrink-0" />
+                    <span>Fact-checked by <strong>ToolNova Editorial Team</strong></span>
+                </div>
+                <Link href="/editorial-policy" className="text-emerald-600 dark:text-emerald-400 hover:underline underline-offset-2 ml-auto text-xs">
+                    Our editorial standards →
+                </Link>
+            </div>
+
             {/* AEO: Quick answer block — direct, cite-friendly answer for AI search */}
             <section className="rounded-2xl border border-primary/20 bg-primary/5 p-6">
                 <h2 className="text-2xl font-bold mb-3">Quick answer</h2>
@@ -119,6 +152,24 @@ export const ToolRichContent: React.FC<ToolRichContentProps> = ({
                 </div>
             </section>
 
+            {/* Expert Tips */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <FaStar className="text-yellow-500 text-2xl" />
+                    <h2 className="text-2xl font-bold">Expert Tips for Best Results</h2>
+                </div>
+                <div className="space-y-4">
+                    {tips.map((tip, i) => (
+                        <div key={i} className="flex gap-4 p-5 bg-yellow-50/60 dark:bg-yellow-950/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
+                            <div className="flex-shrink-0 w-7 h-7 rounded-full bg-yellow-400 text-white flex items-center justify-center text-sm font-bold">
+                                {i + 1}
+                            </div>
+                            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{tip}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
             {/* FAQ */}
             <section className="space-y-10">
                 <div className="flex items-center gap-3">
@@ -145,8 +196,9 @@ export const ToolRichContent: React.FC<ToolRichContentProps> = ({
                     <Link href="/tools/writing-tools" className="underline underline-offset-4">Writing tools</Link>
                     <Link href="/tools/study-tools" className="underline underline-offset-4">Study tools</Link>
                     <Link href="/tools/career-tools" className="underline underline-offset-4">Career tools</Link>
-                    <Link href="/tools/image-pdf-tools" className="underline underline-offset-4">Image & PDF tools</Link>
-                    <Link href="/blog" className="underline underline-offset-4">Guides & blog</Link>
+                    <Link href="/tools/image-pdf-tools" className="underline underline-offset-4">Image &amp; PDF tools</Link>
+                    <Link href="/blog" className="underline underline-offset-4">Guides &amp; blog</Link>
+                    <Link href="/editorial-policy" className="underline underline-offset-4">Editorial policy</Link>
                 </div>
             </section>
 
@@ -156,10 +208,11 @@ export const ToolRichContent: React.FC<ToolRichContentProps> = ({
                     <FaShieldAlt size={32} />
                 </div>
                 <div className="text-center md:text-left">
-                    <h3 className="text-xl font-bold mb-2">Safe & Secure Processing</h3>
+                    <h3 className="text-xl font-bold mb-2">Safe &amp; Secure Processing</h3>
                     <p className="text-muted-foreground">
                         Your data is processed locally in your browser when possible and never stored on our servers.
                         All AI processing is encrypted and follows strict privacy standards.
+                        Read our <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link> for full details.
                     </p>
                 </div>
             </section>

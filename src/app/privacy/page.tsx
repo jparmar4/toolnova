@@ -101,17 +101,22 @@ export default function PrivacyPage() {
             ToolNova uses cookies and similar technologies for essential site
             functions, preferences, analytics, fraud prevention, and advertising.
             You can accept or decline non-essential cookies through our cookie
-            notice and can also manage cookies in your browser settings.
+            consent notice and can also manage cookies in your browser settings.
           </p>
           <p className="mt-4">
-            Third-party vendors, including Google, use cookies to serve ads
-            based on a user's prior visits to ToolNova or other websites.
-            Google's use of advertising cookies enables Google and its partners
-            to serve ads based on visits to ToolNova and other sites on the
-            Internet.
+            <strong>Google AdSense:</strong> ToolNova participates in the Google
+            AdSense program (publisher ID:{" "}
+            <code className="text-sm bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">
+              ca-pub-1328083083403070
+            </code>
+            ). Google and its advertising partners use cookies, device
+            identifiers, and similar technologies to collect information about
+            your browsing activity on ToolNova and across other websites in order
+            to deliver interest-based (personalised) ads. This includes the
+            DoubleClick cookie and similar mechanisms.
           </p>
           <p className="mt-4">
-            Users may opt out of personalized advertising by visiting{" "}
+            You may opt out of personalised advertising by visiting{" "}
             <a
               href="https://www.google.com/settings/ads"
               className="text-primary hover:underline"
@@ -119,23 +124,42 @@ export default function PrivacyPage() {
               rel="noopener noreferrer"
             >
               Google Ads Settings
+            </a>{" "}
+            or the{" "}
+            <a
+              href="https://optout.networkadvertising.org/"
+              className="text-primary hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              NAI opt-out page
             </a>
-            . You can also learn more about how Google uses data from sites that
-            use its services at{" "}
+            . You can also learn how Google uses data from partner sites at{" "}
             <a
               href="https://policies.google.com/technologies/partner-sites"
               className="text-primary hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Google's partner sites policy
+              Google's partner policy
             </a>
             .
           </p>
           <p className="mt-4">
-            If we add other third-party ad vendors or ad networks, we will
-            disclose them here and provide links to their privacy or opt-out
-            pages where available.
+            <strong>Editorial independence:</strong> Advertising revenue from
+            Google AdSense or any other advertising network does not influence
+            our editorial decisions, tool recommendations, or article content.
+            Our editorial and advertising operations are managed independently.
+          </p>
+          <p className="mt-4">
+            <strong>Google Analytics:</strong> We use Google Analytics to
+            measure site traffic and usage patterns. Analytics data is
+            anonymised and aggregated. No personally identifiable information
+            is shared with Google Analytics.
+          </p>
+          <p className="mt-4">
+            If we add other third-party ad vendors or ad networks in future, we
+            will disclose them here and link to their privacy or opt-out pages.
           </p>
         </section>
 

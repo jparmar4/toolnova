@@ -221,6 +221,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/editorial-policy"
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                >
+                  Editorial Policy
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/disclaimer"
                   className="text-muted-foreground hover:text-primary transition-colors text-sm"
                 >
@@ -282,10 +290,10 @@ export function Footer() {
         <div className="border-t border-slate-100 dark:border-slate-800 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-muted-foreground text-sm">
-              © {new Date().getFullYear()} ToolNova Inc. All rights reserved. ·
-              Free AI Tools for Students &amp; Professionals
+              © 2026 ToolNova. All rights reserved. ·
+              Free AI Tools for Students &amp; Professionals · Founded in Singapore
             </div>
-            <div className="flex gap-6">
+            <div className="flex gap-6 flex-wrap justify-center">
               <Link
                 href="/privacy"
                 className="text-muted-foreground hover:text-primary transition-colors text-sm"
@@ -297,6 +305,18 @@ export function Footer() {
                 className="text-muted-foreground hover:text-primary transition-colors text-sm"
               >
                 Terms
+              </Link>
+              <Link
+                href="/editorial-policy"
+                className="text-muted-foreground hover:text-primary transition-colors text-sm"
+              >
+                Editorial Policy
+              </Link>
+              <Link
+                href="/about"
+                className="text-muted-foreground hover:text-primary transition-colors text-sm"
+              >
+                About
               </Link>
               <Link
                 href="/sitemap-page"

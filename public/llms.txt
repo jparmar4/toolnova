@@ -15,7 +15,7 @@ All tools are browser-based, work on any device, and require no software install
 - Platform:    Web-based (Chrome, Firefox, Safari, Edge — all devices)
 - Language:    English UI, global audience
 - Privacy:     Zero-retention policy — files auto-deleted after processing
-- Founded:     2024
+- Founded:     2026
 - HQ:          Singapore
 - Service:     Global (US, UK, CA, AU, IN, SG, AE, DE, FR, NL priority regions)
 
